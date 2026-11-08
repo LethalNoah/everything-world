@@ -20,7 +20,7 @@ The owner is fairly new to Git and Unity: explain Git and Unity steps plainly, a
   - `scenes.py` → `scenes.json`: 1,154 artists into 59 scenes (Louvain on tag + similar-artist + sound similarity; oversized/loose scenes split again).
   - `layout_scenes.py` → `scenes_layout.json` and `review/data.js`: scenes into 8 realms (island chains), similar scenes adjacent, artists placed inside each scene.
   - Older scripts (`layout.py`, `geo.py`, `worldgen.py`, `taxonomy.py`, `classify.py`) built the original 2D map.
-- `review/index.html` — browsable review of the scene groupings (approved by the owner). Live at lethalnoah.github.io/everything-world/review/.
+- `review/index.html` — browsable review of the scene groupings (approved by the owner). Live at sealteamtwo.github.io/everything-world/review/.
 - `index.html`, `assets/`, `map_poster.png` — the original 2D parchment map on GitHub Pages. Reference only; keep it working.
 
 Scene names and look briefs live in `build/scene_art.json` (readable version: `ART_PLAN.md`). Ideas not yet built or decided are in `IDEAS.md`; add new ones there when the owner mentions them.

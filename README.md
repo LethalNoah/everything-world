@@ -1,12 +1,12 @@
 # The Everything World
 
-### 🗺️ [Explore the map: lethalnoah.github.io/everything-world](https://lethalnoah.github.io/everything-world/)
+### 🗺️ [Explore the map: sealteamtwo.github.io/everything-world](https://sealteamtwo.github.io/everything-world/)
 
-### 🏝️ New: [The Everything Isles](https://lethalnoah.github.io/everything-world/world/), the plan for the 3D game: 59 islands in 8 realms, joined by bridges, causeways, sea lanes and fast-travel towers. Click an island to see how it should look.
+### 🏝️ New: [The Everything Isles](https://sealteamtwo.github.io/everything-world/world/), the plan for the 3D game: 59 islands in 8 realms, joined by bridges, causeways, sea lanes and fast-travel towers. Click an island to see how it should look.
 
 A Spotify playlist of 1,856 songs, charted as a zoomable fantasy map on old parchment. Every song is a place you can visit, in one of 44 lands with names like the Jam Band Commonwealth, the Iron Range and the Vale of Emo.
 
-[![The whole map of the Everything World](map_poster.png)](https://lethalnoah.github.io/everything-world/)
+[![The whole map of the Everything World](map_poster.png)](https://sealteamtwo.github.io/everything-world/)
 
 ## How to explore
 
