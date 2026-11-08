@@ -1,5 +1,6 @@
 using EverythingWorld.Music;
 using EverythingWorld.Player;
+using EverythingWorld.Spotify;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -74,18 +75,25 @@ namespace EverythingWorld.EditorTools
             // Music
             var music = new GameObject("Music");
             var dryRun = music.AddComponent<DryRunMusicOutput>();
+            var spotify = music.AddComponent<SpotifyMusicOutput>();
+            var outputSwitch = music.AddComponent<MusicOutputSwitch>();
+            outputSwitch.dryRun = dryRun;
+            outputSwitch.spotify = spotify;
+            outputSwitch.useSpotify = false; // off until you tick it
             var director = music.AddComponent<MusicDirector>();
             director.sceneData = data;
-            director.output = dryRun;
+            director.output = outputSwitch;
             var hud = music.AddComponent<MusicHud>();
             hud.director = director;
             hud.dryRun = dryRun;
+            hud.outputSwitch = outputSwitch;
+            hud.spotify = spotify;
 
             if (!AssetDatabase.IsValidFolder("Assets/_Project/Scenes"))
                 AssetDatabase.CreateFolder("Assets/_Project", "Scenes");
             EditorSceneManager.SaveScene(scene, ScenePath);
             AddToBuildSettings(ScenePath);
-            Debug.Log($"Built {ScenePath}. Press Play and walk into the red or blue zone.");
+            Debug.Log($"Built {ScenePath}. Press Play and walk into a zone. Spotify stays off until you tick 'Use Spotify' on the Music object.");
         }
 
         static void MakeZone(string name, SceneInfo info, Vector3 position, Color color)
