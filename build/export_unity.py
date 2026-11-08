@@ -8,6 +8,7 @@ Reads build/scenes_layout.json and build/scene_art.json (hand-written names and 
 Only public info goes in (track names, artists, IDs), never the "Added By" usernames.
 Rerun after scenes.py / layout_scenes.py:  python build/export_unity.py
 """
+import csv
 import json
 from pathlib import Path
 
@@ -16,6 +17,8 @@ SRC = ROOT / "build" / "scenes_layout.json"
 ART = ROOT / "build" / "scene_art.json"
 DST = ROOT / "Game" / "EverythingWorld" / "Assets" / "_Project" / "Data" / "scenes.json"
 PLAN = ROOT / "ART_PLAN.md"
+CSV = ROOT / "build" / "playlist.csv"  # only the track URI and duration columns are read
+DEFAULT_MS = 210000
 BRIEF_FIELDS = ("terrain", "palette", "landmark", "props", "mood")
 
 
@@ -56,19 +59,33 @@ def write_plan(scenes, realms):
     PLAN.write_text("\n".join(out), encoding="utf-8", newline="\n")
 
 
+def load_durations():
+    """Track ID -> length in ms, from the Exportify CSV (the zone radio needs song lengths)."""
+    if not CSV.exists():
+        print(f"warning: {CSV.name} not found; every song gets a default length of {DEFAULT_MS // 1000} s")
+        return {}
+    with CSV.open(encoding="utf-8-sig", newline="") as f:
+        return {row["Track URI"].rsplit(":", 1)[-1]: int(row["Duration (ms)"])
+                for row in csv.DictReader(f) if row.get("Duration (ms)")}
+
+
 def main():
     layout = json.loads(SRC.read_text(encoding="utf-8"))
+    durations = load_durations()
     realms, scene_art = load_art(layout)
     artist_scene = {name: a["scene"] for name, a in layout["artists"].items()}
 
     tracks = {s["id"]: [] for s in layout["scenes"]}
-    missing = 0
+    missing = no_length = 0
     for name, artist, track_id in layout["songs"]:
         scene = artist_scene.get(artist)
         if scene is None:
             missing += 1
             continue
-        tracks[scene].append({"name": name, "artist": artist, "id": track_id})
+        if track_id not in durations:
+            no_length += 1
+        tracks[scene].append({"name": name, "artist": artist, "id": track_id,
+                              "duration_ms": durations.get(track_id, DEFAULT_MS)})
 
     scenes = []
     for s in layout["scenes"]:
@@ -89,7 +106,7 @@ def main():
             "tempo": s["sound"]["tempo"],
             "neighbours": s["neighbours"],
             **{f: a.get(f, [] if f == "palette" else "") for f in BRIEF_FIELDS},
-            "tracks": sorted(tracks[s["id"]], key=lambda t: (t["artist"].lower(), t["name"].lower())),
+            "tracks": sorted(tracks[s["id"]], key=lambda t: (t["artist"].lower(), t["name"].lower(), t["id"])),
         })
 
     write_plan([dict(sc, artists=s["artists"]) for sc, s in zip(scenes, layout["scenes"])], realms)
@@ -98,7 +115,8 @@ def main():
     DST.write_text(json.dumps({"scenes": scenes}, ensure_ascii=False, indent=1) + "\n", encoding="utf-8", newline="\n")
     total = sum(len(s["tracks"]) for s in scenes)
     print(f"Wrote {len(scenes)} scenes, {total} tracks to {DST.relative_to(ROOT)} and {PLAN.name}"
-          + (f" ({missing} songs had no scene)" if missing else ""))
+          + (f" ({missing} songs had no scene)" if missing else "")
+          + (f" ({no_length} songs had no length, used {DEFAULT_MS // 1000} s)" if no_length else ""))
 
 
 if __name__ == "__main__":

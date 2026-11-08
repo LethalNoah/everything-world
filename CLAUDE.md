@@ -23,7 +23,13 @@ The owner is fairly new to Git and Unity: explain Git and Unity steps plainly, a
 - `review/index.html` — browsable review of the scene groupings (approved by the owner). Live at lethalnoah.github.io/everything-world/review/.
 - `index.html`, `assets/`, `map_poster.png` — the original 2D parchment map on GitHub Pages. Reference only; keep it working.
 
-Scene names are currently just the top tags; real names and per-scene look briefs are a planned step.
+Scene names and look briefs live in `build/scene_art.json` (readable version: `ART_PLAN.md`). Ideas not yet built or decided are in `IDEAS.md`; add new ones there when the owner mentions them.
+
+## Music in the game
+
+- Each scene is a zone **radio station** (`RadioSchedule.cs`): an always-on, shuffled schedule computed from the scene's tracks and a shared clock, so every player hears the same song at the same position without networking.
+- Spotify is controlled through the Web API (`SpotifyMusicOutput.cs`), off by default behind "Use Spotify" on the Music object. Songs start "from their album" because the desktop app ignored plain track plays in testing. The game re-syncs if Spotify drifts more than 1 s from the station.
+- Spotify development mode: max 5 users per app (owner needs Premium); users must be added in the dashboard's User Management.
 
 ## Secrets and private data (never commit)
 

@@ -3,10 +3,12 @@ using UnityEngine;
 
 namespace EverythingWorld.Music
 {
-    /// Decides what music should play based on which zone the player is standing in.
-    /// - Entering a zone picks a random track from that zone's scene (after a short delay,
-    ///   so brushing past a border doesn't switch songs).
-    /// - Leaving every zone keeps the current song going.
+    /// Tunes the player into the radio station of the zone they're standing in (see RadioSchedule).
+    /// - Entering a zone joins that station's current song at its current position (after a short delay,
+    ///   so brushing past a border doesn't switch stations).
+    /// - When the station's song ends, the station's next song plays: from the zone you're in now,
+    ///   or from the last zone if you're between zones.
+    /// - Leaving every zone keeps you on the last station.
     /// - Overlapping zones: the one entered most recently wins.
     public class MusicDirector : MonoBehaviour
     {
@@ -15,7 +17,7 @@ namespace EverythingWorld.Music
         [Tooltip("Assets/_Project/Data/scenes.json")]
         public TextAsset sceneData;
 
-        [Tooltip("Component that receives play commands (for now the DryRunMusicOutput).")]
+        [Tooltip("Component that receives play commands (the MusicOutputSwitch).")]
         public MonoBehaviour output;
 
         [Tooltip("Seconds you must stay in a new zone before the music switches.")]
@@ -23,10 +25,11 @@ namespace EverythingWorld.Music
 
         public SceneCatalog Catalog { get; private set; }
         public SceneInfo CurrentScene => zones.Count > 0 ? Catalog.Get(zones[zones.Count - 1].sceneId) : null;
+        /// The station you're tuned to, and the song it's on.
         public SceneInfo PlayingScene { get; private set; }
+        public RadioSchedule.Slot CurrentSlot { get; private set; }
 
         readonly List<MusicZone> zones = new List<MusicZone>();
-        readonly Dictionary<int, TrackInfo> lastTrackPerScene = new Dictionary<int, TrackInfo>();
         IMusicOutput musicOutput;
         float switchAt = -1f;
 
@@ -59,31 +62,35 @@ namespace EverythingWorld.Music
         void ScheduleSwitch()
         {
             var target = CurrentScene;
-            // Nothing to do if we left all zones, or are back in the scene that's already playing.
+            // Nothing to do if we left all zones, or are back on the station that's already playing.
             switchAt = target == null || target == PlayingScene ? -1f : Time.time + switchDelay;
         }
 
         void Update()
         {
+            // The station moved on to its next song.
+            if (PlayingScene != null && CurrentSlot.IsValid && RadioSchedule.NowSeconds >= CurrentSlot.endsAt)
+            {
+                switchAt = -1f;
+                TuneIn(CurrentScene ?? PlayingScene, continuation: true);
+                return;
+            }
+
             if (switchAt < 0f || Time.time < switchAt) return;
             switchAt = -1f;
-            var scene = CurrentScene;
-            if (scene == null || scene.tracks == null || scene.tracks.Length == 0) return;
-
-            var track = PickTrack(scene);
-            PlayingScene = scene;
-            musicOutput?.Play(track, scene);
+            TuneIn(CurrentScene, continuation: false);
         }
 
-        /// Random track from the scene, avoiding the one this scene played last time.
-        TrackInfo PickTrack(SceneInfo scene)
+        void TuneIn(SceneInfo scene, bool continuation)
         {
-            lastTrackPerScene.TryGetValue(scene.id, out var last);
-            TrackInfo pick;
-            do pick = scene.tracks[Random.Range(0, scene.tracks.Length)];
-            while (pick == last && scene.tracks.Length > 1);
-            lastTrackPerScene[scene.id] = pick;
-            return pick;
+            if (scene == null) return;
+            var now = RadioSchedule.NowSeconds;
+            var slot = RadioSchedule.At(scene, now);
+            if (!slot.IsValid) return;
+
+            PlayingScene = scene;
+            CurrentSlot = slot;
+            musicOutput?.Play(slot.track, scene, slot.PositionMsAt(now), continuation);
         }
     }
 }

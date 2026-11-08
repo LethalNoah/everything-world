@@ -13,10 +13,10 @@ namespace EverythingWorld.Music
         public DryRunMusicOutput dryRun;
         public SpotifyMusicOutput spotify;
 
-        public void Play(TrackInfo track, SceneInfo scene)
+        public void Play(TrackInfo track, SceneInfo scene, int positionMs, bool continuation)
         {
-            if (dryRun != null) dryRun.Play(track, scene);
-            if (useSpotify && spotify != null) spotify.Play(track, scene);
+            if (dryRun != null) dryRun.Play(track, scene, positionMs, continuation);
+            if (useSpotify && spotify != null) spotify.Play(track, scene, positionMs, continuation);
         }
     }
 }

@@ -9,11 +9,12 @@ namespace EverythingWorld.Music
         public TrackInfo LastTrack { get; private set; }
         public SceneInfo LastScene { get; private set; }
 
-        public void Play(TrackInfo track, SceneInfo scene)
+        public void Play(TrackInfo track, SceneInfo scene, int positionMs, bool continuation)
         {
             LastTrack = track;
             LastScene = scene;
-            Debug.Log($"[Dry run] Would play {track} ({track.Uri}) for scene {scene.id}: {scene.DisplayName}");
+            Debug.Log($"[Dry run] Would play {track} from {positionMs / 60000}:{positionMs / 1000 % 60:00} " +
+                      $"({track.Uri}) on station {scene.id}: {scene.DisplayName}{(continuation ? " (next song)" : "")}");
         }
     }
 }
