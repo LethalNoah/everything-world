@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Everything World: The Isles</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<meta name="description" content="A Spotify playlist of 1,856 songs, charted as 59 islands in 8 realms: the plan for a world to explore with friends.">
+<link rel="stylesheet" href="../assets/fonts/fonts.css">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="stylesheet" href="world.css">
+</head>
+<body>
+<canvas id="map" aria-label="Fantasy map of the Everything playlist as islands"></canvas>
+
+<div id="cartouche">
+  <div class="c-small">A true &amp; faithful chart of</div>
+  <div class="c-title">The Everything World</div>
+  <div class="c-small" id="c-count"></div>
+</div>
+
+<div id="tools">
+  <div class="search">
+    <input id="q" type="search" placeholder="Find a song, artist, isle or tower&hellip;" autocomplete="off" spellcheck="false" aria-label="Search the map">
+    <div id="results" hidden></div>
+  </div>
+  <button id="wander" title="Fly to a random song">Wander</button>
+</div>
+
+<div id="zoom">
+  <button id="zin" aria-label="Zoom in">+</button>
+  <button id="zout" aria-label="Zoom out">&minus;</button>
+  <button id="zfit" aria-label="Show whole map" title="Whole map">&#10021;</button>
+</div>
+
+<aside id="legend" aria-label="Map key">
+  <div class="l-title">Ways to Travel</div>
+  <div class="l-row"><svg viewBox="0 0 40 14" aria-hidden="true"><rect x="2" y="4" width="36" height="6" fill="#d9c08e" stroke="#2d1d0e" stroke-width="1"/><path d="M6 4v6M10 4v6M14 4v6M18 4v6M22 4v6M26 4v6M30 4v6M34 4v6" stroke="#2d1d0e" stroke-width=".6" opacity=".6"/></svg>Bridge, between isles of a realm</div>
+  <div class="l-row"><svg viewBox="0 0 40 14" aria-hidden="true"><rect x="2" y="3" width="36" height="8" fill="#e3d2a6" stroke="#2d1d0e" stroke-width="1"/><path d="M3 7h34" stroke="#5c3a22" stroke-width=".9" stroke-dasharray="3 3"/><path d="M6 11a3 3 0 0 0 6 0M18 11a3 3 0 0 0 6 0M30 11a3 3 0 0 0 6 0" fill="none" stroke="#2d1d0e" stroke-width=".7"/></svg>Causeway, between realms</div>
+  <div class="l-row"><svg viewBox="0 0 40 14" aria-hidden="true"><path d="M2 10Q20 0 38 8" fill="none" stroke="#26404e" stroke-width="1.6" stroke-dasharray="1.5 4" stroke-linecap="round"/></svg>Sea lane, for boats (one day)</div>
+  <div class="l-row"><svg viewBox="0 0 40 18" aria-hidden="true"><g transform="translate(20 17)"><path d="M-4 0L-3 -11H3L4 0Z" fill="#e8d9b2" stroke="#2d1d0e"/><path d="M-4.5 -11V-13.5H4.5V-11Z" fill="#e8d9b2" stroke="#2d1d0e" stroke-width=".8"/><path d="M0 -13.5V-17L4 -16L0 -15" fill="#8c2f1c" stroke="#2d1d0e" stroke-width=".5"/></g></svg>Tower, fast travel to any other tower</div>
+  <div class="l-note">Every isle can be reached on foot.<br><a href="../">The original map</a></div>
+</aside>
+
+<div id="hint">Scroll to zoom in. Click an isle to see how it should look in the game.</div>
+<div id="tip" hidden></div>
+<aside id="panel" hidden><button id="pclose" aria-label="Close">&times;</button><div id="pbody"></div></aside>
+<div id="loading"><div>Charting the isles&hellip;</div></div>
+
+<script src="assets/world.js"></script>
+<script src="../assets/glyphs.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

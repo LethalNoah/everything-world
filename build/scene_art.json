@@ -1,14 +1,14 @@
 {
- "_about": "Hand-written names and look briefs for the realms and scenes. Edit freely. 'anchors' are each scene's top artists; build/export_unity.py warns if a scene id no longer contains them (for example after scenes.py renumbers scenes).",
+ "_about": "Hand-written names and look briefs for the realms and scenes. Edit freely. 'tower' names each realm's fast-travel tower. 'anchors' are each scene's top artists; build/export_unity.py warns if a scene id no longer contains them (for example after scenes.py renumbers scenes).",
  "realms": [
-  {"id": 0, "name": "The Old Kingdoms", "note": "Classic, jam, prog, southern, glam and heavy metal: the old heartland of rock."},
-  {"id": 1, "name": "Riffland", "note": "Alternative, grunge, punk, emo, metalcore, prog metal and J-rock."},
-  {"id": 2, "name": "The Indie Isles", "note": "Indie rock, shoegaze, bedroom pop and indie folk."},
-  {"id": 3, "name": "The Bass Reaches", "note": "Every kind of electronic music, from ambient to riddim."},
-  {"id": 4, "name": "The Chart Isles", "note": "Pop, electropop, synthwave, country and Latin."},
-  {"id": 5, "name": "The Groovelands", "note": "Soul, funk, disco, world music and jazz."},
-  {"id": 6, "name": "The Boroughs", "note": "Hip-hop, R&B and lo-fi beats."},
-  {"id": 7, "name": "The Isles of Story", "note": "Film scores, classical, musicals, game music and novelties."}
+  {"id": 0, "name": "The Old Kingdoms", "tower": "The Old Radio Tower", "note": "Classic, jam, prog, southern, glam and heavy metal: the old heartland of rock."},
+  {"id": 1, "name": "Riffland", "tower": "The Amp Stack Spire", "note": "Alternative, grunge, punk, emo, metalcore, prog metal and J-rock."},
+  {"id": 2, "name": "The Indie Isles", "tower": "The Lo-Fi Lighthouse", "note": "Indie rock, shoegaze, bedroom pop and indie folk."},
+  {"id": 3, "name": "The Bass Reaches", "tower": "The Subwoofer Spire", "note": "Every kind of electronic music, from ambient to riddim."},
+  {"id": 4, "name": "The Chart Isles", "tower": "The Hit Parade Tower", "note": "Pop, electropop, synthwave, country and Latin."},
+  {"id": 5, "name": "The Groovelands", "tower": "The Bandstand Tower", "note": "Soul, funk, disco, world music and jazz."},
+  {"id": 6, "name": "The Boroughs", "tower": "The Boombox Tower", "note": "Hip-hop, R&B and lo-fi beats."},
+  {"id": 7, "name": "The Isles of Story", "tower": "The Overture Spire", "note": "Film scores, classical, musicals, game music and novelties."}
  ],
  "scenes": [
   {"id": 0, "anchors": ["Phish", "Trey Anastasio", "Widespread Panic"],

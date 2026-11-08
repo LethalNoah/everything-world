@@ -1,0 +1,15 @@
+/* Additions for the island map. Everything else comes from ../assets/app.css. */
+#legend{position:fixed;right:18px;bottom:18px;width:262px;padding:9px 13px 10px;background:var(--paper);border:1px solid var(--ink);
+  outline:3px double var(--edge);outline-offset:2px;box-shadow:0 3px 14px rgba(0,0,0,.45);font-size:14.5px;line-height:1.2;z-index:4}
+#legend .l-title{font-family:"IM Fell English SC","IM Fell English",serif;font-size:17px;text-align:center;margin-bottom:5px;border-bottom:1px solid var(--edge);padding-bottom:2px}
+#legend .l-row{display:flex;align-items:center;gap:9px;margin:5px 0}
+#legend svg{width:40px;height:16px;flex:none}
+#legend .l-note{margin-top:7px;font-style:italic;color:var(--ink2);font-size:13.5px;text-align:center}
+#legend a{color:var(--accent)}
+.swatches{display:flex;flex-wrap:wrap;gap:6px 12px;margin:8px 0 4px}
+.swatches span{display:flex;align-items:center;gap:5px;font-size:14px;font-style:italic;color:var(--ink2)}
+.swatches i{display:block;width:18px;height:18px;border:1px solid var(--ink);box-shadow:inset 0 0 0 1px rgba(255,250,230,.35)}
+#panel b{font-weight:normal;font-family:"IM Fell English SC","IM Fell English",serif}
+.towernote{margin-top:10px!important}
+@media (max-width:900px){#legend{display:none}}
+.low #legend{box-shadow:none}

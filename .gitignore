@@ -10,3 +10,6 @@ build/bench_gpu.sh
 __pycache__/
 # API keys (never commit)
 build/lastfm_key.txt
+
+# Preview images from the island map generator
+build/preview_*.jpg
