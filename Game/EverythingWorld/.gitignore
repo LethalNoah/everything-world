@@ -1,0 +1,60 @@
+# Unity project ignore rules. Paths are relative to this folder (Game/EverythingWorld).
+# Unity rebuilds everything listed here on its own, so none of it belongs in Git.
+
+# Cache and scratch folders Unity regenerates (Library alone is ~2 GB)
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+/[Mm]emoryCaptures/
+/[Rr]ecordings/
+
+# Builds of the game
+/[Bb]uild/
+/[Bb]uilds/
+
+# Asset Store tools
+/[Aa]ssets/AssetStoreTools*
+
+# Visual Studio / Rider / VS Code files Unity generates
+.vs/
+.idea/
+.vscode/
+*.csproj
+*.sln
+*.slnx
+*.suo
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+
+# Crash reports and profiler captures
+sysinfo.txt
+crashlytics-buildid.txt
+*.apk
+*.aab
+*.unitypackage
+*.app
+
+# Gradle / Android leftovers
+.gradle/
+/[Aa]ssets/Plugins/Android/gradle-wrapper.jar
+
+# Addressables build output
+/[Aa]ssets/[Ss]treamingAssets/aa.meta
+/[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# Secrets: Spotify app settings and saved login tokens (never commit)
+/[Aa]ssets/[Ss]treamingAssets/spotify_config.json
+/[Aa]ssets/[Ss]treamingAssets/spotify_config.json.meta
+spotify_tokens.json
