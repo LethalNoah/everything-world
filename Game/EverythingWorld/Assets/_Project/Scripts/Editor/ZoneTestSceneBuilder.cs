@@ -16,8 +16,8 @@ namespace EverythingWorld.EditorTools
         const string DataPath = "Assets/_Project/Data/scenes.json";
 
         // The two scenes to test with (ids from scenes.json / the review page).
-        const int ZoneASceneId = 1;  // post hardcore / metalcore
-        const int ZoneBSceneId = 15; // folk / acoustic
+        const int ZoneASceneId = 1;  // Metalcore Caldera
+        const int ZoneBSceneId = 15; // The Driftwood Shore
 
         [MenuItem("Everything World/Build Zone Test Scene")]
         public static void Build()
@@ -42,8 +42,10 @@ namespace EverythingWorld.EditorTools
             ground.GetComponent<Renderer>().sharedMaterial = Mat("Ground", new Color(0.55f, 0.62f, 0.45f));
 
             // Zones
-            MakeZone("Zone A", catalog.Get(ZoneASceneId), new Vector3(-15f, 0f, 15f), new Color(0.80f, 0.25f, 0.25f));
-            MakeZone("Zone B", catalog.Get(ZoneBSceneId), new Vector3(15f, 0f, 15f), new Color(0.30f, 0.50f, 0.85f));
+            var a = catalog.Get(ZoneASceneId);
+            var b = catalog.Get(ZoneBSceneId);
+            MakeZone("Zone A", a, new Vector3(-15f, 0f, 15f), a.PaletteColor(0)); // floor uses the scene's main colour
+            MakeZone("Zone B", b, new Vector3(15f, 0f, 15f), b.PaletteColor(0));
 
             // Player
             var player = new GameObject("Player") { tag = "Player" };
@@ -112,7 +114,7 @@ namespace EverythingWorld.EditorTools
             label.transform.SetParent(zone.transform, false);
             label.transform.localPosition = new Vector3(0f, 4f, -size / 2f);
             var text = label.AddComponent<TextMesh>();
-            text.text = $"Scene {info.id}\n{info.DisplayName}\n{info.tracks.Length} songs";
+            text.text = $"{info.DisplayName}\n{info.realmName}, scene {info.id}\n{info.tracks.Length} songs";
             text.anchor = TextAnchor.MiddleCenter;
             text.alignment = TextAlignment.Center;
             text.characterSize = 0.25f;

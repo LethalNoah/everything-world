@@ -21,16 +21,35 @@ namespace EverythingWorld.Music
     public class SceneInfo
     {
         public int id;
+        public string name;      // from build/scene_art.json
         public int realm;
+        public string realmName;
         public string[] tags;
         public float x, y, r;
         public float energy, acousticness, valence, danceability, tempo;
         public int[] neighbours;
+
+        // Look brief (art plan), from build/scene_art.json
+        public string terrain;
+        public string[] palette; // "#RRGGBB label"
+        public string landmark;
+        public string props;
+        public string mood;
+
         public TrackInfo[] tracks;
 
-        /// Placeholder name until the scenes get real names: the top two tags.
+        /// The scene's name, or its top two tags if it hasn't been named.
         public string DisplayName =>
+            !string.IsNullOrEmpty(name) ? name :
             tags == null || tags.Length == 0 ? $"Scene {id}" : string.Join(" / ", tags, 0, Mathf.Min(2, tags.Length));
+
+        /// Palette colour i parsed from "#RRGGBB label", or grey if missing.
+        public Color PaletteColor(int i)
+        {
+            if (palette != null && i < palette.Length && ColorUtility.TryParseHtmlString(palette[i].Split(' ')[0], out var c))
+                return c;
+            return Color.grey;
+        }
     }
 
     /// All scenes, loaded from Assets/_Project/Data/scenes.json.

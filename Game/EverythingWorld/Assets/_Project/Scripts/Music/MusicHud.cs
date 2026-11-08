@@ -16,7 +16,7 @@ namespace EverythingWorld.Music
             style ??= new GUIStyle(GUI.skin.box) { fontSize = 18, alignment = TextAnchor.UpperLeft, wordWrap = true };
 
             var here = director.CurrentScene;
-            var text = here != null ? $"Zone: scene {here.id} ({here.DisplayName})" : "Zone: none";
+            var text = here != null ? $"Zone: {here.DisplayName} ({here.realmName}, scene {here.id})" : "Zone: none";
             if (dryRun != null && dryRun.LastTrack != null)
                 text += $"\nWould play: {dryRun.LastTrack}\n{dryRun.LastTrack.Uri}";
             text += "\n\nDRY RUN: Spotify is not being controlled.\nWASD move, mouse look, Esc frees the cursor.";
