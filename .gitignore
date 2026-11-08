@@ -8,3 +8,5 @@ build/bench.sh
 build/bench_gpu.sh
 .claude/
 __pycache__/
+# API keys (never commit)
+build/lastfm_key.txt
