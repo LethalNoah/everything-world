@@ -42,7 +42,7 @@ namespace EverythingWorld.Music
                 text += "\n\nDRY RUN: Spotify is not being controlled.";
                 if (spotify != null) text += $"\nSpotify login: {spotify.Status}";
             }
-            text += "\nWASD move, mouse look, Esc frees the cursor, L logs in to Spotify.";
+            text += "\nWASD move, Space jumps, mouse look, Esc frees the cursor, L logs in to Spotify.";
 
             GUI.Box(new Rect(12, 12, 620, 200), text, style);
         }

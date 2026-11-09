@@ -15,8 +15,8 @@
     "progressive rock",
     "americana"
    ],
-   "x": 134.3,
-   "y": 73.83,
+   "x": 151.95,
+   "y": 65.25,
    "r": 10.77,
    "energy": 0.701,
    "acousticness": 0.352,
@@ -985,8 +985,8 @@
     "djent",
     "hardcore punk"
    ],
-   "x": 78.77,
-   "y": 24.43,
+   "x": 89.29,
+   "y": 21.11,
    "r": 9.22,
    "energy": 0.912,
    "acousticness": 0.008,
@@ -1707,8 +1707,8 @@
     "blues rock",
     "acid rock"
    ],
-   "x": 138.03,
-   "y": 51.25,
+   "x": 145.45,
+   "y": 43.36,
    "r": 9.27,
    "energy": 0.596,
    "acousticness": 0.303,
@@ -2437,8 +2437,8 @@
     "red dirt",
     "traditional country"
    ],
-   "x": 123.89,
-   "y": 105.55,
+   "x": 129.38,
+   "y": 102.44,
    "r": 8.0,
    "energy": 0.602,
    "acousticness": 0.389,
@@ -2991,8 +2991,8 @@
     "madchester",
     "sufi"
    ],
-   "x": 82.46,
-   "y": 56.62,
+   "x": 89.38,
+   "y": 47.42,
    "r": 8.12,
    "energy": 0.708,
    "acousticness": 0.142,
@@ -3561,8 +3561,8 @@
     "krautrock",
     "classic rock"
    ],
-   "x": 105.85,
-   "y": 38.71,
+   "x": 116.16,
+   "y": 35.93,
    "r": 7.62,
    "energy": 0.662,
    "acousticness": 0.209,
@@ -4067,8 +4067,8 @@
     "ska punk",
     "skate punk"
    ],
-   "x": 58.98,
-   "y": 37.43,
+   "x": 64.52,
+   "y": 39.39,
    "r": 7.07,
    "energy": 0.819,
    "acousticness": 0.088,
@@ -4509,8 +4509,8 @@
     "ambient",
     "j rock"
    ],
-   "x": 43.78,
-   "y": 30.82,
+   "x": 53.67,
+   "y": 26.87,
    "r": 6.56,
    "energy": 0.702,
    "acousticness": 0.173,
@@ -4895,8 +4895,8 @@
     "post rock",
     "indie pop"
    ],
-   "x": 50.32,
-   "y": 96.16,
+   "x": 58.63,
+   "y": 89.1,
    "r": 6.63,
    "energy": 0.585,
    "acousticness": 0.185,
@@ -5289,19 +5289,19 @@
     "post punk",
     "indie electronic"
    ],
-   "x": 66.61,
-   "y": 100.29,
-   "r": 7.07,
-   "energy": 0.652,
-   "acousticness": 0.204,
-   "valence": 0.46,
-   "danceability": 0.522,
-   "tempo": 126.544,
+   "x": 75.81,
+   "y": 87.02,
+   "r": 6.93,
+   "energy": 0.648,
+   "acousticness": 0.207,
+   "valence": 0.465,
+   "danceability": 0.524,
+   "tempo": 127.104,
    "neighbours": [
     42,
     35,
-    49,
-    50
+    50,
+    49
    ],
    "terrain": "Rolling chalk downs with small market towns and hedgerows.",
    "palette": [
@@ -5515,22 +5515,6 @@
      "valence": 0.641
     },
     {
-     "name": "Demons",
-     "artist": "Imagine Dragons",
-     "id": "3LlAyCYU26dvFZBDUIMb7a",
-     "duration_ms": 175200,
-     "energy": 0.71,
-     "valence": 0.419
-    },
-    {
-     "name": "Radioactive",
-     "artist": "Imagine Dragons",
-     "id": "4G8gkOterJn0Ywt6uhqbhp",
-     "duration_ms": 186813,
-     "energy": 0.784,
-     "valence": 0.237
-    },
-    {
      "name": "1 4 2",
      "artist": "Inner Wave",
      "id": "69Tf2qK9sYOi1ncnXrfIUV",
@@ -5731,19 +5715,19 @@
     "singer songwriter",
     "kpop"
    ],
-   "x": 110.69,
-   "y": 130.29,
-   "r": 8.0,
-   "energy": 0.706,
-   "acousticness": 0.149,
-   "valence": 0.547,
-   "danceability": 0.657,
-   "tempo": 120.711,
+   "x": 110.99,
+   "y": 124.22,
+   "r": 7.94,
+   "energy": 0.701,
+   "acousticness": 0.15,
+   "valence": 0.541,
+   "danceability": 0.65,
+   "tempo": 120.128,
    "neighbours": [
     22,
     31,
     56,
-    45
+    3
    ],
    "terrain": "Candy-coloured hills around a crowded boardwalk city.",
    "palette": [
@@ -5805,14 +5789,6 @@
      "valence": 0.393
     },
     {
-     "name": "Don't Mine at Night - Minecraft Parody",
-     "artist": "Brad Knauber",
-     "id": "68qjS7DsWSTfxuaKLcPc3j",
-     "duration_ms": 217182,
-     "energy": 0.852,
-     "valence": 0.565
-    },
-    {
      "name": "Dynamite",
      "artist": "BTS",
      "id": "5QDLhrAOJJdNAmCTJ8xMyW",
@@ -5827,22 +5803,6 @@
      "duration_ms": 274097,
      "energy": 0.846,
      "valence": 0.462
-    },
-    {
-     "name": "Fallen Kingdom",
-     "artist": "Captainsparklez",
-     "id": "0gYnzvD4ktjOm8EWPN9vhh",
-     "duration_ms": 250791,
-     "energy": 0.837,
-     "valence": 0.286
-    },
-    {
-     "name": "Revenge",
-     "artist": "Captainsparklez",
-     "id": "23IzQljXqkHXVn6rHTKWDI",
-     "duration_ms": 220208,
-     "energy": 0.83,
-     "valence": 0.759
     },
     {
      "name": "I Don't Dance",
@@ -5915,6 +5875,22 @@
      "duration_ms": 212880,
      "energy": 0.924,
      "valence": 0.967
+    },
+    {
+     "name": "Demons",
+     "artist": "Imagine Dragons",
+     "id": "3LlAyCYU26dvFZBDUIMb7a",
+     "duration_ms": 175200,
+     "energy": 0.71,
+     "valence": 0.419
+    },
+    {
+     "name": "Radioactive",
+     "artist": "Imagine Dragons",
+     "id": "4G8gkOterJn0Ywt6uhqbhp",
+     "duration_ms": 186813,
+     "energy": 0.784,
+     "valence": 0.237
     },
     {
      "name": "Hallucination",
@@ -6285,8 +6261,8 @@
     "uk drill",
     "the muppets"
    ],
-   "x": 118.86,
-   "y": 158.89,
+   "x": 118.67,
+   "y": 152.91,
    "r": 7.81,
    "energy": 0.666,
    "acousticness": 0.212,
@@ -6815,8 +6791,8 @@
     "alternative metal",
     "romanian"
    ],
-   "x": 65.75,
-   "y": 51.77,
+   "x": 72.92,
+   "y": 53.2,
    "r": 6.32,
    "energy": 0.757,
    "acousticness": 0.101,
@@ -7177,8 +7153,8 @@
     "piano",
     "80s"
    ],
-   "x": 110.22,
-   "y": 54.69,
+   "x": 122.8,
+   "y": 50.91,
    "r": 6.16,
    "energy": 0.637,
    "acousticness": 0.28,
@@ -7523,8 +7499,8 @@
     "chamber folk",
     "folk pop"
    ],
-   "x": 82.52,
-   "y": 99.41,
+   "x": 91.84,
+   "y": 86.9,
    "r": 6.32,
    "energy": 0.503,
    "acousticness": 0.467,
@@ -7885,8 +7861,8 @@
     "celtic",
     "chinese"
    ],
-   "x": 96.93,
-   "y": 94.2,
+   "x": 107.08,
+   "y": 85.78,
    "r": 6.08,
    "energy": 0.445,
    "acousticness": 0.564,
@@ -8223,8 +8199,8 @@
     "acid rock",
     "jazz fusion"
    ],
-   "x": 120.94,
-   "y": 45.64,
+   "x": 124.45,
+   "y": 21.63,
    "r": 6.08,
    "energy": 0.626,
    "acousticness": 0.24,
@@ -8561,8 +8537,8 @@
     "acoustic",
     "yacht rock"
    ],
-   "x": 107.59,
-   "y": 70.12,
+   "x": 124.53,
+   "y": 66.35,
    "r": 6.24,
    "energy": 0.491,
    "acousticness": 0.49,
@@ -8915,8 +8891,8 @@
     "metal",
     "math metal"
    ],
-   "x": 61.02,
-   "y": 21.71,
+   "x": 70.99,
+   "y": 23.49,
    "r": 5.74,
    "energy": 0.795,
    "acousticness": 0.073,
@@ -9221,8 +9197,8 @@
     "melodic bass",
     "drum and bass"
    ],
-   "x": 36.15,
-   "y": 150.2,
+   "x": 45.73,
+   "y": 135.09,
    "r": 5.39,
    "energy": 0.713,
    "acousticness": 0.088,
@@ -9495,8 +9471,8 @@
     "experimental",
     "region:idm"
    ],
-   "x": 21.72,
-   "y": 112.84,
+   "x": 29.88,
+   "y": 101.48,
    "r": 5.57,
    "energy": 0.476,
    "acousticness": 0.376,
@@ -9785,8 +9761,8 @@
     "ska",
     "crank wave"
    ],
-   "x": 81.52,
-   "y": 73.3,
+   "x": 98.68,
+   "y": 61.22,
    "r": 6.24,
    "energy": 0.694,
    "acousticness": 0.141,
@@ -10139,8 +10115,8 @@
     "future garage",
     "rock"
    ],
-   "x": 98.78,
-   "y": 119.43,
+   "x": 102.03,
+   "y": 110.67,
    "r": 5.57,
    "energy": 0.533,
    "acousticness": 0.394,
@@ -10148,8 +10124,8 @@
    "danceability": 0.465,
    "tempo": 115.715,
    "neighbours": [
-    31,
     10,
+    31,
     49,
     4
    ],
@@ -10429,8 +10405,8 @@
     "electro",
     "electro house"
    ],
-   "x": 30.95,
-   "y": 137.4,
+   "x": 42.34,
+   "y": 121.71,
    "r": 5.48,
    "energy": 0.783,
    "acousticness": 0.042,
@@ -10711,8 +10687,8 @@
     "melodic bass",
     "edm"
    ],
-   "x": 20.05,
-   "y": 145.94,
+   "x": 30.86,
+   "y": 129.51,
    "r": 5.48,
    "energy": 0.839,
    "acousticness": 0.032,
@@ -10993,8 +10969,8 @@
     "boom bap",
     "southern hip hop"
    ],
-   "x": 134.7,
-   "y": 159.16,
+   "x": 134.5,
+   "y": 152.62,
    "r": 5.1,
    "energy": 0.695,
    "acousticness": 0.157,
@@ -11239,18 +11215,18 @@
     "region:novelty",
     "musicals",
     "disney",
+    "parody",
     "hard rock",
-    "medieval",
-    "bardcore"
+    "medieval"
    ],
-   "x": 43.96,
-   "y": 70.08,
-   "r": 6.24,
-   "energy": 0.66,
-   "acousticness": 0.31,
-   "valence": 0.635,
-   "danceability": 0.651,
-   "tempo": 125.481,
+   "x": 47.28,
+   "y": 60.71,
+   "r": 6.48,
+   "energy": 0.673,
+   "acousticness": 0.298,
+   "valence": 0.628,
+   "danceability": 0.652,
+   "tempo": 125.652,
    "neighbours": [
     36,
     39,
@@ -11299,6 +11275,30 @@
      "duration_ms": 84720,
      "energy": 0.379,
      "valence": 0.923
+    },
+    {
+     "name": "Don't Mine at Night - Minecraft Parody",
+     "artist": "Brad Knauber",
+     "id": "68qjS7DsWSTfxuaKLcPc3j",
+     "duration_ms": 217182,
+     "energy": 0.852,
+     "valence": 0.565
+    },
+    {
+     "name": "Fallen Kingdom",
+     "artist": "Captainsparklez",
+     "id": "0gYnzvD4ktjOm8EWPN9vhh",
+     "duration_ms": 250791,
+     "energy": 0.837,
+     "valence": 0.286
+    },
+    {
+     "name": "Revenge",
+     "artist": "Captainsparklez",
+     "id": "23IzQljXqkHXVn6rHTKWDI",
+     "duration_ms": 220208,
+     "energy": 0.83,
+     "valence": 0.759
     },
     {
      "name": "Temporal",
@@ -11597,8 +11597,8 @@
     "doom metal",
     "groove metal"
    ],
-   "x": 127.61,
-   "y": 21.58,
+   "x": 138.38,
+   "y": 17.39,
    "r": 5.39,
    "energy": 0.822,
    "acousticness": 0.056,
@@ -11871,8 +11871,8 @@
     "vocaloid",
     "jpop"
    ],
-   "x": 68.93,
-   "y": 10.0,
+   "x": 75.64,
+   "y": 10.19,
    "r": 5.39,
    "energy": 0.88,
    "acousticness": 0.055,
@@ -12145,8 +12145,8 @@
     "soul blues",
     "northern soul"
    ],
-   "x": 149.92,
-   "y": 114.4,
+   "x": 155.67,
+   "y": 110.84,
    "r": 5.66,
    "energy": 0.575,
    "acousticness": 0.32,
@@ -12443,8 +12443,8 @@
     "psychedelic soul",
     "city pop"
    ],
-   "x": 160.52,
-   "y": 122.88,
+   "x": 164.35,
+   "y": 121.33,
    "r": 5.0,
    "energy": 0.666,
    "acousticness": 0.254,
@@ -12685,8 +12685,8 @@
     "dance",
     "art pop"
    ],
-   "x": 90.71,
-   "y": 130.54,
+   "x": 92.84,
+   "y": 121.02,
    "r": 5.2,
    "energy": 0.707,
    "acousticness": 0.119,
@@ -12943,8 +12943,8 @@
     "grunge",
     "progressive rock"
    ],
-   "x": 75.81,
-   "y": 41.53,
+   "x": 79.09,
+   "y": 35.04,
    "r": 5.2,
    "energy": 0.786,
    "acousticness": 0.033,
@@ -13201,8 +13201,8 @@
     "experimental",
     "drumstep"
    ],
-   "x": 18.34,
-   "y": 128.74,
+   "x": 29.95,
+   "y": 115.47,
    "r": 5.48,
    "energy": 0.72,
    "acousticness": 0.107,
@@ -13483,8 +13483,8 @@
     "rock",
     "hard rock"
    ],
-   "x": 123.32,
-   "y": 59.04,
+   "x": 135.52,
+   "y": 57.14,
    "r": 5.0,
    "energy": 0.664,
    "acousticness": 0.208,
@@ -13725,8 +13725,8 @@
     "folk punk",
     "anti folk"
    ],
-   "x": 69.2,
-   "y": 65.55,
+   "x": 84.27,
+   "y": 62.25,
    "r": 5.29,
    "energy": 0.639,
    "acousticness": 0.2,
@@ -13991,8 +13991,8 @@
     "video game",
     "bangla pop"
    ],
-   "x": 31.78,
-   "y": 77.95,
+   "x": 32.73,
+   "y": 59.51,
    "r": 5.39,
    "energy": 0.614,
    "acousticness": 0.351,
@@ -14265,8 +14265,8 @@
     "hip hop",
     "region:idm"
    ],
-   "x": 97.43,
-   "y": 153.59,
+   "x": 97.93,
+   "y": 147.48,
    "r": 4.8,
    "energy": 0.458,
    "acousticness": 0.42,
@@ -14491,8 +14491,8 @@
     "hair metal",
     "80s"
    ],
-   "x": 119.4,
-   "y": 31.84,
+   "x": 135.09,
+   "y": 29.89,
    "r": 4.69,
    "energy": 0.839,
    "acousticness": 0.06,
@@ -14709,8 +14709,8 @@
     "orchestral",
     "composers"
    ],
-   "x": 31.46,
-   "y": 64.5,
+   "x": 27.36,
+   "y": 47.72,
    "r": 4.58,
    "energy": 0.372,
    "acousticness": 0.639,
@@ -14919,8 +14919,8 @@
     "library music",
     "vocal jazz"
    ],
-   "x": 171.41,
-   "y": 97.35,
+   "x": 179.04,
+   "y": 96.94,
    "r": 4.9,
    "energy": 0.501,
    "acousticness": 0.569,
@@ -15153,8 +15153,8 @@
     "experimental jazz",
     "alternative hip hop"
    ],
-   "x": 160.54,
-   "y": 105.18,
+   "x": 168.68,
+   "y": 105.43,
    "r": 5.48,
    "energy": 0.601,
    "acousticness": 0.239,
@@ -15435,8 +15435,8 @@
     "experimental rock",
     "britpop"
    ],
-   "x": 61.16,
-   "y": 87.87,
+   "x": 65.88,
+   "y": 77.29,
    "r": 4.47,
    "energy": 0.718,
    "acousticness": 0.21,
@@ -15637,8 +15637,8 @@
     "folk metal",
     "metal"
    ],
-   "x": 91.69,
-   "y": 13.84,
+   "x": 101.78,
+   "y": 10.0,
    "r": 4.47,
    "energy": 0.957,
    "acousticness": 0.001,
@@ -15839,8 +15839,8 @@
     "retrowave",
     "nu disco"
    ],
-   "x": 62.91,
-   "y": 130.86,
+   "x": 75.68,
+   "y": 123.58,
    "r": 4.36,
    "energy": 0.759,
    "acousticness": 0.087,
@@ -16033,8 +16033,8 @@
     "rap",
     "east coast hip hop"
    ],
-   "x": 133.23,
-   "y": 145.84,
+   "x": 133.75,
+   "y": 139.25,
    "r": 5.29,
    "energy": 0.573,
    "acousticness": 0.24,
@@ -16299,8 +16299,8 @@
     "70s",
     "quiet storm"
    ],
-   "x": 142.19,
-   "y": 124.29,
+   "x": 147.91,
+   "y": 120.68,
    "r": 4.0,
    "energy": 0.749,
    "acousticness": 0.25,
@@ -16469,8 +16469,8 @@
     "lo fi",
     "japanese"
    ],
-   "x": 22.44,
-   "y": 86.24,
+   "x": 28.79,
+   "y": 71.38,
    "r": 4.12,
    "energy": 0.565,
    "acousticness": 0.34,
@@ -16647,8 +16647,8 @@
     "swing",
     "swing music"
    ],
-   "x": 159.56,
-   "y": 91.39,
+   "x": 166.83,
+   "y": 91.77,
    "r": 5.39,
    "energy": 0.406,
    "acousticness": 0.651,
@@ -16921,8 +16921,8 @@
     "dream pop",
     "indietronica"
    ],
-   "x": 75.71,
-   "y": 111.8,
+   "x": 79.92,
+   "y": 100.91,
    "r": 4.8,
    "energy": 0.659,
    "acousticness": 0.241,
@@ -17147,8 +17147,8 @@
     "indie pop",
     "alternative dance"
    ],
-   "x": 55.44,
-   "y": 109.14,
+   "x": 68.02,
+   "y": 98.81,
    "r": 4.24,
    "energy": 0.767,
    "acousticness": 0.144,
@@ -17333,8 +17333,8 @@
     "folktronica",
     "turntablism"
    ],
-   "x": 30.34,
-   "y": 124.82,
+   "x": 43.63,
+   "y": 109.03,
    "r": 4.24,
    "energy": 0.604,
    "acousticness": 0.491,
@@ -17519,8 +17519,8 @@
     "80s",
     "arena rock"
    ],
-   "x": 130.23,
-   "y": 37.19,
+   "x": 130.0,
+   "y": 40.23,
    "r": 4.0,
    "energy": 0.686,
    "acousticness": 0.076,
@@ -17682,8 +17682,8 @@
    "tags": [
     "region:bedroom"
    ],
-   "x": 44.58,
-   "y": 108.07,
+   "x": 46.05,
+   "y": 84.81,
    "r": 3.74,
    "energy": 0.521,
    "acousticness": 0.522,
@@ -17836,8 +17836,8 @@
     "dub",
     "idm"
    ],
-   "x": 40.51,
-   "y": 129.43,
+   "x": 52.9,
+   "y": 115.24,
    "r": 4.0,
    "energy": 0.565,
    "acousticness": 0.185,
@@ -18006,8 +18006,8 @@
     "hard house",
     "swing music"
    ],
-   "x": 26.0,
-   "y": 156.39,
+   "x": 35.25,
+   "y": 140.7,
    "r": 3.61,
    "energy": 0.727,
    "acousticness": 0.032,
@@ -18152,8 +18152,8 @@
     "spanish",
     "dance"
    ],
-   "x": 111.16,
-   "y": 114.59,
+   "x": 115.3,
+   "y": 109.23,
    "r": 4.8,
    "energy": 0.577,
    "acousticness": 0.342,
@@ -18379,7 +18379,7 @@
     "celtic"
    ],
    "x": 10.0,
-   "y": 68.71,
+   "y": 61.06,
    "r": 3.46,
    "energy": 0.502,
    "acousticness": 0.476,
@@ -18516,8 +18516,8 @@
     "eurodance",
     "chillstep"
    ],
-   "x": 42.73,
-   "y": 140.02,
+   "x": 53.69,
+   "y": 125.94,
    "r": 3.74,
    "energy": 0.775,
    "acousticness": 0.031,
@@ -18670,8 +18670,8 @@
     "contemporary classical",
     "opera"
    ],
-   "x": 40.84,
-   "y": 56.07,
+   "x": 39.91,
+   "y": 48.24,
    "r": 5.0,
    "energy": 0.165,
    "acousticness": 0.89,
@@ -18912,8 +18912,8 @@
     "alternative rnb",
     "summer"
    ],
-   "x": 146.31,
-   "y": 146.65,
+   "x": 146.2,
+   "y": 143.35,
    "r": 4.8,
    "energy": 0.491,
    "acousticness": 0.28,
@@ -19138,8 +19138,8 @@
     "electronic",
     "neurofunk"
    ],
-   "x": 49.24,
-   "y": 149.43,
+   "x": 58.31,
+   "y": 138.69,
    "r": 4.69,
    "energy": 0.867,
    "acousticness": 0.025,
@@ -19356,8 +19356,8 @@
     "dub",
     "lovers rock"
    ],
-   "x": 76.27,
-   "y": 149.24,
+   "x": 86.26,
+   "y": 143.73,
    "r": 4.47,
    "energy": 0.615,
    "acousticness": 0.196,
@@ -19558,8 +19558,8 @@
     "delta blues",
     "chicago blues"
    ],
-   "x": 149.34,
-   "y": 98.77,
+   "x": 154.41,
+   "y": 94.2,
    "r": 4.36,
    "energy": 0.53,
    "acousticness": 0.539,
@@ -19752,8 +19752,8 @@
     "traditional country",
     "southern gospel"
    ],
-   "x": 117.18,
-   "y": 79.98,
+   "x": 134.11,
+   "y": 76.32,
    "r": 4.58,
    "energy": 0.45,
    "acousticness": 0.593,
@@ -19962,8 +19962,8 @@
     "afroswing",
     "african"
    ],
-   "x": 171.27,
-   "y": 110.72,
+   "x": 178.98,
+   "y": 111.74,
    "r": 3.61,
    "energy": 0.666,
    "acousticness": 0.198,

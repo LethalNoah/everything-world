@@ -20,10 +20,25 @@ namespace EverythingWorld.World
 
         static readonly Color Paving = new Color(.78f, .74f, .66f), Grass = new Color(.5f, .6f, .38f), GrassB = new Color(.56f, .64f, .41f);
         static readonly Color Warm = new Color(1f, .78f, .45f), Ink = new Color(.95f, .9f, .78f);
-        /// Frame colours for the people who add songs (in hubAdders order, most songs first).
-        public static readonly Color[] AdderColor = { new Color(1f, .72f, .15f), new Color(.2f, .58f, 1f), new Color(1f, .3f, .55f), new Color(.75f, .45f, 1f), new Color(.2f, .9f, .85f) };
-        /// The now-playing marker: an electric lime no one's frames use, pulsing.
-        static readonly Color NowPlaying = new Color(.6f, 1f, .05f);
+        /// Each person's own frame colour, chosen by them (by the display name shown on plaques).
+        static readonly Dictionary<string, Color> PersonColor = new Dictionary<string, Color>
+        {
+            { "npgallagher", new Color(.05f, .45f, 1f) },     // electric blue
+            { "Pyrosolstice", new Color(.13f, .55f, .2f) },   // forest green
+            { "Hot Sause", new Color(.98f, .3f, .4f) },       // watermelon red
+        };
+        /// Colours for anyone new, until they pick their own.
+        static readonly Color[] SpareColor = { new Color(.75f, .45f, 1f), new Color(1f, .55f, .15f), new Color(.2f, .9f, .85f), new Color(.85f, .85f, .85f) };
+        static Color ColorFor(string[] adders, int index)
+        {
+            if (index < 0 || adders == null || index >= adders.Length) return new Color(.7f, .7f, .7f);
+            if (PersonColor.TryGetValue(adders[index], out var c)) return c;
+            var spare = 0;
+            for (var i = 0; i < index; i++) if (!PersonColor.ContainsKey(adders[i])) spare++;
+            return SpareColor[spare % SpareColor.Length];
+        }
+        /// The now-playing marker: a bright, pulsing electric yellow no one's frames use.
+        static readonly Color NowPlaying = new Color(1f, .92f, .05f);
 
         Material stone, stoneDark, marble, bronze, wood, iron, board;
         Vector3 center;      // the mast, on the ground
@@ -190,7 +205,7 @@ namespace EverythingWorld.World
                 {
                     ArtistBits.Label(labels, "BUILT BY", front + Vector3.up * 2.85f, face, .26f, Ink);
                     for (var i = 0; i < adders.Length && i < 6; i++)
-                        ArtistBits.Label(labels, adders[i], front + Vector3.up * (2.35f - i * .34f), face, .24f, AdderColor[i % AdderColor.Length]);
+                        ArtistBits.Label(labels, adders[i], front + Vector3.up * (2.35f - i * .34f), face, .24f, ColorFor(adders, i));
                 }
                 else
                 {
@@ -718,8 +733,9 @@ namespace EverythingWorld.World
             var pictures = new MeshKit(); var frames = new MeshKit();
             var picture = WorldMaterials.Picture(ctx.CoverAtlas);
             var blank = WorldMaterials.Solid(new Color(.15f, .14f, .16f));
-            var frameMats = new Material[AdderColor.Length];
-            for (var i = 0; i < frameMats.Length; i++) frameMats[i] = WorldMaterials.Glow(AdderColor[i], 1.3f);
+            var adders = ctx.Data.layout.hubAdders ?? new string[0];
+            var frameMats = new Material[adders.Length];
+            for (var i = 0; i < frameMats.Length; i++) frameMats[i] = WorldMaterials.Glow(ColorFor(adders, i), 1.3f);
             var noAdder = WorldMaterials.Glow(new Color(.7f, .7f, .7f), .8f);
             var words = new GameObject("Years").transform; words.SetParent(ringGo.transform, false);
             var lastYear = 0;
@@ -730,7 +746,7 @@ namespace EverythingWorld.World
                 var y = firstHeight + i * turnRise / perTurn;
                 var outward = new Vector3(Mathf.Cos(a), 0, Mathf.Sin(a));
                 var p = outward * RingR + Vector3.up * y;               // local to the ring
-                var frameMat = s.a >= 0 ? frameMats[s.a % frameMats.Length] : noAdder;
+                var frameMat = s.a >= 0 && s.a < frameMats.Length ? frameMats[s.a] : noAdder;
                 // facing in (seen from the park) and out (seen across the water)
                 foreach (var face in new[] { -outward, outward })
                 {

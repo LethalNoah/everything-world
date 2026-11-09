@@ -248,7 +248,7 @@ Indie rock, shoegaze, bedroom pop and indie folk.
 
 ### 9. The Indie Downs
 
-*indie rock, alternative rock, indie pop, bedroom pop, lo fi* · 50 songs · energy 0.65, acoustic 0.20, mood 0.46 · top artists: Death Cab for Cutie, Florence Road, Rainbow Kitten Surprise, Cusk, Dummy
+*indie rock, alternative rock, indie pop, bedroom pop, lo fi* · 48 songs · energy 0.65, acoustic 0.21, mood 0.47 · top artists: Death Cab for Cutie, Florence Road, Rainbow Kitten Surprise, Cusk, Dummy
 
 - **Terrain:** Rolling chalk downs with small market towns and hedgerows.
 - **Colours:** `#9AAE8C sage`, `#EFEDE4 chalk`, `#B0533C brick`, `#8FA7BF cloudy blue`
@@ -446,7 +446,7 @@ Pop, electropop, synthwave, country and Latin.
 
 ### 10. The Pop Republic
 
-*pop, country, k pop, dance, crunk* · 64 songs · energy 0.71, acoustic 0.15, mood 0.55 · top artists: Taylor Swift, Katy Perry, Michael Jackson, Sabrina Carpenter, BTS
+*pop, country, k pop, dance, crunk* · 63 songs · energy 0.70, acoustic 0.15, mood 0.54 · top artists: Taylor Swift, Katy Perry, Michael Jackson, Sabrina Carpenter, BTS
 
 - **Terrain:** Candy-coloured hills around a crowded boardwalk city.
 - **Colours:** `#FF7EB9 bubblegum`, `#4FD1E8 sky cyan`, `#FFE35A lemon`, `#FFFFFF white`
@@ -648,7 +648,7 @@ Film scores, classical, musicals, game music and novelties.
 
 ### 26. The Isle of Memes & Musicals
 
-*comedy, soundtrack, region:novelty, musicals, disney* · 39 songs · energy 0.66, acoustic 0.31, mood 0.64 · top artists: Phineas and Ferb, Stantough, The Little Singers, Zac Efron, 90s Classics
+*comedy, soundtrack, region:novelty, musicals, disney* · 42 songs · energy 0.67, acoustic 0.30, mood 0.63 · top artists: Phineas and Ferb, Stantough, Captainsparklez, The Little Singers, Zac Efron
 
 - **Terrain:** A storybook island of round hills and winding paths.
 - **Colours:** `#4A90E2 storybook blue`, `#F7A1C4 pink`, `#FFE066 candy yellow`, `#7CCB5A cartoon grass`

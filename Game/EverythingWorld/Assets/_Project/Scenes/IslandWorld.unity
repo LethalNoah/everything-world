@@ -717,7 +717,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ff4bf0036bcce342ac146a53c228cdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EverythingWorld.Music.MusicOutputSwitch
-  useSpotify: 0
+  useSpotify: 1
   dryRun: {fileID: 1921737531}
   spotify: {fileID: 1921737530}
 --- !u!114 &1921737530

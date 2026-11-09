@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 namespace EverythingWorld.Player
 {
-    /// Minimal first-person walker for testing: WASD to move, mouse to look, Shift to run,
+    /// Minimal first-person walker for testing: WASD to move, mouse to look, Shift to run, Space to jump,
     /// Esc to free the cursor, click to capture it again.
     [RequireComponent(typeof(CharacterController))]
     public class SimplePlayerController : MonoBehaviour
@@ -13,6 +13,7 @@ namespace EverythingWorld.Player
         public float runSpeed = 10f;
         public float mouseSensitivity = 0.1f;
         public float gravity = -20f;
+        public float jumpHeight = 1.2f;   // metres: enough to hop onto a bench or a low wall
 
         CharacterController controller;
         float pitch;
@@ -49,7 +50,13 @@ namespace EverythingWorld.Player
             var speed = keyboard.leftShiftKey.isPressed ? runSpeed : walkSpeed;
             var move = (transform.right * input.x + transform.forward * input.y) * speed;
 
-            verticalVelocity = controller.isGrounded ? -1f : verticalVelocity + gravity * Time.deltaTime;
+            if (controller.isGrounded)
+                verticalVelocity = keyboard.spaceKey.wasPressedThisFrame ? Mathf.Sqrt(2f * jumpHeight * -gravity) : -1f;
+            else
+            {
+                if ((controller.collisionFlags & CollisionFlags.Above) != 0 && verticalVelocity > 0f) verticalVelocity = 0f;   // bumped your head
+                verticalVelocity += gravity * Time.deltaTime;
+            }
             move.y = verticalVelocity;
 
             controller.Move(move * Time.deltaTime);
