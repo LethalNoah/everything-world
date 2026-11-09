@@ -425,8 +425,65 @@ namespace EverythingWorld.World
 
         public override void Finish(LandContext ctx)
         {
+            FrostCover(ctx);
             halos.Build("Lanternwood glow", ctx.Root);
             Debug.Log($"Lanternwood: {halos.Count} glows");
+        }
+
+        /// Winter ground cover: dry grass poking up through the snow with frost on its tips, and clumps of rusty
+        /// bracken, in drifts between the trees. Stiff with cold, so it barely stirs. Off the paths, the lake,
+        /// the creek and the clearings.
+        void FrostCover(LandContext ctx)
+        {
+            // a quick lookup of the cleared places (paths, creek, fire circle...), big ones kept apart
+            var cells = new Dictionary<(int, int), List<Vector3>>(); var big = new List<Vector3>();
+            foreach (var c in clear)
+            {
+                if (c.y > 8f) { big.Add(c); continue; }
+                var k = (Mathf.FloorToInt(c.x / 8f), Mathf.FloorToInt(c.z / 8f));
+                if (!cells.TryGetValue(k, out var l)) cells[k] = l = new List<Vector3>();
+                l.Add(c);
+            }
+            bool Cleared(float x, float z)
+            {
+                foreach (var c in big) { float dx = x - c.x, dz = z - c.z; if (dx * dx + dz * dz < c.y * c.y) return true; }
+                int cx = Mathf.FloorToInt(x / 8f), cz = Mathf.FloorToInt(z / 8f);
+                for (var i = -1; i <= 1; i++)
+                for (var j = -1; j <= 1; j++)
+                    if (cells.TryGetValue((cx + i, cz + j), out var l))
+                        foreach (var c in l) { float dx = x - c.x, dz = z - c.z; if (dx * dx + dz * dz < c.y * c.y) return true; }
+                return false;
+            }
+            var mat = WindMesh.Material(.1f, .55f, Snow);
+            var chunks = new Dictionary<(int, int), WindMesh>();
+            var rng = new System.Random(5150);
+            const float step = 2f;
+            var count = 0;
+            for (var x = ctx.MinX; x < ctx.MaxX; x += step)
+            for (var z = ctx.MinZ; z < ctx.MaxZ; z += step)
+            {
+                var px = x + ((float)rng.NextDouble() - .5f) * step; var pz = z + ((float)rng.NextDouble() - .5f) * step;
+                var n = Mathf.PerlinNoise(px * .025f + 5f, pz * .025f + 9f);
+                if (n < .42f) continue;
+                if (!ctx.IsLand(px, pz, 3f) || !ctx.IsFree(px, pz, 1.5f) || Cleared(px, pz) || OnLake(new Vector3(px, 0, pz), 3f)) continue;
+                var g = ctx.Ground(px, pz);
+                var key = (Mathf.FloorToInt(px / 70f), Mathf.FloorToInt(pz / 70f));
+                if (!chunks.TryGetValue(key, out var wm)) chunks[key] = wm = new WindMesh();
+                var at = new Vector3(px, g - .04f, pz);
+                if (rng.NextDouble() < .84)
+                {
+                    var col = Color.Lerp(new Color(.55f, .53f, .46f), new Color(.68f, .64f, .52f), (float)rng.NextDouble());
+                    wm.Tuft(at, .28f + (float)rng.NextDouble() * .32f, col, new Color(.88f, .93f, 1f), rng, 4, .06f);
+                }
+                else
+                {
+                    var col = Color.Lerp(new Color(.48f, .28f, .16f), new Color(.6f, .38f, .2f), (float)rng.NextDouble());
+                    wm.Bracken(at, .55f + (float)rng.NextDouble() * .35f, col, Color.Lerp(col, new Color(.9f, .92f, .96f), .45f), rng);
+                }
+                count++;
+            }
+            foreach (var kv in chunks) kv.Value.Build("Frosty grass", ctx.Root, mat);
+            Debug.Log($"Lanternwood: {count} clumps of frosty grass and bracken");
         }
 
         // ---------------------------------------------------------------- artist areas

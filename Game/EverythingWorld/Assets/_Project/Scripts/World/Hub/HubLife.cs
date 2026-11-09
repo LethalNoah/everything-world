@@ -18,11 +18,6 @@ namespace EverythingWorld.World
         public Vector3 center;
         public float ringRadius = 104f;
 
-        class Cloud { public Transform t; public Vector2 home; public float height, scale; public int rank; }
-        readonly List<Cloud> clouds = new List<Cloud>();
-        const int CloudCount = 220;
-        const float CloudSpan = 3600f, CloudSpeed = 5f;
-
         class Gull { public Transform body, left, right; public float radius, height, speed, phase, flap; }
         readonly List<Gull> gulls = new List<Gull>();
 
@@ -32,7 +27,7 @@ namespace EverythingWorld.World
         string songId; double songStart = -1;
         double showAt = -1; int showCount, launched; System.Random showRng;
 
-        Color tint = new Color(1f, .68f, .3f); float tintAmount;
+        Color tint = new Color(1f, .68f, .3f);
 
         static readonly Color Gold = new Color(1f, .78f, .3f);
         static readonly Color[] Palette =
@@ -43,7 +38,8 @@ namespace EverythingWorld.World
 
         void Start()
         {
-            MakeClouds();
+            var clouds = gameObject.AddComponent<CloudLayer>();
+            clouds.center = center; clouds.count = 220; clouds.key = "hub"; clouds.minCover = .55f;
             MakeGulls();
             MakeSparks();
         }
@@ -53,65 +49,10 @@ namespace EverythingWorld.World
         void Update()
         {
             var now = SharedChance.Now;
-            UpdateClouds(now);
             UpdateGulls(now);
             UpdateSong(now);
             UpdateRockets(Time.deltaTime);
             if (Keyboard.current != null && Keyboard.current.f10Key.wasPressedThisFrame) StartShow(now, .8f, Random.Range(0, int.MaxValue));
-        }
-
-        // ---------------------------------------------------------------- clouds
-        void MakeClouds()
-        {
-            var rng = new System.Random(1234);
-            var white = WorldMaterials.Solid(new Color(1f, .97f, .93f));
-            var root = new GameObject("Clouds").transform; root.SetParent(transform, false);
-            for (var i = 0; i < CloudCount; i++)
-            {
-                var t = new GameObject("Cloud").transform; t.SetParent(root, false);
-                var mk = new MeshKit();
-                var puffs = 4 + rng.Next(5);
-                var length = 40f + (float)rng.NextDouble() * 70f;
-                for (var k = 0; k < puffs; k++)
-                {
-                    var f = puffs == 1 ? 0f : k / (puffs - 1f) - .5f;
-                    var big = 1f - Mathf.Abs(f) * 1.1f;
-                    var r = (14f + (float)rng.NextDouble() * 12f) * (.6f + big * .6f);
-                    var c = new Vector3(f * length, r * .25f + (float)rng.NextDouble() * 4f, ((float)rng.NextDouble() - .5f) * 18f);
-                    mk.Blob(white, c, new Vector3(r, r * .6f, r * .85f), rng, .12f);
-                }
-                var go = mk.Build("Puffs", t, false);
-                go.isStatic = false;
-                go.GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-                t.localRotation = Quaternion.Euler(0, (float)rng.NextDouble() * 40f - 20f, 0);
-                clouds.Add(new Cloud
-                {
-                    t = t, home = new Vector2((float)rng.NextDouble() * CloudSpan, (float)rng.NextDouble() * CloudSpan),
-                    height = 150f + (float)rng.NextDouble() * 140f, rank = i, scale = 0f,
-                });
-            }
-        }
-
-        static float Wrap(double v) => (float)(((v % CloudSpan) + CloudSpan) % CloudSpan - CloudSpan / 2f);
-
-        void UpdateClouds(double now)
-        {
-            var windAngle = (float)SharedChance.Value(SharedChance.Key("hub-wind"), SharedChance.Day) * Mathf.PI * 2f;
-            var wind = new Vector2(Mathf.Cos(windAngle), Mathf.Sin(windAngle));
-            // how cloudy this hour is, the same for everyone: from a few fair-weather clouds to a full sky
-            var cover = .55f + .45f * (float)SharedChance.Value(SharedChance.Key("hub-clouds"), SharedChance.Hour);
-            foreach (var c in clouds)
-            {
-                var x = Wrap(c.home.x + wind.x * CloudSpeed * now);
-                var z = Wrap(c.home.y + wind.y * CloudSpeed * now);
-                var edge = Mathf.Clamp01((CloudSpan / 2f - Mathf.Max(Mathf.Abs(x), Mathf.Abs(z))) / 400f);
-                var goal = (c.rank + .5f) / CloudCount < cover ? 1f : 0f;
-                c.scale = Mathf.MoveTowards(c.scale, goal, Time.deltaTime / 30f);
-                var s = c.scale * edge;
-                c.t.gameObject.SetActive(s > .01f);
-                c.t.position = new Vector3(center.x + x, center.y + c.height, center.z + z);
-                c.t.localScale = Vector3.one * Mathf.Max(.01f, s);
-            }
         }
 
         // ---------------------------------------------------------------- gulls
@@ -186,9 +127,7 @@ namespace EverythingWorld.World
             // happy songs: bright amber; sad songs: rose and violet
             var goal = Color.Lerp(new Color(.82f, .48f, .78f), new Color(1f, .66f, .28f), Mathf.SmoothStep(0, 1, valence));
             tint = Color.Lerp(tint, goal, Time.deltaTime / 5f);
-            tintAmount = Mathf.MoveTowards(tintAmount, here ? .42f : 0f, Time.deltaTime / 4f);
-            SkyDirector.SongTint = tint;
-            SkyDirector.SongTintAmount = tintAmount;
+            SkyDirector.SetSongTint(Land, tint, .42f);
 
             if (showAt >= 0)
             {
@@ -202,7 +141,7 @@ namespace EverythingWorld.World
                     {
                         var angle = (float)showRng.NextDouble() * Mathf.PI * 2f;
                         var r = 55f + (float)showRng.NextDouble() * (ringRadius - 60f);
-                        var height = 75f + (float)showRng.NextDouble() * 55f;
+                        var height = 140f + (float)showRng.NextDouble() * 90f;
                         var color = Palette[showRng.Next(Palette.Length)];
                         var style = showRng.Next(3);
                         var late = elapsed - launched * spacing > 2.0;       // arrived mid-show: skip the ones already gone
@@ -216,7 +155,7 @@ namespace EverythingWorld.World
         void NewSong(double now, TrackInfo track, double start, double length)
         {
             // a golden rocket from the dais as the song begins (only if we're here for the start)
-            if (now - start < 4) Launch(center + Vector3.up * 2f, 95f, Gold, 0, 1.3f);
+            if (now - start < 4) Launch(center + Vector3.up * 2f, 190f, Gold, 0, 1.3f);
             // some songs get a fireworks show: more likely the more energetic the song is
             var key = SharedChance.Key("hub-fireworks:" + track.id);
             var window = (long)start;
@@ -246,7 +185,7 @@ namespace EverythingWorld.World
             var main = sparks.main;
             main.loop = false; main.playOnAwake = false;
             main.simulationSpace = ParticleSystemSimulationSpace.World;
-            main.maxParticles = 8000;
+            main.maxParticles = 30000;
             main.startLifetime = 2f; main.startSpeed = 0f; main.startSize = 1f;
             main.gravityModifier = .15f;
             var emission = sparks.emission; emission.enabled = false;
@@ -261,7 +200,7 @@ namespace EverythingWorld.World
             var limit = sparks.limitVelocityOverLifetime; limit.enabled = true; limit.limit = 1000f; limit.drag = 1.1f;
             var r = go.GetComponent<ParticleSystemRenderer>();
             r.sharedMaterial = SparkMaterial();
-            r.maxParticleSize = 1f;
+            r.maxParticleSize = 3f;
             r.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             sparks.Play();
         }
@@ -286,7 +225,7 @@ namespace EverythingWorld.World
                 var r = rockets[i];
                 r.pos += r.vel * dt;
                 r.fuse -= dt;
-                Spark(r.pos, Random.insideUnitSphere * 1.5f - r.vel * .05f, new Color(1f, .8f, .5f), .8f, .6f);
+                Spark(r.pos, Random.insideUnitSphere * 3f - r.vel * .05f, new Color(1f, .8f, .5f), 2.4f, .8f);
                 if (r.fuse > 0f) continue;
                 Burst(r);
                 rockets.RemoveAt(i);
@@ -295,8 +234,8 @@ namespace EverythingWorld.World
 
         void Burst(Rocket r)
         {
-            var n = Mathf.RoundToInt(150 * r.power);
-            var speed = 26f * r.power;
+            var n = Mathf.RoundToInt(320 * r.power);
+            var speed = 100f * r.power;
             var second = Palette[Random.Range(0, Palette.Length)];
             var ringAxis = Random.onUnitSphere;
             for (var k = 0; k < n; k++)
@@ -306,7 +245,7 @@ namespace EverythingWorld.World
                 else dir = Random.onUnitSphere;                                                             // a sphere
                 var c = r.style == 2 && k % 2 == 0 ? second : r.color;                                     // two colours
                 if (k % 7 == 0) c = Color.Lerp(c, Color.white, .6f);
-                Spark(r.pos, dir * speed * Random.Range(.85f, 1.05f), c, Random.Range(1.1f, 1.6f) * r.power, Random.Range(1.6f, 2.6f));
+                Spark(r.pos, dir * speed * Random.Range(.85f, 1.05f), c, Random.Range(4f, 6f) * r.power, Random.Range(2f, 3.2f));
             }
         }
 
@@ -335,9 +274,5 @@ namespace EverythingWorld.World
             return mat;
         }
 
-        void OnDestroy()
-        {
-            SkyDirector.SongTintAmount = 0f;
-        }
     }
 }

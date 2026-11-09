@@ -260,13 +260,17 @@ Rougher, louder and more modern than the Old Kingdoms it's joined to. Weather tu
 Softer and greener than the continent. Overcast skies, fairy lights, dusk. Close to the hub.
 
 ### The Indie Downs
-*50 songs · 33 artists · 0.98 km²*
+*50 songs · 33 artists · 0.98 km² · built in Unity*
 
-**Arriving:** Rolling chalk downs, hedgerows and small market towns. A giant guitar is cut into the chalk of a hillside.
+**Arriving:** Rolling chalk downs in faded, sun-bleached colour, like an old photo of a summer day. Golden late-summer grass in deep drifts, full of poppies, cornflowers and daisies; hedgerows, copses on the hilltops, sheep grazing, round hay bales in the fields, and a giant guitar cut into the white chalk of a hillside facing the hub's causeway. The light is low, warm and hazy, and seeds and pollen float through the air all round you, drifting faster when the wind is up: the Downs' own weather, the way snow is Lanternwood's.
 
-**The vibe:** Soft overcast with patches of sun. A record shop, bicycles, bunting, gig posters on lamp posts, a little branch-line train. One causeway leads to the hub.
+**The vibe:** A late-summer afternoon you only half remember. Muted and changeable rather than sad. The weather follows the music more than on any other land: quiet songs cloud the sky over and the light goes soft and grey-blue; energetic songs bring the sun out warm, and the wind picks up, so the long grass and bunting race, the kites climb and the windmill's sails spin faster. Every new song starts with a gust. Some songs bring a surprise, the same for everyone there: a passing summer shower (likelier for quiet, sad songs) with a rainbow after it, a murmuration of starlings swirling over the hills, or a hot-air balloon drifting across the sky for the length of the song. Low clouds drift over, their shadows sweeping across the hills. Tall landmarks to find your way by: a white windmill, a flint church with a spire and a churchyard, a brick folly tower on a hilltop, and rows of tall poplars. At the heart is a village green: cottages in faded paint, a maypole with bunting, a red phone box, a postbox, bicycles and lamp posts covered in gig posters.
 
-**Artist areas:** Shopfronts and village halls; Death Cab for Cutie and Florence Road get the largest.
+**Two paths:** Two chalk paths wind across the Downs, one through the artists added by one person and one through the artists added by another, each marked with glowing waymarker lanterns in that person's colour that pulse softly, and blaze while a song that person added is playing. Every area wears the colour of whoever added it. The paths cross at the artists both of them added.
+
+**Artist areas:** Death Cab for Cutie: the record shop on a little high street, with a striped awning, record bins full of covers and a listening booth. Florence Road: an open-air stage on a lawn where the two paths meet, lit in both colours, with festoon lights and hay bales to sit on. Rainbow Kitten Surprise: a rainbow-painted bus stop on a lane to nowhere. Pavement: where the two paths meet, a bench, its covers and bunting in both colours. Everyone else gets a small summer moment: a picnic under a tree, a market stall, deckchairs and a windbreak, a viewpoint with a telescope, bikes against a fence, a phone box on a hill.
+
+**A quiet place:** Away from the paths, a great tree on level ground with a ring of stone walkway round it, four carved standing stones, benches facing the tree, lanterns in its branches and low lights along the walk. No sign.
 
 ### Lanternwood
 *~40 songs · 23 artists · 0.53 km² · built in Unity*
@@ -719,6 +723,12 @@ Every tier has the same three parts, just bigger:
 
 The plot, plaque and covers stay the same everywhere, but what holds them changes per land, from the "Artist areas" lines above: a cabin in Lanternwood, a container in the Docklands, a crystal shard in the Dubstep Shards, a statue in the Concert Isles. In practice that means about 8 style kits (one per realm), each with a few variations coloured by the land's palette. That way 66 lands are about 8 sets of models, not 66.
 
+### Every land: light and living ground
+
+Two things every land gets, each in its own way:
+- **Bloom and plenty of light.** Lanterns, glowing markers, lit windows, halos and lights that answer the music. Glow colours stay strong enough to keep their colour once they bloom.
+- **Its own ground cover that moves in the wind,** so the ground is never flat paint: the Indie Downs' long golden grass and poppies, the hub's kept lawn and wild golden meadow, Lanternwood's frost-tipped grass and rusty bracken poking up through the snow.
+
 ### Music in an artist area
 
 - **Artists with 3+ songs have their own station.** Step onto the plot and you hear only that artist, on the same shared clock, so friends standing there together hear the same song. Step off and you're back on the land's station.
@@ -737,4 +747,3 @@ Decided: **each land keeps its own sky** (no shared day and night), and **plaque
 
 1. **Upgrades:** when a 1-song artist gets a 2nd song, its plot gets bigger and may have to move. Should plots be sized one tier up from the start so they can grow in place?
 2. **Featured artists** (like Skrillex on an Ellie Goulding song): a signpost pointing to the other artist's area, or ignore for now?
-3. **The hub's seating area:** benches round the mast, or something more like a small amphitheatre or café?

@@ -43,7 +43,8 @@ namespace EverythingWorld.World
         Material stone, stoneDark, marble, bronze, wood, iron, board;
         Vector3 center;      // the mast, on the ground
         float groundY;
-        readonly List<Vector3> openings = new List<Vector3>();   // directions kept clear: causeways and the quiet bench
+        readonly List<Vector3> openings = new List<Vector3>();
+        readonly List<Vector3> statueSpots = new List<Vector3>();   // directions kept clear: causeways and the quiet bench
 
         public override bool Ground(float height, float slope, float patch, out Color color)
         {
@@ -98,7 +99,7 @@ namespace EverythingWorld.World
             center = new Vector3(mast.x, 0, mast.z);
             groundY = ctx.Ground(center.x, center.z);
             center.y = groundY;
-            openings.Clear();
+            openings.Clear(); statueSpots.Clear();
             foreach (var b in ctx.Data.layout.bridges)
             {
                 if (b.a == 1000) openings.Add(new Vector3(b.ax - center.x, 0, b.az - center.z).normalized);
@@ -121,10 +122,60 @@ namespace EverythingWorld.World
             mk.Build("Hub", ctx.Root, false);
             solid.BuildCollider("Hub walls", ctx.Root);
             CoverRing(ctx);
+            GroundCover(ctx);
             halos.Build("Hub glow", ctx.Root);
             var life = new GameObject("Hub life").AddComponent<HubLife>();
             life.transform.SetParent(ctx.Root, false);
             life.center = center; life.ringRadius = RingR;
+        }
+
+        // ---------------------------------------------------------------- ground cover
+        /// A short, kept lawn through the park, golden-green, with the odd daisy; past the ring of covers the
+        /// grass is left to grow into a wild golden meadow with buttercups, down to the shore. Off the paths.
+        void GroundCover(LandContext ctx)
+        {
+            var lawnMat = WindMesh.Material(.16f, .8f, Grass);
+            var meadowMat = WindMesh.Material(.42f, 1f, Grass);
+            var lawn = new Dictionary<(int, int), WindMesh>(); var meadow = new Dictionary<(int, int), WindMesh>();
+            var rng = new System.Random(1717);
+            const float step = 1.5f, reach = 260f;
+            var count = 0;
+            for (var x = center.x - reach; x < center.x + reach; x += step)
+            for (var z = center.z - reach; z < center.z + reach; z += step)
+            {
+                var px = x + ((float)rng.NextDouble() - .5f) * step; var pz = z + ((float)rng.NextDouble() - .5f) * step;
+                var off = new Vector3(px - center.x, 0, pz - center.z); var r = off.magnitude;
+                if (r < PlazaR + 1f || r > reach) continue;
+                var wild = r > RingR - 2f;
+                if (wild && rng.NextDouble() < .45) continue;                     // the meadow is a little sparser
+                if (!ctx.IsLand(px, pz, 2f)) continue;
+                if (NearOpening(off / r, ClearAngle(r, 3.6f))) continue;          // keep the paths clear
+                var nearStatue = false;
+                if (Mathf.Abs(r - StatueR) < 3.5f) foreach (var s in statueSpots) if ((new Vector2(s.x, s.z) - new Vector2(px, pz)).sqrMagnitude < 9f) { nearStatue = true; break; }
+                if (nearStatue) continue;
+                var g = ctx.Ground(px, pz);
+                if (wild && Mathf.PerlinNoise(px * .02f + 3f, pz * .02f + 8f) < .32f) continue;
+                var key = (Mathf.FloorToInt(px / 60f), Mathf.FloorToInt(pz / 60f));
+                var set = wild ? meadow : lawn;
+                if (!set.TryGetValue(key, out var wm)) set[key] = wm = new WindMesh();
+                var at = new Vector3(px, g - .03f, pz);
+                if (wild)
+                {
+                    var col = Color.Lerp(new Color(.6f, .62f, .36f), new Color(.82f, .72f, .42f), (float)rng.NextDouble());
+                    wm.Tuft(at, .55f + (float)rng.NextDouble() * .55f, col, rng);
+                    if (rng.NextDouble() < .05) wm.Flower(at + new Vector3(.25f, 0, .2f), .5f, rng.NextDouble() < .6 ? new Color(.98f, .85f, .2f) : new Color(.97f, .96f, .9f), rng);
+                }
+                else
+                {
+                    var col = Color.Lerp(new Color(.5f, .6f, .33f), new Color(.66f, .66f, .38f), (float)rng.NextDouble());
+                    wm.Tuft(at, .25f + (float)rng.NextDouble() * .2f, col, Color.Lerp(col, new Color(.86f, .82f, .55f), .45f), rng, 3, .07f);
+                    if (rng.NextDouble() < .025) wm.Flower(at + new Vector3(.2f, 0, .15f), .22f, rng.NextDouble() < .7 ? new Color(.97f, .96f, .9f) : new Color(.98f, .85f, .2f), rng);
+                }
+                count++;
+            }
+            foreach (var kv in lawn) kv.Value.Build("Lawn", ctx.Root, lawnMat);
+            foreach (var kv in meadow) kv.Value.Build("Meadow", ctx.Root, meadowMat);
+            Debug.Log($"The Everything Hub: {count} tufts of lawn and meadow");
         }
 
         // ---------------------------------------------------------------- the plaza and the dais
@@ -586,6 +637,7 @@ namespace EverythingWorld.World
                 if (!ctx.IsLand(p.x, p.z, 4f)) continue;
                 p.y = ctx.Ground(p.x, p.z);
                 Statue(mk, solid, labels, glyphs[slot++ % glyphs.Count], p, -dir);
+                statueSpots.Add(p);
             }
         }
 

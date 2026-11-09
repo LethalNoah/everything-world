@@ -38,7 +38,7 @@ namespace EverythingWorld.World
             if (kits == null)
             {
                 kits = new Dictionary<string, LandKit>();
-                foreach (var k in new LandKit[] { new LanternwoodKit(), new HubKit() }) kits[k.Land] = k;
+                foreach (var k in new LandKit[] { new LanternwoodKit(), new HubKit(), new IndieDownsKit() }) kits[k.Land] = k;
             }
             return land != null && kits.TryGetValue(land, out var kit) ? kit : null;
         }

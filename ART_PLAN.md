@@ -248,7 +248,7 @@ Indie rock, shoegaze, bedroom pop and indie folk.
 
 ### 9. The Indie Downs
 
-*indie rock, alternative rock, indie pop, bedroom pop, lo fi* · 48 songs · energy 0.65, acoustic 0.21, mood 0.47 · top artists: Death Cab for Cutie, Florence Road, Rainbow Kitten Surprise, Cusk, Dummy
+*indie rock, alternative rock, indie pop, bedroom pop, lo fi* · 47 songs · energy 0.65, acoustic 0.19, mood 0.47 · top artists: Death Cab for Cutie, Florence Road, Rainbow Kitten Surprise, Cusk, Dummy
 
 - **Terrain:** Rolling chalk downs with small market towns and hedgerows.
 - **Colours:** `#9AAE8C sage`, `#EFEDE4 chalk`, `#B0533C brick`, `#8FA7BF cloudy blue`
@@ -258,7 +258,7 @@ Indie rock, shoegaze, bedroom pop and indie folk.
 
 ### 14. Lanternwood
 
-*indie folk, indie rock, folk, singer songwriter, indie pop* · 40 songs · energy 0.50, acoustic 0.47, mood 0.40 · top artists: Phoebe Bridgers, Big Thief, Lizzy McAlpine, Daughter, Mitski
+*indie folk, indie rock, folk, singer songwriter, indie pop* · 41 songs · energy 0.50, acoustic 0.48, mood 0.39 · top artists: Phoebe Bridgers, Big Thief, Lizzy McAlpine, Daughter, Mitski
 
 - **Terrain:** Birch woods dusted with snow, small clearings and a frozen creek.
 - **Colours:** `#E8E4DA birch white`, `#3F4E6B dusk blue`, `#E9A84C lantern amber`, `#5E7D5A moss`

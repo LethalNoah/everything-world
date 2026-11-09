@@ -194,7 +194,11 @@ namespace EverythingWorld.World
             var size = Mathf.Max(Data.layout.width, Data.layout.depth) * 1.6f;
             sea.transform.localPosition = new Vector3(Data.layout.width / 2, Data.layout.waterLevel, Data.layout.depth / 2);
             sea.transform.localScale = new Vector3(size / 10f, 1, size / 10f);
-            sea.GetComponent<Renderer>().sharedMaterial = Mat(new Color32(74, 128, 140, 255), .85f);
+            // the Water shader: ripples, shallows and depths, shore foam, sun glitter and a hint of sky reflection
+            var water = Shader.Find("Everything World/Water");
+            var r = sea.GetComponent<Renderer>();
+            r.sharedMaterial = water != null ? new Material(water) { name = "Sea" } : Mat(new Color32(74, 128, 140, 255), .85f);
+            r.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
         }
 
         // ---------- bridges and causeways ----------

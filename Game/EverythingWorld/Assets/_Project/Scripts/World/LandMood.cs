@@ -26,6 +26,7 @@ namespace EverythingWorld.World
         public float auroraChance;          // 0..1: chance of an aurora night (the same night for everyone)
         public string weather = "";         // "", "snow" or "rain"
         public float weatherAmount;         // 0..1
+        public float bloom;                 // 0..1: glowing things bloom (soft light spills round them) on this land
 
         public static Color Hex(string s, Color fallback) =>
             !string.IsNullOrEmpty(s) && ColorUtility.TryParseHtmlString(s, out var c) ? c : fallback;

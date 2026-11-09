@@ -4,23 +4,31 @@
   "land": "",
   "sunPitch": 38, "sunYaw": -35, "sunIntensity": 1.3, "sunColor": "#FFF2DB",
   "skyLight": "#A7B6C7", "horizonLight": "#9A9A92", "groundLight": "#5E5850",
-  "fogColor": "#BDCCD1", "fogStart": 350, "fogEnd": 1800,
+  "fogColor": "#BDCCD1", "fogStart": 350, "fogEnd": 1800, "bloom": 0.6,
   "weather": "", "weatherAmount": 0
  },
  "lands": [
+  {
+   "land": "The Indie Downs",
+   "sunPitch": 23, "sunYaw": -125, "sunIntensity": 1.3, "sunColor": "#FFDCAE",
+   "skyLight": "#C6CBCB", "horizonLight": "#EAD8B6", "groundLight": "#8E8462",
+   "fogColor": "#E6D8BA", "fogStart": 70, "fogEnd": 1150,
+   "sunShadows": true, "dailyWeather": false, "bloom": 0.8,
+   "weather": "", "weatherAmount": 0
+  },
   {
    "land": "Lanternwood",
    "sunPitch": 10, "sunYaw": 70, "sunIntensity": 0.3, "sunColor": "#FF9466",
    "skyLight": "#2F3B66", "horizonLight": "#323B57", "groundLight": "#444A63",
    "fogColor": "#3B4970", "fogStart": 25, "fogEnd": 360,
-   "stars": 0.9, "sunShadows": false, "dailyWeather": false, "auroraChance": 0.25,
+   "stars": 0.9, "sunShadows": false, "dailyWeather": false, "auroraChance": 0.25, "bloom": 1.0,
    "weather": "snow", "weatherAmount": 0.4
   },
   {
    "land": "The Everything Hub",
    "sunPitch": 15, "sunYaw": -60, "sunIntensity": 1.25, "sunColor": "#FFC98A",
    "skyLight": "#A9B9D2", "horizonLight": "#E6C49A", "groundLight": "#7A6A55",
-   "fogColor": "#E3CCAA", "fogStart": 350, "fogEnd": 2400,
+   "fogColor": "#E3CCAA", "fogStart": 350, "fogEnd": 2400, "bloom": 0.9,
    "weather": "", "weatherAmount": 0
   }
  ]

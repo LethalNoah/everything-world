@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 namespace EverythingWorld.World
 {
@@ -16,9 +17,17 @@ namespace EverythingWorld.World
         [Tooltip("Seconds to blend most of the way to a new land's sky.")]
         public float blendSeconds = 3f;
         public Light sun;
-        /// A colour a land can wash its light with for the current song (the hub's sunset follows each song's mood).
-        public static Color SongTint = Color.white;
-        public static float SongTintAmount;
+        /// Lands can wash their light with a colour for the current song (the hub's sunset follows each song's
+        /// mood; the Indie Downs clouds over for quiet songs). Each land asks for its own; only the land you're
+        /// on shows, blending in and out as you cross.
+        static readonly Dictionary<string, (Color color, float amount)> songTints = new Dictionary<string, (Color, float)>();
+        public static void SetSongTint(string land, Color color, float amount) { if (land != null) songTints[land] = (color, amount); }
+        Color tintNow = Color.white; float tintAmountNow;
+        /// A land can also bring a passing shower for a song (the Indie Downs' summer showers).
+        static readonly Dictionary<string, float> songRain = new Dictionary<string, float>();
+        public static void SetSongRain(string land, float amount) { if (land != null) songRain[land] = amount; }
+        float SongRain() => currentLand != null && songRain.TryGetValue(currentLand, out var r) ? r : 0f;
+        Volume bloomVolume; Bloom bloomFx; float bloomNow;
 
         struct State
         {
@@ -26,6 +35,7 @@ namespace EverythingWorld.World
             public Color sky, horizon, ground, fog; public float fogStart, fogEnd;
             public float snow, rain, stars, aurora, auroraChance;
             public bool sunShadows;
+            public float bloom;
         }
 
         LandMoodSet set;
@@ -86,7 +96,7 @@ namespace EverythingWorld.World
                 sky = LandMood.Hex(m.skyLight, Color.grey), horizon = LandMood.Hex(m.horizonLight, Color.grey),
                 ground = LandMood.Hex(m.groundLight, Color.grey), fog = LandMood.Hex(m.fogColor, Color.grey),
                 fogStart = m.fogStart, fogEnd = m.fogEnd, stars = m.stars, sunShadows = m.sunShadows,
-                aurora = m.aurora, auroraChance = m.auroraChance,
+                aurora = m.aurora, auroraChance = m.auroraChance, bloom = m.bloom,
             };
             var amount = m.weatherAmount;
             if (m.dailyWeather)
@@ -117,13 +127,17 @@ namespace EverythingWorld.World
             current.fogStart = Mathf.Lerp(current.fogStart, target.fogStart, k);
             current.fogEnd = Mathf.Lerp(current.fogEnd, target.fogEnd, k);
             current.snow = Mathf.Lerp(current.snow, target.snow, k);
-            current.rain = Mathf.Lerp(current.rain, target.rain, k);
+            current.rain = Mathf.Lerp(current.rain, Mathf.Max(target.rain, SongRain()), k);
+            bloomNow = Mathf.MoveTowards(bloomNow, target.bloom, Time.deltaTime / 2f);
             current.stars = Mathf.Lerp(current.stars, target.stars, k);
             // some songs bring the aurora (the same songs for everyone on the station)
             var auroraGoal = target.aurora;
             if (target.auroraChance > 0 && SharedChance.CurrentSong(out var song, out _, out _) &&
                 SharedChance.Roll(SharedChance.Key("aurora:" + currentLand), song, target.auroraChance)) auroraGoal = 1f;
             current.aurora = Mathf.Lerp(current.aurora, auroraGoal, Time.deltaTime / 4f);
+            var tintGoal = currentLand != null && songTints.TryGetValue(currentLand, out var tg) ? tg : (Color.white, 0f);
+            tintNow = Color.Lerp(tintNow, tintGoal.Item1, Time.deltaTime / 3f);
+            tintAmountNow = Mathf.MoveTowards(tintAmountNow, tintGoal.Item2, Time.deltaTime / 4f);
             Apply();
         }
 
@@ -133,19 +147,20 @@ namespace EverythingWorld.World
             {
                 sun.shadows = target.sunShadows ? LightShadows.Soft : LightShadows.None;
                 sun.transform.rotation = current.sunRot;
-                sun.color = Color.Lerp(current.sun, SongTint, SongTintAmount);
+                sun.color = Color.Lerp(current.sun, tintNow, tintAmountNow);
                 sun.intensity = current.sunI;
             }
             RenderSettings.ambientSkyColor = current.sky;
-            RenderSettings.ambientEquatorColor = Color.Lerp(current.horizon, SongTint, SongTintAmount * .5f);
+            RenderSettings.ambientEquatorColor = Color.Lerp(current.horizon, tintNow, tintAmountNow * .5f);
             RenderSettings.ambientGroundColor = current.ground;
-            RenderSettings.fogColor = Color.Lerp(current.fog, SongTint, SongTintAmount * .35f);
+            RenderSettings.fogColor = Color.Lerp(current.fog, tintNow, tintAmountNow * .35f);
             RenderSettings.fogStartDistance = current.fogStart;
             RenderSettings.fogEndDistance = current.fogEnd;
             if (cam != null)
             {
                 cam.clearFlags = CameraClearFlags.SolidColor;
                 cam.backgroundColor = RenderSettings.fogColor;
+                Bloom_();
                 snow ??= MakeWeather("Snow", false);
                 rain ??= MakeWeather("Rain", true);
                 // the weather boxes follow the camera but stay level
@@ -174,6 +189,28 @@ namespace EverythingWorld.World
                     auroraObject.SetActive(aurora > .01f);
                 }
             }
+        }
+
+        /// Bloom for lands that ask for it. Post-processing is only switched on while a land's bloom is showing,
+        /// so lands without it look exactly as they always have.
+        void Bloom_()
+        {
+            if (bloomVolume == null)
+            {
+                var go = new GameObject("Land bloom");
+                go.transform.SetParent(transform, false);
+                bloomVolume = go.AddComponent<Volume>();
+                bloomVolume.isGlobal = true; bloomVolume.priority = 50;
+                var profile = ScriptableObject.CreateInstance<VolumeProfile>();
+                bloomFx = profile.Add<Bloom>(true);
+                bloomFx.threshold.Override(1f);
+                bloomFx.scatter.Override(.7f);
+                bloomFx.intensity.Override(0f);
+                bloomVolume.profile = profile;
+            }
+            bloomFx.intensity.Override(bloomNow * 1.4f);
+            var data = cam.GetComponent<UniversalAdditionalCameraData>();
+            if (data != null) data.renderPostProcessing = bloomNow > .01f;
         }
 
         /// A soft round dot, see-through at the edges.

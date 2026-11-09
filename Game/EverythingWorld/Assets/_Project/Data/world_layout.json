@@ -30083,21 +30083,17 @@
   {
    "name": "Manchester Orchestra",
    "sceneId": 9,
-   "x": 8616.0,
-   "z": 5755.733391573665,
-   "r": 18.0,
-   "songs": 2,
-   "tier": "monument",
+   "x": 8688.0,
+   "z": 5723.733391573665,
+   "r": 15.0,
+   "songs": 1,
+   "tier": "shrine",
    "station": false,
    "stationId": 0,
    "genres": "",
-   "years": "2018-2021",
+   "years": "2021",
    "addedBy": "npgallagher",
    "songList": [
-    {
-     "title": "The Gold - Phoebe Bridgers Version",
-     "cover": 986
-    },
     {
      "title": "Telepath",
      "cover": 1689
@@ -34066,7 +34062,7 @@
    "x": 8120.0,
    "z": 6299.733391573665,
    "r": 45.0,
-   "songs": 8,
+   "songs": 9,
    "tier": "hall",
    "station": true,
    "stationId": 547961,
@@ -34089,6 +34085,10 @@
     {
      "title": "I Can’t Wait",
      "cover": 260
+    },
+    {
+     "title": "The Gold - Phoebe Bridgers Version",
+     "cover": 986
     },
     {
      "title": "Still Standing",
