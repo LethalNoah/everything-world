@@ -22,6 +22,8 @@ namespace EverythingWorld.World
         public float stars;                 // 0..1: how many stars show in the sky
         public bool sunShadows = true;      // false for dusk and night lands: a low sun's shadows swamp the ground
         public bool dailyWeather;           // weather and stars change from day to day (the same for everyone)
+        public float aurora;                // 0..1: northern lights every night
+        public float auroraChance;          // 0..1: chance of an aurora night (the same night for everyone)
         public string weather = "";         // "", "snow" or "rain"
         public float weatherAmount;         // 0..1
 

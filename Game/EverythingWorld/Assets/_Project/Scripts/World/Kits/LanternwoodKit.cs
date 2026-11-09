@@ -273,10 +273,12 @@ namespace EverythingWorld.World
                     post.y = ctx.Ground(post.x, post.z);
                     var arm = (pts[i] - post); arm.y = 0; arm.Normalize();      // the lantern hangs over the path
                     mk.Prism(darkWood, post, Vector3.up, .07f, 2.3f, 5);
+                    ArtistBits.PostCollider(ctx.Root, post, 2.3f);
                     mk.Box(darkWood, post + Vector3.up * 2.22f + arm * .3f, new Vector3(.06f, .06f, .6f), Quaternion.LookRotation(arm));
                     mk.Box(glow, post + Vector3.up * 1.82f + arm * .52f, new Vector3(.18f, .26f, .18f), Quaternion.identity);
                     var lamp = post + Vector3.up * 1.82f + arm * .52f;
                     halos.Add(lamp, 1.4f, LanternGlass);
+                    SurpriseSpots.Add(ctx.Island.name, lamp);   // the wandering lantern can turn up here
                     ArtistBits.PointLight(ctx.Root, lamp - Vector3.up * .2f, new Color(1f, .7f, .4f), 9f, 1.4f);
                     mk.Box(iron, post + Vector3.up * 1.98f + arm * .52f, new Vector3(.24f, .05f, .24f), Quaternion.identity);
                 }

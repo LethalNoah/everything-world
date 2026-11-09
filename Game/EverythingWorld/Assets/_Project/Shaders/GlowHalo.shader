@@ -29,6 +29,7 @@ Shader "Everything World/Glow Halo"
             CBUFFER_START(UnityPerMaterial)
                 float _Strength, _NearFade;
             CBUFFER_END
+            float _EW_Energy, _EW_Pulse;   // set every frame by the SurpriseDirector: the song's energy, the new-song pulse
 
             struct Attributes { float4 positionOS : POSITION; float4 color : COLOR; float2 corner : TEXCOORD0; float2 size : TEXCOORD1; };
             struct Varyings { float4 positionCS : SV_POSITION; float4 color : COLOR; float2 corner : TEXCOORD0; float fade : TEXCOORD1; float fog : TEXCOORD2; };
@@ -53,7 +54,8 @@ Shader "Everything World/Glow Halo"
                 float r = length(i.corner);
                 float glow = saturate(1.0 - r);
                 glow = glow * glow * (0.6 + 0.4 * glow);   // bright core, long soft edge
-                float3 c = i.color.rgb * i.color.a * glow * _Strength * i.fade;
+                float music = (0.8 + 0.45 * _EW_Energy) * (1.0 + 0.9 * _EW_Pulse);
+                float3 c = i.color.rgb * i.color.a * glow * _Strength * i.fade * music;
                 c = MixFogColor(c, half3(0, 0, 0), i.fog); // additive: fades to nothing in fog
                 return half4(c, 1);
             }

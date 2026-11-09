@@ -62,6 +62,17 @@ def write_plan(scenes, realms):
 from stations import HUB_ID, artist_station, ARTIST_MIN_SONGS
 
 
+def load_feel():
+    """Track ID -> (energy, valence) 0..1, from the Exportify CSV (the world's lights follow the music)."""
+    if not CSV.exists():
+        return {}
+    def num(x):
+        try: return round(float(x), 3)
+        except (TypeError, ValueError): return .5
+    with CSV.open(encoding="utf-8-sig", newline="") as f:
+        return {row["Track URI"].rsplit(":", 1)[-1]: (num(row.get("Energy")), num(row.get("Valence"))) for row in csv.DictReader(f)}
+
+
 def load_durations():
     """Track ID -> length in ms, from the Exportify CSV (the zone radio needs song lengths)."""
     if not CSV.exists():
@@ -75,6 +86,7 @@ def load_durations():
 def main():
     layout = json.loads(SRC.read_text(encoding="utf-8"))
     durations = load_durations()
+    feel = load_feel()
     realms, scene_art = load_art(layout)
     artist_scene = {name: a["scene"] for name, a in layout["artists"].items()}
 
@@ -88,7 +100,8 @@ def main():
         if track_id not in durations:
             no_length += 1
         tracks[scene].append({"name": name, "artist": artist, "id": track_id,
-                              "duration_ms": durations.get(track_id, DEFAULT_MS)})
+                              "duration_ms": durations.get(track_id, DEFAULT_MS),
+                              "energy": feel.get(track_id, (.5, .5))[0], "valence": feel.get(track_id, (.5, .5))[1]})
 
     scenes = []
     for s in layout["scenes"]:

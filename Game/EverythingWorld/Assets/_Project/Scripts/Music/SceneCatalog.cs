@@ -12,6 +12,7 @@ namespace EverythingWorld.Music
         public string artist;
         public string id; // Spotify track ID
         public int duration_ms;
+        public float energy = .5f, valence = .5f; // from Spotify's audio features, 0..1
 
         public string Uri => "spotify:track:" + id;
         public override string ToString() => $"{name} by {artist}";

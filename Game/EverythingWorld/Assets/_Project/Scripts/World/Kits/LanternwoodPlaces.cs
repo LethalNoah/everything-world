@@ -336,8 +336,7 @@ namespace EverythingWorld.World
         void Snowmen(LandContext ctx, MeshKit mk, MeshKit solid)
         {
             if (pathPoints.Count == 0) return;
-            var day = (int)(DateTime.UtcNow - new DateTime(2026, 1, 1)).TotalDays;
-            var rng = new System.Random(day * 977 + ctx.Island.sceneId);
+            var rng = new System.Random((int)SharedChance.Day * 977 + ctx.Island.sceneId);
             float R(float a, float b) => a + (float)rng.NextDouble() * (b - a);
             var scarves = new[] { new Color(.75f, .15f, .15f), new Color(.15f, .45f, .25f), new Color(.2f, .3f, .65f), new Color(.85f, .6f, .15f) };
             var coal = WorldMaterials.Solid(new Color(.08f, .08f, .09f));

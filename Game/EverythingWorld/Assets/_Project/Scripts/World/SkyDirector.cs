@@ -21,7 +21,7 @@ namespace EverythingWorld.World
         {
             public Quaternion sunRot; public Color sun; public float sunI;
             public Color sky, horizon, ground, fog; public float fogStart, fogEnd;
-            public float snow, rain, stars;
+            public float snow, rain, stars, aurora, auroraChance;
             public bool sunShadows;
         }
 
@@ -29,8 +29,8 @@ namespace EverythingWorld.World
         readonly Dictionary<string, LandMood> byLand = new Dictionary<string, LandMood>();
         State current, target;
         ParticleSystem snow, rain;
-        GameObject starDome;
-        Material starMaterial, lineMaterial;
+        GameObject starDome, auroraObject;
+        Material starMaterial, lineMaterial, auroraMaterial;
         Camera cam;
         string currentLand;
 
@@ -55,6 +55,14 @@ namespace EverythingWorld.World
             if (Instance == this) Instance = null;
         }
 
+        /// The land whose sky is showing, and how starry it is right now (for the surprises).
+        public string CurrentLand => currentLand;
+
+        bool testAurora;
+        /// F8 in play: show or hide the aurora on any land, for testing.
+        public void ToggleTestAurora() => testAurora = !testAurora;
+        public float CurrentStars => current.stars;
+
         /// The player is now on this land (null or unknown names use the fallback mood).
         public void SetLand(string landName)
         {
@@ -75,6 +83,7 @@ namespace EverythingWorld.World
                 sky = LandMood.Hex(m.skyLight, Color.grey), horizon = LandMood.Hex(m.horizonLight, Color.grey),
                 ground = LandMood.Hex(m.groundLight, Color.grey), fog = LandMood.Hex(m.fogColor, Color.grey),
                 fogStart = m.fogStart, fogEnd = m.fogEnd, stars = m.stars, sunShadows = m.sunShadows,
+                aurora = m.aurora, auroraChance = m.auroraChance,
             };
             var amount = m.weatherAmount;
             if (m.dailyWeather)
@@ -107,6 +116,11 @@ namespace EverythingWorld.World
             current.snow = Mathf.Lerp(current.snow, target.snow, k);
             current.rain = Mathf.Lerp(current.rain, target.rain, k);
             current.stars = Mathf.Lerp(current.stars, target.stars, k);
+            // some songs bring the aurora (the same songs for everyone on the station)
+            var auroraGoal = target.aurora;
+            if (target.auroraChance > 0 && SharedChance.CurrentSong(out var song, out _, out _) &&
+                SharedChance.Roll(SharedChance.Key("aurora:" + currentLand), song, target.auroraChance)) auroraGoal = 1f;
+            current.aurora = Mathf.Lerp(current.aurora, auroraGoal, Time.deltaTime / 4f);
             Apply();
         }
 
@@ -147,6 +161,15 @@ namespace EverythingWorld.World
                     if (lineMaterial != null) lineMaterial.SetFloat("_Strength", current.stars);
                     starDome.SetActive(current.stars > .01f);
                 }
+                auroraObject ??= MakeAurora();
+                if (auroraObject != null)
+                {
+                    auroraObject.transform.position = cam.transform.position;
+                    auroraObject.transform.rotation = Quaternion.Euler(0, (float)SharedChance.Value(SharedChance.Key("aurora-dir"), SharedChance.Hour) * 360f, 0);
+                    var aurora = testAurora ? 1f : current.aurora;
+                    auroraMaterial.SetFloat("_Strength", aurora);
+                    auroraObject.SetActive(aurora > .01f);
+                }
             }
         }
 
@@ -173,6 +196,44 @@ namespace EverythingWorld.World
             mat.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
             mat.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
             return mat;
+        }
+
+        /// The northern lights: three tall curtains in a full ring round the camera, at different distances,
+        /// with wavy upper and lower edges.
+        GameObject MakeAurora()
+        {
+            var shader = Shader.Find("Everything World/Aurora");
+            if (shader == null) return null;
+            var v = new System.Collections.Generic.List<Vector3>(); var uv = new System.Collections.Generic.List<Vector2>(); var t = new System.Collections.Generic.List<int>();
+            var bands = new[] { (1250f, 220f, 560f, 0f), (1500f, 280f, 700f, 2.1f), (1750f, 330f, 820f, 4.3f) };
+            foreach (var (radius, bottom, top, phase) in bands)
+            {
+                const int n = 260;
+                var along = phase * 3000f; Vector3 prev = default;
+                for (var i = 0; i <= n; i++)
+                {
+                    var a = i * Mathf.PI * 2f / n;
+                    var r = radius * (1f + .14f * Mathf.Sin(i * .09f + phase) + .07f * Mathf.Sin(i * .31f + phase * 2f));
+                    var p = new Vector3(Mathf.Sin(a) * r, 0, Mathf.Cos(a) * r);
+                    if (i > 0) along += Vector3.Distance(p, prev);
+                    prev = p;
+                    var lo = bottom + 70f * Mathf.Sin(i * .13f + phase) + 35f * Mathf.Sin(i * .41f + phase * 3f);
+                    var hi = top + 120f * Mathf.Sin(i * .07f + phase * 1.7f) + 50f * Mathf.Sin(i * .23f + phase);
+                    v.Add(p + Vector3.up * lo); v.Add(p + Vector3.up * hi);
+                    uv.Add(new Vector2(along, 0)); uv.Add(new Vector2(along, 1));
+                    if (i > 0) { var k = v.Count - 4; t.Add(k); t.Add(k + 1); t.Add(k + 3); t.Add(k); t.Add(k + 3); t.Add(k + 2); }
+                }
+            }
+            var mesh = new Mesh { name = "Aurora", indexFormat = UnityEngine.Rendering.IndexFormat.UInt32 };
+            mesh.SetVertices(v); mesh.SetUVs(0, uv); mesh.SetTriangles(t, 0);
+            mesh.bounds = new Bounds(Vector3.zero, Vector3.one * 4500f);
+            var go = new GameObject("Aurora");
+            go.transform.SetParent(transform, false);
+            go.AddComponent<MeshFilter>().sharedMesh = mesh;
+            var r2 = go.AddComponent<MeshRenderer>();
+            r2.sharedMaterial = auroraMaterial = new Material(shader) { name = "Aurora" };
+            r2.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            return go;
         }
 
         /// About 2,500 stars on a dome round the camera, a few bright, most faint, some in small clusters.

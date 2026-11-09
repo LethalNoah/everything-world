@@ -111,11 +111,23 @@ namespace EverythingWorld.World
         {
             armDir = Vector3.ProjectOnPlane(armDir, Vector3.up).normalized;
             mk.Prism(wood, groundPos, Vector3.up, .09f, height, 6);
+            PostCollider(parent, groundPos, height);
             mk.Box(wood, groundPos + Vector3.up * (height - .12f) + armDir * .35f, new Vector3(.08f, .08f, .8f), Quaternion.LookRotation(armDir));
             var hang = groundPos + Vector3.up * (height - .55f) + armDir * .65f;
             mk.Box(iron, hang + Vector3.up * .25f, new Vector3(.34f, .06f, .34f), Quaternion.identity);
             mk.Box(iron, hang - Vector3.up * .22f, new Vector3(.3f, .05f, .3f), Quaternion.identity);
             return GlassBox(parent, hang, new Vector3(.24f, .38f, .24f), glass);
+        }
+
+        /// An invisible pole that stops you walking through a post.
+        public static void PostCollider(Transform parent, Vector3 groundPos, float height, float radius = .2f)
+        {
+            var go = new GameObject("Post collider");
+            go.transform.SetParent(parent, false);
+            go.transform.position = groundPos + Vector3.up * height / 2f;
+            var c = go.AddComponent<CapsuleCollider>();
+            c.radius = radius; c.height = height; c.direction = 1;
+            go.isStatic = true;
         }
 
         /// A separate glowing box (lantern glass, candle flame), so it can be brightened on its own.

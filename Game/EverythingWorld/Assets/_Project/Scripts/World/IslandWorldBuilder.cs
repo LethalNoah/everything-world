@@ -52,6 +52,8 @@ namespace EverythingWorld.World
             Instance = this;
             WorldMaterials.UseToon = toonShading;
             IndoorSpaces.Clear();
+            SurpriseSpots.Clear();
+            if (GetComponent<SurpriseDirector>() == null) gameObject.AddComponent<SurpriseDirector>();
             Data = IslandWorldData.Load(layoutJson, heightBytes, islandBytes);
             kits = new LandKit[Data.layout.islands.Length];
             for (var i = 0; i < kits.Length; i++)

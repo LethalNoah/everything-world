@@ -20,7 +20,9 @@ namespace EverythingWorld.World
         {
             if (lit == null) return;
             var n = Mathf.PerlinNoise(seed, Time.time * speed) * .7f + Mathf.PerlinNoise(seed + 9f, Time.time * speed * 2.7f) * .3f;
-            lit.intensity = baseIntensity * (1f - amount + n * amount * 2f);
+            // livelier for high-energy songs, and a flare when a new song starts
+            var a = amount * (.6f + .9f * SurpriseDirector.Energy);
+            lit.intensity = baseIntensity * (1f - a + n * a * 2f) * (1f + .5f * SurpriseDirector.Pulse);
         }
     }
 }

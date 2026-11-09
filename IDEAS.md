@@ -2,7 +2,9 @@
 
 Things to remember that aren't built or decided yet. Newest first.
 
-## Surprise and spontaneity (2026-11-09, core to the theme)
+## Surprise and spontaneity (2026-11-09, core to the theme, first version built)
+
+Built (SurpriseDirector, SharedChance, all on the radio's shared clock, so friends on the same station share them): lights and fires follow the song's energy and pulse when a new song starts; on starry lands a comet in every song, a meteor shower in about one song in three, and the odd shooting star; the aurora with about one song in four (Lanternwood); five wandering lanterns, a new set with each song; snowmen that move each day (days start 5 am US Eastern). Test keys in play: F7 shooting star, F8 aurora, F9 a one-minute meteor shower. More ideas below.
 
 The playlist is meant to be surprising and spontaneous, so the world shouldn't be the same every visit. Idea: drive surprises from the same shared clock as the radio, so friends see them together. Rare moments (a shooting star, the aurora on some nights, lanterns pulsing when a certain song starts), small things that shift by day or week (where snowmen stand, which fire is lit, heavier snow some days), and lights or weather reacting to the song playing (energy, mood).
 
