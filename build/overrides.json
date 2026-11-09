@@ -1,5 +1,5 @@
 {
- "_about": "Hand corrections to how songs are grouped, used by fetch_lastfm.py, scenes.py and islandmap.py. album_artist: songs from albums whose name starts with this text count as one artist (Spotify credits soundtrack songs to characters). same_scene_as: put this artist in the same scene as that one (for artists Last.fm mixes up with a namesake, and meme songs that belong on the Isle of Memes).",
+ "_about": "Hand corrections to how songs are grouped, used by fetch_lastfm.py, scenes.py and islandmap.py. album_artist: songs from albums whose name starts with this text count as one artist (Spotify credits soundtrack songs to characters). same_scene_as: put this artist in the same scene as that one (for artists Last.fm mixes up with a namesake, meme songs that belong on the Isle of Memes, and artists you'd rather file elsewhere).",
  "album_artist": {
   "Phineas And Ferb": "Phineas and Ferb"
  },
@@ -7,6 +7,7 @@
   "The Moonies": "Phineas and Ferb",
   "The Duck": "Phineas and Ferb",
   "Kahoot!": "Phineas and Ferb",
-  "Spalexma": "Phineas and Ferb"
+  "Spalexma": "Phineas and Ferb",
+  "Taylor Swift": "Katy Perry"
  }
 }

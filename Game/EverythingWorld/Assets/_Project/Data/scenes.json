@@ -15,8 +15,8 @@
     "progressive rock",
     "americana"
    ],
-   "x": 132.35,
-   "y": 79.08,
+   "x": 142.85,
+   "y": 82.68,
    "r": 10.77,
    "energy": 0.701,
    "acousticness": 0.352,
@@ -753,8 +753,8 @@
     "djent",
     "hardcore punk"
    ],
-   "x": 76.33,
-   "y": 26.58,
+   "x": 101.56,
+   "y": 24.32,
    "r": 9.22,
    "energy": 0.912,
    "acousticness": 0.008,
@@ -1305,8 +1305,8 @@
     "blues rock",
     "acid rock"
    ],
-   "x": 128.36,
-   "y": 33.01,
+   "x": 145.85,
+   "y": 60.09,
    "r": 9.27,
    "energy": 0.596,
    "acousticness": 0.303,
@@ -1858,24 +1858,24 @@
     "classic country",
     "acoustic country",
     "outlaw country",
-    "pop",
     "modern country",
     "americana",
-    "singer songwriter"
+    "red dirt",
+    "traditional country"
    ],
-   "x": 131.44,
-   "y": 112.37,
-   "r": 8.72,
-   "energy": 0.612,
-   "acousticness": 0.353,
-   "valence": 0.55,
-   "danceability": 0.588,
-   "tempo": 118.063,
+   "x": 120.06,
+   "y": 123.27,
+   "r": 8.0,
+   "energy": 0.602,
+   "acousticness": 0.389,
+   "valence": 0.559,
+   "danceability": 0.578,
+   "tempo": 118.966,
    "neighbours": [
     64,
-    17,
     10,
-    22
+    17,
+    34
    ],
    "terrain": "Endless flat wheat fields and gentle swells under an enormous sky; a dirt road to the horizon.",
    "palette": [
@@ -2165,78 +2165,6 @@
      "duration_ms": 175200
     },
     {
-     "name": "22",
-     "artist": "Taylor Swift",
-     "id": "2ULNeSomDxVNmdDy8VxEBU",
-     "duration_ms": 230133
-    },
-    {
-     "name": "All Too Well (10 Minute Version) (Taylor's Version) (From The Vault)",
-     "artist": "Taylor Swift",
-     "id": "5enxwA8aAbwZbf5qCHORXi",
-     "duration_ms": 613026
-    },
-    {
-     "name": "Anti-Hero",
-     "artist": "Taylor Swift",
-     "id": "0V3wPSX9ygBnCm8psDIegu",
-     "duration_ms": 200690
-    },
-    {
-     "name": "Blank Space",
-     "artist": "Taylor Swift",
-     "id": "1p80LdxRV74UKvL8gnD7ky",
-     "duration_ms": 231826
-    },
-    {
-     "name": "Cruel Summer",
-     "artist": "Taylor Swift",
-     "id": "1BxfuPKGuaTgP7aM0Bbdwr",
-     "duration_ms": 178426
-    },
-    {
-     "name": "Karma",
-     "artist": "Taylor Swift",
-     "id": "7KokYm8cMIXCsGVmUvKtqf",
-     "duration_ms": 204852
-    },
-    {
-     "name": "Lavender Haze",
-     "artist": "Taylor Swift",
-     "id": "5jQI2r1RdgtuT8S3iG8zFC",
-     "duration_ms": 202395
-    },
-    {
-     "name": "Mean",
-     "artist": "Taylor Swift",
-     "id": "5yEPktRqvIhko5QFF3aBhQ",
-     "duration_ms": 237733
-    },
-    {
-     "name": "no body, no crime (feat. HAIM)",
-     "artist": "Taylor Swift",
-     "id": "3RaT22zZsxVYxxKR7TAaYF",
-     "duration_ms": 215626
-    },
-    {
-     "name": "Paper Rings",
-     "artist": "Taylor Swift",
-     "id": "4y5bvROuBDPr5fuwXbIBZR",
-     "duration_ms": 222400
-    },
-    {
-     "name": "Red",
-     "artist": "Taylor Swift",
-     "id": "0cITLOYn1Sv4q27zZPqlNK",
-     "duration_ms": 220826
-    },
-    {
-     "name": "Wildest Dreams",
-     "artist": "Taylor Swift",
-     "id": "59HjlYCeBsxdI0fcm3zglw",
-     "duration_ms": 220440
-    },
-    {
      "name": "Blinding Lights - Country Version",
      "artist": "Tebey",
      "id": "6cRJTmba0JHDquftAkxUgG",
@@ -2361,8 +2289,8 @@
     "madchester",
     "sufi"
    ],
-   "x": 78.01,
-   "y": 55.07,
+   "x": 87.31,
+   "y": 54.2,
    "r": 8.12,
    "energy": 0.708,
    "acousticness": 0.142,
@@ -2799,8 +2727,8 @@
     "krautrock",
     "classic rock"
    ],
-   "x": 109.18,
-   "y": 55.38,
+   "x": 116.59,
+   "y": 57.55,
    "r": 7.62,
    "energy": 0.662,
    "acousticness": 0.209,
@@ -3189,8 +3117,8 @@
     "ska punk",
     "skate punk"
    ],
-   "x": 53.41,
-   "y": 44.9,
+   "x": 81.42,
+   "y": 36.98,
    "r": 7.07,
    "energy": 0.819,
    "acousticness": 0.088,
@@ -3531,8 +3459,8 @@
     "ambient",
     "j rock"
    ],
-   "x": 38.11,
-   "y": 38.67,
+   "x": 64.29,
+   "y": 34.64,
    "r": 6.56,
    "energy": 0.702,
    "acousticness": 0.173,
@@ -3831,8 +3759,8 @@
     "post rock",
     "indie pop"
    ],
-   "x": 52.72,
-   "y": 100.65,
+   "x": 51.15,
+   "y": 92.63,
    "r": 6.63,
    "energy": 0.585,
    "acousticness": 0.185,
@@ -4137,8 +4065,8 @@
     "post punk",
     "indie electronic"
    ],
-   "x": 67.19,
-   "y": 107.82,
+   "x": 67.61,
+   "y": 90.37,
    "r": 7.07,
    "energy": 0.652,
    "acousticness": 0.204,
@@ -4471,25 +4399,25 @@
    "realmName": "The Chart Isles",
    "tags": [
     "pop",
+    "country",
     "k pop",
     "dance",
     "crunk",
-    "kpop",
     "pop rock",
-    "parody",
-    "disney"
+    "singer songwriter",
+    "kpop"
    ],
-   "x": 117.39,
-   "y": 124.94,
-   "r": 7.21,
-   "energy": 0.715,
-   "acousticness": 0.146,
-   "valence": 0.558,
-   "danceability": 0.661,
-   "tempo": 122.433,
+   "x": 99.13,
+   "y": 133.8,
+   "r": 8.0,
+   "energy": 0.706,
+   "acousticness": 0.149,
+   "valence": 0.547,
+   "danceability": 0.657,
+   "tempo": 120.711,
    "neighbours": [
-    31,
     22,
+    31,
     56,
     45
    ],
@@ -4781,6 +4709,78 @@
      "duration_ms": 180693
     },
     {
+     "name": "22",
+     "artist": "Taylor Swift",
+     "id": "2ULNeSomDxVNmdDy8VxEBU",
+     "duration_ms": 230133
+    },
+    {
+     "name": "All Too Well (10 Minute Version) (Taylor's Version) (From The Vault)",
+     "artist": "Taylor Swift",
+     "id": "5enxwA8aAbwZbf5qCHORXi",
+     "duration_ms": 613026
+    },
+    {
+     "name": "Anti-Hero",
+     "artist": "Taylor Swift",
+     "id": "0V3wPSX9ygBnCm8psDIegu",
+     "duration_ms": 200690
+    },
+    {
+     "name": "Blank Space",
+     "artist": "Taylor Swift",
+     "id": "1p80LdxRV74UKvL8gnD7ky",
+     "duration_ms": 231826
+    },
+    {
+     "name": "Cruel Summer",
+     "artist": "Taylor Swift",
+     "id": "1BxfuPKGuaTgP7aM0Bbdwr",
+     "duration_ms": 178426
+    },
+    {
+     "name": "Karma",
+     "artist": "Taylor Swift",
+     "id": "7KokYm8cMIXCsGVmUvKtqf",
+     "duration_ms": 204852
+    },
+    {
+     "name": "Lavender Haze",
+     "artist": "Taylor Swift",
+     "id": "5jQI2r1RdgtuT8S3iG8zFC",
+     "duration_ms": 202395
+    },
+    {
+     "name": "Mean",
+     "artist": "Taylor Swift",
+     "id": "5yEPktRqvIhko5QFF3aBhQ",
+     "duration_ms": 237733
+    },
+    {
+     "name": "no body, no crime (feat. HAIM)",
+     "artist": "Taylor Swift",
+     "id": "3RaT22zZsxVYxxKR7TAaYF",
+     "duration_ms": 215626
+    },
+    {
+     "name": "Paper Rings",
+     "artist": "Taylor Swift",
+     "id": "4y5bvROuBDPr5fuwXbIBZR",
+     "duration_ms": 222400
+    },
+    {
+     "name": "Red",
+     "artist": "Taylor Swift",
+     "id": "0cITLOYn1Sv4q27zZPqlNK",
+     "duration_ms": 220826
+    },
+    {
+     "name": "Wildest Dreams",
+     "artist": "Taylor Swift",
+     "id": "59HjlYCeBsxdI0fcm3zglw",
+     "duration_ms": 220440
+    },
+    {
      "name": "I'm Gonna Be (500 Miles)",
      "artist": "The Proclaimers",
      "id": "66S14BkJDxgkYxLl5DCqOz",
@@ -4833,8 +4833,8 @@
     "uk drill",
     "the muppets"
    ],
-   "x": 123.87,
-   "y": 153.17,
+   "x": 102.25,
+   "y": 163.37,
    "r": 7.81,
    "energy": 0.666,
    "acousticness": 0.212,
@@ -5241,8 +5241,8 @@
     "alternative metal",
     "romanian"
    ],
-   "x": 61.22,
-   "y": 58.94,
+   "x": 71.04,
+   "y": 49.06,
    "r": 6.32,
    "energy": 0.757,
    "acousticness": 0.101,
@@ -5523,8 +5523,8 @@
     "piano",
     "80s"
    ],
-   "x": 124.98,
-   "y": 50.19,
+   "x": 129.9,
+   "y": 67.88,
    "r": 6.16,
    "energy": 0.637,
    "acousticness": 0.28,
@@ -5793,8 +5793,8 @@
     "chamber folk",
     "medieval"
    ],
-   "x": 76.98,
-   "y": 95.06,
+   "x": 83.22,
+   "y": 94.88,
    "r": 6.71,
    "energy": 0.512,
    "acousticness": 0.47,
@@ -6105,8 +6105,8 @@
     "celtic",
     "chinese"
    ],
-   "x": 92.25,
-   "y": 94.31,
+   "x": 98.89,
+   "y": 95.16,
    "r": 6.08,
    "energy": 0.445,
    "acousticness": 0.564,
@@ -6369,8 +6369,8 @@
     "acid rock",
     "jazz fusion"
    ],
-   "x": 102.11,
-   "y": 40.37,
+   "x": 124.13,
+   "y": 42.93,
    "r": 6.08,
    "energy": 0.626,
    "acousticness": 0.24,
@@ -6633,8 +6633,8 @@
     "acoustic",
     "yacht rock"
    ],
-   "x": 111.49,
-   "y": 72.15,
+   "x": 123.34,
+   "y": 85.48,
    "r": 6.24,
    "energy": 0.491,
    "acousticness": 0.49,
@@ -6909,8 +6909,8 @@
     "metal",
     "math metal"
    ],
-   "x": 58.72,
-   "y": 30.08,
+   "x": 74.17,
+   "y": 23.0,
    "r": 5.74,
    "energy": 0.795,
    "acousticness": 0.073,
@@ -7149,8 +7149,8 @@
     "melodic bass",
     "drum and bass"
    ],
-   "x": 23.89,
-   "y": 148.81,
+   "x": 33.63,
+   "y": 135.8,
    "r": 5.39,
    "energy": 0.713,
    "acousticness": 0.088,
@@ -7365,8 +7365,8 @@
     "experimental",
     "region:idm"
    ],
-   "x": 17.96,
-   "y": 108.84,
+   "x": 25.28,
+   "y": 96.85,
    "r": 5.57,
    "energy": 0.476,
    "acousticness": 0.376,
@@ -7593,8 +7593,8 @@
     "ska",
     "crank wave"
    ],
-   "x": 85.44,
-   "y": 69.38,
+   "x": 91.94,
+   "y": 69.96,
    "r": 6.24,
    "energy": 0.694,
    "acousticness": 0.141,
@@ -7869,8 +7869,8 @@
     "future garage",
     "rock"
    ],
-   "x": 104.62,
-   "y": 116.43,
+   "x": 91.63,
+   "y": 119.49,
    "r": 5.57,
    "energy": 0.533,
    "acousticness": 0.394,
@@ -8097,8 +8097,8 @@
     "electro",
     "electro house"
    ],
-   "x": 24.09,
-   "y": 134.97,
+   "x": 31.65,
+   "y": 122.16,
    "r": 5.48,
    "energy": 0.783,
    "acousticness": 0.042,
@@ -8319,8 +8319,8 @@
     "melodic bass",
     "edm"
    ],
-   "x": 10.99,
-   "y": 139.54,
+   "x": 19.22,
+   "y": 128.3,
    "r": 5.48,
    "energy": 0.839,
    "acousticness": 0.032,
@@ -8541,8 +8541,8 @@
     "boom bap",
     "southern hip hop"
    ],
-   "x": 139.69,
-   "y": 152.51,
+   "x": 118.06,
+   "y": 163.81,
    "r": 5.1,
    "energy": 0.695,
    "acousticness": 0.157,
@@ -8739,8 +8739,8 @@
     "us",
     "musical"
    ],
-   "x": 41.82,
-   "y": 76.66,
+   "x": 46.53,
+   "y": 58.64,
    "r": 5.92,
    "energy": 0.665,
    "acousticness": 0.299,
@@ -8750,8 +8750,8 @@
    "neighbours": [
     36,
     39,
-    10,
-    47
+    47,
+    10
    ],
    "terrain": "A storybook island of round hills and winding paths.",
    "palette": [
@@ -8991,8 +8991,8 @@
     "doom metal",
     "groove metal"
    ],
-   "x": 104.18,
-   "y": 20.13,
+   "x": 134.45,
+   "y": 32.67,
    "r": 5.39,
    "energy": 0.822,
    "acousticness": 0.056,
@@ -9207,8 +9207,8 @@
     "vocaloid",
     "jpop"
    ],
-   "x": 62.05,
-   "y": 16.36,
+   "x": 86.31,
+   "y": 15.78,
    "r": 5.39,
    "energy": 0.88,
    "acousticness": 0.055,
@@ -9423,8 +9423,8 @@
     "soul blues",
     "northern soul"
    ],
-   "x": 155.93,
-   "y": 98.05,
+   "x": 147.35,
+   "y": 126.41,
    "r": 5.66,
    "energy": 0.575,
    "acousticness": 0.32,
@@ -9657,8 +9657,8 @@
     "psychedelic soul",
     "city pop"
    ],
-   "x": 169.28,
-   "y": 106.31,
+   "x": 155.6,
+   "y": 137.28,
    "r": 5.0,
    "energy": 0.666,
    "acousticness": 0.254,
@@ -9849,8 +9849,8 @@
     "dance",
     "art pop"
    ],
-   "x": 100.49,
-   "y": 129.56,
+   "x": 80.21,
+   "y": 126.97,
    "r": 5.2,
    "energy": 0.707,
    "acousticness": 0.119,
@@ -10053,8 +10053,8 @@
     "grunge",
     "progressive rock"
    ],
-   "x": 68.19,
-   "y": 41.85,
+   "x": 96.02,
+   "y": 40.64,
    "r": 5.2,
    "energy": 0.786,
    "acousticness": 0.033,
@@ -10257,8 +10257,8 @@
     "experimental",
     "drumstep"
    ],
-   "x": 12.77,
-   "y": 124.14,
+   "x": 20.55,
+   "y": 112.31,
    "r": 5.48,
    "energy": 0.72,
    "acousticness": 0.107,
@@ -10479,8 +10479,8 @@
     "rock",
     "hard rock"
    ],
-   "x": 122.75,
-   "y": 63.36,
+   "x": 117.28,
+   "y": 72.91,
    "r": 5.0,
    "energy": 0.664,
    "acousticness": 0.208,
@@ -10671,8 +10671,8 @@
     "folk punk",
     "anti folk"
    ],
-   "x": 70.89,
-   "y": 69.75,
+   "x": 75.87,
+   "y": 65.1,
    "r": 5.29,
    "energy": 0.639,
    "acousticness": 0.2,
@@ -10881,8 +10881,8 @@
     "video game",
     "bangla pop"
    ],
-   "x": 30.76,
-   "y": 86.9,
+   "x": 32.75,
+   "y": 55.88,
    "r": 5.39,
    "energy": 0.614,
    "acousticness": 0.351,
@@ -11097,7 +11097,7 @@
     "hip hop",
     "region:idm"
    ],
-   "x": 98.51,
+   "x": 81.06,
    "y": 153.52,
    "r": 4.8,
    "energy": 0.458,
@@ -11277,8 +11277,8 @@
     "hair metal",
     "80s"
    ],
-   "x": 111.75,
-   "y": 30.73,
+   "x": 137.59,
+   "y": 45.32,
    "r": 4.69,
    "energy": 0.839,
    "acousticness": 0.06,
@@ -11451,8 +11451,8 @@
     "orchestral",
     "composers"
    ],
-   "x": 28.42,
-   "y": 74.24,
+   "x": 29.02,
+   "y": 43.47,
    "r": 4.58,
    "energy": 0.372,
    "acousticness": 0.639,
@@ -11619,8 +11619,8 @@
     "library music",
     "vocal jazz"
    ],
-   "x": 175.62,
-   "y": 78.99,
+   "x": 171.5,
+   "y": 113.91,
    "r": 4.9,
    "energy": 0.501,
    "acousticness": 0.569,
@@ -11805,8 +11805,8 @@
     "experimental jazz",
     "alternative hip hop"
    ],
-   "x": 169.08,
-   "y": 92.9,
+   "x": 160.67,
+   "y": 121.78,
    "r": 5.48,
    "energy": 0.601,
    "acousticness": 0.239,
@@ -12027,8 +12027,8 @@
     "experimental rock",
     "britpop"
    ],
-   "x": 62.97,
-   "y": 92.02,
+   "x": 57.55,
+   "y": 80.37,
    "r": 4.47,
    "energy": 0.718,
    "acousticness": 0.21,
@@ -12189,7 +12189,7 @@
     "folk metal",
     "metal"
    ],
-   "x": 78.34,
+   "x": 110.08,
    "y": 10.0,
    "r": 4.47,
    "energy": 0.957,
@@ -12351,8 +12351,8 @@
     "retrowave",
     "nu disco"
    ],
-   "x": 55.36,
-   "y": 137.12,
+   "x": 64.59,
+   "y": 126.18,
    "r": 4.36,
    "energy": 0.759,
    "acousticness": 0.087,
@@ -12507,8 +12507,8 @@
     "rap",
     "east coast hip hop"
    ],
-   "x": 139.82,
-   "y": 139.11,
+   "x": 120.69,
+   "y": 150.68,
    "r": 5.29,
    "energy": 0.573,
    "acousticness": 0.24,
@@ -12717,8 +12717,8 @@
     "70s",
     "quiet storm"
    ],
-   "x": 158.03,
-   "y": 110.49,
+   "x": 141.64,
+   "y": 137.53,
    "r": 4.0,
    "energy": 0.749,
    "acousticness": 0.25,
@@ -12855,8 +12855,8 @@
     "lo fi",
     "japanese"
    ],
-   "x": 19.4,
-   "y": 81.63,
+   "x": 27.2,
+   "y": 67.08,
    "r": 4.12,
    "energy": 0.565,
    "acousticness": 0.34,
@@ -12999,8 +12999,8 @@
     "swing",
     "swing music"
    ],
-   "x": 162.42,
-   "y": 80.79,
+   "x": 159.61,
+   "y": 108.02,
    "r": 5.39,
    "energy": 0.406,
    "acousticness": 0.651,
@@ -13215,8 +13215,8 @@
     "dream pop",
     "indietronica"
    ],
-   "x": 81.57,
-   "y": 108.71,
+   "x": 72.23,
+   "y": 104.42,
    "r": 4.8,
    "energy": 0.659,
    "acousticness": 0.241,
@@ -13395,8 +13395,8 @@
     "indie pop",
     "alternative dance"
    ],
-   "x": 54.48,
-   "y": 114.32,
+   "x": 60.28,
+   "y": 102.57,
    "r": 4.24,
    "energy": 0.767,
    "acousticness": 0.144,
@@ -13545,8 +13545,8 @@
     "folktronica",
     "turntablism"
    ],
-   "x": 25.29,
-   "y": 122.45,
+   "x": 32.97,
+   "y": 109.5,
    "r": 4.24,
    "energy": 0.604,
    "acousticness": 0.491,
@@ -13695,8 +13695,8 @@
     "80s",
     "arena rock"
    ],
-   "x": 115.01,
-   "y": 42.02,
+   "x": 130.82,
+   "y": 54.89,
    "r": 4.0,
    "energy": 0.686,
    "acousticness": 0.076,
@@ -13826,8 +13826,8 @@
    "tags": [
     "region:bedroom"
    ],
-   "x": 41.36,
-   "y": 107.4,
+   "x": 43.18,
+   "y": 81.98,
    "r": 3.74,
    "energy": 0.521,
    "acousticness": 0.522,
@@ -13952,8 +13952,8 @@
     "dub",
     "idm"
    ],
-   "x": 34.9,
-   "y": 128.15,
+   "x": 42.24,
+   "y": 115.66,
    "r": 4.0,
    "energy": 0.565,
    "acousticness": 0.185,
@@ -14090,8 +14090,8 @@
     "hard house",
     "swing music"
    ],
-   "x": 12.32,
-   "y": 151.48,
+   "x": 22.45,
+   "y": 139.88,
    "r": 3.61,
    "energy": 0.727,
    "acousticness": 0.032,
@@ -14210,8 +14210,8 @@
     "spanish",
     "dance"
    ],
-   "x": 115.44,
-   "y": 108.83,
+   "x": 104.98,
+   "y": 119.27,
    "r": 4.8,
    "energy": 0.577,
    "acousticness": 0.342,
@@ -14391,7 +14391,7 @@
     "celtic"
    ],
    "x": 10.0,
-   "y": 62.28,
+   "y": 54.29,
    "r": 3.46,
    "energy": 0.502,
    "acousticness": 0.476,
@@ -14504,8 +14504,8 @@
     "eurodance",
     "chillstep"
    ],
-   "x": 33.89,
-   "y": 142.01,
+   "x": 42.51,
+   "y": 127.52,
    "r": 3.74,
    "energy": 0.775,
    "acousticness": 0.031,
@@ -14630,8 +14630,8 @@
     "contemporary classical",
     "opera"
    ],
-   "x": 35.77,
-   "y": 64.0,
+   "x": 41.39,
+   "y": 45.68,
    "r": 5.0,
    "energy": 0.165,
    "acousticness": 0.89,
@@ -14822,8 +14822,8 @@
     "alternative rnb",
     "summer"
    ],
-   "x": 150.77,
-   "y": 132.03,
+   "x": 131.62,
+   "y": 157.91,
    "r": 4.8,
    "energy": 0.491,
    "acousticness": 0.28,
@@ -15002,8 +15002,8 @@
     "electronic",
     "neurofunk"
    ],
-   "x": 38.41,
-   "y": 152.52,
+   "x": 46.08,
+   "y": 139.86,
    "r": 4.69,
    "energy": 0.867,
    "acousticness": 0.025,
@@ -15176,8 +15176,8 @@
     "dub",
     "lovers rock"
    ],
-   "x": 77.36,
-   "y": 131.43,
+   "x": 69.97,
+   "y": 148.27,
    "r": 4.47,
    "energy": 0.615,
    "acousticness": 0.196,
@@ -15338,8 +15338,8 @@
     "delta blues",
     "chicago blues"
    ],
-   "x": 159.25,
-   "y": 68.43,
+   "x": 147.46,
+   "y": 111.4,
    "r": 4.36,
    "energy": 0.53,
    "acousticness": 0.539,
@@ -15494,8 +15494,8 @@
     "traditional country",
     "southern gospel"
    ],
-   "x": 115.36,
-   "y": 85.47,
+   "x": 128.7,
+   "y": 98.24,
    "r": 4.58,
    "energy": 0.45,
    "acousticness": 0.593,
@@ -15662,8 +15662,8 @@
     "afroswing",
     "african"
    ],
-   "x": 181.1,
-   "y": 91.81,
+   "x": 170.68,
+   "y": 128.54,
    "r": 3.61,
    "energy": 0.666,
    "acousticness": 0.198,

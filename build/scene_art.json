@@ -32,7 +32,7 @@
    "landmark": "A crumbling stadium crowning the highest hill, like a castle.",
    "props": "Standing stones shaped like vinyl records, jukeboxes, vintage cars, monolith-sized amplifiers, a brightly painted submarine on the lake.",
    "mood": "Warm, timeless afternoon sun."},
-  {"id": 3, "anchors": ["Taylor Swift", "Zac Brown Band", "Jason Aldean"],
+  {"id": 3, "anchors": ["Zac Brown Band", "Tyler Childers", "Jason Aldean"],
    "name": "The Country Plains",
    "terrain": "Endless flat wheat fields and gentle swells under an enormous sky; a dirt road to the horizon.",
    "palette": ["#D9B860 wheat", "#A8322D barn red", "#7FB3D9 big sky", "#3C5A8A denim"],

@@ -13,3 +13,6 @@ build/lastfm_key.txt
 
 # Preview images from the island map generator
 build/preview_*.jpg
+
+# Spotify usernames -> display names for artist plaques (usernames are private)
+build/display_names.json

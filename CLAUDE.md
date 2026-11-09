@@ -23,7 +23,7 @@ The owner is fairly new to Git and Unity: explain Git and Unity steps plainly, a
 - `review/index.html` — browsable review of the scene groupings (approved by the owner). Live at sealteamtwo.github.io/everything-world/review/.
 - `index.html`, `assets/`, `map_poster.png` — the original 2D parchment map on GitHub Pages. Reference only; keep it working.
 
-Scene names and look briefs live in `build/scene_art.json` (readable version: `ART_PLAN.md`). Ideas not yet built or decided are in `IDEAS.md`; add new ones there when the owner mentions them.
+Scene names and look briefs live in `build/scene_art.json` (readable version: `ART_PLAN.md`). `WORLD_GUIDE.md` describes how each area and the artist areas should feel (design draft, before building in Unity). Ideas not yet built or decided are in `IDEAS.md`; add new ones there when the owner mentions them.
 
 ## Music in the game
 
@@ -35,6 +35,7 @@ Scene names and look briefs live in `build/scene_art.json` (readable version: `A
 
 - `build/lastfm_key.txt` — Last.fm API key.
 - `build/playlist.csv` — Exportify export; contains friends' Spotify usernames.
+- `build/display_names.json` — maps those usernames to the display names shown on artist plaques.
 - Spotify app config and saved tokens (`spotify_config.json`, `spotify_tokens.json`) — ignored in `Game/EverythingWorld/.gitignore`. Use PKCE auth so no client secret is needed.
 - Before any commit, check `git status` for keys, tokens or the CSV.
 

@@ -845,11 +845,19 @@ islands_u.append(dict(sceneId=HUB_ID, name=HUB_NAME, realm='', labelX=x, labelZ=
 def years(ss):
     y = sorted(int(s['yr']) for s in ss if s['yr'].isdigit())
     return '' if not y else str(y[0]) if y[0] == y[-1] else f'{y[0]}-{y[-1]}'
+# who added each artist's songs, by the display names in display_names.json (gitignored: the playlist's
+# 'Added By' column holds Spotify usernames, which never leave this computer)
+shown = {k: v.strip() for k, v in (json.load(open('display_names.json', encoding='utf-8')) if os.path.exists('display_names.json') else {}).items()
+         if not k.startswith('_')}
+adders = collections.defaultdict(collections.Counter)
+for r in rows:
+    if shown.get(r['Added By']): adders[overrides.prim(r)][shown[r['Added By']]] += 1
 artists_u = []
 for a, p in sorted(plots.items()):
     ss = songs_by_artist[a]; gc = collections.Counter(g for s in ss for g in s['g'])
     artists_u.append(dict(name=a, sceneId=p['scene'], x=p['x'], z=p['z'], r=p['r'], songs=len(ss), tier=tier(len(ss)),
-        station=len(ss) >= 3, genres=', '.join(g for g, _ in gc.most_common(3)), years=years(ss)))
+        station=len(ss) >= 3, genres=', '.join(g for g, _ in gc.most_common(3)), years=years(ss),
+        addedBy=' and '.join(n for n, _ in adders[a].most_common())))
 spawn = towers[0]
 sx_, sz_ = toU(spawn['x'], spawn['y'])
 unity = dict(width=WM, depth=DM, step=STEP, nx=NX, nz=NZ, waterLevel=0.0, metresPerMapPixel=MPP,

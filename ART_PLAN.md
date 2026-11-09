@@ -436,7 +436,7 @@ Pop, electropop, synthwave, country and Latin.
 
 ### 3. The Country Plains
 
-*country, classic country, acoustic country, outlaw country, pop* · 76 songs · energy 0.61, acoustic 0.35, mood 0.55 · top artists: Taylor Swift, Zac Brown Band, Tyler Childers, Jason Aldean, Lady A
+*country, classic country, acoustic country, outlaw country, modern country* · 64 songs · energy 0.60, acoustic 0.39, mood 0.56 · top artists: Zac Brown Band, Tyler Childers, Jason Aldean, Lady A, Alabama
 
 - **Terrain:** Endless flat wheat fields and gentle swells under an enormous sky; a dirt road to the horizon.
 - **Colours:** `#D9B860 wheat`, `#A8322D barn red`, `#7FB3D9 big sky`, `#3C5A8A denim`
@@ -446,7 +446,7 @@ Pop, electropop, synthwave, country and Latin.
 
 ### 10. The Pop Republic
 
-*pop, k pop, dance, crunk, kpop* · 52 songs · energy 0.71, acoustic 0.15, mood 0.56 · top artists: Katy Perry, Michael Jackson, Sabrina Carpenter, BTS, Captainsparklez
+*pop, country, k pop, dance, crunk* · 64 songs · energy 0.71, acoustic 0.15, mood 0.55 · top artists: Taylor Swift, Katy Perry, Michael Jackson, Sabrina Carpenter, BTS
 
 - **Terrain:** Candy-coloured hills around a crowded boardwalk city.
 - **Colours:** `#FF7EB9 bubblegum`, `#4FD1E8 sky cyan`, `#FFE35A lemon`, `#FFFFFF white`

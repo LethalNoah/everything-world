@@ -2,6 +2,10 @@
 
 Things to remember that aren't built or decided yet. Newest first.
 
+## Sky per land (2026-11-08, decided)
+
+Each land keeps its own sky, light, fog and weather (its look brief's "mood"), always at its best time of day. There is no shared day and night. Crossing a border blends to the next land's sky over a few seconds, like the music switching. Descriptions of every land are in `WORLD_GUIDE.md`.
+
 ## World shape and scale (2026-11-08, decided, next to build)
 
 After walking the first Unity blockout:
