@@ -131,13 +131,14 @@ namespace EverythingWorld.World
         }
 
         /// A separate glowing box (lantern glass, candle flame), so it can be brightened on its own.
-        public static Renderer GlassBox(Transform parent, Vector3 center, Vector3 size, Color glass)
+        public static Renderer GlassBox(Transform parent, Vector3 center, Vector3 size, Color glass, Quaternion? rotation = null)
         {
             var go = GameObject.CreatePrimitive(PrimitiveType.Cube);
             Object.Destroy(go.GetComponent<Collider>());
             go.name = "Glow";
             go.transform.SetParent(parent, false);
             go.transform.position = center;
+            if (rotation.HasValue) go.transform.rotation = rotation.Value;
             go.transform.localScale = size;
             var r = go.GetComponent<Renderer>();
             r.sharedMaterial = WorldMaterials.Glow(glass, .9f);

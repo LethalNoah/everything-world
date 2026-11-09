@@ -9,6 +9,14 @@
  },
  "lands": [
   {
+   "land": "The Small Hours",
+   "sunPitch": 35, "sunYaw": 160, "sunIntensity": 0.22, "sunColor": "#9DB2E8",
+   "skyLight": "#1F2650", "horizonLight": "#2A2F5C", "groundLight": "#141628",
+   "fogColor": "#1A1E3E", "fogStart": 25, "fogEnd": 520,
+   "stars": 0.55, "sunShadows": false, "dailyWeather": false, "bloom": 1.0,
+   "weather": "rain", "weatherAmount": 0.18
+  },
+  {
    "land": "The Bedroom Pop Meadows",
    "sunPitch": 4, "sunYaw": 110, "sunIntensity": 0.55, "sunColor": "#FF9C8E",
    "skyLight": "#7468B0", "horizonLight": "#C98AA6", "groundLight": "#4A3F6A",

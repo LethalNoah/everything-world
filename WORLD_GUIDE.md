@@ -327,21 +327,15 @@ Softer and greener than the continent. Overcast skies, fairy lights, dusk. Close
 **Artist areas:** MGMT gets a hall (the big tent). Others are smaller tents and stages.
 
 ### The Small Hours
-*14 songs · 11 artists · 0.66 km²*
+*15 songs plus a whole discography · 11 artists · 0.66 km² · built in Unity*
 
-**Arriving:** A quiet hamlet of tiny cottages in a hollow, each with a lit window and a microphone inside.
+**Arriving:** 3 am, deep indigo, a quiet drizzle. By the way in, an all-night laundrette glows, its machines turning. Wet stone lanes under orange street lamps lead up into a hollow of tiny homes, every window lit.
 
-**The vibe:** The making half of bedroom music (the Bedroom Pop Meadows next door is the daydream): 3 am, deep indigo, a quiet drizzle on the windows. Real tiny homes with desk lamps, tape recorders, laptops, plants and a cat on the windowsill: people making music right now. These are small, newer artists (probably people you know), so it should feel personal.
+**The vibe:** The making half of bedroom music (the Bedroom Pop Meadows next door is the daydream). These are small, newer artists, and every home is somewhere music is being made right now: walk in and there's a desk under a lamp, a laptop, a microphone, plants, and their covers on the wall. Moss, ferns and garden hedges; stars through gaps in the cloud.
 
-**Artist areas:** One cottage each. This land is the most likely to have friends' music, so the plaques could say a bit more here.
+**Artist areas:** Steph.fm broadcasts from a radio cottage with an aerial and an ON AIR sign. Bell Thompson's room glows jazz-club blue, with a trumpet on the sill and a New York fire escape up the side. Boowah plays a pedal steel on the porch. runfromobm has a grilled cheese on the stove. Sōra has a streetlight outside; Fionavair's window flickers with the TV; Hailey Picardi's room is chaos; John Luther's is full of plants; Carmen Silver's lamp lights floating dust; Josie on the Rocks has a cat on the windowsill.
 
----
-
-## The Bass Reaches (island chain, bottom right)
-
-*Every kind of electronic music · tower: The Subwoofer Spire*
-
-Separate islands joined by bridges, each its own world. Mostly night, lasers and weather.
+**Noah Gallagher's place:** apart from the hamlet, built with him. The cream bungalow with the screened porch where his first album was made, now his studio: his koa Languedoc on a stand, both album covers on the walls, a swing set, a birdbath and white geese in a yard of dry winter grass under huge bare trees. Behind it grows the night forest from the cover of Akashic Sanctuary, dark twisted trunks with teal light falling between them, purple and green orbs in the branches and a huge yellow moon with a magenta halo. A path winds through it past a light for each of that album's eight songs to a clearing with a still pool and the Ferris wheel from The Twelfth House: twelve gondolas, one for each sign and each of its twelve songs, round a yin-yang hub, while ribbons of aurora snake through the trees just over head height. His station covers the whole place and plays everything he has made; whichever song is playing, its light or its gondola glows.
 
 ### The Ambient Mists
 *31 songs · 16 artists · 0.51 km²*

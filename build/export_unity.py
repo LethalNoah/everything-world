@@ -138,6 +138,18 @@ def main():
     by_artist = {}
     for t in every:
         by_artist.setdefault(t["artist"], []).append(t)
+    # Some artists' stations also play songs beyond the playlist: their whole discography (station_extra.json).
+    extra_file = ROOT / "build" / "station_extra.json"
+    extra = json.loads(extra_file.read_text(encoding="utf-8")) if extra_file.exists() else {}
+    for name, more in extra.items():
+        if name.startswith("_") or name not in by_artist:
+            continue
+        have = {t["id"] for t in by_artist[name]}
+        for t in more:
+            if t["id"] in have:
+                continue
+            e, v = feel.get(t["id"], (.5, .5))
+            by_artist[name].append({"name": t["name"], "artist": name, "id": t["id"], "duration_ms": t["duration_ms"], "energy": e, "valence": v})
     ids = {}
     for name, ts in sorted(by_artist.items()):
         if len(ts) < ARTIST_MIN_SONGS:

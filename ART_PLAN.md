@@ -278,7 +278,7 @@ Indie rock, shoegaze, bedroom pop and indie folk.
 
 ### 42. Garage Rock Row
 
-*indie rock, garage rock, alternative rock, region:bedroom, rock* · 20 songs · energy 0.72, acoustic 0.21, mood 0.47 · top artists: Arctic Monkeys, Noah Gallagher, Cage The Elephant, Silversun Pickups, The Kooks
+*indie rock, garage rock, alternative rock, region:bedroom, rock* · 17 songs · energy 0.73, acoustic 0.19, mood 0.50 · top artists: Arctic Monkeys, Cage The Elephant, Silversun Pickups, The Kooks, Kings of Leon
 
 - **Terrain:** A gritty small-town main street with garages, pubs and back alleys.
 - **Colours:** `#1E1E1E leather black`, `#D9C26A nicotine yellow`, `#3C5A8A denim`, `#E0353A neon red`
@@ -308,7 +308,7 @@ Indie rock, shoegaze, bedroom pop and indie folk.
 
 ### 53. The Small Hours
 
-*region:bedroom* · 14 songs · energy 0.52, acoustic 0.52, mood 0.35 · top artists: Steph.fm, Bell Thompson, Boowah, Carmen Silver, Fionavair
+*region:bedroom* · 16 songs · energy 0.53, acoustic 0.51, mood 0.32 · top artists: Noah Gallagher, Steph.fm, Bell Thompson, Boowah, Carmen Silver
 
 - **Terrain:** A quiet hamlet of tiny cottages in a hollow.
 - **Colours:** `#B8A9C9 muted lilac`, `#F2D7A6 warm cream`, `#7E9C8A sage`, `#2C3550 night`
@@ -648,7 +648,7 @@ Film scores, classical, musicals, game music and novelties.
 
 ### 26. The Isle of Memes & Musicals
 
-*comedy, soundtrack, region:novelty, musicals, disney* · 42 songs · energy 0.67, acoustic 0.30, mood 0.63 · top artists: Phineas and Ferb, Stantough, Captainsparklez, The Little Singers, Zac Efron
+*comedy, soundtrack, region:novelty, musicals, disney* · 43 songs · energy 0.68, acoustic 0.29, mood 0.63 · top artists: Phineas and Ferb, Stantough, Captainsparklez, The Little Singers, Zac Efron
 
 - **Terrain:** A storybook island of round hills and winding paths.
 - **Colours:** `#4A90E2 storybook blue`, `#F7A1C4 pink`, `#FFE066 candy yellow`, `#7CCB5A cartoon grass`

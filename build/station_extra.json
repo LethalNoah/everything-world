@@ -1,0 +1,125 @@
+{
+ "_about": "Extra songs for one artist's own station, beyond the playlist (export_unity.py adds them): the artist's whole discography plays while you stand in their area. Only their area; every other station stays the shared playlist.",
+ "Noah Gallagher": [
+  {
+   "id": "02CgTke4nnUacp8WN7NusB",
+   "name": "Desolate Zenith",
+   "album": "Akashic Sanctuary",
+   "duration_ms": 217322
+  },
+  {
+   "id": "44bDZRYh3MZVK3jZojqSQC",
+   "name": "Periapsis",
+   "album": "Akashic Sanctuary",
+   "duration_ms": 180000
+  },
+  {
+   "id": "2nT2BdTJS6G3IWed8KI9cd",
+   "name": "Doctrine Factorum",
+   "album": "Akashic Sanctuary",
+   "duration_ms": 240000
+  },
+  {
+   "id": "2QeK4n0f2xQLLmtRZierWM",
+   "name": "Bohr's Reverie",
+   "album": "Akashic Sanctuary",
+   "duration_ms": 226033
+  },
+  {
+   "id": "3XCkTxCVPiEj9qsMDh4nSk",
+   "name": "Ashes of Corinth",
+   "album": "Akashic Sanctuary",
+   "duration_ms": 291607
+  },
+  {
+   "id": "2g5TUSiI5YPWvBL5upUWM3",
+   "name": "Formula 0",
+   "album": "Akashic Sanctuary",
+   "duration_ms": 226909
+  },
+  {
+   "id": "3SuTKgORWHIIMh616JowUY",
+   "name": "Prometheus Resolute",
+   "album": "Akashic Sanctuary",
+   "duration_ms": 313043
+  },
+  {
+   "id": "3BRXvXtk509gQn1psZLv3b",
+   "name": "Blind Retrospect",
+   "album": "Akashic Sanctuary",
+   "duration_ms": 169542
+  },
+  {
+   "id": "0CSTVF9JRuEeT0hwHsDRNx",
+   "name": "The Ordinary World",
+   "album": "The Twelfth House",
+   "duration_ms": 216000
+  },
+  {
+   "id": "14iXrL4jwEXfBIR8EIKZIM",
+   "name": "Something More",
+   "album": "The Twelfth House",
+   "duration_ms": 236000
+  },
+  {
+   "id": "4LkHchfKRBuW55IQzTbV8j",
+   "name": "Breaking Through",
+   "album": "The Twelfth House",
+   "duration_ms": 236000
+  },
+  {
+   "id": "5Msl12Sdj5NT8LypjFGn12",
+   "name": "A Moment's Notice",
+   "album": "The Twelfth House",
+   "duration_ms": 192000
+  },
+  {
+   "id": "7fszFjzdGzdk1IPNhvLVWO",
+   "name": "Ley Lines",
+   "album": "The Twelfth House",
+   "duration_ms": 216000
+  },
+  {
+   "id": "5bw73xSn4iNlqpSM6WP7pd",
+   "name": "The Gauntlet",
+   "album": "The Twelfth House",
+   "duration_ms": 224000
+  },
+  {
+   "id": "4mLqyjfkoyOthYp1bqeynr",
+   "name": "Silicon Sanctum",
+   "album": "The Twelfth House",
+   "duration_ms": 212000
+  },
+  {
+   "id": "5H9b2nTNE7gkqvtVcvt06y",
+   "name": "The Scarab Song",
+   "album": "The Twelfth House",
+   "duration_ms": 198000
+  },
+  {
+   "id": "77vazqn7VFtUgFCONyI7IU",
+   "name": "End Of K'atun",
+   "album": "The Twelfth House",
+   "duration_ms": 194000
+  },
+  {
+   "id": "6R8nrIvhYbsXocAo0kZqch",
+   "name": "Whiteout",
+   "album": "The Twelfth House",
+   "duration_ms": 344000
+  },
+  {
+   "id": "3u4wx9RKR34yIhHfCSskKO",
+   "name": "The Synchronous World",
+   "album": "The Twelfth House",
+   "duration_ms": 1342000
+  },
+  {
+   "id": "6IylgJDbSuyorKKx3G67V6",
+   "name": "Water",
+   "album": "The Twelfth House",
+   "duration_ms": 272000
+  }
+ ]
+}
