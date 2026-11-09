@@ -20,13 +20,22 @@ About 15.5 × 10.4 km. One big continent in the middle (the Old Kingdoms joined 
 
 ## The Everything Hub
 
-*The whole playlist, 2,167 songs · a small island in the open sea · tower: The Everything Mast*
+*The whole playlist, 2,166 songs · a round island in the inner sea · tower: The Everything Mast*
 
-**Arriving:** A small round island of sand and grass, alone in the inner sea. Long causeways reach it from the Prog Marches, the Indie Downs and Studio Lot Island. In the middle stands a tall radio mast with a red light, over a round plaza.
+**Arriving:** A broad round island alone in the inner sea, always in golden late-afternoon light. Long causeways reach it from the Prog Marches, the Indie Downs and Studio Lot Island, and each one becomes a paved path into the plaza. Round the whole hub, a great ring of album covers turns slowly; you pass under it as you arrive.
 
-**The vibe:** A crossroads and a resting place. Calm water all round, gulls, the mast humming. The station plays anything from the whole playlist, so you never know what's next: a good place to meet friends before heading out, or to come back to. From here you can see three realms on the horizon.
+**The vibe:** A grand crossroads, and a trophy hall for the whole playlist. This is what all of us built together, song by song, and the hub is proud of it. The station plays anything from the whole playlist, so you never know what's next. It's the place to meet before heading out and to come back to afterwards. Every visit is an occasion, whatever day it is.
 
-**What's here:** No artists, on purpose. Later: benches and a seating area round the mast, signposts to every land, maybe a jukebox showing what the hub is playing and where that song's land is.
+**What's here:** No artists, on purpose. Instead:
+- **The ring of every cover.** Every song's album cover, big (over 3 m), in the order it was added, spiralling up round the whole hub from the first song to the newest, with the year marked where each new one begins. The lowest turn starts just over head height, so you can walk up under the first songs and look at them closely. Each person who adds songs has their own bright frame colour (the dais tablet shows whose is whose). The song playing now gets a white frame and a beam of light down to the ground beneath it. The ring turns once every 50 minutes and can be seen from across the water.
+- **The dais.** A round stone platform at the foot of the mast, ringed in glowing bronze, with ramps on four sides. Standing tablets carry the playlist's numbers and the names of everyone who built it.
+- **The stands.** Curved stone tiers all round the plaza, facing the mast, for sitting together under the ring. They open where the paths come in.
+- **The jukebox.** A classic arched jukebox with rainbow light tubes round its top, showing the song on the radio, its cover, its artist and which land it belongs to. Beside it, a big wooden arrow on a post swings round to point at that land, with the land's name and distance written on it.
+- **The signpost.** One arm for every realm's tower, with the distance.
+- **The map board.** The whole world's map on a big standing board, north up, with a glowing "you are here" dot.
+- **The park.** Past the stands, a formal park: rows of round trees and clipped dark cones, planted in rings. Between the rows, an avenue of white stone statues of music notation on plinths: treble and bass clefs, notes, a sharp, a flat, a fermata, a rest.
+- **The sky.** Always golden late afternoon, but alive: clouds drift on the day's wind (some hours clear, some hours full), gulls circle the mast, and the light takes its colour from each song, bright amber for happy songs and rose and violet for sad ones. Every new song sends a golden rocket up from the dais, and some songs (more often the more energetic they are) get a fireworks show over the ring.
+- **The quiet bench.** At the water's edge, away from the paths and the stands: one bench, one lantern, no sign.
 
 ---
 

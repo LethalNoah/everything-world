@@ -237,7 +237,7 @@ print(f'land {have_m2.sum() / 1e6:.1f} km2 ({land.sum() / (GW * GH):.0%} of the 
 # playlist (scene id HUB_ID in the game's scene data). It is placed after the scenes, so it moves nothing.
 HUB_ID, HUB_NAME, HUB_TOWER = 1000, 'The Everything Hub', 'The Everything Mast'
 HUB_NEAR = ['The Bluegrass Hollows', 'The Prog Marches', 'The Iron Range', 'Studio Lot Island', 'The Indie Downs']
-HUB_R_M, HUB_CLEAR_M = 120, 70          # island radius, and open water kept all round it, in metres
+HUB_R_M, HUB_CLEAR_M = 240, 70          # island radius (room for the stands and the cover ring), and open water round it
 HUB = K                                 # its number in L, after the scenes
 name_idx = {ART[s_['id']]['name']: i for i, s_ in enumerate(SCN)}
 near_hub = [name_idx[n] for n in HUB_NEAR]
@@ -880,7 +880,17 @@ for a, p in sorted(plots.items()):
         songList=[dict(title=s_['t'], cover=aid.get(s_['iid'], -1)) for s_ in sorted(ss, key=lambda s_: -s_['pop'])]))
 spawn = towers[0]
 sx_, sz_ = toU(spawn['x'], spawn['y'])
+# The Everything Hub's timeline: every song in the order it was added, with its cover and who added it
+# (as an index into hubAdders, the display names from display_names.json; empty names are left out).
+adder_names = [n for n, _ in collections.Counter(shown.get(r['Added By'], '') for r in rows if shown.get(r['Added By'])).most_common()]
+timeline = []
+for r, s_ in sorted(zip(rows, songs), key=lambda rs: rs[0]['Added At']):
+    who = shown.get(r['Added By'], '')
+    timeline.append(dict(id=s_['uri'], c=aid.get(s_['iid'], -1), a=adder_names.index(who) if who in adder_names else -1, y=int(r['Added At'][:4])))
+hub_info = dict(songs=len(rows), artists=len({s_['prim'] for s_ in songs}), since=min(int(r['Added At'][:4]) for r in rows))
 unity = dict(width=WM, depth=DM, step=STEP, nx=NX, nz=NZ, waterLevel=0.0, metresPerMapPixel=MPP,
+    hubTimeline=timeline, hubAdders=adder_names, hubSongs=hub_info['songs'], hubArtists=hub_info['artists'], hubSince=hub_info['since'],
+    hubRadius=HUB_R_M,
     coverCols=COVER_COLS, coverCell=COVER_CELL, coverSheetWidth=sheet.size[0], coverSheetHeight=sheet.size[1],
     islands=islands_u, artists=artists_u,
     bridges=[dict(a=sid_of(b['a']), b=sid_of(b['b']), causeway=b['k'] == 'causeway',

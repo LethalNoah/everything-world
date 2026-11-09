@@ -135,7 +135,7 @@ namespace EverythingWorld.World
                     bld.Strip(c - side, c + side, g, g, GateHeight, inward, Kind(islandColor[here], KindGate), 0);
                     bld.Strip(c - side, c + side, g, g, GateHeight, -inward, Kind(islandColor[there], KindGate), 0);
                     // seen from the bridge (the inward side) you're entering 'here'; from the land, the bridge to 'there'
-                    labels.Add(c - side, c + side, g, -inward, data.layout.islands[here].name, islandColor[here],
+                    labels.Add(c - side, c + side, g, inward, data.layout.islands[here].name, islandColor[here],
                                "Bridge to " + data.layout.islands[there].name, islandColor[there]);
                 }
             }

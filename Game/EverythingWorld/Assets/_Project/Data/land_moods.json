@@ -18,9 +18,9 @@
   },
   {
    "land": "The Everything Hub",
-   "sunPitch": 24, "sunYaw": -60, "sunIntensity": 1.15, "sunColor": "#FFE3C2",
-   "skyLight": "#9FB4C9", "horizonLight": "#A9A79C", "groundLight": "#6E6658",
-   "fogColor": "#C7D3D6", "fogStart": 300, "fogEnd": 2000,
+   "sunPitch": 15, "sunYaw": -60, "sunIntensity": 1.25, "sunColor": "#FFC98A",
+   "skyLight": "#A9B9D2", "horizonLight": "#E6C49A", "groundLight": "#7A6A55",
+   "fogColor": "#E3CCAA", "fogStart": 350, "fogEnd": 2400,
    "weather": "", "weatherAmount": 0
   }
  ]

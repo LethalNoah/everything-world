@@ -23,6 +23,8 @@ namespace EverythingWorld.World
             public float x, z, r;
             public Song[] songList;
         }
+        /// One song on the hub's timeline: track id, cover (-1 = none), who added it (index into hubAdders), year.
+        [Serializable] public class TimelineSong { public string id; public int c, a, y; }
         [Serializable] public class Layout
         {
             public float width, depth, step, waterLevel, spawnX, spawnZ;
@@ -32,6 +34,11 @@ namespace EverythingWorld.World
             public Bridge[] bridges;
             public Tower[] towers;
             public Artist[] artists;
+            // the Everything Hub: every song in the order it was added, the people who added them, and totals
+            public TimelineSong[] hubTimeline;
+            public string[] hubAdders;
+            public int hubSongs, hubArtists, hubSince;
+            public float hubRadius;
         }
 
         public Layout layout;

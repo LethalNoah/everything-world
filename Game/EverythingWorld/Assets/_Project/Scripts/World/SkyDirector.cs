@@ -16,6 +16,9 @@ namespace EverythingWorld.World
         [Tooltip("Seconds to blend most of the way to a new land's sky.")]
         public float blendSeconds = 3f;
         public Light sun;
+        /// A colour a land can wash its light with for the current song (the hub's sunset follows each song's mood).
+        public static Color SongTint = Color.white;
+        public static float SongTintAmount;
 
         struct State
         {
@@ -130,19 +133,19 @@ namespace EverythingWorld.World
             {
                 sun.shadows = target.sunShadows ? LightShadows.Soft : LightShadows.None;
                 sun.transform.rotation = current.sunRot;
-                sun.color = current.sun;
+                sun.color = Color.Lerp(current.sun, SongTint, SongTintAmount);
                 sun.intensity = current.sunI;
             }
             RenderSettings.ambientSkyColor = current.sky;
-            RenderSettings.ambientEquatorColor = current.horizon;
+            RenderSettings.ambientEquatorColor = Color.Lerp(current.horizon, SongTint, SongTintAmount * .5f);
             RenderSettings.ambientGroundColor = current.ground;
-            RenderSettings.fogColor = current.fog;
+            RenderSettings.fogColor = Color.Lerp(current.fog, SongTint, SongTintAmount * .35f);
             RenderSettings.fogStartDistance = current.fogStart;
             RenderSettings.fogEndDistance = current.fogEnd;
             if (cam != null)
             {
                 cam.clearFlags = CameraClearFlags.SolidColor;
-                cam.backgroundColor = current.fog;
+                cam.backgroundColor = RenderSettings.fogColor;
                 snow ??= MakeWeather("Snow", false);
                 rain ??= MakeWeather("Rain", true);
                 // the weather boxes follow the camera but stay level
