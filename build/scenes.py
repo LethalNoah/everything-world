@@ -8,6 +8,11 @@ Then a community-detection pass splits that similarity network into scenes.
 
 Writes scenes.json. Needs lastfm_cache.json from fetch_lastfm.py.
 Usage: python scenes.py [resolution]   (higher resolution = more, smaller scenes)
+       python scenes.py --fresh          (regroup everyone from scratch, ignoring the existing scenes.json)
+
+Growth: when scenes.json already exists, existing scenes keep their ids and artists. The fresh grouping is
+only used to place new artists: a fresh group that is mostly new songs becomes a new scene (taking along
+the few existing artists in it), otherwise each new artist joins the existing scene it is most alike.
 """
 import csv, json, math, os, re, sys, collections
 import numpy as np
@@ -15,7 +20,11 @@ import networkx as nx
 
 sys.stdout.reconfigure(encoding='utf-8')
 HERE = os.path.dirname(os.path.abspath(__file__))
-RES = float(sys.argv[1]) if len(sys.argv) > 1 else 1.0
+FRESH = '--fresh' in sys.argv
+args = [a for a in sys.argv[1:] if not a.startswith('--')]
+RES = float(args[0]) if args else 1.0
+NEW_SHARE = .45                            # a fresh group with this share of new songs becomes a new scene
+PLACE_RES = 1.0                            # resolution of the fresh grouping used to place new artists
 
 W_TAGS, W_LINKS, W_SOUND = .55, .35, .10   # how much each kind of evidence counts
 K_EDGES = 12                               # strongest links kept per artist
@@ -25,11 +34,13 @@ SPLIT_RES = 1.0
 LOOSE = .25                                # scenes of 48+ songs less alike than this are split again
 
 # ---------- load ----------
+SCENES_FILE = os.path.join(HERE, 'scenes.json')
+prev = {} if FRESH or not os.path.exists(SCENES_FILE) else json.load(open(SCENES_FILE, encoding='utf-8'))['artist_scene']
 rows = list(csv.DictReader(open(os.path.join(HERE, 'playlist.csv'), encoding='utf-8-sig')))
 cache = json.load(open(os.path.join(HERE, 'lastfm_cache.json'), encoding='utf-8'))
 old_region = json.load(open(os.path.join(HERE, 'artist_region.json'), encoding='utf-8'))
 
-def prim(r): return r['Artist Name(s)'].split(';')[0].strip()
+from overrides import prim, SAME_SCENE_AS   # hand corrections in overrides.json
 by_artist = collections.defaultdict(list)
 for r in rows: by_artist[prim(r)].append(r)
 artists = sorted(by_artist)
@@ -127,7 +138,7 @@ G = nx.Graph(); G.add_nodes_from(strong)
 for i in strong:
     for j in strong[np.argsort(-S[i, strong])[:K_EDGES]]:
         if S[i, j] > 0: G.add_edge(int(i), int(j), weight=float(S[i, j]))
-comms = nx.community.louvain_communities(G, weight='weight', resolution=RES, seed=7)
+comms = nx.community.louvain_communities(G, weight='weight', resolution=PLACE_RES if prev else RES, seed=7)
 label = np.full(N, -1)
 for k, c in enumerate(comms):
     for i in c: label[i] = k
@@ -182,9 +193,53 @@ while True:
     for k2 in ks:
         if k2 != k: link[k2] = S[np.ix_(m, label == k2)].sum() / math.sqrt(songs_in(k2))
     label[m] = link.most_common(1)[0][0]
-ks = sorted(set(label), key=lambda k: -songs_in(k))
-label = np.array([ks.index(k) for k in label])
-K = len(ks)
+# hand corrections: artists Last.fm confuses with a namesake join the scene they belong in
+for a, b in SAME_SCENE_AS.items():
+    if a in ai and b in ai: label[ai[a]] = label[ai[b]]
+if not prev:
+    ks = sorted(set(label), key=lambda k: -songs_in(k))
+    label = np.array([ks.index(k) for k in label])
+else:
+    # keep the existing scenes; use the fresh groups only to place new artists
+    fresh = label.copy()
+    label = np.array([prev.get(a, -1) for a in artists])
+    nxt = max(prev.values()) + 1
+    prev_songs = collections.Counter()
+    for i in range(N):
+        if label[i] >= 0: prev_songs[label[i]] += nsongs[i]
+    # a new name for songs that were already here (e.g. a soundtrack now credited to one album artist)
+    # keeps the scene those songs were in
+    for i in range(N):
+        if label[i] >= 0: continue
+        was = collections.Counter(prev[c.strip()] for r in by_artist[artists[i]]
+                                  for c in r['Artist Name(s)'].split(';') if c.strip() in prev)
+        if was: label[i] = was.most_common(1)[0][0]
+    for k in sorted(set(fresh), key=lambda k: -nsongs[fresh == k].sum()):
+        m = np.where(fresh == k)[0]
+        olds = [i for i in m if artists[i] in prev]
+        total = nsongs[m].sum(); new_share = nsongs[[i for i in m if artists[i] not in prev]].sum() / total
+        dom = collections.Counter()
+        for i in olds: dom[prev[artists[i]]] += nsongs[i]
+        grows_old = dom and dom.most_common(1)[0][1] >= .5 * prev_songs[dom.most_common(1)[0][0]]
+        if new_share >= NEW_SHARE and total >= MIN_SONGS and not grows_old:
+            # existing artists only move in if the scene they leave keeps enough songs
+            movers = []
+            for i in sorted(olds, key=lambda i: nsongs[i]):
+                q = label[i]
+                if nsongs[label == q].sum() - nsongs[i] >= MIN_SONGS: movers.append(i); label[i] = nxt
+            for i in m:
+                if label[i] < 0: label[i] = nxt
+            print(f'new scene {nxt}: {nsongs[label == nxt].sum()} songs, {new_share:.0%} new; moves in: {", ".join(artists[i] for i in movers) or "-"}')
+            nxt += 1
+    # remaining new artists join the scene they are most alike (strongest links per song)
+    for i in np.where(label < 0)[0]:
+        ks_ = [k for k in set(label) if k >= 0]
+        label[i] = max(ks_, key=lambda q: S[i, label == q].sum() / math.sqrt(nsongs[label == q].sum()))
+    for a, b in SAME_SCENE_AS.items():
+        if a in ai and b in ai: label[ai[a]] = label[ai[b]]
+    gone = sorted(set(prev.values()) - set(label))
+    if gone: print('warning: these scenes lost all their artists:', gone)
+K = int(label.max()) + 1
 
 # ---------- describe ----------
 gmean = (X * nsongs[:, None]).sum(0) / nsongs.sum()
@@ -198,6 +253,7 @@ def cohesion(k): return cohesion_of(np.where(label == k)[0])
 scenes = []
 for k in range(K):
     m = np.where(label == k)[0]
+    if not len(m): continue
     members = sorted(m, key=lambda i: -nsongs[i])
     old = collections.Counter(old_region.get(artists[i], '?') for i in m for _ in range(nsongs[i]))
     scenes.append(dict(id=k, songs=songs_in(k), artists=[artists[i] for i in members],
@@ -215,7 +271,7 @@ for a in range(K):
 
 json.dump(dict(resolution=RES, scenes=scenes, scene_similarity=np.round(SS, 4).tolist(),
                artist_scene={artists[i]: int(label[i]) for i in range(N)}),
-          open(os.path.join(HERE, 'scenes.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+          open(SCENES_FILE, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
 
 print(f'{N} artists, {len(rows)} songs -> {K} scenes (resolution {RES})')
 for s in scenes:

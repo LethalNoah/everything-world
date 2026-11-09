@@ -48,9 +48,21 @@ namespace EverythingWorld.EditorTools
             MakeZone("Zone A", a, new Vector3(-15f, 0f, 15f), a.PaletteColor(0)); // floor uses the scene's main colour
             MakeZone("Zone B", b, new Vector3(15f, 0f, 15f), b.PaletteColor(0));
 
-            // Player
+            MakePlayer(new Vector3(0f, 1.1f, -10f));
+            MakeMusic(data);
+
+            if (!AssetDatabase.IsValidFolder("Assets/_Project/Scenes"))
+                AssetDatabase.CreateFolder("Assets/_Project", "Scenes");
+            EditorSceneManager.SaveScene(scene, ScenePath);
+            AddToBuildSettings(ScenePath);
+            Debug.Log($"Built {ScenePath}. Press Play and walk into a zone. Spotify stays off until you tick 'Use Spotify' on the Music object.");
+        }
+
+        /// The walking player with a first-person camera. Shared with the island world builder.
+        internal static GameObject MakePlayer(Vector3 position)
+        {
             var player = new GameObject("Player") { tag = "Player" };
-            player.transform.position = new Vector3(0f, 1.1f, -10f);
+            player.transform.position = position;
             var cc = player.AddComponent<CharacterController>();
             cc.height = 1.8f;
             cc.radius = 0.4f;
@@ -69,10 +81,13 @@ namespace EverythingWorld.EditorTools
             camGo.AddComponent<Camera>().nearClipPlane = 0.1f;
             camGo.AddComponent<AudioListener>();
 
-            var controller = player.AddComponent<SimplePlayerController>();
-            controller.cameraPivot = pivot.transform;
+            player.AddComponent<SimplePlayerController>().cameraPivot = pivot.transform;
+            return player;
+        }
 
-            // Music
+        /// The Music object: dry run, Spotify (off until ticked), director and on-screen box.
+        internal static MusicDirector MakeMusic(TextAsset data)
+        {
             var music = new GameObject("Music");
             var dryRun = music.AddComponent<DryRunMusicOutput>();
             var spotify = music.AddComponent<SpotifyMusicOutput>();
@@ -88,12 +103,7 @@ namespace EverythingWorld.EditorTools
             hud.dryRun = dryRun;
             hud.outputSwitch = outputSwitch;
             hud.spotify = spotify;
-
-            if (!AssetDatabase.IsValidFolder("Assets/_Project/Scenes"))
-                AssetDatabase.CreateFolder("Assets/_Project", "Scenes");
-            EditorSceneManager.SaveScene(scene, ScenePath);
-            AddToBuildSettings(ScenePath);
-            Debug.Log($"Built {ScenePath}. Press Play and walk into a zone. Spotify stays off until you tick 'Use Spotify' on the Music object.");
+            return director;
         }
 
         static void MakeZone(string name, SceneInfo info, Vector3 position, Color color)
@@ -132,7 +142,7 @@ namespace EverythingWorld.EditorTools
             label.GetComponent<MeshRenderer>().sharedMaterial = text.font.material;
         }
 
-        static Material Mat(string name, Color color)
+        internal static Material Mat(string name, Color color)
         {
             if (!AssetDatabase.IsValidFolder(MaterialDir))
                 AssetDatabase.CreateFolder("Assets/_Project", "Materials");
@@ -149,7 +159,7 @@ namespace EverythingWorld.EditorTools
             return mat;
         }
 
-        static void AddToBuildSettings(string path)
+        internal static void AddToBuildSettings(string path)
         {
             var scenes = new System.Collections.Generic.List<EditorBuildSettingsScene>(EditorBuildSettings.scenes);
             if (scenes.Exists(s => s.path == path)) return;

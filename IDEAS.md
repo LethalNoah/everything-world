@@ -2,6 +2,16 @@
 
 Things to remember that aren't built or decided yet. Newest first.
 
+## World shape and scale (2026-11-08, decided, next to build)
+
+After walking the first Unity blockout:
+- **Scale 2.5×:** the game world becomes about 12 × 8 km (2.5 m per map pixel).
+- **Every artist gets an area**, sized by song count: shrine (1 song), monument (2–5), hall (6–15), grand temple (16+). Plots are saved in `build/artist_plots.json` so they stay put when the playlist grows; islands keep spare land for new artists and a plaza for the genre landmark.
+- **Artist radio** for artists with 3+ songs while you stand in their area; smaller shrines keep the island's genre radio.
+- **Continents in the middle, islands at the edges** (liked, details to confirm): the big central realms become shared landmasses where scenes border each other like countries (borders marked by rivers, ridges or roads), small realms stay island chains at the edge. Proposed: The Old Kingdoms + Riffland as one central continent; The Indie Isles, The Chart Isles and The Groovelands as medium landmasses; The Bass Reaches, The Boroughs and The Isles of Story as island chains. Music similarity still decides who borders whom.
+- **Land sized by need, not one fixed scale** (decided after measuring the 2.5× build, where small islands were packed full): each scene gets its artist plots, about 2× that again kept free for future artists, its landmark plaza, and at least ~0.4 km² of open land to wander. About 25–35 km² of land in total; the world's outer size follows from that.
+- Built so far (uncommitted, will be redone after the playlist update): the 2.5× export with artist plots in `build/islandmap.py`, and the Unity island world (`Scripts/World/`, menu Everything World > Build Island World Scene).
+
 ## Sound beyond Spotify (2026-11-08, low priority)
 
 Not seen as necessary, just possible:

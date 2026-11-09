@@ -24,7 +24,9 @@ namespace EverythingWorld.Music
         public float switchDelay = 0.75f;
 
         public SceneCatalog Catalog { get; private set; }
-        public SceneInfo CurrentScene => zones.Count > 0 ? Catalog.Get(zones[zones.Count - 1].sceneId) : null;
+        /// The scene of the zone you're in: a trigger zone if you're inside one, otherwise the island under you.
+        public SceneInfo CurrentScene =>
+            zones.Count > 0 ? Catalog.Get(zones[zones.Count - 1].sceneId) : areaSceneId >= 0 ? Catalog.Get(areaSceneId) : null;
         /// The station you're tuned to, and the song it's on.
         public SceneInfo PlayingScene { get; private set; }
         public RadioSchedule.Slot CurrentSlot { get; private set; }
@@ -32,6 +34,7 @@ namespace EverythingWorld.Music
         readonly List<MusicZone> zones = new List<MusicZone>();
         IMusicOutput musicOutput;
         float switchAt = -1f;
+        int areaSceneId = -1;
 
         void Awake()
         {
@@ -56,6 +59,15 @@ namespace EverythingWorld.Music
         public void ExitZone(MusicZone zone)
         {
             zones.Remove(zone);
+            ScheduleSwitch();
+        }
+
+        /// Set by whatever knows where the player is (the IslandExplorer in the island world).
+        /// -1 = not on an island (bridge, sea): the current station keeps playing.
+        public void SetArea(int sceneId)
+        {
+            if (sceneId == areaSceneId) return;
+            areaSceneId = sceneId;
             ScheduleSwitch();
         }
 

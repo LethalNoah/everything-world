@@ -61,7 +61,8 @@ def similar(data):
     return [[x['name'], round(float(x.get('match', 0)), 3)] for x in a[:50]]
 
 rows = list(csv.DictReader(open(os.path.join(HERE, 'playlist.csv'), encoding='utf-8-sig')))
-artists = sorted({r['Artist Name(s)'].split(';')[0].strip() for r in rows})
+from overrides import prim   # hand corrections in overrides.json
+artists = sorted({prim(r) for r in rows})
 jobs = []
 for a in artists:
     if a not in cache['artist_tags']:

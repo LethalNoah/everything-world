@@ -1,4 +1,8 @@
-"""Draw the island world as an old parchment map for the web: one island per scene, grouped in 8 realms.
+"""Draw the world as an old parchment map for the web, and export the same world for Unity.
+
+Every scene gets land sized by what it needs (its artists' plots, room for new artists, a plaza and open
+land to wander). The central realms form one continent, mid-sized realms are their own landmasses, and
+the rest are island chains toward the edge; similar scenes stay neighbours.
 
 Ways to travel, as planned for the game:
 - walking: bridges join neighbouring islands inside a realm; great causeways join the realms, so every
@@ -17,6 +21,7 @@ from scipy.spatial import cKDTree
 from scipy.sparse.csgraph import minimum_spanning_tree
 from PIL import Image
 import contourpy
+import overrides   # hand corrections in overrides.json
 
 sys.stdout.reconfigure(encoding='utf-8')
 Image.MAX_IMAGE_PIXELS = None
@@ -66,47 +71,148 @@ BIOME_BY_ID = {
  48: B('hill', 'deciduous', .35, .1), 49: B('hill', 'flower', .8, 0), 50: B('hill', 'flower', .55, 0),
  51: B('hill', 'flower', .6, .05), 52: B('mountain', 'conifer', .35, .45), 53: B('hill', 'deciduous', .45, .05),
  54: B('hill', 'marsh', .35, .1), 55: B('mesa', 'scrub', .2, .2), 56: B('hill', 'palm', .65, .05),
- 57: B('peak', 'conifer', .4, .55), 58: B('hill', 'dune', .5, 0)}
+ 57: B('peak', 'conifer', .4, .55), 58: B('hill', 'dune', .5, 0),
+ 59: B('hill', 'flower', .5, .05), 60: B('hill', 'deciduous', .45, .05), 61: B('mountain', 'conifer', .5, .45),
+ 62: B('hill', 'palm', .7, .1), 63: B('hill', 'marsh', .7, 0), 64: B('mountain', 'deciduous', .9, .35),
+ 65: B('hill', 'palm', .5, .05)}
 BIOME = [BIOME_BY_ID[s['id']] for s in SCN]
 
-# ---------- where the islands go ----------
-# The scene layout is about square; stretch it sideways to fill a 3:2 sheet. Island sizes stay round.
+# ---------- how much land each scene needs ----------
+# Land is sized by need, not by one fixed scale: every scene gets room for its artists' plots, twice that
+# again for artists still to come, a plaza for its landmark, and open land just to wander. The world's
+# scale (metres per map pixel) then follows from the total, so the map sheet stays the same size.
 P0 = np.array([[s['x'], s['y']] for s in SCN], float); R0 = np.array([s['r'] for s in SCN], float)
-SX = 1.45; MX, MY = 230, 200; GROW = 1.4
-xs = P0[:, 0] * SX
-x0, x1 = (xs - R0 * GROW).min(), (xs + R0 * GROW).max(); y0, y1 = (P0[:, 1] - R0 * GROW).min(), (P0[:, 1] + R0 * GROW).max()
-S = min((WW - 2 * MX) / (x1 - x0), (WH - 2 * MY) / (y1 - y0))
-ox = (WW - (x1 - x0) * S) / 2; oy = (WH - (y1 - y0) * S) / 2
-cx = (xs - x0) * S + ox; cy = (P0[:, 1] - y0) * S + oy; Rpx = R0 * S * GROW
-print(f'scale {S:.1f} px per layout unit, island radius {Rpx.min():.0f}-{Rpx.max():.0f} px')
+MX, MY = 200, 170                       # sheet margins in map pixels (room for the title and frame)
+def tier(n): return 'shrine' if n == 1 else 'monument' if n <= 5 else 'hall' if n <= 15 else 'temple'
+PLOT_R = {'shrine': 15, 'monument': 22, 'hall': 45, 'temple': 70}
+def plot_r(n): return PLOT_R[tier(n)] if n != 2 else 18
+PLOT_GAP, COAST, PLAZA = 6, 12, 55      # metres
+SPARE = 2.0                             # free land for future artists, as a multiple of today's plots
+OPEN_M2 = 400_000                       # open land per scene to wander in (about 650 m across)
+plot_area = collections.defaultdict(float)
+for a_ in lay['artists'].values(): plot_area[a_['scene']] += math.pi * (plot_r(a_["songs"]) + PLOT_GAP / 2) ** 2
+need_m2 = np.array([plot_area[s_['id']] * (1 + SPARE) + math.pi * PLAZA ** 2 + OPEN_M2 for s_ in SCN])
+
+# ---------- continents and island chains ----------
+# The big central realms share one continent, mid-sized realms are each their own landmass, and the rest
+# stay island chains near the edge. Realm ids are the ones in scene_art.json. Scenes on one landmass touch
+# and are split by borders; everywhere else there is sea between scenes.
+LANDMASS = {0: 0, 1: 0, 2: 1, 4: 2, 5: 3}            # realm -> landmass; realms not listed are island chains
+group = np.array([LANDMASS.get(r, 100 + r) for r in realm_of])
+is_chain = np.array([r not in LANDMASS for r in realm_of])
+PULL = np.where(group == 0, 1.0, np.where(is_chain, .25, .55))   # how hard each scene is drawn to the middle
+STRAIT_M, SEA_M = 110, 330              # sea between islands of one chain / between landmasses, in metres
+nbrs = [[index_of_id[n] for n in s['neighbours'][:3]] for s in SCN]
+
+# turn the scene layout so its long side runs along the wide sheet
+_w = R0 ** 2; _c = P0 - np.average(P0, 0, _w)
+_ev, _evec = np.linalg.eigh((_c * _w[:, None]).T @ _c); _ax = _evec[:, -1]
+_rot = np.array([[_ax[0], _ax[1]], [-_ax[1], _ax[0]]])
+P0r = _c @ _rot.T
+
+def arrange(mpp, area):
+    """Place the scenes: start from the music-similarity layout, then let them settle so each landmass is
+    one solid piece, chains keep their straits, and the continent sits in the middle of the sheet."""
+    R = np.sqrt(area / math.pi) / mpp
+    st, sea = STRAIT_M / mpp, SEA_M / mpp
+    same = group[:, None] == group[None, :]
+    chain_pair = is_chain[:, None] & same
+    Dmin = np.where(same & ~chain_pair, (R[:, None] + R[None, :]) * .93,
+           np.where(chain_pair, R[:, None] + R[None, :] + st, R[:, None] + R[None, :] + sea))
+    np.fill_diagonal(Dmin, 0)
+    d = np.hypot(*(P0r[:, None] - P0r[None]).transpose(2, 0, 1)) + np.eye(K) * 1e9
+    nn = d.argmin(1); k = np.median((R + R[nn]) / d[np.arange(K), nn])
+    P = P0r * k * np.array([1.2, 1.0])
+    C = np.zeros(2)
+    for it in range(1500):
+        delta = P[:, None] - P[None]; dist = np.hypot(delta[..., 0], delta[..., 1]) + np.eye(K)
+        u = delta / dist[..., None]
+        over = np.clip(Dmin - dist, 0, None); np.fill_diagonal(over, 0)
+        mv = (u * over[..., None]).sum(1) * .5
+        # similar scenes on the same landmass (or chain) stay side by side
+        for i in range(K):
+            for j in nbrs[i]:
+                if group[i] == group[j] and dist[i, j] > Dmin[i, j] * 1.03:
+                    mv[i] -= u[i, j] * (dist[i, j] - Dmin[i, j]) * .08
+        # every landmass is drawn to the middle; wider than tall, to fill the sheet
+        g = (P - C) * np.array([.62, 1.0])
+        mv -= g * PULL[:, None] * .012 * (1 - it / 2000)
+        # island chains drift outward, so they end up around the edge rather than in the middle
+        cont = P[group == 0].mean(0); out = P - cont; on = np.hypot(*out.T)[:, None] + 1e-9
+        mv += np.where(is_chain[:, None], out / on * .7 * (1 - it / 1500), 0)
+        P += np.clip(mv, -8, 8)
+    lo = (P - R[:, None]).min(0); hi = (P + R[:, None]).max(0)
+    return P - (lo + hi) / 2, R, hi - lo
 
 # ---------- land ----------
 yy, xx = np.mgrid[0:GH, 0:GW].astype('f4')
-wx = xx + fbm(31, 3.2, 2.5) * 22; wy = yy + fbm(32, 3.2, 2.5) * 22
-gcx, gcy, gR = cx / CELL, cy / CELL, Rpx / CELL
-best = np.full(xx.shape, -9., 'f4'); second = np.full(xx.shape, -9., 'f4'); L = np.zeros(xx.shape, 'i2')
-for i in range(K):
-    # an island is a main body plus a few lobes (peninsulas), seeded by the scene id so its shape is stable
-    lr = np.random.default_rng(1000 + SCN[i]['id'])
-    sc = 1 - np.hypot(wx - gcx[i], wy - gcy[i]) / gR[i]
-    for _ in range(lr.integers(2, 5)):
-        th = lr.uniform(0, 2 * np.pi); off = gR[i] * lr.uniform(.35, .62); rl = gR[i] * lr.uniform(.38, .6)
-        sc = np.maximum(sc, (1 - np.hypot(wx - gcx[i] - np.cos(th) * off, wy - gcy[i] - np.sin(th) * off) / rl) * .9)
-    m = sc > best
-    second = np.where(m, best, np.maximum(second, sc)); L = np.where(m, i, L).astype('i2'); best = np.where(m, sc, best)
-coarse = fbm(33, 2.9, 2.0); fine = fbm(34, 2.3, 10.0); ridged = 1 - np.abs(fbm(35, 2.7, 3.0))
-F = ndi.gaussian_filter(best, 3) * 2.1 + coarse * .42 + ridged * .07 + fine * .03 - .12
-# a strait between neighbouring islands, so each scene is its own island
-F -= np.exp(-((best - second) / .15) ** 2) * 1.9 * (second > -.7)
-edge = np.minimum.reduce([xx / 50, (GW - xx) / 50, yy / 50, (GH - yy) / 50]); F -= np.clip(1 - edge, 0, 1) ** 2 * 6
-land = F > 0
-lab, n = ndi.label(land); sz = ndi.sum(land, lab, range(1, n + 1))
-tiny = np.isin(lab, np.where(sz < 45)[0] + 1); land &= ~tiny; F[tiny] = -.02
-hl, nh = ndi.label(~land); sz = ndi.sum(~land, hl, range(1, nh + 1))
-for j in np.where(sz < 140)[0]: F[hl == j + 1] = .02
-land = F > 0
+def make_land(Rpx):
+    wx = xx + fbm(31, 3.2, 2.5) * 22; wy = yy + fbm(32, 3.2, 2.5) * 22
+    gcx, gcy, gR = cx / CELL, cy / CELL, Rpx / CELL
+    best = np.full(xx.shape, -9., 'f4'); second = np.full(xx.shape, -9., 'f4')
+    L = np.zeros(xx.shape, 'i2'); L2 = np.zeros(xx.shape, 'i2')
+    for i in range(K):
+        # a scene is a main body plus a few lobes (peninsulas), seeded by the scene id so its shape is stable
+        lr = np.random.default_rng(1000 + SCN[i]['id'])
+        sc = 1 - np.hypot(wx - gcx[i], wy - gcy[i]) / gR[i]
+        for _ in range(lr.integers(2, 5)):
+            th = lr.uniform(0, 2 * np.pi); off = gR[i] * lr.uniform(.35, .62); rl = gR[i] * lr.uniform(.38, .6)
+            sc = np.maximum(sc, (1 - np.hypot(wx - gcx[i] - np.cos(th) * off, wy - gcy[i] - np.sin(th) * off) / rl) * .9)
+        m = sc > best; m2 = ~m & (sc > second)
+        second = np.where(m, best, np.where(m2, sc, second)); L2 = np.where(m, L, np.where(m2, i, L2)).astype('i2')
+        L = np.where(m, i, L).astype('i2'); best = np.where(m, sc, best)
+    coarse = fbm(33, 2.9, 2.0); fine = fbm(34, 2.3, 10.0); ridged = 1 - np.abs(fbm(35, 2.7, 3.0))
+    F = ndi.gaussian_filter(best, 3) * 2.1 + coarse * .42 + ridged * .07 + fine * .03 - .12
+    # sea between scenes on different landmasses, and between the islands of a chain
+    split = (group[L] != group[L2]) | is_chain[L]
+    F -= np.exp(-((best - second) / .15) ** 2) * 1.9 * (second > -.7) * split
+    # scenes on one landmass grow into each other, so the land between them is solid
+    F = np.where(~split & (second > -.6) & (best > -.25), np.maximum(F, .25), F)
+    # never carve into the heart of a scene
+    F = np.where((best > .5) & (best - second > .12), np.maximum(F, .3), F)
+    edge = np.minimum.reduce([xx / 50, (GW - xx) / 50, yy / 50, (GH - yy) / 50]); F -= np.clip(1 - edge, 0, 1) ** 2 * 6
+    land = F > 0
+    lab, n = ndi.label(land); sz = ndi.sum(land, lab, range(1, n + 1))
+    tiny = np.isin(lab, np.where(sz < 45)[0] + 1); land &= ~tiny; F[tiny] = -.02
+    hl, nh = ndi.label(~land); sz = ndi.sum(~land, hl, range(1, nh + 1))
+    for j in np.where(sz < 140)[0]: F[hl == j + 1] = .02
+    land = F > 0
+    return F, L, land, best, second, wx, wy
+# Scenes squeezed by their neighbours can end up with less land than they need. Measure each one's land,
+# give the short ones more room and lay the world out again (moving neighbours aside, not into them).
+def place(area):
+    global MPP
+    for attempt in range(6):
+        P, Rpx, size = arrange(MPP, area)
+        fit = max(size[0] / (WW - 2 * MX), size[1] / (WH - 2 * MY))
+        if .93 < fit <= 1.0: break
+        MPP *= fit * 1.02 if fit > 1 else fit ** .9 * 1.02
+    return P, Rpx
+
+MPP = math.sqrt(need_m2.sum() / (.30 * WW * WH))     # first guess: land on about 30% of the sheet
+# Lay the scenes out once, with a little extra room for coastline, then keep them where they are and only
+# adjust how far each scene reaches until every one has the land it needs (bigger reach takes land from
+# its neighbours on a landmass; on a chain it just grows the island).
+P, Rpx = place(need_m2 * 1.25)
+cx, cy = P[:, 0] + WW / 2, P[:, 1] + WH / 2
+reach = np.ones(K)
+for attempt in range(10):
+    F, L, land, best, second, wx, wy = make_land(Rpx * reach)
+    have = np.bincount(L[land].ravel(), minlength=K) * (MPP * CELL) ** 2
+    ratio = need_m2 / np.maximum(have, 1)
+    print(f'  pass {attempt}: {int((ratio > 1.03).sum())} scenes short of land, worst',
+          ', '.join(f'{ART[SCN[i]["id"]]["name"]} {1 / ratio[i]:.0%}' for i in np.argsort(-ratio)[:3]))
+    if (ratio <= 1.03).all(): break
+    reach *= np.clip(ratio, np.where(is_chain, .85, 1.0), 1.4) ** .5   # landmass scenes never shrink, so landmasses stay whole     # land grows about with the square of the reach
+Rpx = Rpx * reach
+need_cells = need_m2 / (MPP * CELL) ** 2
+ASC = Rpx / np.maximum(R0, 1e-6) * .8                 # layout units -> map px, for spots inside a scene
+print(f'scale {MPP:.2f} m per map pixel: world {WW * MPP / 1000:.1f} x {WH * MPP / 1000:.1f} km, land needed {need_m2.sum() / 1e6:.1f} km2')
+gcx, gcy = cx / CELL, cy / CELL
 for i in range(K): assert (land & (L == i)).sum() > 200, f'scene {SCN[i]["id"]} has almost no land'
-print('land fraction', round(land.sum() / (GW * GH), 3), 'landmasses', ndi.label(land)[1])
+have_m2 = have
+print(f'land {have_m2.sum() / 1e6:.1f} km2 ({land.sum() / (GW * GH):.0%} of the sheet), landmasses {ndi.label(land)[1]}, '
+      f'smallest scene {have_m2.min() / 1e6:.2f} km2, short of need: {int((ratio > 1.05).sum())}')
 dland = ndi.distance_transform_edt(land); dsea = ndi.distance_transform_edt(~land)
 del wx, wy, best, second
 
@@ -114,11 +220,11 @@ del wx, wy, best, second
 artists = lay['artists']
 songs = []
 for r in rows:
-    arts = [a.strip() for a in r['Artist Name(s)'].split(';')]; prim = arts[0]
+    arts = [a.strip() for a in r['Artist Name(s)'].split(';')]; prim = overrides.prim(r)
     songs.append(dict(uri=r['Track URI'].split(':')[-1], t=r['Track Name'], a=arts, al=r['Album Name'], yr=r['Release Date'][:4],
         ms=int(r['Duration (ms)'] or 0), pop=int(r['Popularity'] or 0), g=[x.strip() for x in r['Genres'].split(',') if x.strip()],
         e=float(r['Energy']), v=float(r['Valence']), ac=float(r['Acousticness']), d=float(r['Danceability']), tempo=float(r['Tempo']),
-        reg=index_of_id[artists[prim]['scene']], prim=prim, iid=man.get(r['Album Name'] + '|' + prim)))
+        reg=index_of_id[artists[prim]['scene']], prim=prim, iid=man.get(r['Album Name'] + '|' + arts[0])))
 
 # ---------- placement: artists sit where the scene layout put them, songs around their artist ----------
 towns = []
@@ -147,7 +253,7 @@ for i in range(K):
     order = sorted(by, key=lambda a: -len(by[a]))
     for rank, a in enumerate(order):
         v = by[a]; ap = artists[a]
-        target = np.array([cx[i], cy[i]]) + (np.array([ap['x'], ap['y']]) - P0[i]) * S * GROW * .95
+        target = np.array([cx[i], cy[i]]) + (np.array([ap['x'], ap['y']]) - P0[i]) * ASC[i]
         home = nearest(target)
         if len(v) >= 3: towns.append(dict(n=a, x=float(home[0]), y=float(home[1]), c=len(v), r=i, cap=int(rank == 0)))
         first = True
@@ -219,13 +325,14 @@ for a, b in sorted(links):
     p, q = ENDS[(a, b)]
     # land the bridge a little way onto each shore
     u = (q - p) / (np.hypot(*(q - p)) + 1e-9); p2, q2 = p - u * 7, q + u * 7
+    if GAP[a, b] < 6 and group[a] == group[b]: continue   # neighbours on one landmass: cross on land
     kind = 'causeway' if realm_of[a] != realm_of[b] or GAP[a, b] > 120 else 'bridge'
     bridges.append(dict(a=a, b=b, k=kind, p=[round(float(v), 1) for v in (*p2, *q2)]))
 print('bridges', collections.Counter(b['k'] for b in bridges))
-assert len(bridges) >= K - 1
+assert len(links) >= K - 1
 
 # towers: one per realm, on its best-connected island, toward the middle of the realm
-deg = collections.Counter(); [deg.update([b['a'], b['b']]) for b in bridges]
+deg = collections.Counter(); [deg.update(l) for l in links]
 towers = []
 for r in range(len(RLM)):
     mem = [i for i in range(K) if realm_of[i] == r]
@@ -458,8 +565,14 @@ wide = ndi.distance_transform_edt(~land, sampling=(1, .33))
 for r, rm in enumerate(realms):
     own = ndi.distance_transform_edt(~(land & (realm_of[L] == r)))
     other = ndi.distance_transform_edt(~(land & (realm_of[L] != r)))
-    ok = ~land & ~title_box & ~blocked & (own < other * .7) & (own < 75) & (frame > 60)
     mem = [i for i in range(K) if realm_of[i] == r]
+    if r in LANDMASS:
+        # a realm on a landmass is named across its own land, like a country on a continent
+        inside = ndi.distance_transform_edt(ndi.binary_opening(land & (realm_of[L] == r), iterations=3), sampling=(1, .45))
+        a, b = np.unravel_index(np.argmax(inside), inside.shape)
+        rm['x'], rm['y'] = float(b * CELL), float(a * CELL)
+        continue
+    ok = ~land & ~title_box & ~blocked & (own < other * .7) & (own < 75) & (frame > 60)
     mx_ = np.average(gcx[mem], weights=R0[mem] ** 2); my_ = np.average(gcy[mem], weights=R0[mem] ** 2)
     score = np.where(ok, np.minimum(wide, 26) + np.minimum(dsea, 30) * .5 - .1 * own - .06 * np.hypot(xo - mx_, yo - my_), -1e9)
     a, b = np.unravel_index(np.argmax(score), score.shape)
@@ -468,6 +581,7 @@ for r, rm in enumerate(realms):
         blocked |= (yo - a) ** 2 + ((xo - b) / 3.5) ** 2 < 32 ** 2
 for name, sid in SEA_NEAR:
     i = index_of_id[sid]; p = open_spot_near(cx[i] + Rpx[i] * .9, cy[i] + Rpx[i] * .5)
+    if p is None or dsea[int(p[1] / CELL), int(p[0] / CELL)] < 14: continue   # no open water beside it
     seas.append(dict(n=name, x=p[0], y=p[1], z=.45, a=0)); blocked |= (yo - p[1] / CELL) ** 2 + ((xo - p[0] / CELL) / 2.4) ** 2 < 50 ** 2
 # the big seas go to the widest open water, kept off the very edge of the sheet
 openness = ndi.gaussian_filter(np.minimum(dsea, frame * .7), 6) * ~title_box
@@ -554,6 +668,130 @@ out = dict(W=WW, H=WH, glyphTypes=GL, keys=keys, regions=regions, realms=realms,
 js = 'window.WORLD=' + json.dumps(out, ensure_ascii=False, separators=(',', ':'), default=lambda o: o.item()) + ';'
 open(f'{OUT}/world.js', 'w', encoding='utf-8').write(js)
 print('world.js', round(len(js) / 1e6, 2), 'MB')
+
+# ---------- the same world for Unity ----------
+# The game world is the map scaled up: MPP metres per map pixel. Heights and island ids sit on a grid of
+# vertices STEP metres apart, in map order (row 0 = north edge). Unity x = metres east, z = metres north.
+UD = '../Game/EverythingWorld/Assets/_Project/Data'
+STEP = 8.0
+WM, DM = WW * MPP, WH * MPP
+NX, NZ = int(WM / STEP) + 1, int(DM / STEP) + 1
+vz_m, vx_m = np.mgrid[0:NZ, 0:NX].astype('f4') * STEP          # metres from the west and north edges
+gy_, gx_ = np.clip(vz_m / MPP / CELL - .5, 0, GH - 1), np.clip(vx_m / MPP / CELL - .5, 0, GW - 1)
+sample = lambda a, order=1: ndi.map_coordinates(a.astype('f4'), [gy_, gx_], order=order, mode='nearest')
+toU = lambda px, py: (float(px * MPP), float(DM - py * MPP))   # map pixel -> Unity x, z
+hn = h / max(float(np.percentile(h[land], 99)), 1e-6)
+dl_m, ds_m = dland * CELL * MPP, dsea * CELL * MPP
+elev_land = .6 + 2.6 * np.clip(dl_m / 25, 0, 1) + np.clip(hn, 0, 1.2) * 80 * np.clip(dl_m / 70, 0, 1)
+elev_sea = -.3 - np.minimum(ds_m * .2, 10)
+E = sample(np.where(land, elev_land, elev_sea))
+landv = sample(land, 0) > .5
+idv = np.where(landv, sample(L, 0), 255).astype(np.uint8)
+coastv = sample(dl_m)                                            # metres to the shore, on land
+
+# ---------- artist plots ----------
+# Every artist gets a round plot sized by song count, near the similar artists the scene layout put
+# around them. Plots are saved in artist_plots.json and kept on later runs, so a growing playlist only
+# adds plots on free land instead of moving everyone. Each island keeps a plaza for its genre landmark.
+plots_file = 'artist_plots.json'
+saved = json.load(open(plots_file, encoding='utf-8')) if os.path.exists(plots_file) else {}
+by_scene = collections.defaultdict(list)
+for a, ap in artists.items(): by_scene[ap['scene']].append(a)
+songs_by_artist = collections.defaultdict(list)
+for s in songs: songs_by_artist[s['prim']].append(s)
+reserved = []   # (x, z, r): plazas, towers, bridge ends
+for i in range(K):
+    x, z = toU(regions[i]['x'], regions[i]['y']); reserved.append((x, z, PLAZA, i))
+for t in towers:
+    x, z = toU(t['x'], t['y']); reserved.append((x, z, 40, t['isl']))
+for b in bridges:
+    for (px, py), isl in (((b['p'][0], b['p'][1]), b['a']), ((b['p'][2], b['p'][3]), b['b'])):
+        x, z = toU(px, py); reserved.append((x, z, 30, isl))
+cand_rows, cand_cols = np.nonzero(landv)
+plots = {}; spare_area = {}
+for i in range(K):
+    sid = SCN[i]['id']
+    on = idv[cand_rows, cand_cols] == i
+    cx_u = cand_cols[on] * STEP; cz_u = DM - cand_rows[on] * STEP; cd = coastv[cand_rows[on], cand_cols[on]]
+    placed = [(x, z, r) for x, z, r, isl in reserved if isl == i]
+    def fits(x, z, r):
+        return all((x - px) ** 2 + (z - pz) ** 2 >= (r + pr + PLOT_GAP) ** 2 for px, pz, pr in placed)
+    names = sorted(by_scene[sid], key=lambda a: (-artists[a]['songs'], a))
+    # artists placed before keep their spot if it still works
+    for a in names:
+        sv = saved.get(a)
+        if sv and sv['scene'] == sid and sv['r'] == plot_r(artists[a]['songs']):
+            c, r_ = int(round(sv['x'] / STEP)), int(round((DM - sv['z']) / STEP))
+            if 0 <= r_ < NZ and 0 <= c < NX and idv[r_, c] == i and coastv[r_, c] >= sv['r'] + COAST * .5 and fits(sv['x'], sv['z'], sv['r']):
+                plots[a] = dict(sv); placed.append((sv['x'], sv['z'], sv['r']))
+    for a in names:
+        if a in plots: continue
+        n = artists[a]['songs']; r = plot_r(n); ap = artists[a]
+        tx, tz = toU(*(np.array([cx[i], cy[i]]) + (np.array([ap['x'], ap['y']]) - P0[i]) * ASC[i]))
+        spot = None
+        for rr in (r, r * .8, r * .65):
+            ok = cd >= rr + COAST
+            order = np.argsort((cx_u[ok] - tx) ** 2 + (cz_u[ok] - tz) ** 2)
+            xs_ok, zs_ok = cx_u[ok][order], cz_u[ok][order]
+            for x, z in zip(xs_ok, zs_ok):
+                if fits(x, z, rr): spot = (float(x), float(z), float(rr)); break
+            if spot: break
+        if not spot: print(f'warning: no room for {a} on {regions[i]["n"]}'); continue
+        plots[a] = dict(scene=sid, x=spot[0], z=spot[1], r=spot[2]); placed.append(spot)
+    # how much open, plot-sized land is left for new artists
+    free = sum(1 for x, z, d in zip(cx_u, cz_u, cd) if d >= 27 and fits(x, z, 15))
+    spare_area[sid] = free * STEP * STEP
+json.dump(dict(sorted(plots.items())), open(plots_file, 'w', encoding='utf-8'), ensure_ascii=False, indent=0)
+tiers_ = collections.Counter(tier(artists[a]['songs']) for a in plots)
+# spare room, counted in free shrine-sized plots (a shrine plot plus its spacing is about 1,100 square metres)
+spare_plots = {s: int(v / 1100) for s, v in spare_area.items()}
+print('artist plots', len(plots), dict(tiers_), '| spare shrine plots: fewest',
+      sorted((v, regions[index_of_id[s]]['n']) for s, v in spare_plots.items())[:4], 'total', sum(spare_plots.values()))
+
+# level the ground under every plot and plaza, blending into the hills around it
+def flatten(x, z, r, edge=14):
+    c0, r0 = x / STEP, (DM - z) / STEP; R = (r + edge) / STEP
+    rs, cs = slice(max(0, int(r0 - R) - 1), min(NZ, int(r0 + R) + 2)), slice(max(0, int(c0 - R) - 1), min(NX, int(c0 + R) + 2))
+    zz, xx_ = np.mgrid[rs, cs]; d = np.hypot((xx_ - c0) * STEP, (zz - r0) * STEP)
+    inner = d <= r
+    if not inner.any(): return
+    target = max(float(np.median(E[rs, cs][inner])), 1.2)
+    w = np.clip(1 - (d - r) / edge, 0, 1)
+    E[rs, cs] = np.where(landv[rs, cs], E[rs, cs] * (1 - w) + target * w, E[rs, cs])
+for p in plots.values(): flatten(p['x'], p['z'], p['r'])
+for x, z, r, isl in reserved[:K]: flatten(x, z, r)
+
+os.makedirs(UD, exist_ok=True)
+np.clip(np.round(E * 10), -32768, 32767).astype('<i2').tofile(f'{UD}/world_height.bytes')
+idv.tofile(f'{UD}/world_island.bytes')
+def mix(c, d, t): return [round(float(c[k] * (1 - t) + d[k] * t)) for k in range(3)]
+islands_u = []
+for i in range(K):
+    pal = sorted((hexrgb(c) for c in ART[SCN[i]['id']]['palette']), key=lambda c: sum(c))
+    base = [178, 168, 120]
+    a = mix(pal[len(pal) // 2], base, .35); b = mix(pal[min(len(pal) - 1, len(pal) // 2 + 1)], base, .45)
+    x, z = toU(regions[i]['x'], regions[i]['y'])
+    islands_u.append(dict(sceneId=SCN[i]['id'], name=regions[i]['n'], realm=regions[i]['realm'], labelX=x, labelZ=z,
+        tintA=a, tintB=b, accent=mix(pal[0], [40, 30, 20], .2), hi=BIOME[i]['hi'], lo=BIOME[i]['lo']))
+def years(ss):
+    y = sorted(int(s['yr']) for s in ss if s['yr'].isdigit())
+    return '' if not y else str(y[0]) if y[0] == y[-1] else f'{y[0]}-{y[-1]}'
+artists_u = []
+for a, p in sorted(plots.items()):
+    ss = songs_by_artist[a]; gc = collections.Counter(g for s in ss for g in s['g'])
+    artists_u.append(dict(name=a, sceneId=p['scene'], x=p['x'], z=p['z'], r=p['r'], songs=len(ss), tier=tier(len(ss)),
+        station=len(ss) >= 3, genres=', '.join(g for g, _ in gc.most_common(3)), years=years(ss)))
+spawn = towers[0]
+sx_, sz_ = toU(spawn['x'], spawn['y'])
+unity = dict(width=WM, depth=DM, step=STEP, nx=NX, nz=NZ, waterLevel=0.0, metresPerMapPixel=MPP,
+    islands=islands_u, artists=artists_u,
+    bridges=[dict(a=SCN[b['a']]['id'], b=SCN[b['b']]['id'], causeway=b['k'] == 'causeway',
+                  ax=toU(b['p'][0], b['p'][1])[0], az=toU(b['p'][0], b['p'][1])[1],
+                  bx=toU(b['p'][2], b['p'][3])[0], bz=toU(b['p'][2], b['p'][3])[1]) for b in bridges],
+    towers=[dict(name=t['n'], realm=t['realm'], sceneId=SCN[t['isl']]['id'], x=toU(t['x'], t['y'])[0], z=toU(t['x'], t['y'])[1]) for t in towers],
+    spawnX=sx_, spawnZ=sz_ - 30)
+json.dump(unity, open(f'{UD}/world_layout.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=1, default=lambda o: o.item())
+print(f'unity world {WM / 1000:.1f} x {DM / 1000:.1f} km, grid {NX} x {NZ}, height {E.min():.1f} to {E.max():.1f} m')
 
 # quick overview picture for checking
 prev = Image.fromarray(final).resize((1600, 1067))

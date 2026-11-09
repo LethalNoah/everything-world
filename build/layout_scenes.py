@@ -33,6 +33,19 @@ realms = sorted(realms, key=lambda r: -size[list(r)].sum())
 realm_of = np.zeros(K, int)
 for r, mem in enumerate(realms):
     for k in mem: realm_of[k] = r
+# growth: scenes that already had a realm keep it; new scenes join the realm they are most alike
+LAYOUT_FILE = os.path.join(HERE, 'scenes_layout.json')
+if os.path.exists(LAYOUT_FILE) and '--fresh' not in sys.argv:
+    old_realm = {s['id']: s['realm'] for s in json.load(open(LAYOUT_FILE, encoding='utf-8'))['scenes']}
+    known = [k for k in range(K) if k in old_realm]
+    for k in known: realm_of[k] = old_realm[k]
+    for k in range(K):
+        if k in old_realm: continue
+        score = collections.defaultdict(float)
+        for j in known: score[realm_of[j]] += SS[k, j]
+        realm_of[k] = max(score, key=lambda r: score[r] / (realm_of[known] == r).sum())
+        print(f'new scene {k} ({", ".join(scenes[k]["tags"][:2])}) joins realm {realm_of[k]}')
+    realms = [set(np.where(realm_of == r)[0].tolist()) for r in range(realm_of.max() + 1)]
 
 # ---------- scene positions ----------
 pos = nx.spring_layout(RG, weight='weight', seed=11, iterations=500, k=1.2 / math.sqrt(K))
