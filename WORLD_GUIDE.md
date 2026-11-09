@@ -10,6 +10,10 @@ About 15.5 × 10.4 km. One big continent in the middle (the Old Kingdoms joined 
 
 **Where the music changes, you can see it (the owner's idea).** Wherever two lands meet there's a shimmering curtain: invisible from far away, fading in as you approach, and always see-through. It's tinted with the colour of the land you're about to enter, so the same border looks different from each side. Bridges have one at each end. The areas of artists with their own radio station have a warm gold one round them, exactly where the music switches to that artist. Each kind has its own pattern (land borders a soft shimmer, bridge gates horizontal bands, artist rings vertical stripes), and as you walk up to one, the name of what's beyond fades in on it, so overlapping curtains stay easy to tell apart.
 
+**Built for a group of friends.** Every building is sized for several people at once, not one: doorways at least 2.8 m wide and 3.4 m tall, rooms people gather in at least 8 m across, 3 m aisles, and places to sit. Lands should feel spread out, with space between things. (The numbers live in `HumanScale.cs`.)
+
+**Light comes from things in the world.** Dusk and night lands keep their ambient light low, so lanterns, windows, fires and candles actually light the ground around them, each with a soft glow.
+
 **One idea that runs through everything: each land keeps its own sky.** Stepping from the Hair Metal Strip (neon night) into the Yacht Rock Riviera (endless sunset) changes the light, fog and weather over a few seconds, the way the music changes. The world has no shared day and night; each place is always at its best time of day. (Decided 2026-11-08.)
 
 ---
@@ -256,13 +260,13 @@ Softer and greener than the continent. Overcast skies, fairy lights, dusk. Close
 **Artist areas:** Shopfronts and village halls; Death Cab for Cutie and Florence Road get the largest.
 
 ### Lanternwood
-*45 songs · 25 artists · 0.53 km²*
+*~40 songs · 23 artists · 0.53 km² · built in Unity*
 
-**Arriving:** Birch woods dusted with snow, small clearings and a frozen creek. A small abandoned chapel is full of candles.
+**Arriving:** Birch woods dusted with snow, open clearings, and a frozen creek running down into a frozen lake you can walk out on. An old chapel full of candles, big enough for a group, with pews facing the altar.
 
-**The vibe:** Blue-hour dusk with warm windows. Lanterns hung from branches, stacked firewood, a lute on a stump. Hushed.
+**The vibe:** Deep blue dusk under a sky full of stars, light only from lanterns, windows, candles and fires. Snowmen stand beside the paths (somewhere new each day). A fire circle with log seats to gather round, and a lone bench on high ground looking out to sea. Hushed.
 
-**Artist areas:** Phoebe Bridgers and Big Thief get halls (log cabins with lit windows). Others are lantern posts and benches in the clearings.
+**Artist areas:** Each hall is different. Phoebe Bridgers: a weathered boathouse on the lake shore with a moon window, and a long pier out over the ice ending in a bench (a place to sit alone). Big Thief: a treehouse on four birches, reached by a ramp, strung with lights, with a fire pit and log seats below. Smaller artists: lean-tos, lantern posts and benches in clearings, all joined by lantern-lit paths.
 
 ### The Shoegaze Fens
 *44 songs · 34 artists · 0.76 km²*

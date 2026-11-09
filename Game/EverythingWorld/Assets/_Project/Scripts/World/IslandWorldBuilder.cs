@@ -51,6 +51,7 @@ namespace EverythingWorld.World
         {
             Instance = this;
             WorldMaterials.UseToon = toonShading;
+            IndoorSpaces.Clear();
             Data = IslandWorldData.Load(layoutJson, heightBytes, islandBytes);
             kits = new LandKit[Data.layout.islands.Length];
             for (var i = 0; i < kits.Length; i++)
@@ -58,6 +59,9 @@ namespace EverythingWorld.World
                 kits[i] = LandKit.For(Data.layout.islands[i].name);
                 if (kits[i] != null) dressed.Add(Data.layout.islands[i].sceneId);
             }
+            for (var i = 0; i < kits.Length; i++)
+                if (kits[i] != null)
+                    try { kits[i].ShapeGround(Data, i); } catch (System.Exception e) { Debug.LogException(e); }
             var t0 = Time.realtimeSinceStartup;
             BuildTerrain();
             BuildSea();
@@ -131,7 +135,12 @@ namespace EverythingWorld.World
             var go = new GameObject(mesh.name);
             go.transform.SetParent(root, false);
             go.AddComponent<MeshFilter>().sharedMesh = mesh;
-            go.AddComponent<MeshRenderer>().sharedMaterials = mats;
+            var rend = go.AddComponent<MeshRenderer>();
+            rend.sharedMaterials = mats;
+            // The ground receives shadows (trees, buildings) but doesn't cast them: with a low sun, every
+            // facet of the low-poly hills would shade the ones behind it, giving a jagged dark patch round
+            // the player that ends where Unity stops drawing detailed shadows.
+            rend.shadowCastingMode = ShadowCastingMode.Off;
             go.AddComponent<MeshCollider>().sharedMesh = mesh;
             go.isStatic = true;
         }
@@ -318,6 +327,7 @@ namespace EverythingWorld.World
                     var ctx = new LandContext(Data, i, root, coverAtlas);
                     kits[i].Dress(ctx);
                     foreach (var a in ctx.Artists) kits[i].BuildArtist(ctx, a);
+                    kits[i].Finish(ctx);
                     Debug.Log($"{kits[i].Land}: dressed in {(Time.realtimeSinceStartup - t0) * 1000:0} ms, {ctx.Artists.Count} artist areas");
                 }
                 catch (System.Exception e)

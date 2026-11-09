@@ -2,6 +2,16 @@
 
 Things to remember that aren't built or decided yet. Newest first.
 
+## Surprise and spontaneity (2026-11-09, core to the theme)
+
+The playlist is meant to be surprising and spontaneous, so the world shouldn't be the same every visit. Idea: drive surprises from the same shared clock as the radio, so friends see them together. Rare moments (a shooting star, the aurora on some nights, lanterns pulsing when a certain song starts), small things that shift by day or week (where snowmen stand, which fire is lit, heavier snow some days), and lights or weather reacting to the song playing (energy, mood).
+
+## Social spaces and minigames (2026-11-09, later)
+
+- A big Christmas lodge (probably in or near Lanternwood) you can go inside, sit down in and talk with friends.
+- Minigames somewhere in the world.
+- Generally: buildings sized for groups (doorways 2.5 m+, rooms for 4-6 people), and places to sit and reflect in every land.
+
 ## Artist descriptions (2026-11-09, wanted, later)
 
 Each artist area should have something to read about the artist, not just the plaque facts. Likely source: Last.fm's artist bio (`artist.getInfo`, already our tag source), trimmed to a few sentences. Last.fm bios are user-written wiki text under CC BY-SA, so show a small "from Last.fm" credit. Bigger artists (halls, temples) could get a longer text inside; shrines a line or two. Would need a fetch step in `build/` and a text field in the Unity export.

@@ -75,11 +75,14 @@ namespace EverythingWorld.World
                 lo[i] = start + o * radius;
                 hi[i] = end + o * radius * topScale;
             }
+            // a prism lying down (a log, a beam) shows both ends, so it gets a lid at the start too
+            var capStart = Mathf.Abs(dir.y) < .7f;
             for (var i = 0; i < sides; i++)
             {
                 var j = (i + 1) % sides;
                 Quad(m, lo[i], lo[j], hi[j], hi[i], mid);
                 if (capTop) Tri(m, hi[i], hi[j], end, mid);
+                if (capStart) Tri(m, lo[i], lo[j], start, mid);
             }
         }
 

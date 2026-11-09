@@ -8,15 +8,16 @@ namespace EverythingWorld.World
     /// a lute resting on a stump. Blue-hour dusk with warm windows. Hushed.
     /// Artist areas: halls are log cabins with lit windows; smaller artists get lantern posts and
     /// benches in the clearings (monuments get a little lean-to shelter).
-    public class LanternwoodKit : LandKit
+    public partial class LanternwoodKit : LandKit
     {
         public override string Land => "Lanternwood";
 
         static readonly Color Snow = new Color(.86f, .89f, .94f), SnowShade = new Color(.78f, .82f, .9f);
-        static readonly Color Moss = new Color(.42f, .48f, .38f), FrostRock = new Color(.6f, .62f, .67f);
+        static readonly Color Moss = new Color(.66f, .71f, .68f), FrostRock = new Color(.6f, .62f, .67f); // moss only just showing through the frost
         static readonly Color LanternGlass = new Color(1f, .66f, .3f);
         static readonly Color Ink = new Color(.93f, .88f, .76f);
 
+        GlowHalos halos = new GlowHalos();
         Material bark, barkMark, leafGold, leafPale, snowTop, logs, darkWood, planks, stone, ice, board, iron, candle, canoeRed, canoeGreen;
 
         void MakeMaterials()
@@ -41,7 +42,7 @@ namespace EverythingWorld.World
         public override bool Ground(float height, float slope, float patch, out Color color)
         {
             if (slope > 7f || height > 26f) color = FrostRock;
-            else if (patch > .7f) color = Moss;
+            else if (patch > .8f) color = Moss;
             else if (patch < .32f) color = SnowShade;
             else color = Snow;
             return true;
@@ -49,6 +50,8 @@ namespace EverythingWorld.World
 
         // ---------------------------------------------------------------- scenery
         readonly List<Vector3> clear = new List<Vector3>(); // x, z = point, y = radius: no trees here (creek, paths)
+        readonly List<Vector3> pathPoints = new List<Vector3>();
+        bool treehouseBuilt;
 
         bool NearClear(float x, float z)
         {
@@ -64,11 +67,18 @@ namespace EverythingWorld.World
         {
             MakeMaterials();
             clear.Clear();
+            pathPoints.Clear();
+            treehouseBuilt = false;
+            halos = new GlowHalos();
             var mk = new MeshKit(); var solid = new MeshKit();
             var chapelFront = Chapel(ctx, mk, solid);
+            Lake(ctx, mk);
             var creek = Creek(ctx, mk);
             Paths(ctx, mk, chapelFront);
             Props(ctx, mk, solid, chapelFront, creek);
+            Snowmen(ctx, mk, solid);
+            FireCircle(ctx, mk, solid, chapelFront);
+            Overlook(ctx, mk, solid);
             mk.Build("Lanternwood scenery", ctx.Root, false);
             solid.BuildCollider("Lanternwood walls", ctx.Root);
             Forest(ctx);
@@ -89,57 +99,70 @@ namespace EverythingWorld.World
             }
             var rot = Quaternion.LookRotation(face);
             var p = ctx.Plaza;
-            const float w = 7f, len = 12f, wallH = 4.6f, t = .35f;
-            var floorY = p.y + .4f;
+            // big enough for a group of friends: a 3 m aisle between the pews, a wide double door
+            const float w = 11f, len = 18f, wallH = 6.5f, t = .4f, ridge = 5f;
+            const float door = HumanScale.DoorWidth, doorH = HumanScale.DoorHeight;
+            var (groundLo, groundHi) = Footprint(ctx, p, rot, w + 1f, len + 1f);
+            var floorY = groundHi + .25f;
             Vector3 L(float x, float y, float z) => new Vector3(p.x, floorY, p.z) + rot * new Vector3(x, y, z);
+            void Wall(Vector3 c, Vector3 size) { mk.Box(planks, c, size, rot); solid.Box(planks, c, size, rot); }
 
-            mk.Box(stone, L(0, -.35f, 0), new Vector3(w + .8f, 1.1f, len + .8f), rot);              // foundation
-            mk.Box(darkWood, L(0, .02f, 0), new Vector3(w, .1f, len), rot);                          // floor
-            solid.Box(planks, L(0, wallH / 2, -len / 2), new Vector3(w, wallH, t), rot); mk.Box(planks, L(0, wallH / 2, -len / 2), new Vector3(w, wallH, t), rot);             // back wall
+            Floor(mk, solid, darkWood, stone, L(0, 0, 0), rot, w, len, floorY, groundLo);
+            IndoorSpaces.Add(L(0, (wallH + ridge) / 2f, 0), rot, new Vector3(w, wallH + ridge, len));
+            Ramp(ctx, mk, solid, stone, L(0, 0, len / 2 + .3f), rot * Vector3.forward, floorY, door + 1.2f);
+            Wall(L(0, wallH / 2, -len / 2), new Vector3(w, wallH, t));                                 // back wall
+            var side = (w - door) / 2f;
             foreach (var s in new[] { -1f, 1f })
             {
-                solid.Box(planks, L(s * w / 2, wallH / 2, 0), new Vector3(t, wallH, len), rot); mk.Box(planks, L(s * w / 2, wallH / 2, 0), new Vector3(t, wallH, len), rot);     // side walls
-                solid.Box(planks, L(s * (w / 2 - 1.35f), wallH / 2, len / 2), new Vector3(2.7f, wallH, t), rot); mk.Box(planks, L(s * (w / 2 - 1.35f), wallH / 2, len / 2), new Vector3(2.7f, wallH, t), rot); // front, either side of the door
-                for (var k = 0; k < 3; k++)                                                          // warm windows
-                    mk.Box(WorldMaterials.Glow(LanternGlass, 1.3f), L(s * (w / 2 + .19f), 2.6f, -3.5f + k * 3.5f), new Vector3(.05f, 1.5f, .8f), rot);
+                Wall(L(s * w / 2, wallH / 2, 0), new Vector3(t, wallH, len));                          // side walls
+                Wall(L(s * (door / 2 + side / 2), wallH / 2, len / 2), new Vector3(side, wallH, t));   // front, either side of the door
+                for (var k = 0; k < 4; k++)                                                             // tall warm windows
+                {
+                    var wp = L(s * (w / 2 + .22f), 3.4f, -6f + k * 4f);
+                    mk.Box(WorldMaterials.Glow(LanternGlass, 1.3f), wp, new Vector3(.05f, 2.4f, 1f), rot);
+                    halos.Add(wp + rot * Vector3.right * s * .4f, 1.6f, LanternGlass, .55f);
+                }
             }
-            solid.Box(planks, L(0, wallH - .6f, len / 2), new Vector3(1.6f, 1.2f, t), rot); mk.Box(planks, L(0, wallH - .6f, len / 2), new Vector3(1.6f, 1.2f, t), rot);          // above the door
-            mk.GableRoof(darkWood, L(0, wallH, 0), new Vector3(w + 1.4f, 0, len + 1.2f), 3.8f, rot, snowTop);
-            // gable fronts above the walls
-            foreach (var z in new[] { -len / 2, len / 2 })
-            {
-                var a = L(-w / 2, wallH, z); var b = L(w / 2, wallH, z); var c = L(0, wallH + 3.8f, z);
-                mk.Tri(planks, a, b, c, L(0, wallH, 0));
-            }
+            Wall(L(0, (wallH + doorH) / 2, len / 2), new Vector3(door, wallH - doorH, t));            // above the door
+            mk.GableRoof(darkWood, L(0, wallH, 0), new Vector3(w + 1.6f, 0, len + 1.4f), ridge, rot, snowTop);
+            foreach (var z in new[] { -len / 2, len / 2 })                                              // gable fronts
+                mk.Tri(planks, L(-w / 2, wallH, z), L(w / 2, wallH, z), L(0, wallH + ridge, z), L(0, wallH, 0));
             // bell cupola on the ridge, at the front
-            mk.Box(planks, L(0, wallH + 4.2f, len / 2 - 1.4f), new Vector3(1.4f, 1.6f, 1.4f), rot);
-            mk.Cone(darkWood, L(0, wallH + 5f, len / 2 - 1.4f), 1.15f, 1.6f, 4, 45f);
-            mk.Blob(iron, L(0, wallH + 4.1f, len / 2 - 1.4f), new Vector3(.35f, .4f, .35f), ctx.Rng, .05f);
-            // inside: pews, an altar, and candles everywhere
-            for (var r = 0; r < 4; r++)
+            mk.Box(planks, L(0, wallH + ridge + .6f, len / 2 - 2f), new Vector3(2f, 2.2f, 2f), rot);
+            mk.Cone(darkWood, L(0, wallH + ridge + 1.7f, len / 2 - 2f), 1.6f, 2.2f, 4, 45f);
+            mk.Blob(iron, L(0, wallH + ridge + .5f, len / 2 - 2f), new Vector3(.5f, .55f, .5f), ctx.Rng, .05f);
+            // inside: pews either side of the aisle, an altar, and candles everywhere
+            var pewW = (w - HumanScale.AisleWidth) / 2f - .6f;
+            var pewX = HumanScale.AisleWidth / 2f + pewW / 2f;
+            for (var r = 0; r < 5; r++)
                 foreach (var s in new[] { -1f, 1f })
                 {
-                    mk.Box(darkWood, L(s * 1.6f, .45f, 2.2f - r * 1.8f), new Vector3(2f, .12f, .5f), rot);
-                    solid.Box(darkWood, L(s * 1.6f, .55f, 2.1f - r * 1.8f), new Vector3(2f, 1.1f, .7f), rot);
-                    mk.Box(darkWood, L(s * 1.6f, .8f, 2.0f - r * 1.8f), new Vector3(2f, .7f, .08f), rot);
+                    var z = 4.5f - r * 2.2f;
+                    mk.Box(darkWood, L(s * pewX, HumanScale.SeatHeight, z), new Vector3(pewW, .12f, .55f), rot);
+                    // backrest on the door side, so you sit facing the altar
+                    mk.Box(darkWood, L(s * pewX, .85f, z + .3f), new Vector3(pewW, .8f, .08f), rot);
+                    solid.Box(darkWood, L(s * pewX, .55f, z + .1f), new Vector3(pewW, 1.1f, .8f), rot);
                 }
-            mk.Box(stone, L(0, .55f, -len / 2 + 1.4f), new Vector3(2.4f, 1.1f, 1f), rot);
-            solid.Box(stone, L(0, .55f, -len / 2 + 1.4f), new Vector3(2.4f, 1.1f, 1f), rot);
+            mk.Box(stone, L(0, .6f, -len / 2 + 2f), new Vector3(3.2f, 1.2f, 1.3f), rot);
+            solid.Box(stone, L(0, .6f, -len / 2 + 2f), new Vector3(3.2f, 1.2f, 1.3f), rot);
             var flame = WorldMaterials.Glow(new Color(1f, .72f, .35f), 6f);
-            for (var i = 0; i < 46; i++)
+            var flameColor = new Color(1f, .7f, .36f);
+            for (var i = 0; i < 70; i++)
             {
                 Vector3 c;
-                if (i < 14) c = L(ctx.Range(-1.1f, 1.1f), 1.1f, -len / 2 + ctx.Range(1.05f, 1.75f));    // on the altar
-                else if (i < 30) c = L(ctx.Range(-w / 2 + .4f, w / 2 - .4f), .07f, ctx.Range(-len / 2 + .5f, -len / 2 + 2.6f)); // on the floor round the altar
-                else c = L((ctx.Chance(.5f) ? -1 : 1) * (w / 2 - .45f), .07f, ctx.Range(-len / 2 + .6f, len / 2 - .8f)); // along the walls
-                var hgt = ctx.Range(.12f, .38f);
-                mk.Prism(candle, c, Vector3.up, ctx.Range(.03f, .06f), hgt, 5);
+                if (i < 18) c = L(ctx.Range(-1.4f, 1.4f), 1.2f, -len / 2 + ctx.Range(1.5f, 2.5f));                       // on the altar
+                else if (i < 42) c = L(ctx.Range(-w / 2 + .5f, w / 2 - .5f), .07f, ctx.Range(-len / 2 + .5f, -len / 2 + 3.6f)); // on the floor round it
+                else c = L((ctx.Chance(.5f) ? -1 : 1) * (w / 2 - .5f), .07f, ctx.Range(-len / 2 + .6f, len / 2 - 1f));     // along the walls
+                var hgt = ctx.Range(.12f, .42f);
+                mk.Prism(candle, c, Vector3.up, ctx.Range(.03f, .07f), hgt, 5);
                 mk.Cone(flame, c + Vector3.up * (hgt + .01f), .025f, .09f, 4);
+                halos.Add(c + Vector3.up * (hgt + .06f), .3f, flameColor, .5f);
             }
-            ArtistBits.PointLight(root, L(0, 1.8f, -len / 2 + 1.6f), new Color(1f, .68f, .38f), 9f, 2.2f);
-            ArtistBits.PointLight(root, L(0, 1.4f, 0), new Color(1f, .66f, .36f), 8f, 1.3f);
-            ArtistBits.PointLight(root, L(0, 2.2f, len / 2 + 1.5f), new Color(1f, .68f, .4f), 10f, 1.4f); // spilling out of the door
-            return L(0, 0, len / 2 + 3.5f);
+            ArtistBits.PointLight(root, L(0, 2f, -len / 2 + 2.6f), flameColor, 11f, 2.4f, true);
+            ArtistBits.PointLight(root, L(-w / 4, 1.6f, 0), flameColor, 8f, 1.1f, true);
+            ArtistBits.PointLight(root, L(w / 4, 1.6f, 0), flameColor, 8f, 1.1f, true);
+            ArtistBits.PointLight(root, L(0, 2.6f, len / 2 + 2f), flameColor, 12f, 1.6f);           // spilling out of the door
+            return L(0, 0, len / 2 + 4.5f);
         }
 
         /// A frozen creek winding downhill from high ground to the shore. Returns its course.
@@ -156,7 +179,7 @@ namespace EverythingWorld.World
             for (var step = 0; step < 260; step++)
             {
                 path.Add(p);
-                if (ctx.Ground(p.x, p.z) < .7f) break;
+                if (ctx.Ground(p.x, p.z) < .7f || OnLake(p, -2f)) break;
                 Vector3 next = p; var bestScore = float.MaxValue;
                 for (var k = 0; k < 16; k++)
                 {
@@ -164,6 +187,7 @@ namespace EverythingWorld.World
                     var dir = new Vector3(Mathf.Cos(a), 0, Mathf.Sin(a));
                     var q = p + dir * 5f; q.y = ctx.Ground(q.x, q.z);
                     var score = q.y - p.y - Vector3.Dot(dir, heading) * .35f;     // downhill, and keep going the same way
+                    if (hasLake) score += .08f * (Vector3.Distance(q, new Vector3(lakeC.x, q.y, lakeC.z)) - Vector3.Distance(p, new Vector3(lakeC.x, p.y, lakeC.z))); // toward the lake
                     if (!ctx.IsFree(q.x, q.z, 2f)) score += 3f;                   // steer round artist plots
                     if (score < bestScore) { bestScore = score; next = q; }
                 }
@@ -230,11 +254,12 @@ namespace EverythingWorld.World
                 {
                     var t = len > 0 ? d / len : 0f;
                     var q = new Vector3(join.x, 0, join.z) + dir * d + side * Mathf.Sin(t * Mathf.PI) * Mathf.Min(4f, len * .06f); // a gentle bow
-                    if (!ctx.IsLand(q.x, q.z, 0f)) break;
+                    if (!ctx.IsLand(q.x, q.z, 0f) || OnLake(q, 2f)) break;
                     pts.Add(ctx.OnGround(q.x, q.z));
                 }
                 if (pts.Count < 2) continue;
-                Ribbon(ctx, mk, trodden, pts, 1.7f, .04f);
+                pathPoints.AddRange(pts);
+                Ribbon(ctx, mk, trodden, pts, 1.7f, .07f);
                 network.AddRange(pts);
                 for (var i = 0; i < pts.Count; i++)
                 {
@@ -250,6 +275,9 @@ namespace EverythingWorld.World
                     mk.Prism(darkWood, post, Vector3.up, .07f, 2.3f, 5);
                     mk.Box(darkWood, post + Vector3.up * 2.22f + arm * .3f, new Vector3(.06f, .06f, .6f), Quaternion.LookRotation(arm));
                     mk.Box(glow, post + Vector3.up * 1.82f + arm * .52f, new Vector3(.18f, .26f, .18f), Quaternion.identity);
+                    var lamp = post + Vector3.up * 1.82f + arm * .52f;
+                    halos.Add(lamp, 1.4f, LanternGlass);
+                    ArtistBits.PointLight(ctx.Root, lamp - Vector3.up * .2f, new Color(1f, .7f, .4f), 9f, 1.4f);
                     mk.Box(iron, post + Vector3.up * 1.98f + arm * .52f, new Vector3(.24f, .05f, .24f), Quaternion.identity);
                 }
             }
@@ -263,7 +291,7 @@ namespace EverythingWorld.World
             {
                 var a = spoke * Mathf.PI * 2f / spokes; var rr = radius * ring / rings;
                 var x = center.x + Mathf.Cos(a) * rr; var z = center.z + Mathf.Sin(a) * rr;
-                return new Vector3(x, ctx.Ground(x, z) + .05f, z);
+                return new Vector3(x, ctx.Ground(x, z) + .03f, z);   // below paths (.07), so the two never flicker
             }
             for (var ring = 0; ring < rings; ring++)
             for (var s = 0; s < spokes; s++)
@@ -319,7 +347,7 @@ namespace EverythingWorld.World
             var root = new GameObject("Birch woods").transform;
             root.SetParent(ctx.Root, false);
             var glow = WorldMaterials.Glow(LanternGlass, 1.6f);
-            const float step = 8.5f;
+            const float step = 10f;
             var seed = ctx.Island.sceneId * 13.7f;
             var count = 0;
             for (var x = ctx.MinX; x < ctx.MaxX; x += step)
@@ -327,8 +355,8 @@ namespace EverythingWorld.World
             {
                 float tx = x + ctx.Range(-3.5f, 3.5f), tz = z + ctx.Range(-3.5f, 3.5f);
                 var thick = Mathf.PerlinNoise(tx * .012f + seed, tz * .012f);
-                if (thick < .38f) continue;                                         // a clearing
-                if (thick < .5f && ctx.Chance(.6f)) continue;                       // thinning toward its edge
+                if (thick < .44f) continue;                                         // a clearing
+                if (thick < .56f && ctx.Chance(.6f)) continue;                      // thinning toward its edge
                 if (!ctx.IsLand(tx, tz, 6f) || !ctx.IsFree(tx, tz, 3f) || NearClear(tx, tz)) continue;
                 var g = ctx.Ground(tx, tz);
                 var key = (Mathf.FloorToInt(tx / 128f), Mathf.FloorToInt(tz / 128f));
@@ -343,6 +371,8 @@ namespace EverythingWorld.World
             }
             Debug.Log($"Lanternwood: {count} birches");
         }
+
+        int treeLanterns;
 
         void Birch(LandContext ctx, MeshKit vis, MeshKit trunk, Vector3 at, Material lanternGlow)
         {
@@ -384,9 +414,17 @@ namespace EverythingWorld.World
                     var hang = at + Vector3.up * ctx.Range(2.6f, 3.4f) + side * .9f;
                     vis.Prism(darkWood, at + Vector3.up * (hang.y - at.y + .45f), side + Vector3.up * .15f, .04f, 1f, 4);
                     vis.Box(lanternGlow, hang, new Vector3(.18f, .26f, .18f), Quaternion.identity);
+                    halos.Add(hang, 1.2f, LanternGlass, .9f);
+                    if (++treeLanterns % 3 == 0) ArtistBits.PointLight(ctx.Root, hang - Vector3.up * .3f, new Color(1f, .7f, .4f), 7f, 1.1f);
                     vis.Box(iron, hang + Vector3.up * .17f, new Vector3(.24f, .05f, .24f), Quaternion.identity);
                 }
             }
+        }
+
+        public override void Finish(LandContext ctx)
+        {
+            halos.Build("Lanternwood glow", ctx.Root);
+            Debug.Log($"Lanternwood: {halos.Count} glows");
         }
 
         // ---------------------------------------------------------------- artist areas
@@ -422,6 +460,13 @@ namespace EverythingWorld.World
                 glows.Add(ArtistBits.LanternPost(mk, root, Ground(ctx, center + front * 3.4f - right * 2.4f), right, darkWood, iron, LanternGlass));
                 area.glowLight = ArtistBits.PointLight(root, center + front * 2f + Vector3.up * 2.4f, new Color(1f, .68f, .38f), 9f, 1.1f);
             }
+            else if (hasLake && a.name == lakeHall)
+                Boathouse(ctx, mk, solid, pictures, labels, a, glows, halos);
+            else if (!treehouseBuilt)
+            {
+                treehouseBuilt = true;
+                Treehouse(ctx, mk, solid, pictures, labels, a, center, front, glows, halos);
+            }
             else
             {
                 Cabin(ctx, mk, solid, pictures, labels, a, center, front, glows);
@@ -431,6 +476,7 @@ namespace EverythingWorld.World
                 Firewood(mk, solid, Ground(ctx, center + right * 5.6f - front * 1f), front);
                 area.glowLight = ArtistBits.PointLight(root, center + front * 9f + Vector3.up * 2.6f, new Color(1f, .68f, .38f), 12f, 1.2f);
             }
+            foreach (var g in glows) if (g != null) halos.Add(g.transform.position, g.transform.localScale.y > .6f ? 1.5f : 1.1f, LanternGlass, .8f);
             area.glowRenderers = glows.ToArray();
             mk.Build("Area", root, false);
             solid.BuildCollider("Walls", root);
@@ -439,9 +485,47 @@ namespace EverythingWorld.World
 
         static Vector3 Ground(LandContext ctx, Vector3 p) => ctx.OnGround(p.x, p.z);
 
-        void Bench(LandContext ctx, MeshKit mk, MeshKit solid, Vector3 at, Vector3 facing)
+        /// The lowest and highest ground under a (rotated) rectangle.
+        static (float lo, float hi) Footprint(LandContext ctx, Vector3 c, Quaternion rot, float w, float d)
         {
-            at = Ground(ctx, at);
+            float lo = float.MaxValue, hi = float.MinValue;
+            for (var i = -2; i <= 2; i++)
+            for (var j = -2; j <= 2; j++)
+            {
+                var p = c + rot * new Vector3(i * w / 4f, 0, j * d / 4f);
+                var g = ctx.Ground(p.x, p.z);
+                lo = Mathf.Min(lo, g); hi = Mathf.Max(hi, g);
+            }
+            return (lo, hi);
+        }
+
+        /// A floor you can stand on at floorY, on a foundation that reaches down to the ground.
+        void Floor(MeshKit mk, MeshKit solid, Material top, Material foundation, Vector3 c, Quaternion rot, float w, float d, float floorY, float groundLo)
+        {
+            var h = floorY - groundLo + .5f;
+            mk.Box(foundation, new Vector3(c.x, floorY - .1f - h / 2f, c.z), new Vector3(w + .4f, h, d + .4f), rot);
+            mk.Box(top, new Vector3(c.x, floorY - .05f, c.z), new Vector3(w, .1f, d), rot);
+            solid.Box(top, new Vector3(c.x, floorY - .25f, c.z), new Vector3(w, .5f, d), rot);
+        }
+
+        /// A gentle ramp from a doorway down to the ground, when the floor sits above it.
+        void Ramp(LandContext ctx, MeshKit mk, MeshKit solid, Material m, Vector3 threshold, Vector3 outward, float floorY, float width)
+        {
+            outward = Vector3.ProjectOnPlane(outward, Vector3.up).normalized;
+            var g = ctx.Ground(threshold.x + outward.x * 1.5f, threshold.z + outward.z * 1.5f);
+            if (floorY - g < .22f) return;
+            var len = Mathf.Max(1.6f, (floorY - g) / Mathf.Tan(18f * Mathf.Deg2Rad));
+            var far = threshold + outward * len; far.y = ctx.Ground(far.x, far.z) - .05f;
+            var near = new Vector3(threshold.x, floorY - .02f, threshold.z);
+            var r = Quaternion.LookRotation(near - far);
+            var size = new Vector3(width, .2f, Vector3.Distance(near, far) + .4f);
+            mk.Box(m, (near + far) / 2f, size, r);
+            solid.Box(m, (near + far) / 2f, size, r);
+        }
+
+        void Bench(LandContext ctx, MeshKit mk, MeshKit solid, Vector3 at, Vector3 facing, float floorY = float.NaN)
+        {
+            at = float.IsNaN(floorY) ? Ground(ctx, at) : new Vector3(at.x, floorY, at.z);
             var rot = Quaternion.LookRotation(facing);
             mk.Box(darkWood, at + Vector3.up * .45f, new Vector3(1.7f, .08f, .45f), rot);
             mk.Box(snowTop, at + Vector3.up * .5f, new Vector3(1.6f, .03f, .38f), rot);
@@ -456,9 +540,11 @@ namespace EverythingWorld.World
         {
             var rot = Quaternion.LookRotation(front);
             const float w = 3.6f, d = 2.2f;
-            var floor = c.y + .1f;
+            var (lo, hi) = Footprint(ctx, c, rot, w + .4f, d + .4f);
+            var floor = hi + .1f;
             Vector3 P(float x, float y, float z) => new Vector3(c.x, floor, c.z) + rot * new Vector3(x, y, z);
-            mk.Box(darkWood, P(0, -.05f, 0), new Vector3(w + .4f, .2f, d + .4f), rot);
+            Floor(mk, solid, darkWood, logs, P(0, 0, 0), rot, w + .4f, d + .4f, floor, lo);
+            Ramp(ctx, mk, solid, darkWood, P(0, 0, d / 2 + .2f), rot * Vector3.forward, floor, w);
             solid.Box(logs, P(0, 1.2f, -d / 2), new Vector3(w, 2.4f, .16f), rot); mk.Box(logs, P(0, 1.2f, -d / 2), new Vector3(w, 2.4f, .16f), rot);
             foreach (var s in new[] { -1f, 1f })
             {
@@ -479,11 +565,13 @@ namespace EverythingWorld.World
             var rot = Quaternion.LookRotation(front);
             const float w = 8f, d = 9f, logR = .2f;
             const int courses = 9;
-            var floor = c.y + .35f;
+            var (lo, hi) = Footprint(ctx, c, rot, w + .6f, d + .6f);
+            var floor = hi + .2f;
             Vector3 P(float x, float y, float z) => new Vector3(c.x, floor, c.z) + rot * new Vector3(x, y, z);
             var right = rot * Vector3.right; var fwd = rot * Vector3.forward;
-            mk.Box(stone, P(0, -.3f, 0), new Vector3(w + .6f, .9f, d + .6f), rot);
-            mk.Box(darkWood, P(0, .05f, 0), new Vector3(w, .1f, d), rot);
+            Floor(mk, solid, darkWood, stone, P(0, 0, 0), rot, w, d, floor, lo);
+            Ramp(ctx, mk, solid, darkWood, P(0, 0, d / 2 + .3f), rot * Vector3.forward, floor, HumanScale.DoorWidth + .6f);
+            IndoorSpaces.Add(P(0, 3f, 0), rot, new Vector3(w, 6f, d));
             for (var k = 0; k < courses; k++)
             {
                 var y = .25f + k * logR * 1.9f;
@@ -492,10 +580,11 @@ namespace EverythingWorld.World
                     mk.Prism(logs, P(s * w / 2, y, -d / 2 - .35f), fwd, logR, d + .7f, 6);
                 mk.Prism(logs, P(-w / 2 - .35f, y + logR * .95f, -d / 2), right, logR, w + .7f, 6);
                 // front wall, with a door gap in the lower courses
-                if (k < 6)
+                if (k < 8)
                 {
-                    mk.Prism(logs, P(-w / 2 - .35f, y + logR * .95f, d / 2), right, logR, w / 2 + .35f - .8f, 6);
-                    mk.Prism(logs, P(.8f, y + logR * .95f, d / 2), right, logR, w / 2 + .35f - .8f, 6);
+                    const float half = HumanScale.DoorWidth / 2f;
+                    mk.Prism(logs, P(-w / 2 - .35f, y + logR * .95f, d / 2), right, logR, w / 2 + .35f - half, 6);
+                    mk.Prism(logs, P(half, y + logR * .95f, d / 2), right, logR, w / 2 + .35f - half, 6);
                 }
                 else mk.Prism(logs, P(-w / 2 - .35f, y + logR * .95f, d / 2), right, logR, w + .7f, 6);
             }
@@ -504,7 +593,7 @@ namespace EverythingWorld.World
             foreach (var s in new[] { -1f, 1f })
             {
                 solid.Box(logs, P(s * w / 2, wallH / 2, 0), new Vector3(.4f, wallH, d), rot);
-                solid.Box(logs, P(s * (w / 4 + .4f), wallH / 2, d / 2), new Vector3(w / 2 - .8f, wallH, .4f), rot);
+                solid.Box(logs, P(s * (w / 4 + HumanScale.DoorWidth / 4f), wallH / 2, d / 2), new Vector3(w / 2 - HumanScale.DoorWidth / 2f, wallH, .4f), rot);
                 // two lit windows on each side
                 foreach (var z in new[] { -2f, 2f })
                 {
@@ -521,7 +610,7 @@ namespace EverythingWorld.World
             // inside: the covers on the back wall, a rug, a warm light
             ArtistBits.CoverWall(pictures, labels, ctx, a, P(0, 1.75f, -d / 2 + .22f), front, 5, .62f, 15, true, Ink);
             mk.Box(WorldMaterials.Solid(new Color(.55f, .2f, .18f)), P(0, .12f, .5f), new Vector3(3.2f, .02f, 2.2f), rot);
-            ArtistBits.PointLight(labels.parent, P(0, 2.4f, -1f), new Color(1f, .7f, .42f), 9f, 1.6f);
+            ArtistBits.PointLight(labels.parent, P(0, 2.4f, -1f), new Color(1f, .7f, .42f), 9f, 1.6f, true);
         }
     }
 }

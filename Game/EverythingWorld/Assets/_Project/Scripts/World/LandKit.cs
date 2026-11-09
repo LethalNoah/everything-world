@@ -19,11 +19,17 @@ namespace EverythingWorld.World
             return false;
         }
 
+        /// Runs before the terrain is built: change heights in data.heights on this land (dig a lake...).
+        public virtual void ShapeGround(IslandWorldData data, int islandIndex) { }
+
         /// The landmark, scenery and props.
         public abstract void Dress(LandContext ctx);
 
         /// One artist's area, on their plot.
         public abstract void BuildArtist(LandContext ctx, IslandWorldData.Artist artist);
+
+        /// Called once after the scenery and every artist area are built.
+        public virtual void Finish(LandContext ctx) { }
 
         static Dictionary<string, LandKit> kits;
 

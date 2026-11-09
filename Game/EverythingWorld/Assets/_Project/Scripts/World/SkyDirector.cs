@@ -21,13 +21,16 @@ namespace EverythingWorld.World
         {
             public Quaternion sunRot; public Color sun; public float sunI;
             public Color sky, horizon, ground, fog; public float fogStart, fogEnd;
-            public float snow, rain;
+            public float snow, rain, stars;
+            public bool sunShadows;
         }
 
         LandMoodSet set;
         readonly Dictionary<string, LandMood> byLand = new Dictionary<string, LandMood>();
         State current, target;
         ParticleSystem snow, rain;
+        GameObject starDome;
+        Material starMaterial, lineMaterial;
         Camera cam;
         string currentLand;
 
@@ -71,10 +74,20 @@ namespace EverythingWorld.World
                 sun = LandMood.Hex(m.sunColor, Color.white), sunI = m.sunIntensity,
                 sky = LandMood.Hex(m.skyLight, Color.grey), horizon = LandMood.Hex(m.horizonLight, Color.grey),
                 ground = LandMood.Hex(m.groundLight, Color.grey), fog = LandMood.Hex(m.fogColor, Color.grey),
-                fogStart = m.fogStart, fogEnd = m.fogEnd,
+                fogStart = m.fogStart, fogEnd = m.fogEnd, stars = m.stars, sunShadows = m.sunShadows,
             };
-            if (m.weather == "snow") s.snow = m.weatherAmount;
-            if (m.weather == "rain") s.rain = m.weatherAmount;
+            var amount = m.weatherAmount;
+            if (m.dailyWeather)
+            {
+                // some days heavy weather and few stars, most days clear with only a little: the same for everyone
+                var day = (int)(System.DateTime.UtcNow - new System.DateTime(2026, 1, 1)).TotalDays;
+                var landHash = 0; foreach (var ch in m.land ?? "") landHash = landHash * 31 + ch; // same on every computer
+                var stormy = (Mathf.Abs((day * 73856093) ^ landHash) % 3) == 0;
+                amount = stormy ? Mathf.Min(1f, amount * 1.8f) : amount * .2f;
+                s.stars = stormy ? m.stars * .15f : m.stars;
+            }
+            if (m.weather == "snow") s.snow = amount;
+            if (m.weather == "rain") s.rain = amount;
             return s;
         }
 
@@ -93,6 +106,7 @@ namespace EverythingWorld.World
             current.fogEnd = Mathf.Lerp(current.fogEnd, target.fogEnd, k);
             current.snow = Mathf.Lerp(current.snow, target.snow, k);
             current.rain = Mathf.Lerp(current.rain, target.rain, k);
+            current.stars = Mathf.Lerp(current.stars, target.stars, k);
             Apply();
         }
 
@@ -100,6 +114,7 @@ namespace EverythingWorld.World
         {
             if (sun != null)
             {
+                sun.shadows = target.sunShadows ? LightShadows.Soft : LightShadows.None;
                 sun.transform.rotation = current.sunRot;
                 sun.color = current.sun;
                 sun.intensity = current.sunI;
@@ -121,6 +136,17 @@ namespace EverythingWorld.World
                 snow.transform.position = above; rain.transform.position = above;
                 SetRate(snow, current.snow * 900f);
                 SetRate(rain, current.rain * 2500f);
+                var indoors = IndoorSpaces.Contains(cam.transform.position);
+                snow.GetComponent<ParticleSystemRenderer>().enabled = !indoors;
+                rain.GetComponent<ParticleSystemRenderer>().enabled = !indoors;
+                starDome ??= MakeStars();
+                if (starDome != null)
+                {
+                    starDome.transform.position = cam.transform.position;
+                    starMaterial.SetFloat("_Strength", current.stars);
+                    if (lineMaterial != null) lineMaterial.SetFloat("_Strength", current.stars);
+                    starDome.SetActive(current.stars > .01f);
+                }
             }
         }
 
@@ -147,6 +173,94 @@ namespace EverythingWorld.World
             mat.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
             mat.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
             return mat;
+        }
+
+        /// About 2,500 stars on a dome round the camera, a few bright, most faint, some in small clusters.
+        GameObject MakeStars()
+        {
+            var shader = Shader.Find("Everything World/Stars");
+            if (shader == null) return null;
+            var rng = new System.Random(2026);
+            var v = new System.Collections.Generic.List<Vector3>(); var c = new System.Collections.Generic.List<Color>();
+            var uv = new System.Collections.Generic.List<Vector2>(); var data = new System.Collections.Generic.List<Vector2>();
+            var t = new System.Collections.Generic.List<int>();
+            const float radius = 1800f;
+            void Star(Vector3 dir, float size, float bright)
+            {
+                var i = v.Count;
+                var tint = Color.Lerp(new Color(.75f, .82f, 1f), new Color(1f, .92f, .8f), (float)rng.NextDouble());
+                tint.a = bright;
+                var phase = (float)rng.NextDouble();
+                foreach (var k in new[] { new Vector2(-1, -1), new Vector2(1, -1), new Vector2(1, 1), new Vector2(-1, 1) })
+                { v.Add(dir * radius); c.Add(tint); uv.Add(k); data.Add(new Vector2(size, phase)); }
+                t.Add(i); t.Add(i + 1); t.Add(i + 2); t.Add(i); t.Add(i + 2); t.Add(i + 3);
+            }
+            Vector3 RandomUp()
+            {
+                var y = .05f + (float)rng.NextDouble() * .95f; var a = (float)rng.NextDouble() * Mathf.PI * 2f; var r = Mathf.Sqrt(1 - y * y);
+                return new Vector3(Mathf.Cos(a) * r, y, Mathf.Sin(a) * r);
+            }
+            for (var i = 0; i < 2300; i++)
+            {
+                var b = Mathf.Pow((float)rng.NextDouble(), 3f);   // mostly faint
+                Star(RandomUp(), 1.4f + b * 3.2f, .3f + b * 1.5f);
+            }
+            // constellations: small groups of brighter stars, joined by faint lines
+            var lv = new System.Collections.Generic.List<Vector3>(); var luv = new System.Collections.Generic.List<Vector2>(); var lt = new System.Collections.Generic.List<int>();
+            for (var g = 0; g < 22; g++)
+            {
+                var center = RandomUp();
+                if (center.y < .3f) center = (center + Vector3.up * .5f).normalized;
+                var pts = new System.Collections.Generic.List<Vector3>();
+                var links = new System.Collections.Generic.List<(int, int)>();
+                var count = 6 + rng.Next(5);
+                var walk = center;
+                // a wandering chain that reaches well across the sky, with the odd branch off an earlier star
+                for (var i = 0; i < count; i++)
+                {
+                    var from = i > 2 && rng.NextDouble() < .3 ? rng.Next(i) : i - 1;
+                    var origin = from >= 0 ? pts[from] : walk;
+                    var stepLen = .1f + (float)rng.NextDouble() * .16f;
+                    var dir = new Vector3((float)rng.NextDouble() - .5f, ((float)rng.NextDouble() - .5f) * .7f, (float)rng.NextDouble() - .5f).normalized;
+                    walk = (origin + dir * stepLen).normalized;
+                    if (walk.y < .12f) walk = (walk + Vector3.up * .2f).normalized;
+                    pts.Add(walk);
+                    if (from >= 0) links.Add((from, i));
+                    Star(walk, 3.2f + (float)rng.NextDouble() * 1.4f, 1.5f + (float)rng.NextDouble() * .5f);
+                }
+                foreach (var (ia, ib) in links)
+                {
+                    Vector3 a = pts[ia] * radius * .999f, b = pts[ib] * radius * .999f;
+                    var across = Vector3.Cross((b - a).normalized, (a + b).normalized) * 1.1f;  // 2 m wide strip on the dome
+                    var k = lv.Count;
+                    lv.Add(a - across); lv.Add(a + across); lv.Add(b + across); lv.Add(b - across);
+                    luv.Add(new Vector2(0, -1)); luv.Add(new Vector2(0, 1)); luv.Add(new Vector2(1, 1)); luv.Add(new Vector2(1, -1));
+                    lt.Add(k); lt.Add(k + 1); lt.Add(k + 2); lt.Add(k); lt.Add(k + 2); lt.Add(k + 3);
+                }
+            }
+            var mesh = new Mesh { name = "Stars", indexFormat = UnityEngine.Rendering.IndexFormat.UInt32 };
+            mesh.SetVertices(v); mesh.SetColors(c); mesh.SetUVs(0, uv); mesh.SetUVs(1, data); mesh.SetTriangles(t, 0);
+            mesh.bounds = new Bounds(Vector3.zero, Vector3.one * radius * 2.2f);
+            var go = new GameObject("Stars");
+            go.transform.SetParent(transform, false);
+            go.AddComponent<MeshFilter>().sharedMesh = mesh;
+            var r2 = go.AddComponent<MeshRenderer>();
+            r2.sharedMaterial = starMaterial = new Material(shader) { name = "Stars" };
+            r2.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            var lineShader = Shader.Find("Everything World/Star Lines");
+            if (lineShader != null && lv.Count > 0)
+            {
+                var lm = new Mesh { name = "Constellation lines" };
+                lm.SetVertices(lv); lm.SetUVs(0, luv); lm.SetTriangles(lt, 0);
+                lm.bounds = new Bounds(Vector3.zero, Vector3.one * radius * 2.2f);
+                var lines = new GameObject("Constellation lines");
+                lines.transform.SetParent(go.transform, false);
+                lines.AddComponent<MeshFilter>().sharedMesh = lm;
+                var lr = lines.AddComponent<MeshRenderer>();
+                lr.sharedMaterial = lineMaterial = new Material(lineShader) { name = "Constellation lines" };
+                lr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            }
+            return go;
         }
 
         static void SetRate(ParticleSystem ps, float rate)

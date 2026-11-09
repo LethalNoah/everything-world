@@ -10,10 +10,11 @@
  "lands": [
   {
    "land": "Lanternwood",
-   "sunPitch": 13, "sunYaw": 70, "sunIntensity": 0.55, "sunColor": "#FF9E6B",
-   "skyLight": "#4C5F94", "horizonLight": "#4F5B7A", "groundLight": "#6B7189",
-   "fogColor": "#56688F", "fogStart": 25, "fogEnd": 380,
-   "weather": "snow", "weatherAmount": 0.55
+   "sunPitch": 10, "sunYaw": 70, "sunIntensity": 0.3, "sunColor": "#FF9466",
+   "skyLight": "#2F3B66", "horizonLight": "#323B57", "groundLight": "#444A63",
+   "fogColor": "#3B4970", "fogStart": 25, "fogEnd": 360,
+   "stars": 0.9, "sunShadows": false, "dailyWeather": false,
+   "weather": "snow", "weatherAmount": 0.4
   },
   {
    "land": "The Everything Hub",

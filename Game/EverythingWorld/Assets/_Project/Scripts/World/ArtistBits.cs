@@ -134,14 +134,16 @@ namespace EverythingWorld.World
         }
 
         /// A warm point light.
-        public static Light PointLight(Transform parent, Vector3 pos, Color color, float range, float intensity)
+        /// indoors = true makes it cast shadows, so it stays inside the walls (costs more: use for rooms only).
+        public static Light PointLight(Transform parent, Vector3 pos, Color color, float range, float intensity, bool indoors = false)
         {
             var l = new GameObject("Light").AddComponent<Light>();
             l.transform.SetParent(parent, false);
             l.transform.position = pos;
             l.type = LightType.Point;
             l.color = color; l.range = range; l.intensity = intensity;
-            l.shadows = LightShadows.None;
+            l.shadows = indoors ? LightShadows.Soft : LightShadows.None;
+            if (indoors) { l.shadowStrength = .95f; l.shadowNearPlane = .2f; }
             return l;
         }
     }

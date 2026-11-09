@@ -31,6 +31,10 @@ namespace EverythingWorld.World
                 // soft two-tone shading: lit side the true colour, shaded side a cooler, darker version
                 m.SetColor("_MiddleTint", new Color(.82f, .82f, .86f));
                 m.SetColor("_ShadowTint", new Color(.5f, .52f, .62f, 1f));
+                // no rim light: it brightens every surface seen at a grazing angle, so the ground beyond a
+                // certain distance turned bright and a dark ring followed the player round
+                m.SetColor("_RimColor", Color.black);
+                m.SetColor("_SpecularColor", new Color(.05f, .05f, .05f, 1f));
             }
             return solid[(c, smooth)] = m;
         }
