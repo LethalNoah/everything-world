@@ -59,7 +59,7 @@ def write_plan(scenes, realms):
     PLAN.write_text("\n".join(out), encoding="utf-8", newline="\n")
 
 
-HUB_ID = 1000   # the Everything Hub island (see islandmap.py)
+from stations import HUB_ID, artist_station, ARTIST_MIN_SONGS
 
 
 def load_durations():
@@ -121,10 +121,26 @@ def main():
                    "neighbours": [], **{f: [] if f == "palette" else "" for f in BRIEF_FIELDS},
                    "mood": "Everything, shuffled.", "tracks": every})
 
+    # Artist stations: every artist with 3+ songs plays only their own songs while you stand in their area.
+    by_artist = {}
+    for t in every:
+        by_artist.setdefault(t["artist"], []).append(t)
+    ids = {}
+    for name, ts in sorted(by_artist.items()):
+        if len(ts) < ARTIST_MIN_SONGS:
+            continue
+        sid = artist_station(name)
+        assert sid not in ids, f"station id clash: {name} and {ids[sid]}"
+        ids[sid] = name
+        scenes.append({"id": sid, "name": name, "realm": -1, "realmName": "", "tags": [],
+                       "x": 0, "y": 0, "r": 0, "energy": 0, "acousticness": 0, "valence": 0, "danceability": 0, "tempo": 0,
+                       "neighbours": [], **{f: [] if f == "palette" else "" for f in BRIEF_FIELDS},
+                       "mood": "Artist radio.", "tracks": ts})
+
     DST.parent.mkdir(parents=True, exist_ok=True)
     DST.write_text(json.dumps({"scenes": scenes}, ensure_ascii=False, indent=1) + "\n", encoding="utf-8", newline="\n")
-    total = sum(len(s["tracks"]) for s in scenes if s["id"] != HUB_ID)
-    print(f"Wrote {len(scenes)} scenes, {total} tracks to {DST.relative_to(ROOT)} and {PLAN.name}"
+    total = sum(len(s["tracks"]) for s in scenes if s["id"] < HUB_ID)
+    print(f"Wrote {sum(1 for s in scenes if s['id'] < HUB_ID)} scenes, the hub, {len(ids)} artist stations, {total} tracks to {DST.relative_to(ROOT)} and {PLAN.name}"
           + (f" ({missing} songs had no scene)" if missing else "")
           + (f" ({no_length} songs had no length, used {DEFAULT_MS // 1000} s)" if no_length else ""))
 

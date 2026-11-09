@@ -11,13 +11,27 @@ namespace EverythingWorld.World
         [Serializable] public class Island { public int sceneId; public string name, realm, hi, lo; public float labelX, labelZ; public int[] tintA, tintB; }
         [Serializable] public class Bridge { public int a, b; public bool causeway; public float ax, az, bx, bz; }
         [Serializable] public class Tower { public string name, realm; public int sceneId; public float x, z; }
+        /// One song on an artist's plaque: its title and its cell in the cover atlas (-1 = no cover).
+        [Serializable] public class Song { public string title; public int cover; }
+        /// An artist's plot: a circle of radius r (metres) at x, z. tier = shrine, monument, hall or temple.
+        /// stationId is the artist's own radio station (artists with 3+ songs), else 0.
+        [Serializable] public class Artist
+        {
+            public string name, tier, genres, years, addedBy;
+            public int sceneId, songs, stationId;
+            public bool station;
+            public float x, z, r;
+            public Song[] songList;
+        }
         [Serializable] public class Layout
         {
             public float width, depth, step, waterLevel, spawnX, spawnZ;
             public int nx, nz;
+            public int coverCols, coverCell, coverSheetWidth, coverSheetHeight; // the album cover sheet (CoverAtlas.jpg)
             public Island[] islands;
             public Bridge[] bridges;
             public Tower[] towers;
+            public Artist[] artists;
         }
 
         public Layout layout;

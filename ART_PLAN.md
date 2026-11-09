@@ -258,7 +258,7 @@ Indie rock, shoegaze, bedroom pop and indie folk.
 
 ### 14. Lanternwood
 
-*indie folk, indie rock, folk, singer songwriter, indie pop* · 45 songs · energy 0.51, acoustic 0.47, mood 0.41 · top artists: Phoebe Bridgers, Big Thief, Lizzy McAlpine, Noah Kahan, Stantough
+*indie folk, indie rock, folk, singer songwriter, indie pop* · 40 songs · energy 0.50, acoustic 0.47, mood 0.40 · top artists: Phoebe Bridgers, Big Thief, Lizzy McAlpine, Daughter, Mitski
 
 - **Terrain:** Birch woods dusted with snow, small clearings and a frozen creek.
 - **Colours:** `#E8E4DA birch white`, `#3F4E6B dusk blue`, `#E9A84C lantern amber`, `#5E7D5A moss`
@@ -648,7 +648,7 @@ Film scores, classical, musicals, game music and novelties.
 
 ### 26. The Isle of Memes & Musicals
 
-*comedy, soundtrack, region:novelty, musicals, disney* · 35 songs · energy 0.67, acoustic 0.30, mood 0.65 · top artists: Phineas and Ferb, The Little Singers, Zac Efron, 90s Classics, Alan Menken
+*comedy, soundtrack, region:novelty, musicals, disney* · 39 songs · energy 0.66, acoustic 0.31, mood 0.64 · top artists: Phineas and Ferb, Stantough, The Little Singers, Zac Efron, 90s Classics
 
 - **Terrain:** A storybook island of round hills and winding paths.
 - **Colours:** `#4A90E2 storybook blue`, `#F7A1C4 pink`, `#FFE066 candy yellow`, `#7CCB5A cartoon grass`

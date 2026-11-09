@@ -8,6 +8,8 @@ What each place should feel like before anything is built in Unity. This is a de
 
 About 15.5 × 10.4 km. One big continent in the middle (the Old Kingdoms joined to Riffland), three landmasses around it (the Groovelands to the west, the Indie Isles to the east, the Chart Isles further east), and island chains toward the edge (the Boroughs top-left, the Bass Reaches bottom-right, the Isles of Story in an inner sea). In the middle of that inner sea sits the Everything Hub. Each realm has one fast-travel tower. Every land is at least 0.44 km², big enough to wander in for a few minutes without passing an artist area.
 
+**Where the music changes, you can see it (the owner's idea).** Wherever two lands meet there's a shimmering curtain: invisible from far away, fading in as you approach, and always see-through. It's tinted with the colour of the land you're about to enter, so the same border looks different from each side. Bridges have one at each end. The areas of artists with their own radio station have a warm gold one round them, exactly where the music switches to that artist. Each kind has its own pattern (land borders a soft shimmer, bridge gates horizontal bands, artist rings vertical stripes), and as you walk up to one, the name of what's beyond fades in on it, so overlapping curtains stay easy to tell apart.
+
 **One idea that runs through everything: each land keeps its own sky.** Stepping from the Hair Metal Strip (neon night) into the Yacht Rock Riviera (endless sunset) changes the light, fog and weather over a few seconds, the way the music changes. The world has no shared day and night; each place is always at its best time of day. (Decided 2026-11-08.)
 
 ---

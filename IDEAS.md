@@ -2,6 +2,10 @@
 
 Things to remember that aren't built or decided yet. Newest first.
 
+## Artist descriptions (2026-11-09, wanted, later)
+
+Each artist area should have something to read about the artist, not just the plaque facts. Likely source: Last.fm's artist bio (`artist.getInfo`, already our tag source), trimmed to a few sentences. Last.fm bios are user-written wiki text under CC BY-SA, so show a small "from Last.fm" credit. Bigger artists (halls, temples) could get a longer text inside; shrines a line or two. Would need a fetch step in `build/` and a text field in the Unity export.
+
 ## Sky per land (2026-11-08, decided)
 
 Each land keeps its own sky, light, fog and weather (its look brief's "mood"), always at its best time of day. There is no shared day and night. Crossing a border blends to the next land's sky over a few seconds, like the music switching. Descriptions of every land are in `WORLD_GUIDE.md`.

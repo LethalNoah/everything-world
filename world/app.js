@@ -446,5 +446,5 @@ function start(){
     return out}};
 }
 base.onload=()=>{const go=()=>start();(document.fonts&&document.fonts.load?Promise.all([document.fonts.load(`20px "IM Fell English"`),document.fonts.load(`italic 20px "IM Fell English"`),document.fonts.load(`20px "IM Fell English SC"`),document.fonts.load(`700 20px "Cinzel Decorative"`)]):Promise.resolve()).then(go,go)};
-base.src='assets/base.jpg';atlas.src='../assets/atlas.jpg';
+base.src='assets/base.jpg';atlas.src='assets/covers.jpg';
 })();

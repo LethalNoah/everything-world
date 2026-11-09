@@ -20,12 +20,26 @@ namespace EverythingWorld.World
         public int chunkCells = 64;
         public bool islandNameSigns = true;
 
+        [Header("Look")]
+        [Tooltip("Album covers for artist plaques: Assets/_Project/Art/CoverAtlas.jpg")]
+        public Texture2D coverAtlas;
+        [Tooltip("Use the Toon Shaders Pro shader for built scenery, if it's imported.")]
+        public bool toonShading = true;
+        [Tooltip("Shimmering curtains where lands meet, at bridge ends and round artist-radio areas.")]
+        public bool zoneFields = true;
+        [Tooltip("Frames per second to aim for. Without a cap the editor runs the GPU flat out (loud fans).")]
+        public int targetFrameRate = 60;
+
         public static IslandWorldBuilder Instance { get; private set; }
         public IslandWorldData Data { get; private set; }
         public List<Transform> Towers { get; } = new List<Transform>();
 
-        Shader lit;
-        readonly Dictionary<Color, Material> materials = new Dictionary<Color, Material>();
+        LandKit[] kits;
+        readonly HashSet<int> dressed = new HashSet<int>();
+
+        /// True for lands built in full (with a kit). Artist stations and rings only exist there for now,
+        /// so you don't hit an invisible circle in an empty field that changes the music.
+        public bool IsDressed(int sceneId) => dressed.Contains(sceneId);
 
         // shared terrain colours
         static readonly Color Seabed = new Color32(126, 136, 104, 255);
@@ -36,14 +50,23 @@ namespace EverythingWorld.World
         void Awake()
         {
             Instance = this;
-            lit = Shader.Find("Universal Render Pipeline/Lit");
+            WorldMaterials.UseToon = toonShading;
             Data = IslandWorldData.Load(layoutJson, heightBytes, islandBytes);
+            kits = new LandKit[Data.layout.islands.Length];
+            for (var i = 0; i < kits.Length; i++)
+            {
+                kits[i] = LandKit.For(Data.layout.islands[i].name);
+                if (kits[i] != null) dressed.Add(Data.layout.islands[i].sceneId);
+            }
             var t0 = Time.realtimeSinceStartup;
             BuildTerrain();
             BuildSea();
             BuildBridges();
             BuildTowers();
             if (islandNameSigns) BuildSigns();
+            DressLands();
+            if (zoneFields) ZoneFields.Build(Data, transform, IslandColors(), IsDressed);
+            Application.targetFrameRate = targetFrameRate; // the editor otherwise renders as fast as the GPU can
             Debug.Log($"Island world built in {(Time.realtimeSinceStartup - t0) * 1000:0} ms: " +
                       $"{Data.layout.islands.Length} islands, {Data.layout.bridges.Length} crossings, {Data.layout.towers.Length} towers");
         }
@@ -53,15 +76,7 @@ namespace EverythingWorld.World
             if (Instance == this) Instance = null;
         }
 
-        Material Mat(Color c, float smooth = .08f)
-        {
-            if (materials.TryGetValue(c, out var m)) return m;
-            m = new Material(lit) { name = "World " + ColorUtility.ToHtmlStringRGB(c) };
-            m.SetColor("_BaseColor", c);
-            m.SetFloat("_Smoothness", smooth);
-            materials[c] = m;
-            return m;
-        }
+        static Material Mat(Color c, float smooth = .08f) => WorldMaterials.Solid(c, smooth);
 
         static Color Rgb(int[] c) => c != null && c.Length == 3 ? new Color32((byte)c[0], (byte)c[1], (byte)c[2], 255) : Color.grey;
 
@@ -149,11 +164,12 @@ namespace EverythingWorld.World
         {
             if (height < -.2f) return Seabed;
             if (height < 1.6f || island < 0) return Sand;
+            // patches about 40 m across
+            var patch = Mathf.PerlinNoise(col * .12f + island * 7.3f, row * .12f);
+            if (kits[island] != null && kits[island].Ground(height, slope, patch, out var kitColor)) return kitColor;
             if (height > 38f) return Peak;
             if (slope > 7f || height > 26f) return Rock;
             var isl = Data.layout.islands[island];
-            // patches of the island's two colours, about 40 m across
-            var patch = Mathf.PerlinNoise(col * .12f + island * 7.3f, row * .12f);
             return patch > .55f ? Rgb(isl.tintB) : Rgb(isl.tintA);
         }
 
@@ -235,9 +251,7 @@ namespace EverythingWorld.World
             root.SetParent(transform, false);
             var wall = Mat(new Color32(226, 214, 184, 255));
             var roof = Mat(new Color32(140, 47, 28, 255));
-            var beacon = Mat(new Color32(240, 180, 70, 255));
-            beacon.EnableKeyword("_EMISSION");
-            beacon.SetColor("_EmissionColor", new Color(2.2f, 1.4f, .4f));
+            var beacon = WorldMaterials.Glow(new Color32(240, 180, 70, 255), 2.4f);
             foreach (var t in Data.layout.towers)
             {
                 var ground = Data.HeightAt(t.x, t.z);
@@ -275,12 +289,51 @@ namespace EverythingWorld.World
             if (!collider) Destroy(go.GetComponent<Collider>());
         }
 
+        /// Each land's curtain colour, from its look-brief palette in scenes.json (the MusicDirector's data).
+        Color[] IslandColors()
+        {
+            var director = FindFirstObjectByType<EverythingWorld.Music.MusicDirector>();
+            var catalog = director != null && director.sceneData != null ? EverythingWorld.Music.SceneCatalog.FromJson(director.sceneData) : null;
+            var colors = new Color[Data.layout.islands.Length];
+            for (var i = 0; i < colors.Length; i++)
+            {
+                var isl = Data.layout.islands[i];
+                var fallback = Color.Lerp(Rgb(isl.tintA), Color.white, .3f);
+                colors[i] = ZoneFields.VividColor(catalog?.Get(isl.sceneId)?.palette, fallback);
+            }
+            return colors;
+        }
+
+        // ---------- lands with a kit: scenery and artist areas ----------
+        void DressLands()
+        {
+            var root = new GameObject("Lands").transform;
+            root.SetParent(transform, false);
+            for (var i = 0; i < kits.Length; i++)
+            {
+                if (kits[i] == null) continue;
+                var t0 = Time.realtimeSinceStartup;
+                try
+                {
+                    var ctx = new LandContext(Data, i, root, coverAtlas);
+                    kits[i].Dress(ctx);
+                    foreach (var a in ctx.Artists) kits[i].BuildArtist(ctx, a);
+                    Debug.Log($"{kits[i].Land}: dressed in {(Time.realtimeSinceStartup - t0) * 1000:0} ms, {ctx.Artists.Count} artist areas");
+                }
+                catch (System.Exception e)
+                {
+                    Debug.LogException(e); // one broken land should not stop the rest of the world
+                }
+            }
+        }
+
         // ---------- island name signs ----------
         void BuildSigns()
         {
             var root = new GameObject("Island names").transform;
             root.SetParent(transform, false);
             var font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            var textMat = ArtistBits.TextMaterial;
             foreach (var isl in Data.layout.islands)
             {
                 var go = new GameObject("Name: " + isl.name);
@@ -291,8 +344,8 @@ namespace EverythingWorld.World
                 text.font = font; text.fontSize = 64; text.characterSize = 1.6f;
                 text.anchor = TextAnchor.MiddleCenter; text.alignment = TextAlignment.Center;
                 text.color = new Color(1f, .97f, .88f);
-                go.GetComponent<MeshRenderer>().sharedMaterial = font.material;
-                go.AddComponent<Billboard>();
+                go.GetComponent<MeshRenderer>().sharedMaterial = textMat;
+                go.AddComponent<Billboard>().fadeWithFog = true;
             }
         }
     }

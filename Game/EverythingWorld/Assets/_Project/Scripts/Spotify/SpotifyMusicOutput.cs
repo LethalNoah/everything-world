@@ -341,10 +341,28 @@ namespace EverythingWorld.Spotify
 
         static string FormatTime(int ms) => $"{ms / 60000}:{ms / 1000 % 60:00}";
 
-        /// Compares by name too: the album copy of a song can have a different track ID than the playlist copy.
-        static bool IsSameSong(PlayerState state, TrackInfo track) =>
-            state?.item != null && track != null &&
-            (state.item.uri == track.Uri || string.Equals(state.item.name, track.name, StringComparison.OrdinalIgnoreCase));
+        /// Compares by name too: the album copy of a song can have a different track ID than the playlist copy,
+        /// and a slightly different name ("Girls, Girls, Girls (Uncensored)", "Tusk - 2002 Remaster").
+        static bool IsSameSong(PlayerState state, TrackInfo track)
+        {
+            if (state?.item == null || track == null) return false;
+            if (state.item.uri == track.Uri) return true;
+            string a = BaseName(state.item.name), b = BaseName(track.name);
+            return a.Length > 0 && b.Length > 0 && (a.StartsWith(b, StringComparison.Ordinal) || b.StartsWith(a, StringComparison.Ordinal));
+        }
+
+        /// A song name without extras in brackets or after " - ", lower case.
+        static string BaseName(string name)
+        {
+            if (string.IsNullOrEmpty(name)) return "";
+            var cut = name.Length;
+            foreach (var mark in new[] { " (", " [", " - " })
+            {
+                var i = name.IndexOf(mark, StringComparison.Ordinal);
+                if (i > 0 && i < cut) cut = i;
+            }
+            return name.Substring(0, cut).Trim().ToLowerInvariant();
+        }
 
         string PlayUrl() => deviceId == null ? $"{Api}/me/player/play" : $"{Api}/me/player/play?device_id={deviceId}";
 

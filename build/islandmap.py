@@ -22,6 +22,7 @@ from scipy.sparse.csgraph import minimum_spanning_tree
 from PIL import Image
 import contourpy
 import overrides   # hand corrections in overrides.json
+from stations import artist_station, ARTIST_MIN_SONGS
 
 sys.stdout.reconfigure(encoding='utf-8')
 Image.MAX_IMAGE_PIXELS = None
@@ -700,7 +701,24 @@ Image.fromarray(final).save(f'{OUT}/base.jpg', quality=86, optimize=True)
 print('base', round(os.path.getsize(f'{OUT}/base.jpg') / 1e6, 2), 'MB')
 
 # ---------- lookups and decoration spots ----------
-ids = sorted({s['iid'] for s in songs if s['iid']}); aid = {v: i for i, v in enumerate(ids)}   # same order as ../assets/atlas.jpg
+ids = sorted({s['iid'] for s in songs if s['iid']}); aid = {v: i for i, v in enumerate(ids)}
+# The cover sheet for this map and the game, built here in the same order as aid, so the numbers always match.
+# (The original map keeps its own ../assets/atlas.jpg.) Covers come from fetch_covers.py.
+COVER_COLS, COVER_CELL = 40, 96
+cover_rows = max(1, math.ceil(len(ids) / COVER_COLS))
+sheet = Image.new('RGB', (COVER_COLS * COVER_CELL, cover_rows * COVER_CELL), (40, 36, 40))
+missing_covers = 0
+for v, i in aid.items():
+    try:
+        im = Image.open(f'../assets/covers/{v}.jpg').convert('RGB').resize((COVER_CELL, COVER_CELL), Image.LANCZOS)
+        sheet.paste(im, ((i % COVER_COLS) * COVER_CELL, (i // COVER_COLS) * COVER_CELL))
+    except OSError:
+        missing_covers += 1
+sheet.save(f'{OUT}/covers.jpg', quality=82, optimize=True)
+os.makedirs('../Game/EverythingWorld/Assets/_Project/Art', exist_ok=True)
+sheet.save('../Game/EverythingWorld/Assets/_Project/Art/CoverAtlas.jpg', quality=90)
+print(f'cover sheet: {len(ids)} covers, {sheet.size[0]}x{sheet.size[1]} px, {missing_covers} missing files, '
+      f'{sum(1 for s in songs if not s["iid"])} songs without a cover')
 GRW, GRH = 300, 200
 rg = [''.join(chr(48 + int(L[int((a + .5) / GRH * GH), int((b + .5) / GRW * GW)])) if land[int((a + .5) / GRH * GH), int((b + .5) / GRW * GW)] else '~'
               for b in range(GRW)) for a in range(GRH)]
@@ -728,7 +746,7 @@ out = dict(W=WW, H=WH, glyphTypes=GL, keys=keys, regions=regions, realms=realms,
     glyphs=[[g[1], g[2], g[3], g[4], g[5]] for g in glyphs],
     coast=chunk(coast_l, 48), ripples=rip, borders=chunk(borders, 40), rivers=rivers,
     bridges=bridges, lanes=lanes, towers=towers,
-    atlasCols=40, atlasCell=96, regionGrid=rg, grw=GRW, grh=GRH, openSea=openSea)
+    atlasCols=COVER_COLS, atlasCell=COVER_CELL, regionGrid=rg, grw=GRW, grh=GRH, openSea=openSea)
 js = 'window.WORLD=' + json.dumps(out, ensure_ascii=False, separators=(',', ':'), default=lambda o: o.item()) + ';'
 open(f'{OUT}/world.js', 'w', encoding='utf-8').write(js)
 print('world.js', round(len(js) / 1e6, 2), 'MB')
@@ -856,11 +874,14 @@ artists_u = []
 for a, p in sorted(plots.items()):
     ss = songs_by_artist[a]; gc = collections.Counter(g for s in ss for g in s['g'])
     artists_u.append(dict(name=a, sceneId=p['scene'], x=p['x'], z=p['z'], r=p['r'], songs=len(ss), tier=tier(len(ss)),
-        station=len(ss) >= 3, genres=', '.join(g for g, _ in gc.most_common(3)), years=years(ss),
-        addedBy=' and '.join(n for n, _ in adders[a].most_common())))
+        station=len(ss) >= ARTIST_MIN_SONGS, stationId=artist_station(a) if len(ss) >= ARTIST_MIN_SONGS else 0,
+        genres=', '.join(g for g, _ in gc.most_common(3)), years=years(ss),
+        addedBy=' and '.join(n for n, _ in adders[a].most_common()),
+        songList=[dict(title=s_['t'], cover=aid.get(s_['iid'], -1)) for s_ in sorted(ss, key=lambda s_: -s_['pop'])]))
 spawn = towers[0]
 sx_, sz_ = toU(spawn['x'], spawn['y'])
 unity = dict(width=WM, depth=DM, step=STEP, nx=NX, nz=NZ, waterLevel=0.0, metresPerMapPixel=MPP,
+    coverCols=COVER_COLS, coverCell=COVER_CELL, coverSheetWidth=sheet.size[0], coverSheetHeight=sheet.size[1],
     islands=islands_u, artists=artists_u,
     bridges=[dict(a=sid_of(b['a']), b=sid_of(b['b']), causeway=b['k'] == 'causeway',
                   ax=toU(b['p'][0], b['p'][1])[0], az=toU(b['p'][0], b['p'][1])[1],

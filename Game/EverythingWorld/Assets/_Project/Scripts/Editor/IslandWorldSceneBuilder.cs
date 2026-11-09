@@ -13,6 +13,7 @@ namespace EverythingWorld.EditorTools
     {
         const string ScenePath = "Assets/_Project/Scenes/IslandWorld.unity";
         const string Data = "Assets/_Project/Data/";
+        const string CoverAtlas = "Assets/_Project/Art/CoverAtlas.jpg";
 
         [MenuItem("Everything World/Build Island World Scene")]
         public static void Build()
@@ -45,9 +46,16 @@ namespace EverythingWorld.EditorTools
             world.layoutJson = layout;
             world.heightBytes = heights;
             world.islandBytes = islands;
+            world.coverAtlas = LoadCoverAtlas();
+
+            // each land's own sky (land_moods.json), blended as you walk between lands
+            var sky = new GameObject("Sky").AddComponent<SkyDirector>();
+            sky.moodsJson = AssetDatabase.LoadAssetAtPath<TextAsset>(Data + "land_moods.json");
+            sky.sun = sun;
 
             var player = ZoneTestSceneBuilder.MakePlayer(new Vector3(0f, 50f, 0f)); // moved to the spawn tower on Play
-            player.AddComponent<IslandExplorer>();
+            var explorer = player.AddComponent<IslandExplorer>();
+            explorer.startLand = "The Everything Hub"; // central, with a tower to every realm; clear this to start at the first tower
             var walker = player.GetComponent<SimplePlayerController>();
             walker.runSpeed = 16f; // the world is about 4.8 km across; a quick run helps while testing
             var cam = player.GetComponentInChildren<Camera>();
@@ -60,6 +68,23 @@ namespace EverythingWorld.EditorTools
             EditorSceneManager.SaveScene(scene, ScenePath);
             ZoneTestSceneBuilder.AddToBuildSettings(ScenePath);
             Debug.Log($"Built {ScenePath}. Press Play: the islands are generated on start.");
+        }
+
+        /// The album-cover atlas, imported at full size (it holds 40 x 39 covers of 96 px).
+        static Texture2D LoadCoverAtlas()
+        {
+            if (AssetImporter.GetAtPath(CoverAtlas) is TextureImporter ti &&
+                (ti.maxTextureSize < 4096 || ti.wrapMode != TextureWrapMode.Clamp || ti.npotScale != TextureImporterNPOTScale.None))
+            {
+                ti.maxTextureSize = 4096;
+                ti.npotScale = TextureImporterNPOTScale.None;
+                ti.textureCompression = TextureImporterCompression.CompressedHQ;
+                ti.wrapMode = TextureWrapMode.Clamp;
+                ti.SaveAndReimport();
+            }
+            var tex = AssetDatabase.LoadAssetAtPath<Texture2D>(CoverAtlas);
+            if (tex == null) Debug.LogWarning($"No cover atlas at {CoverAtlas}: plaques will show blank covers.");
+            return tex;
         }
     }
 }

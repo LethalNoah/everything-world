@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/_Project/Scenes/IslandWorld.unity
+    guid: 2dd99afa388e87b45bd4716ede1965d9
+  - enabled: 1
     path: Assets/_Project/Scenes/ZoneTest.unity
     guid: f2efe6d6fcf2da0489c4806562af72df
   - enabled: 1
