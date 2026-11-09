@@ -300,13 +300,13 @@ Softer and greener than the continent. Overcast skies, fairy lights, dusk. Close
 **Artist areas:** Jack Johnson gets a hall (a big beach hut). Others are huts, hammocks and surfboards stuck in the sand.
 
 ### The Bedroom Pop Meadows
-*23 songs · 19 artists · 0.47 km²*
+*23 songs · 19 artists · 0.47 km² · built in Unity · Pyrosolstice's land*
 
-**Arriving:** Soft wildflower meadows and gentle hills. On a hill, a giant open-walled bedroom with a bed, posters and fairy lights.
+**Arriving:** A deep lilac field just past sunset: the sun has gone, the sky is violet with a pink glow low down, and fireflies are coming out over the grass. In the middle lies a giant unmade bed, its duvet spilling down to the grass so you can walk up onto it, with huge pillows, a pair of giant headphones, and a bedside lamp that lights the whole field.
 
-**The vibe:** A soft afternoon. Polaroids, bicycles, daisies.
+**The vibe:** The daydream half of bedroom music (the Small Hours is the other half: the making). This is the music you pace your room to for hours, so the land's spine is a track: a loop you can walk round and round, past every artist, lined both sides with fairy lights. A pulse of light chases round them, quicker on energetic songs, slower on quiet ones, with a dash of light at every new song. Quiet songs bring out more fireflies and fade glow-in-the-dark star stickers into the sky, like the ones on a bedroom ceiling; happy songs send soap bubbles up from the field and turn the light pinker. Deep lilac grass, purple clover, pastel flowers and dandelion clocks; trees hung with fairy lights. Bedroom things dreamed out into the field: glowing lava lamps, giant polaroids of the land's own covers, paper planes stuck nose-first in the grass, puffy star cushions, fairy lights on tall poles, and pastel paper lanterns rising slowly into the sky. A staircase of giant books leads up onto the bed.
 
-**Artist areas:** Picnic blankets, tiny bedrooms and polaroid walls. Clairo and beabadoobee get the largest.
+**Artist areas:** Small daydream scenes off the loop, each in a soft version of the colour of whoever added it. Clairo: a giant swing hanging from a great tree full of fairy lights. beabadoobee: a blanket fort big enough to walk into, glowing inside. Everyone else: a hammock between trees, a beanbag and lamp, a heap of pillows, a swing, a paper-star mobile or a big plush bear. The older generation of the music (The Postal Service, fun., Foster the People, The Apples in Stereo) is faded, like an older dream.
 
 ### Garage Rock Row
 *20 songs · 13 artists · 0.63 km²*
@@ -331,7 +331,7 @@ Softer and greener than the continent. Overcast skies, fairy lights, dusk. Close
 
 **Arriving:** A quiet hamlet of tiny cottages in a hollow, each with a lit window and a microphone inside.
 
-**The vibe:** Quiet late night. Tape recorders, laptops, plants, a cat on the windowsill. These are small, newer artists (probably people you know), so it should feel personal.
+**The vibe:** The making half of bedroom music (the Bedroom Pop Meadows next door is the daydream): 3 am, deep indigo, a quiet drizzle on the windows. Real tiny homes with desk lamps, tape recorders, laptops, plants and a cat on the windowsill: people making music right now. These are small, newer artists (probably people you know), so it should feel personal.
 
 **Artist areas:** One cottage each. This land is the most likely to have friends' music, so the plaques could say a bit more here.
 

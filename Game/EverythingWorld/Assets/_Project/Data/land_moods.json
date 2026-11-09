@@ -9,6 +9,14 @@
  },
  "lands": [
   {
+   "land": "The Bedroom Pop Meadows",
+   "sunPitch": 4, "sunYaw": 110, "sunIntensity": 0.55, "sunColor": "#FF9C8E",
+   "skyLight": "#7468B0", "horizonLight": "#C98AA6", "groundLight": "#4A3F6A",
+   "fogColor": "#8E7DB8", "fogStart": 60, "fogEnd": 950,
+   "stars": 0.2, "sunShadows": false, "dailyWeather": false, "bloom": 1.0,
+   "weather": "", "weatherAmount": 0
+  },
+  {
    "land": "The Indie Downs",
    "sunPitch": 23, "sunYaw": -125, "sunIntensity": 1.3, "sunColor": "#FFDCAE",
    "skyLight": "#C6CBCB", "horizonLight": "#EAD8B6", "groundLight": "#8E8462",
