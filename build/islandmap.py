@@ -193,8 +193,21 @@ MPP = math.sqrt(need_m2.sum() / (.30 * WW * WH))     # first guess: land on abou
 # Lay the scenes out once, with a little extra room for coastline, then keep them where they are and only
 # adjust how far each scene reaches until every one has the land it needs (bigger reach takes land from
 # its neighbours on a landmass; on a chain it just grows the island).
-P, Rpx = place(need_m2 * 1.25)
-cx, cy = P[:, 0] + WW / 2, P[:, 1] + WH / 2
+# The finished layout is saved in world_plan.json and reused on later runs, so a growing playlist never
+# reshuffles the map. Run with --relayout to lay the whole world out again from scratch.
+PLAN_FILE = 'world_plan.json'
+plan = json.load(open(PLAN_FILE, encoding='utf-8')) if os.path.exists(PLAN_FILE) and '--relayout' not in sys.argv else None
+if plan:
+    sp = {s['id']: s for s in plan['scenes']}
+    missing = [ART[s['id']]['name'] for s in SCN if s['id'] not in sp]
+    if missing: sys.exit(f'new scenes not in {PLAN_FILE}: {missing}. Run with --relayout to place them.')
+    MPP = plan['mpp']
+    cx = np.array([sp[s['id']]['x'] for s in SCN]); cy = np.array([sp[s['id']]['y'] for s in SCN])
+    Rpx = np.array([sp[s['id']]['r'] for s in SCN])
+    print(f'using the saved layout in {PLAN_FILE}')
+else:
+    P, Rpx = place(need_m2 * 1.25)
+    cx, cy = P[:, 0] + WW / 2, P[:, 1] + WH / 2
 reach = np.ones(K)
 for attempt in range(10):
     F, L, land, best, second, wx, wy = make_land(Rpx * reach)
@@ -203,8 +216,12 @@ for attempt in range(10):
     print(f'  pass {attempt}: {int((ratio > 1.03).sum())} scenes short of land, worst',
           ', '.join(f'{ART[SCN[i]["id"]]["name"]} {1 / ratio[i]:.0%}' for i in np.argsort(-ratio)[:3]))
     if (ratio <= 1.03).all(): break
-    reach *= np.clip(ratio, np.where(is_chain, .85, 1.0), 1.4) ** .5   # landmass scenes never shrink, so landmasses stay whole     # land grows about with the square of the reach
+    # landmass scenes never shrink, so landmasses stay whole; with a saved layout nothing shrinks.
+    # Land grows about with the square of the reach.
+    reach *= np.clip(ratio, np.where(is_chain & (plan is None), .85, 1.0), 1.4) ** .5
 Rpx = Rpx * reach
+json.dump(dict(mpp=MPP, scenes=[dict(id=s['id'], x=round(float(cx[i]), 3), y=round(float(cy[i]), 3), r=round(float(Rpx[i]), 3))
+                                for i, s in enumerate(SCN)]), open(PLAN_FILE, 'w', encoding='utf-8'), indent=0)
 need_cells = need_m2 / (MPP * CELL) ** 2
 ASC = Rpx / np.maximum(R0, 1e-6) * .8                 # layout units -> map px, for spots inside a scene
 print(f'scale {MPP:.2f} m per map pixel: world {WW * MPP / 1000:.1f} x {WH * MPP / 1000:.1f} km, land needed {need_m2.sum() / 1e6:.1f} km2')
@@ -213,6 +230,31 @@ for i in range(K): assert (land & (L == i)).sum() > 200, f'scene {SCN[i]["id"]} 
 have_m2 = have
 print(f'land {have_m2.sum() / 1e6:.1f} km2 ({land.sum() / (GW * GH):.0%} of the sheet), landmasses {ndi.label(land)[1]}, '
       f'smallest scene {have_m2.min() / 1e6:.2f} km2, short of need: {int((ratio > 1.05).sum())}')
+
+# ---------- the Everything Hub ----------
+# A small island in open water between a few scenes. It belongs to no scene: its station plays the whole
+# playlist (scene id HUB_ID in the game's scene data). It is placed after the scenes, so it moves nothing.
+HUB_ID, HUB_NAME, HUB_TOWER = 1000, 'The Everything Hub', 'The Everything Mast'
+HUB_NEAR = ['The Bluegrass Hollows', 'The Prog Marches', 'The Iron Range', 'Studio Lot Island', 'The Indie Downs']
+HUB_R_M, HUB_CLEAR_M = 120, 70          # island radius, and open water kept all round it, in metres
+HUB = K                                 # its number in L, after the scenes
+name_idx = {ART[s_['id']]['name']: i for i, s_ in enumerate(SCN)}
+near_hub = [name_idx[n] for n in HUB_NEAR]
+hub_rc = HUB_R_M / MPP / CELL
+far = np.maximum.reduce([ndi.distance_transform_edt(~(land & (L == i))) for i in near_hub])
+sea_d = ndi.distance_transform_edt(~land)
+ok = sea_d > hub_rc + HUB_CLEAR_M / MPP / CELL
+# out in the most open water among those scenes: no further from any of them than 1.3x the closest-to-all point
+among = ok & (far <= np.where(ok, far, np.inf).min() * 1.3)
+hy, hx = np.unravel_index(np.argmax(np.where(among, sea_d, -1)), far.shape)
+rr = np.hypot(xx - hx, yy - hy) * (1 + fbm(41, 3.0, 3.0) * .07)
+F = np.maximum(F, np.where(rr < hub_rc * 2, (1 - rr / hub_rc) * .5, -1))
+hub_mask = rr < hub_rc; land |= hub_mask; L = np.where(hub_mask, HUB, L).astype('i2')
+hub_x, hub_y = float(hx * CELL), float(hy * CELL)
+print(f'hub at {hub_x:.0f},{hub_y:.0f}: ' + ', '.join(f'{n} {far_d:.0f} m' for n, far_d in
+      zip(HUB_NEAR, [float(ndi.distance_transform_edt(~(land & (L == i)))[hy, hx]) * CELL * MPP for i in near_hub])))
+BIOME = BIOME + [B('hill', 'flower', .25, 0)]
+realm_of_L = np.append(realm_of, -1)    # realm of each L value (the hub has none)
 dland = ndi.distance_transform_edt(land); dsea = ndi.distance_transform_edt(~land)
 del wx, wy, best, second
 
@@ -328,6 +370,13 @@ for a, b in sorted(links):
     if GAP[a, b] < 6 and group[a] == group[b]: continue   # neighbours on one landmass: cross on land
     kind = 'causeway' if realm_of[a] != realm_of[b] or GAP[a, b] > 120 else 'bridge'
     bridges.append(dict(a=a, b=b, k=kind, p=[round(float(v), 1) for v in (*p2, *q2)]))
+hub_c = np.array([hub_x, hub_y])
+for i in near_hub:
+    q = coast_pts[i][np.argmin(np.hypot(*(coast_pts[i] - hub_c).T))]
+    u = (q - hub_c) / np.hypot(*(q - hub_c)); p = hub_c + u * (hub_rc * CELL - 2)
+    if not crossing_ok(p, q, HUB, i): continue
+    p2, q2 = p - u * 7, q + u * 7
+    bridges.append(dict(a=HUB, b=i, k='causeway' if np.hypot(*(q - p)) > 120 else 'bridge', p=[round(float(v), 1) for v in (*p2, *q2)]))
 print('bridges', collections.Counter(b['k'] for b in bridges))
 assert len(links) >= K - 1
 
@@ -376,6 +425,7 @@ for r, t in enumerate(towers):
             if found: break
         if found: lanes.append(dict(a=pair[0], b=pair[1], p=[round(float(v), 1) for v in (*found[0], *found[1], *found[2])]))
 print('sea lanes', len(lanes))
+towers.append(dict(n=HUB_TOWER, realm=HUB_NAME, r=-1, isl=HUB, x=hub_x, y=hub_y - hub_rc * CELL * .3))
 
 # ---------- symbols ----------
 GL = ['mountain', 'peak', 'volcano', 'mesa', 'crystal', 'hill', 'conifer', 'deciduous', 'palm', 'willow', 'mushroom', 'marsh', 'dune', 'wheat', 'flower', 'scrub']
@@ -538,6 +588,19 @@ for i in range(K):
         ac=round(float(np.mean([s['ac'] for s in ss])), 2), d=round(float(np.mean([s['d'] for s in ss])), 2),
         tempo=round(float(np.mean([s['tempo'] for s in ss]))), y0=min(yrs) if yrs else 0, y1=max(yrs) if yrs else 0,
         topA=[n for n, _ in acn.most_common(6)], topG=[g for g, _ in gc.most_common(6)], col=0))
+allg = collections.Counter(g for s in songs for g in s['g']); alla = collections.Counter(s['prim'] for s in songs)
+ally = [int(s['yr']) for s in songs if s['yr'].isdigit()]
+regions.append(dict(k='hub', sid=HUB_ID, n=HUB_NAME, realm='The Open Sea',
+    desc='A small island alone in the open sea, where causeways from five lands meet.',
+    brief=dict(landmark='A tall radio mast over a round plaza, broadcasting the whole Everything playlist.',
+               props='Benches and a seating area round the mast, lanterns, a jukebox, signposts to every land.',
+               mood='A crossroads: a little of everything.',
+               palette=['#E8D9B0 sand', '#3E7C8C sea teal', '#C8553D signal red', '#2B2D42 night']),
+    x=hub_x, y=hub_y - hub_rc * CELL - 46, ang=0, w=220,   # name in the water just above, clear of the tower area=int(hub_mask.sum() * CELL * CELL), c=len(songs),
+    e=round(float(np.mean([s['e'] for s in songs])), 2), v=round(float(np.mean([s['v'] for s in songs])), 2),
+    ac=round(float(np.mean([s['ac'] for s in songs])), 2), d=round(float(np.mean([s['d'] for s in songs])), 2),
+    tempo=round(float(np.mean([s['tempo'] for s in songs]))), y0=min(ally), y1=max(ally),
+    topA=[n for n, _ in alla.most_common(6)], topG=[g for g, _ in allg.most_common(6)], col=0))
 realms = []
 for r in range(len(RLM)):
     rr = [g for g, i in zip(regions, range(K)) if realm_of[i] == r]; Wt = sum(g['c'] for g in rr)
@@ -563,12 +626,12 @@ frame = np.minimum.reduce([xx, GW - 1 - xx, yy, GH - 1 - yy])
 # realm names first: open water beside their own islands, with room to the left and right for a long name
 wide = ndi.distance_transform_edt(~land, sampling=(1, .33))
 for r, rm in enumerate(realms):
-    own = ndi.distance_transform_edt(~(land & (realm_of[L] == r)))
-    other = ndi.distance_transform_edt(~(land & (realm_of[L] != r)))
+    own = ndi.distance_transform_edt(~(land & (realm_of_L[L] == r)))
+    other = ndi.distance_transform_edt(~(land & (realm_of_L[L] != r) & (L != HUB)))
     mem = [i for i in range(K) if realm_of[i] == r]
     if r in LANDMASS:
         # a realm on a landmass is named across its own land, like a country on a continent
-        inside = ndi.distance_transform_edt(ndi.binary_opening(land & (realm_of[L] == r), iterations=3), sampling=(1, .45))
+        inside = ndi.distance_transform_edt(ndi.binary_opening(land & (realm_of_L[L] == r), iterations=3), sampling=(1, .45))
         a, b = np.unravel_index(np.argmax(inside), inside.shape)
         rm['x'], rm['y'] = float(b * CELL), float(a * CELL)
         continue
@@ -611,6 +674,7 @@ for i in range(K):
     lum = pal.mean(1); pal = pal[(lum > 50) & (lum < 225)] if ((lum > 50) & (lum < 225)).any() else pal
     c = pal.mean(0); grey = c.mean(); c = grey + (c - grey) * .7
     tints.append(c * .62 + earth * .38)
+tints.append(np.array([200, 178, 130], 'f4'))   # the hub
 tint = np.array(tints, 'f4')[L]
 tint = np.stack([ndi.gaussian_filter(tint[..., k], 1.2) for k in range(3)], -1)
 wash = .16 + np.exp(-dland / 9.) * .5
@@ -759,11 +823,13 @@ def flatten(x, z, r, edge=14):
     w = np.clip(1 - (d - r) / edge, 0, 1)
     E[rs, cs] = np.where(landv[rs, cs], E[rs, cs] * (1 - w) + target * w, E[rs, cs])
 for p in plots.values(): flatten(p['x'], p['z'], p['r'])
+flatten(*toU(hub_x, hub_y), HUB_R_M * .75)   # the hub's plaza
 for x, z, r, isl in reserved[:K]: flatten(x, z, r)
 
 os.makedirs(UD, exist_ok=True)
 np.clip(np.round(E * 10), -32768, 32767).astype('<i2').tofile(f'{UD}/world_height.bytes')
 idv.tofile(f'{UD}/world_island.bytes')
+def sid_of(i): return HUB_ID if i == HUB else SCN[i]['id']
 def mix(c, d, t): return [round(float(c[k] * (1 - t) + d[k] * t)) for k in range(3)]
 islands_u = []
 for i in range(K):
@@ -773,6 +839,9 @@ for i in range(K):
     x, z = toU(regions[i]['x'], regions[i]['y'])
     islands_u.append(dict(sceneId=SCN[i]['id'], name=regions[i]['n'], realm=regions[i]['realm'], labelX=x, labelZ=z,
         tintA=a, tintB=b, accent=mix(pal[0], [40, 30, 20], .2), hi=BIOME[i]['hi'], lo=BIOME[i]['lo']))
+x, z = toU(hub_x, hub_y)
+islands_u.append(dict(sceneId=HUB_ID, name=HUB_NAME, realm='', labelX=x, labelZ=z,
+    tintA=[196, 182, 132], tintB=[172, 160, 118], accent=[200, 85, 61], hi='hill', lo='flower'))
 def years(ss):
     y = sorted(int(s['yr']) for s in ss if s['yr'].isdigit())
     return '' if not y else str(y[0]) if y[0] == y[-1] else f'{y[0]}-{y[-1]}'
@@ -785,10 +854,10 @@ spawn = towers[0]
 sx_, sz_ = toU(spawn['x'], spawn['y'])
 unity = dict(width=WM, depth=DM, step=STEP, nx=NX, nz=NZ, waterLevel=0.0, metresPerMapPixel=MPP,
     islands=islands_u, artists=artists_u,
-    bridges=[dict(a=SCN[b['a']]['id'], b=SCN[b['b']]['id'], causeway=b['k'] == 'causeway',
+    bridges=[dict(a=sid_of(b['a']), b=sid_of(b['b']), causeway=b['k'] == 'causeway',
                   ax=toU(b['p'][0], b['p'][1])[0], az=toU(b['p'][0], b['p'][1])[1],
                   bx=toU(b['p'][2], b['p'][3])[0], bz=toU(b['p'][2], b['p'][3])[1]) for b in bridges],
-    towers=[dict(name=t['n'], realm=t['realm'], sceneId=SCN[t['isl']]['id'], x=toU(t['x'], t['y'])[0], z=toU(t['x'], t['y'])[1]) for t in towers],
+    towers=[dict(name=t['n'], realm=t['realm'], sceneId=sid_of(t['isl']), x=toU(t['x'], t['y'])[0], z=toU(t['x'], t['y'])[1]) for t in towers],
     spawnX=sx_, spawnZ=sz_ - 30)
 json.dump(unity, open(f'{UD}/world_layout.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=1, default=lambda o: o.item())
 print(f'unity world {WM / 1000:.1f} x {DM / 1000:.1f} km, grid {NX} x {NZ}, height {E.min():.1f} to {E.max():.1f} m')

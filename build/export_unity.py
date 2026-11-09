@@ -59,6 +59,9 @@ def write_plan(scenes, realms):
     PLAN.write_text("\n".join(out), encoding="utf-8", newline="\n")
 
 
+HUB_ID = 1000   # the Everything Hub island (see islandmap.py)
+
+
 def load_durations():
     """Track ID -> length in ms, from the Exportify CSV (the zone radio needs song lengths)."""
     if not CSV.exists():
@@ -111,9 +114,16 @@ def main():
 
     write_plan([dict(sc, artists=s["artists"]) for sc, s in zip(scenes, layout["scenes"])], realms)
 
+    # The Everything Hub: a small island of its own whose station plays the whole playlist.
+    every = sorted((t for s in scenes for t in s["tracks"]), key=lambda t: (t["artist"].lower(), t["name"].lower(), t["id"]))
+    scenes.append({"id": HUB_ID, "name": "The Everything Hub", "realm": -1, "realmName": "", "tags": [],
+                   "x": 0, "y": 0, "r": 0, "energy": 0, "acousticness": 0, "valence": 0, "danceability": 0, "tempo": 0,
+                   "neighbours": [], **{f: [] if f == "palette" else "" for f in BRIEF_FIELDS},
+                   "mood": "Everything, shuffled.", "tracks": every})
+
     DST.parent.mkdir(parents=True, exist_ok=True)
     DST.write_text(json.dumps({"scenes": scenes}, ensure_ascii=False, indent=1) + "\n", encoding="utf-8", newline="\n")
-    total = sum(len(s["tracks"]) for s in scenes)
+    total = sum(len(s["tracks"]) for s in scenes if s["id"] != HUB_ID)
     print(f"Wrote {len(scenes)} scenes, {total} tracks to {DST.relative_to(ROOT)} and {PLAN.name}"
           + (f" ({missing} songs had no scene)" if missing else "")
           + (f" ({no_length} songs had no length, used {DEFAULT_MS // 1000} s)" if no_length else ""))

@@ -332,7 +332,7 @@ Every kind of electronic music, from ambient to riddim.
 
 ### 20. The Ambient Mists
 
-*ambient, idm, downtempo, electronic, trip hop* · 32 songs · energy 0.48, acoustic 0.38, mood 0.27 · top artists: Boards of Canada, Aphex Twin, KatzPascale, Tycho, Vegyn
+*ambient, idm, downtempo, electronic, trip hop* · 31 songs · energy 0.48, acoustic 0.38, mood 0.25 · top artists: Boards of Canada, Aphex Twin, KatzPascale, Tycho, Vegyn
 
 - **Terrain:** Soft, low hills fading into fog around a large still lake.
 - **Colours:** `#7FA9A3 faded teal`, `#E6A57E washed orange`, `#DCD7CF haze`, `#8A9A6B muted green`
@@ -362,7 +362,7 @@ Every kind of electronic music, from ambient to riddim.
 
 ### 33. The IDM Glitchlands
 
-*idm, glitch, psytrance, bass music, deathstep* · 31 songs · energy 0.72, acoustic 0.10, mood 0.28 · top artists: Mr. Bill, Autechre, Iglooghost, Squarepusher, Ametsub
+*idm, glitch, psytrance, bass music, deathstep* · 30 songs · energy 0.72, acoustic 0.11, mood 0.25 · top artists: Mr. Bill, Autechre, Iglooghost, Squarepusher, Ametsub
 
 - **Terrain:** Unstable ground that splits and rearranges itself into new shapes.
 - **Colours:** `#FF2E88 glitch magenta`, `#20F0FF cyan`, `#0B0B0B black`, `#BDBDBD static grey`
@@ -560,7 +560,7 @@ Soul, funk, disco, world music and jazz.
 
 ### 63. The Delta Crossroads
 
-*blues, classic blues, blues rock, country blues, soul blues* · 20 songs · energy 0.52, acoustic 0.52, mood 0.61 · top artists: Muddy Waters, R.L. Burnside, Robert Johnson, Albert King, B.B. King
+*blues, classic blues, blues rock, country blues, soul blues* · 19 songs · energy 0.53, acoustic 0.54, mood 0.64 · top artists: Muddy Waters, R.L. Burnside, Robert Johnson, Albert King, B.B. King
 
 - **Terrain:** Flat river delta with cotton fields, cypress swamps and dusty roads that meet at a crossroads.
 - **Colours:** `#3B5BA5 blues blue`, `#8B5A2B delta mud`, `#D9B26F dust`, `#1C1C1C juke-joint black`
@@ -648,7 +648,7 @@ Film scores, classical, musicals, game music and novelties.
 
 ### 26. The Isle of Memes & Musicals
 
-*comedy, soundtrack, region:novelty, musicals, disney* · 32 songs · energy 0.67, acoustic 0.30, mood 0.66 · top artists: Phineas and Ferb, The Little Singers, Zac Efron, 90s Classics, Alan Menken
+*comedy, soundtrack, region:novelty, musicals, disney* · 35 songs · energy 0.67, acoustic 0.30, mood 0.65 · top artists: Phineas and Ferb, The Little Singers, Zac Efron, 90s Classics, Alan Menken
 
 - **Terrain:** A storybook island of round hills and winding paths.
 - **Colours:** `#4A90E2 storybook blue`, `#F7A1C4 pink`, `#FFE066 candy yellow`, `#7CCB5A cartoon grass`
