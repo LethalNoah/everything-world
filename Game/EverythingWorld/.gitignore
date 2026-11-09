@@ -58,3 +58,26 @@ crashlytics-buildid.txt
 /[Aa]ssets/[Ss]treamingAssets/spotify_config.json
 /[Aa]ssets/[Ss]treamingAssets/spotify_config.json.meta
 spotify_tokens.json
+
+# Asset Store and other third-party content stays on this computer: the repo is public, and store
+# licences don't allow sharing what you bought (it would also use up Git LFS storage).
+# So Git ignores everything directly in Assets/ and Packages/ EXCEPT the project's own items below.
+# New project files go under Assets/_Project/; anything imported elsewhere is ignored automatically.
+# To track a new top-level item on purpose, add a "!" line for it (and for its .meta file).
+/[Aa]ssets/*
+!/Assets/_Project/
+!/Assets/_Project.meta
+!/Assets/Scenes/
+!/Assets/Scenes.meta
+!/Assets/Settings/
+!/Assets/Settings.meta
+!/Assets/StreamingAssets/
+!/Assets/StreamingAssets.meta
+!/Assets/TutorialInfo/
+!/Assets/TutorialInfo.meta
+!/Assets/InputSystem_Actions.inputactions
+!/Assets/InputSystem_Actions.inputactions.meta
+!/Assets/Readme.asset
+!/Assets/Readme.asset.meta
+# Packages/: only the package list is ours; embedded packages (Lumen, Opsive...) come from the store
+/[Pp]ackages/*/

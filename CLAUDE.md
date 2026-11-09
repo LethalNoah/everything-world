@@ -23,7 +23,7 @@ The owner is fairly new to Git and Unity: explain Git and Unity steps plainly, a
 - `review/index.html` — browsable review of the scene groupings (approved by the owner). Live at sealteamtwo.github.io/everything-world/review/.
 - `index.html`, `assets/`, `map_poster.png` — the original 2D parchment map on GitHub Pages. Reference only; keep it working.
 
-Scene names and look briefs live in `build/scene_art.json` (readable version: `ART_PLAN.md`). `WORLD_GUIDE.md` describes how each area and the artist areas should feel (design draft, before building in Unity). Ideas not yet built or decided are in `IDEAS.md`; add new ones there when the owner mentions them.
+Scene names and look briefs live in `build/scene_art.json` (readable version: `ART_PLAN.md`). `WORLD_GUIDE.md` describes how each area, the hub and the artist areas should feel. **The owner loves these descriptions: build every land in Unity from its WORLD_GUIDE.md entry** (arrival, vibe, artist areas) together with its scene_art.json palette and landmark, and keep the guide updated when a design changes. A big inspiration is Radiohead's *Kid A Mnesia Exhibition*: music-led spaces with a strong mood, meant for wandering. Take that feeling as inspiration only, not its look or content. Ideas not yet built or decided are in `IDEAS.md`; add new ones there when the owner mentions them.
 
 ## Music in the game
 
@@ -42,6 +42,18 @@ Scene names and look briefs live in `build/scene_art.json` (readable version: `A
 ## Git LFS
 
 `.gitattributes` stores models, textures, audio, fonts and other binaries under `Game/` in Git LFS. LFS is scoped to `Game/` on purpose: GitHub Pages can't serve LFS files, so the site's PNGs must stay plain Git. Unity text assets (`.unity`, `.prefab`, `.asset`, `.meta`, `.cs`…) are plain Git with LF line endings.
+
+## Asset Store packages
+
+The repo is public, so purchased Asset Store content must never be committed (store licences forbid sharing it, and it would fill Git LFS). `Game/EverythingWorld/.gitignore` uses an allow-list: everything directly in `Assets/` and every folder in `Packages/` is ignored except the project's own items. Keep our files under `Assets/_Project/`; to track a new top-level item on purpose, add a `!` line for it and its `.meta`. Anyone else opening the project imports the same packages from the Asset Store.
+
+Owned packages (downloaded copies in `%APPDATA%/Unity/Asset Store-5.x`), and where they import:
+- Look and light: Toon Shaders Pro (`Assets/Toon Shaders Pro`), Shader Toolbox for URP, Snapshot Shaders 2 (`Assets/DanielIlett`), Snapshot Shaders Pro, Retro Shaders Pro, Hologram Shaders Pro (all by Daniel Ilett); Lumen Stylized Light FX 2 (`Packages/com.distantlands.lumen`).
+- Gameplay: Photon Fusion (`Assets/Photon`, multiplayer); Starter Assets First/Third Person URP (`Assets/StarterAssets`).
+- Props, sound and effects: Sci-Fi Props Low Poly (`Assets/ithappy`), Universal Sound FX (Imphenzia), Elemental Orbs (`Assets/Piloto Studio`), 70 Fantasy Spells.
+- Probably unused (photoreal or off-theme): the Leartes interiors, Tirgames sci-fi rooms and statues, PBR Materials Sampler, RPG Monster Bundle, UFPS.
+
+When importing, untick `Packages/manifest.json` if the package includes it (most Daniel Ilett packages, ithappy, Tirgames and Starter Assets do), and add any dependency it needs through the Package Manager instead. The VintageBar package also tries to overwrite `Assets/Settings`, the URP global settings and the Readme: untick those.
 
 ## Unity conventions
 
