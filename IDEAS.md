@@ -18,6 +18,11 @@ The playlist is meant to be surprising and spontaneous, so the world shouldn't b
 - Pub songs and Christmas songs might get an area of their own one day. For now the sea shanties and pub songs (Drunken Sailor, Wellerman, Ratlin' Bog) and A Holly Jolly Christmas live on the Isle of Memes & Musicals.
 - Minigames somewhere in the world.
 
+## Performance as the world fills up (2026-11-09, noticed, not urgent yet)
+
+- Looking from the hub toward the Indie Downs causes lag, but looking toward unbuilt lands doesn't: the built lands draw everything at any distance (swaying grass and flowers, thousands of small props, glow halos, lights).
+- Likely fixes when it matters: hide ground cover and small props beyond a few hundred metres (Unity's per-layer cull distances, or turning far lands' detail off by distance); simpler stand-ins for far lands; fewer, bigger meshes; a cap on lights per land. Measure first with Unity's Profiler, from the hub, before changing anything.
+
 ## A quest across the lands (2026-11-09, wanted, not designed yet)
 
 - **One activity or minigame per land**, made for that land like everything else (its own idea, fitting its music), with something you have to do or finish in it.

@@ -247,35 +247,48 @@ namespace EverythingWorld.World
         /// door and a lit window, a stovepipe.
         void BoatShed(LandContext ctx, MeshKit mk, MeshKit solid, Vector3 at, Vector3 sea)
         {
+            // the hull, upside down: a smooth arch from the flat stern to the pointed bow, keel along the top
             var along = Quaternion.Euler(0, ctx.Range(-40f, 40f), 0) * Vector3.Cross(Vector3.up, sea);
             var side = Vector3.Cross(Vector3.up, along); var rot = Quaternion.LookRotation(along);
-            var tar = WorldMaterials.Solid(new Color(.2f, .19f, .2f)); var hullPaint = WorldMaterials.Solid(HutPaint[ctx.Rng.Next(HutPaint.Length)]);
-            const float L = 8f;
-            for (var i = 0; i < 9; i++)
+            var tar = WorldMaterials.Solid(new Color(.2f, .19f, .2f)); var band = WorldMaterials.Solid(HutPaint[ctx.Rng.Next(HutPaint.Length)]);
+            const float L = 8.5f; const int stations = 10, arc = 8;
+            var baseY = at.y - .15f;
+            var stern = at - along * (L / 2f);
+            Vector3 Q(int i, int k)
             {
-                var t = i / 8f - .5f;
-                var w = Mathf.Lerp(1.6f, .6f, Mathf.Pow(Mathf.Abs(t) * 2f, 2f));
-                var c = at + along * t * L;
-                c.y = ctx.Ground(c.x, c.z);
-                // the hull's cross-section, upside down: a low arch of planks
-                var prev = c + side * w + Vector3.up * .1f;
-                for (var k = 1; k <= 5; k++)
-                {
-                    var a = k / 5f * Mathf.PI;
-                    var p = c + side * Mathf.Cos(a) * w + Vector3.up * (.1f + Mathf.Sin(a) * 2.3f);
-                    mk.Box(k == 1 || k == 5 ? hullPaint : tar, (prev + p) / 2f, new Vector3(.12f, Vector3.Distance(prev, p) + .05f, L / 8f + .05f), Quaternion.LookRotation(along, (p - prev).normalized));
-                    prev = p;
-                }
+                var t = i / (float)stations;                               // 0 at the stern, 1 at the bow
+                var w = 1.75f * (1f - Mathf.Pow(t, 2.6f) * .94f);
+                var hgt = 2.3f * (1f - Mathf.Pow(t, 3f) * .45f);
+                var a = Mathf.PI * k / arc;
+                var p = stern + along * (t * L) + side * Mathf.Cos(a) * w;
+                p.y = baseY + Mathf.Sin(a) * hgt;
+                return p;
             }
-            var end = at - along * (L / 2f - .3f); end.y = ctx.Ground(end.x, end.z);
-            mk.Box(planks, end + Vector3.up * 1.1f, new Vector3(2.6f, 2.2f, .1f), rot);
-            mk.Box(board, end + Vector3.up * .8f - along * .06f + side * .5f, new Vector3(.7f, 1.6f, .03f), rot);
-            var win = end + Vector3.up * 1.3f - along * .07f - side * .55f;
+            var inside = at + Vector3.up * .5f;
+            for (var i = 0; i < stations; i++)
+                for (var k = 0; k < arc; k++)
+                {
+                    var m = k == 0 || k == arc - 1 ? band : tar;
+                    mk.Quad(m, Q(i, k), Q(i + 1, k), Q(i + 1, k + 1), Q(i, k + 1), new Vector3(inside.x, baseY, inside.z) + along * ((i + .5f) / stations - .5f) * L * .8f);
+                }
+            for (var i = 0; i < stations; i++)
+            {
+                var a = Q(i, arc / 2); var b = Q(i + 1, arc / 2);
+                mk.Box(WorldMaterials.Solid(new Color(.32f, .28f, .26f)), (a + b) / 2f + Vector3.up * .08f, new Vector3(.2f, .2f, Vector3.Distance(a, b) + .05f), Quaternion.LookRotation(b - a));
+            }
+            // the flat stern: a plank wall with a door and a lit window
+            for (var k = 0; k < arc; k++) mk.Tri(planks, new Vector3(stern.x, baseY, stern.z), Q(0, k), Q(0, k + 1), stern + along);
+            var door = stern - along * .03f + side * .45f; door.y = baseY;
+            mk.Box(board, door + Vector3.up * .85f, new Vector3(.75f, 1.7f, .04f), rot);
+            var win = stern - along * .04f - side * .65f + Vector3.up * (baseY - stern.y + 1.25f);
             mk.Box(WorldMaterials.Glow(Ember, 2.2f), win, new Vector3(.5f, .45f, .03f), rot);
-            halos.Add(win - along * .3f, 1.5f, Ember, .9f);
-            mk.Prism(iron, at + along * 1.5f + side * .5f + Vector3.up * 2f, Vector3.up, .1f, 1.2f, 6);
-            solid.Box(tar, at + Vector3.up * 1.2f, new Vector3(3.4f, 2.4f, L), rot);
-            noGrass.Add(new Vector3(at.x, 5f, at.z));
+            halos.Add(win - along * 1.2f, 1.4f, Ember, .9f);
+            // a stovepipe through the hull near the stern
+            var pipe = Q(2, arc / 2 - 1) + Vector3.up * .05f;
+            mk.Prism(iron, pipe, Vector3.up, .09f, 1.1f, 6);
+            mk.Box(iron, pipe + Vector3.up * 1.15f, new Vector3(.3f, .06f, .3f), Quaternion.identity);
+            solid.Box(tar, at + Vector3.up * 1f, new Vector3(3.4f, 2.2f, L * .85f), rot);
+            noGrass.Add(new Vector3(at.x, 5.5f, at.z));
             life.landmarks.Add(at);
         }
 

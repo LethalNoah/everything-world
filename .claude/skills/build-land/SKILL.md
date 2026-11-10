@@ -30,9 +30,13 @@ Write `Kits/<Land>Kit.cs` plus partial files (artists, places, life) and registe
 Every item below is something that went wrong before.
 
 **Layout and zones**
-- Gather the artists close round where you arrive (the plaza), radio-station artists first and on
-  different sides, the rest as near as they fit. Never spread them over the whole land: that put the main
-  artists on the borders and left the middle empty (Driftwood Shore). Pattern: `DriftwoodKit.ShapeGround`.
+- Spread the artists round where you arrive, with room to wander between them: neighbours about 90-110 m apart,
+  radio-station artists nearer the heart, nobody out at the borders. Too spread (the first Driftwood Shore:
+  main artists on the borders, an empty middle) and too packed (the second Driftwood Shore and Lanternwood:
+  everyone in one knot) both felt wrong. Use `ArtistPlacement.Spread` in ShapeGround (it keeps the layout's
+  shape, so similar artists stay together, and centres it on the arrival point); pass `avoid` for the
+  centrepiece and any long path or view to keep clear. A land with a reason to be compact (the Fens' islands
+  round the cathedral) can pack tighter.
 - Keep artists 45 m or more from other lands, out of water, and outside every radio ring (a radio ring is
   the artist's `r`; space artists by `r1 + r2 + 6`). Keep a corridor clear for any long path or view.
 - Level the ground where a centrepiece needs it (pattern: `ShapeGround` height blending, as in the Hub and

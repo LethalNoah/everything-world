@@ -90,10 +90,8 @@ namespace EverythingWorld.World
             return best;
         }
 
-        /// Level the heart for the lagoon, and gather the artists close round it, the radio stations first and on
-        /// different sides, then the rest as near as they fit, leaving the way to the sea open and keeping well away
-        /// from the borders with the next lands. The land stays as big as the map has it, but everything you come
-        /// for is one walkable cluster, with the wild dunes and heath round it.
+        /// Level the heart for the lagoon, and spread the artists round it with room to wander between them,
+        /// leaving the way to the sea open and keeping well away from the borders with the next lands.
         public override void ShapeGround(IslandWorldData data, int index)
         {
             var isl = data.layout.islands[index]; var sid = isl.sceneId;
@@ -118,58 +116,12 @@ namespace EverythingWorld.World
                 }
             }
 
-            int Id(float x, float z)
-            {
-                var cc = Mathf.RoundToInt(x / data.Step); var rr = Mathf.RoundToInt((data.layout.depth - z) / data.Step);
-                if (cc < 0 || rr < 0 || cc >= data.Nx || rr >= data.Nz) return 255;
-                var i = rr * data.Nx + cc;
-                return data.heights[i] > 1.6f ? data.islandIds[i] : 254;      // 254: beach or water
-            }
-            var sea3 = SeaFrom(data, new Vector3(heart.x, 0, heart.y), out _);
-            var sea = new Vector2(sea3.x, sea3.z);
-            const float Reach = 320f, HeartClear = RingR + 10f;
-            var cands = new List<Vector2>();
-            for (var x = heart.x - Reach; x <= heart.x + Reach; x += data.Step)
-            for (var z = heart.y - Reach; z <= heart.y + Reach; z += data.Step)
-            {
-                var p = new Vector2(x, z);
-                if (Vector2.Distance(p, heart) > Reach || Id(x, z) != index) continue;
-                var ok = true;
-                for (var k = 0; k < 12 && ok; k++)
-                {
-                    var a = k * Mathf.PI / 6f; var d = new Vector2(Mathf.Cos(a), Mathf.Sin(a));
-                    ok = Id(x + d.x * 14f, z + d.y * 14f) == index;                                 // on firm ground
-                    for (var s = 25f; s <= 75f && ok; s += 25f) { var o = Id(x + d.x * s, z + d.y * s); ok = o == index || o >= 254; }   // nowhere near the next lands
-                }
-                if (ok) cands.Add(p);
-            }
-            var arts = new List<IslandWorldData.Artist>();
-            foreach (var a in data.layout.artists) if (a.sceneId == sid) arts.Add(a);
-            arts.Sort((p, q) => HasStation(p) != HasStation(q) ? (HasStation(p) ? -1 : 1) : p.songs != q.songs ? q.songs.CompareTo(p.songs) : string.CompareOrdinal(p.name, q.name));
-            var placed = new List<Vector3>();      // x, radius, z
-            var stations = new List<Vector2>();
-            foreach (var a in arts)
-            {
-                var best = float.MaxValue; var at = Vector2.zero;
-                foreach (var cand in cands)
-                {
-                    var rel = cand - heart; var dh = rel.magnitude;
-                    if (dh < HeartClear + a.r) continue;
-                    // keep the promenade to the sea clear
-                    var along = Vector2.Dot(rel, sea);
-                    if (along > 0 && Mathf.Abs(rel.x * sea.y - rel.y * sea.x) < Foot(a) + 6f) continue;
-                    var ok = true;
-                    foreach (var p in placed) if (Vector2.Distance(cand, new Vector2(p.x, p.z)) < p.y + a.r + 6f) { ok = false; break; }
-                    if (!ok) continue;
-                    var score = dh;
-                    if (HasStation(a)) foreach (var s in stations) score -= Mathf.Min(Vector2.Distance(cand, s), 160f) * .35f;
-                    if (score < best) { best = score; at = cand; }
-                }
-                if (best == float.MaxValue) { Debug.LogWarning("The Driftwood Shore: no room near the heart for " + a.name); continue; }
-                a.x = at.x; a.z = at.y;
-                placed.Add(new Vector3(at.x, a.r, at.y));
-                if (HasStation(a)) stations.Add(at);
-            }
+            // spread the artists round the lagoon (not crammed in, not out at the borders), keeping the lagoon
+            // and the promenade to the sea clear
+            var sea3 = SeaFrom(data, new Vector3(heart.x, 0, heart.y), out var seaDist);
+            var avoid = new List<Vector3> { new Vector3(heart.x, RingR + 8f, heart.y) };
+            for (var d = RingR; d < Mathf.Min(seaDist, 700f); d += 15f) avoid.Add(new Vector3(heart.x + sea3.x * d, 14f, heart.y + sea3.z * d));
+            ArtistPlacement.Spread(data, index, 110f, heart, 48f, RingR + 10f, avoid, null, Land);
         }
 
         public override void Dress(LandContext ctx)

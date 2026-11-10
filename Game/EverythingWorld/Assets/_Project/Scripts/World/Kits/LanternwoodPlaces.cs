@@ -15,6 +15,7 @@ namespace EverythingWorld.World
         Vector3 lakeC;          // centre (y unused)
         float lakeR, lakeLevel, lakeP1, lakePhase2;
         string lakeHall;        // the artist whose boathouse stands on the shore
+        const float BoatD = 12f, PierMax = 32f;   // the boathouse's depth, and the longest the pier gets
 
         /// The lake's shoreline radius in a given direction (a gently irregular circle).
         float LakeEdge(float angle) => lakeR * (1f + .16f * Mathf.Sin(3f * angle + lakeP1) + .09f * Mathf.Sin(5f * angle + lakePhase2));
@@ -25,6 +26,8 @@ namespace EverythingWorld.World
         public override void ShapeGround(IslandWorldData data, int index)
         {
             // any artist too close to the next land moves inward first, beside the similar artists round it
+            // spread the crowded layout out through the wood first (room to wander between artists)
+            ArtistPlacement.Spread(data, index, 110f, null, 48f, LandContext.PlazaRadius + 10f, null, null, Land);
             ArtistPlacement.KeepFromBorders(data, index, heartClear: LandContext.PlazaRadius + 10f, land: Land);
             hasLake = false;
             var isl = data.layout.islands[index];
@@ -98,6 +101,29 @@ namespace EverythingWorld.World
                     data.heights[i] = Mathf.Lerp(lakeLevel + .15f, data.heights[i], t);
                 }
             }
+            // a level shelf on the bank for the boathouse, just above the ice, so its floor isn't up on stilts
+            var toHallDir = (hallC - new Vector3(lakeC.x, 0, lakeC.z)).normalized;
+            var shoreR0 = LakeEdge(Mathf.Atan2(toHallDir.z, toHallDir.x));
+            var houseC = new Vector3(lakeC.x, 0, lakeC.z) + toHallDir * (shoreR0 + BoatD / 2f + 2f);
+            for (var r = 0; r < data.Nz; r++)
+            {
+                var z = data.layout.depth - r * step;
+                if (Mathf.Abs(z - houseC.z) > 24f) continue;
+                for (var c = 0; c < data.Nx; c++)
+                {
+                    var x = c * step;
+                    if (Mathf.Abs(x - houseC.x) > 24f) continue;
+                    var i = r * data.Nx + c;
+                    if (data.islandIds[i] != index) continue;
+                    var d = Vector2.Distance(new Vector2(x, z), new Vector2(houseC.x, houseC.z));
+                    if (Vector2.Distance(new Vector2(x, z), new Vector2(lakeC.x, lakeC.z)) < LakeEdge(Mathf.Atan2(z - lakeC.z, x - lakeC.x))) continue;
+                    if (d < 10f) data.heights[i] = lakeLevel + .5f;
+                    else if (d < 22f) data.heights[i] = Mathf.Lerp(lakeLevel + .5f, data.heights[i], Mathf.SmoothStep(0f, 1f, (d - 10f) / 12f));
+                }
+            }
+            // the radio ring takes in the boathouse and the whole pier, so it doesn't cut across in front of it
+            var pierEnd = new Vector3(lakeC.x, 0, lakeC.z) + toHallDir * (shoreR0 - Mathf.Min(PierMax, shoreR0 * .75f));
+            hall.r = Mathf.Max(hall.r, Vector2.Distance(new Vector2(pierEnd.x, pierEnd.z), new Vector2(hall.x, hall.z)) + 10f);
             Debug.Log($"Lanternwood: frozen lake by {lakeHall}'s plot, ice at {lakeLevel:0.0} m");
         }
 
@@ -132,7 +158,7 @@ namespace EverythingWorld.World
             var toHall = (hallC - new Vector3(lakeC.x, 0, lakeC.z)).normalized;
             var shoreR = LakeEdge(Mathf.Atan2(toHall.z, toHall.x));
             var shore = new Vector3(lakeC.x, 0, lakeC.z) + toHall * shoreR;
-            const float w = 10f, d = 12f, wallH = 5f, t = .3f;
+            const float w = 10f, d = BoatD, wallH = 5f, t = .3f;
             var faceLake = -toHall;
             var rot = Quaternion.LookRotation(faceLake);
             var c = shore + toHall * (d / 2f + 2f);
@@ -145,7 +171,6 @@ namespace EverythingWorld.World
 
             Floor(mk, solid, darkWood, stone, P(0, 0, 0), rot, w, d, floor, Mathf.Min(lo, lakeLevel));
             Ramp(ctx, mk, solid, darkWood, P(0, 0, -d / 2 - .2f), -(rot * Vector3.forward), floor, HumanScale.DoorWidth + .6f);
-            Ramp(ctx, mk, solid, darkWood, P(0, 0, d / 2 + .2f), rot * Vector3.forward, floor, 4.2f);
             IndoorSpaces.Add(P(0, 3.5f, 0), rot, new Vector3(w, 7f, d));
             // lake side: a wide opening; land side: a door in the gable wall
             const float lakeDoor = 4.2f, lakeDoorH = 3.8f, door = HumanScale.DoorWidth, doorH = HumanScale.DoorHeight;
@@ -176,29 +201,24 @@ namespace EverythingWorld.World
             ArtistBits.CoverWall(pictures, labels, ctx, a, P(-w / 2 + .2f, 2.3f, -.5f), rot * Vector3.right, 4, .66f, 15, true, Ink);
             ArtistBits.PointLight(labels.parent, P(0, 3.2f, 0), new Color(1f, .7f, .42f), 10f, 1.5f, true);
             // the pier: out over the ice toward the middle of the lake, a bench at the end
-            var pierLen = Mathf.Min(32f, shoreR * .75f);
-            // keep the whole pier inside the artist's area (and their radio station)
-            while (pierLen > 10f && Vector2.Distance(new Vector2(shore.x + faceLake.x * (pierLen + 2f), shore.z + faceLake.z * (pierLen + 2f)), new Vector2(a.x, a.z)) > a.r - 2f)
-                pierLen -= 1f;
+            var pierLen = Mathf.Min(PierMax, shoreR * .75f);
             var deckY = lakeLevel + .75f;
-            var start = shore - toHall * 0f; start.y = deckY;
-            for (var s = 0f; s < pierLen; s += 3f)
+            var start = P(0, 0, d / 2 + .1f); start.y = deckY;
+            float DeckAt(float s) => Mathf.Max(deckY, floor - s * .3f);           // down from the door at a gentle slope
+            var pierFrom = start;                                                   // the pier begins at the lake door
+            for (var s = 0f; s < pierLen + 2f; s += 3f)
             {
-                var segC = start + faceLake * (s + 1.5f);
-                mk.Box(darkWood, segC, new Vector3(2.8f, .18f, 3f), rot);
-                solid.Box(darkWood, segC, new Vector3(2.8f, .3f, 3f), rot);
+                var a0 = pierFrom + faceLake * s; a0.y = DeckAt(s);
+                var a1 = pierFrom + faceLake * (s + 3f); a1.y = DeckAt(s + 3f);
+                var segC = (a0 + a1) / 2f; var segRot = Quaternion.LookRotation(a1 - a0);
+                mk.Box(darkWood, segC, new Vector3(2.8f, .18f, Vector3.Distance(a0, a1) + .05f), segRot);
+                solid.Box(darkWood, segC - Vector3.up * .06f, new Vector3(2.8f, .3f, Vector3.Distance(a0, a1) + .05f), segRot);
                 foreach (var side in new[] { -1f, 1f })
                 {
                     mk.Prism(logs, segC + rot * Vector3.right * side * 1.25f - Vector3.up * 1.6f, Vector3.up, .12f, 1.6f, 5);
                     ArtistBits.PostCollider(labels.parent, segC + rot * Vector3.right * side * 1.25f - Vector3.up * 1.6f, 1.6f, .18f);
                 }
             }
-            // a ramp from the bank up onto the pier
-            var bank = shore + toHall * 3f; bank.y = ctx.Ground(bank.x, bank.z);
-            var rampC = (bank + start) / 2f;
-            var rampRot = Quaternion.LookRotation(start - bank);
-            mk.Box(darkWood, rampC, new Vector3(2.8f, .18f, Vector3.Distance(bank, start) + .4f), rampRot);
-            solid.Box(darkWood, rampC, new Vector3(2.8f, .3f, Vector3.Distance(bank, start) + .4f), rampRot);
             for (var s = 8f; s < pierLen - 2f; s += 9f)
             {
                 var side = ((int)(s / 9f) % 2 == 0) ? 1f : -1f;

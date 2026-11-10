@@ -10,6 +10,99 @@ namespace EverythingWorld.World
     /// Everyone else stays exactly where they are.
     public static class ArtistPlacement
     {
+        /// Spread a crowded land out so there's room to wander between the artists. The layout keeps its shape
+        /// (similar artists stay near each other) but is scaled up round 'about' (normally where you arrive)
+        /// until neighbours are about 'spacing' metres apart, radio-station artists less so (they stay nearer the
+        /// heart), and centred on where you arrive, so you land among them (no one further out than maxReach).
+        /// Then each artist, the biggest first, settles on the nearest open spot to where that puts it:
+        /// on firm ground, at least minBorder from any other land, clear of the plaza, the 'avoid' places
+        /// (x, radius, z) and the artists already settled. Not too packed, not out at the edges.
+        public static void Spread(IslandWorldData data, int index, float spacing = 80f, Vector2? about = null, float minBorder = 48f,
+                                  float heartClear = 40f, IList<Vector3> avoid = null, ICollection<string> keep = null, string land = null,
+                                  float maxReach = 420f)
+        {
+            var isl = data.layout.islands[index]; var sid = isl.sceneId;
+            var heart = new Vector2(isl.labelX, isl.labelZ);
+            int Id(float x, float z)
+            {
+                var cc = Mathf.RoundToInt(x / data.Step); var rr = Mathf.RoundToInt((data.layout.depth - z) / data.Step);
+                if (cc < 0 || rr < 0 || cc >= data.Nx || rr >= data.Nz) return 255;
+                var i = rr * data.Nx + cc;
+                return data.heights[i] > 1.5f ? data.islandIds[i] : 254;
+            }
+            bool NearBorder(float x, float z)
+            {
+                for (var r = 5f; r < minBorder; r += 4f)
+                    for (var k = 0; k < 32; k++)
+                    {
+                        var a = k * Mathf.PI / 16f; var o = Id(x + Mathf.Cos(a) * r, z + Mathf.Sin(a) * r);
+                        if (o != index && o < 254) return true;
+                    }
+                return false;
+            }
+            bool Firm(float x, float z, float r)
+            {
+                if (Id(x, z) != index) return false;
+                for (var k = 0; k < 12; k++)
+                {
+                    var a = k * Mathf.PI / 6f;
+                    if (Id(x + Mathf.Cos(a) * r, z + Mathf.Sin(a) * r) != index) return false;
+                }
+                return true;
+            }
+            bool Station(IslandWorldData.Artist a) => a.station || a.stationId != 0;
+
+            var arts = new List<IslandWorldData.Artist>();
+            foreach (var a in data.layout.artists) if (a.sceneId == sid) arts.Add(a);
+            if (arts.Count < 2) return;
+            // how close neighbours are now (the median distance to the nearest other artist)
+            var nn = new List<float>();
+            foreach (var a in arts)
+            {
+                var m = float.MaxValue;
+                foreach (var o in arts) if (o != a) m = Mathf.Min(m, Vector2.Distance(new Vector2(a.x, a.z), new Vector2(o.x, o.z)));
+                nn.Add(m);
+            }
+            nn.Sort();
+            var scale = Mathf.Clamp(spacing / Mathf.Max(nn[nn.Count / 2], 1f), 1f, 4f);
+            var target = about ?? heart;
+            var mid = Vector2.zero; foreach (var a in arts) mid += new Vector2(a.x, a.z); mid /= arts.Count;
+            arts.Sort((p, q) => Station(p) != Station(q) ? (Station(p) ? -1 : 1) : p.songs != q.songs ? q.songs.CompareTo(p.songs) : string.CompareOrdinal(p.name, q.name));
+            var placed = new List<IslandWorldData.Artist>();
+            if (keep != null) foreach (var a in arts) if (keep.Contains(a.name)) placed.Add(a);
+            foreach (var a in arts)
+            {
+                if (keep != null && keep.Contains(a.name)) continue;
+                var pos = new Vector2(a.x, a.z);
+                var off = (pos - mid) * (Station(a) ? 1f + (scale - 1f) * .6f : scale);
+                if (off.magnitude > maxReach) off = off.normalized * maxReach;
+                var goal = target + off;
+                var foot = Mathf.Clamp(a.r * .6f, 8f, 16f);
+                bool Ok(Vector2 p)
+                {
+                    if (Vector2.Distance(p, heart) < heartClear + a.r) return false;
+                    foreach (var o in placed) if (Vector2.Distance(p, new Vector2(o.x, o.z)) < o.r + a.r + 10f) return false;
+                    if (avoid != null) foreach (var v in avoid) if (Vector2.Distance(p, new Vector2(v.x, v.z)) < v.y + a.r) return false;
+                    return Firm(p.x, p.y, foot) && !NearBorder(p.x, p.y);
+                }
+                var found = false; var at = goal;
+                for (var r = 0f; r <= 320f && !found; r += 5f)
+                {
+                    var steps = r == 0f ? 1 : Mathf.Max(8, Mathf.RoundToInt(r * Mathf.PI * 2f / 5f));
+                    for (var k = 0; k < steps; k++)
+                    {
+                        var ang = k * Mathf.PI * 2f / steps;
+                        var cand = goal + new Vector2(Mathf.Cos(ang), Mathf.Sin(ang)) * r;
+                        if (Ok(cand)) { at = cand; found = true; break; }
+                    }
+                }
+                if (!found) { Debug.LogWarning($"{land ?? isl.name}: no open spot to spread {a.name} to"); placed.Add(a); continue; }
+                a.x = at.x; a.z = at.y;
+                placed.Add(a);
+            }
+            Debug.Log($"{land ?? isl.name}: spread the artists out {scale:0.0}x, centred on where you arrive");
+        }
+
         /// minBorder: how far an artist must be from any other land (the land audit asks for 45 m).
         /// heartClear: keep this far from where you arrive (the plaza). keep: names never moved.
         /// avoid: other places to keep clear of (x, radius, z), such as a lake or a big landmark.

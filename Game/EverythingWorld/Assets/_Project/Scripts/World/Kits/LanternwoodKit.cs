@@ -248,7 +248,7 @@ namespace EverythingWorld.World
                 todo.Remove(next);
                 var to = new Vector3(next.x, 0, next.z);
                 var dir = to - new Vector3(join.x, 0, join.z);
-                var len = dir.magnitude - next.r * .65f;               // stop inside the area's clearing
+                var len = dir.magnitude - Mathf.Min(next.r, 24f) * .65f;   // stop inside the area's clearing
                 dir.Normalize();
                 var side = Vector3.Cross(Vector3.up, dir);
                 var pts = new List<Vector3>();
