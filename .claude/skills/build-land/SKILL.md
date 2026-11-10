@@ -127,7 +127,7 @@ Every item below is something that went wrong before.
 - Performance: never give a land's `Ground()` its own unlimited colours per spot for materials elsewhere
   (the terrain rounds them; a material per distinct colour was the big slowdown). Build scenery through
   `MeshKit.Build` (it chunks land-wide meshes so far parts can be skipped) and name walk-through foliage
-  "Soft..." (culled at 220 m like grass). After building a land, run `python build/take_shots.py perf` and
+  "Soft..." (the land audit skips those for colliders; only swaying grass is culled at 220 m). After building a land, run `python build/take_shots.py perf` and
   check the hub and the land stay under about 10 ms (see IDEAS.md, Performance).
 
 **Performance and memory**
@@ -142,16 +142,19 @@ Every item below is something that went wrong before.
    terms, and IDEAS.md for anything deferred.
 4. Ask the owner to press Ctrl+R in Unity and Play. The **land audit** runs automatically (IslandWorldBuilder
    "Audit Lands") and writes `Game/EverythingWorld/Logs/LandAudit/<Land>.txt` and `.png`. Read both
-   yourself (the picture with the Read tool): fix every "no collider" item that's real, every artist with
-   problems, and big empty stretches, before asking the owner to look.
+   yourself (the picture with the Read tool): fix every "no collider" item that's real, every
+   **overlapping surface** (two different materials in the same plane: they flicker in play; magenta on the
+   picture), every artist with problems, and big empty stretches, before asking the owner to look.
    The audit also photographs the land from above (`<Land>_top.png`); run `python build/land_map.py "<Land>"`
    to label it (`<Land>_map.png`) and look at it: every artist scene, path and landmark should be visible.
    **Look at it yourself from eye level** before the owner does: with the Unity editor closed (ask the owner
    to close it), run `python build/take_shots.py "<Land>"`. Unity photographs the land in the background with
-   Spotify off (from where you arrive looking four ways, in front of every artist area, one high view; it also
-   reruns the audit) and makes contact sheets in `Game/EverythingWorld/Logs/Shots/<Land>/sheet_*.png`. Read
+   Spotify off (from where you arrive looking four ways, in front of every artist area, one high view, and
+   inside every room the kit registered with `IndoorSpaces`, so register every interior; it also reruns the audit) and makes contact sheets in `Game/EverythingWorld/Logs/Shots/<Land>/sheet_*.png`. Read
    the sheets (and single photos for detail): fix anything that looks wrong, odd or unreadable (props built
    from boxes at angles, overlaps, floating things, blown-out glows), and shoot again.
-5. Then the owner's quality check in play. Ask for screenshots of anything unclear.
+5. Then the owner's quality check in play. They press **P** (or F12) at anything odd: the game view goes to
+   `Game/EverythingWorld/Logs/Live/` with a line in `notes.txt` (land, position, facing, nearest artist, song,
+   indoors). Read the newest ones when they say "look at my snapshots".
 6. Commit when the owner approves: check `git status` for secrets first (keys, tokens, playlist.csv,
    display_names.json, Spotify config), commit the `.meta` files with new scripts, and push only when asked.

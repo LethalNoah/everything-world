@@ -11,12 +11,14 @@ namespace EverythingWorld.World
     /// - artists too close to the border with another land, standing in water, crowding each other, or sitting
     ///   inside another artist's radio ring; how far each is from where you arrive;
     /// - empty stretches of the land with nothing built on them;
-    /// - how much light there is.
+    /// - how much light there is;
+    /// - surfaces that lie on top of each other with different materials, which flicker and fight in play
+    ///   ("z-fighting": a floor laid on another floor, a sign inside a wall, two walls in the same place).
     /// It writes a report and a top-down picture for each land to Logs/LandAudit/ in the Unity project (not
     /// committed), and a one-line summary to the console. The picture: dark blue water, grey other lands, this
     /// land shaded by height, scenery as dark specks, yellow cells for empty stretches, orange dots for lights,
     /// artist rings (gold for radio stations, white otherwise, red when something's wrong), a cyan cross where
-    /// you arrive, and red squares where something has no collider.
+    /// you arrive, red squares where something has no collider, and magenta squares where surfaces overlap.
     public static class LandAudit
     {
         const float BandLow = .45f, BandHigh = 2f, Probe = .3f, Px = 2f;
@@ -120,6 +122,8 @@ namespace EverythingWorld.World
             }
             clusters.Sort((a, b) => b.points.CompareTo(a.points));
 
+            var overlaps = Overlaps(ctx);
+
             // ---------------------------------------------------------------- the artists
             var artists = ctx.Artists;
             var problems = new HashSet<string>();
@@ -188,6 +192,13 @@ namespace EverythingWorld.World
                 sb.AppendLine($"  {c.what}: {Where(c.At)}, {c.minY - data.HeightAt(c.At.x, c.At.z):0.0}-{c.maxY - data.HeightAt(c.At.x, c.At.z):0.0} m up, {c.points} samples");
             }
             sb.AppendLine();
+            sb.AppendLine($"OVERLAPPING SURFACES: {overlaps.Count} places where two different surfaces lie in the same spot and will flicker" + (overlaps.Count > 0 ? " (biggest first):" : "."));
+            for (var i = 0; i < overlaps.Count && i < 30; i++)
+            {
+                var o = overlaps[i];
+                sb.AppendLine($"  {o.what}: {Where(o.At)}, {o.At.y - data.HeightAt(o.At.x, o.At.z):0.0} m up, about {o.area:0.0} m2");
+            }
+            sb.AppendLine();
             sb.AppendLine($"ARTISTS ({problems.Count} with problems):");
             foreach (var l in artistLines) sb.AppendLine(l);
             sb.AppendLine();
@@ -200,9 +211,9 @@ namespace EverythingWorld.World
             Directory.CreateDirectory(dir);
             var file = land.Replace("The ", "").Replace(" ", "_").Replace("&", "and");
             File.WriteAllText(Path.Combine(dir, file + ".txt"), sb.ToString());
-            Picture(data, ctx, scenery, empty, cell, lightAt, clusters, problems, Path.Combine(dir, file + ".png"));
+            Picture(data, ctx, scenery, empty, cell, lightAt, clusters, overlaps, problems, Path.Combine(dir, file + ".png"));
             try { Photo(ctx, dir, file); } catch (System.Exception e) { Debug.LogWarning("Land audit photo failed: " + e.Message); }
-            var summary = $"Land audit, {land}: {clusters.Count} things without a collider, {problems.Count} artists with problems, {emptyPct:0}% empty, {lights} lights. Report: Logs/LandAudit/{file}.txt";
+            var summary = $"Land audit, {land}: {clusters.Count} things without a collider, {overlaps.Count} overlapping surfaces, {problems.Count} artists with problems, {emptyPct:0}% empty, {lights} lights. Report: Logs/LandAudit/{file}.txt";
             if (clusters.Count > 0 || problems.Count > 0 || emptyPct > 25f) Debug.LogWarning(summary); else Debug.Log(summary);
         }
 
@@ -247,6 +258,142 @@ namespace EverythingWorld.World
             File.WriteAllText(Path.Combine(dir, file + "_places.json"), sb.ToString());
         }
 
+        public class Overlap { public Vector3 sum; public int n; public float area; public string what; public Vector3 At => sum / n; }
+
+        struct Face { public Vector3 a, b, c, n; public float d; public int owner; public string mat; }
+
+        /// Two triangles flicker against each other when they lie in the same plane (within 1.5 cm), face the same way,
+        /// really overlap (not just share an edge), and are drawn with different materials. Each pair found goes into
+        /// a 2 m cell; touching cells make one place in the report.
+        static List<Overlap> Overlaps(LandContext ctx)
+        {
+            var faces = new List<Face>(); var owners = new List<string>();
+            foreach (var mf in ctx.Root.GetComponentsInChildren<MeshFilter>())
+            {
+                var rend = mf.GetComponent<MeshRenderer>(); var mesh = mf.sharedMesh;
+                if (rend == null || !rend.enabled || mesh == null || !mesh.isReadable) continue;
+                var mats = rend.sharedMaterials; var verts = mesh.vertices; var tf = mf.transform;
+                owners.Add(mf.transform.parent != null ? mf.transform.parent.name + " / " + mf.name : mf.name);
+                for (var s = 0; s < mesh.subMeshCount; s++)
+                {
+                    var m = s < mats.Length ? mats[s] : null;
+                    if (m == null || m.renderQueue >= 2450 || (m.shader != null && (m.shader.name.Contains("Particles") || m.shader.name.Contains("Halo")))) continue;   // see-through things don't fight
+                    var tris = mesh.GetTriangles(s);
+                    for (var i = 0; i < tris.Length; i += 3)
+                    {
+                        Vector3 a = tf.TransformPoint(verts[tris[i]]), b = tf.TransformPoint(verts[tris[i + 1]]), c = tf.TransformPoint(verts[tris[i + 2]]);
+                        var cr = Vector3.Cross(b - a, c - a); var area2 = cr.magnitude;
+                        if (area2 < .02f) continue;                                    // slivers and tiny bits
+                        var n = cr / area2;
+                        faces.Add(new Face { a = a, b = b, c = c, n = n, d = Vector3.Dot(n, a), owner = owners.Count - 1, mat = m.name });
+                    }
+                }
+            }
+            // bucket by plane: direction to about 2 degrees, distance to 3 cm (each bucket also takes in the next one up)
+            (int, int, int, int) Key(Vector3 n, float d) => (Mathf.RoundToInt(n.x * 30f), Mathf.RoundToInt(n.y * 30f), Mathf.RoundToInt(n.z * 30f), Mathf.FloorToInt(d / .03f));
+            var buckets = new Dictionary<(int, int, int, int), List<int>>();
+            for (var i = 0; i < faces.Count; i++)
+            {
+                var k = Key(faces[i].n, faces[i].d);
+                if (!buckets.TryGetValue(k, out var l)) buckets[k] = l = new List<int>();
+                l.Add(i);
+            }
+            var hits = new Dictionary<(int, int, int), Overlap>();
+            foreach (var kv in buckets)
+            {
+                var list = new List<int>(kv.Value);
+                var up = (kv.Key.Item1, kv.Key.Item2, kv.Key.Item3, kv.Key.Item4 + 1);
+                if (buckets.TryGetValue(up, out var more)) list.AddRange(more);
+                if (list.Count < 2 || list.Count > 8000) continue;
+                var own = kv.Value.Count;
+                // in-plane axes, and a 4 m grid so only nearby faces are compared
+                var n0 = faces[list[0]].n; var u = Vector3.Cross(n0, Mathf.Abs(n0.y) < .9f ? Vector3.up : Vector3.right).normalized; var v = Vector3.Cross(n0, u);
+                var grid = new Dictionary<(int, int), List<int>>();
+                for (var li = 0; li < list.Count; li++)
+                {
+                    var f = faces[list[li]];
+                    float fa = Vector3.Dot(f.a, u), fb = Vector3.Dot(f.b, u), fc = Vector3.Dot(f.c, u), ga = Vector3.Dot(f.a, v), gb = Vector3.Dot(f.b, v), gc = Vector3.Dot(f.c, v);
+                    float x0 = Mathf.Min(fa, Mathf.Min(fb, fc)), x1 = Mathf.Max(fa, Mathf.Max(fb, fc)), y0 = Mathf.Min(ga, Mathf.Min(gb, gc)), y1 = Mathf.Max(ga, Mathf.Max(gb, gc));
+                    if ((x1 - x0) * (y1 - y0) > 4000f) continue;                       // huge sheets: skip
+                    for (var gx = Mathf.FloorToInt(x0 / 4f); gx <= Mathf.FloorToInt(x1 / 4f); gx++)
+                        for (var gy = Mathf.FloorToInt(y0 / 4f); gy <= Mathf.FloorToInt(y1 / 4f); gy++)
+                        {
+                            if (!grid.TryGetValue((gx, gy), out var g)) grid[(gx, gy)] = g = new List<int>();
+                            g.Add(li);
+                        }
+                }
+                var tested = new HashSet<long>();
+                foreach (var g in grid.Values)
+                {
+                    if (g.Count > 400) continue;
+                    for (var p = 0; p < g.Count; p++) for (var q = p + 1; q < g.Count; q++)
+                    {
+                        int li = g[p], lj = g[q];
+                        if (li >= own && lj >= own) continue;                          // both from the next bucket: that one checks them
+                        var A = faces[list[li]]; var B = faces[list[lj]];
+                        if (A.mat == B.mat || Vector3.Dot(A.n, B.n) < .999f || Mathf.Abs(A.d - B.d) > .015f) continue;
+                        if (!tested.Add(((long)Mathf.Min(li, lj) << 32) | (uint)Mathf.Max(li, lj))) continue;
+                        var area = OverlapArea(A, B, u, v);
+                        if (area < .05f) continue;
+                        var at = (A.a + A.b + A.c + B.a + B.b + B.c) / 6f;
+                        var key = (Mathf.FloorToInt(at.x / 2f), Mathf.FloorToInt(at.y / 2f), Mathf.FloorToInt(at.z / 2f));
+                        if (!hits.TryGetValue(key, out var o)) hits[key] = o = new Overlap { what = owners[A.owner] + " (" + A.mat + ") on " + owners[B.owner] + " (" + B.mat + ")" };
+                        o.sum += at; o.n++; o.area += area;
+                    }
+                }
+            }
+            // join touching cells into places
+            var result = new List<Overlap>(); var seen = new HashSet<(int, int, int)>();
+            foreach (var start in hits.Keys)
+            {
+                if (seen.Contains(start)) continue;
+                var place = new Overlap { what = hits[start].what }; var queue = new Queue<(int, int, int)>(); queue.Enqueue(start); seen.Add(start);
+                while (queue.Count > 0)
+                {
+                    var k = queue.Dequeue(); var o = hits[k]; place.sum += o.sum; place.n += o.n; place.area += o.area;
+                    for (var i = -1; i <= 1; i++) for (var j = -1; j <= 1; j++) for (var l = -1; l <= 1; l++)
+                    {
+                        var nk = (k.Item1 + i, k.Item2 + j, k.Item3 + l);
+                        if (hits.ContainsKey(nk) && seen.Add(nk)) queue.Enqueue(nk);
+                    }
+                }
+                result.Add(place);
+            }
+            result.Sort((a, b) => b.area.CompareTo(a.area));
+            return result;
+        }
+
+        /// The area two coplanar triangles share, found by clipping one by the other in the plane's own 2D axes.
+        /// Each is shrunk 2 cm first, so triangles that only meet along an edge don't count.
+        static float OverlapArea(Face A, Face B, Vector3 u, Vector3 v)
+        {
+            List<Vector2> Flat(Face f)
+            {
+                var pts = new List<Vector2> { new Vector2(Vector3.Dot(f.a, u), Vector3.Dot(f.a, v)), new Vector2(Vector3.Dot(f.b, u), Vector3.Dot(f.b, v)), new Vector2(Vector3.Dot(f.c, u), Vector3.Dot(f.c, v)) };
+                var m = (pts[0] + pts[1] + pts[2]) / 3f;
+                for (var i = 0; i < 3; i++) { var d = pts[i] - m; var len = d.magnitude; if (len > .03f) pts[i] = m + d * ((len - .02f) / len); }
+                if ((pts[1].x - pts[0].x) * (pts[2].y - pts[0].y) - (pts[1].y - pts[0].y) * (pts[2].x - pts[0].x) < 0f) { var t = pts[1]; pts[1] = pts[2]; pts[2] = t; }   // counter-clockwise
+                return pts;
+            }
+            var poly = Flat(A); var clip = Flat(B);
+            for (var e = 0; e < 3 && poly.Count > 0; e++)
+            {
+                Vector2 c0 = clip[e], c1 = clip[(e + 1) % 3];
+                var next = new List<Vector2>();
+                for (var i = 0; i < poly.Count; i++)
+                {
+                    Vector2 p = poly[i], q = poly[(i + 1) % poly.Count];
+                    float sp = (c1.x - c0.x) * (p.y - c0.y) - (c1.y - c0.y) * (p.x - c0.x), sq = (c1.x - c0.x) * (q.y - c0.y) - (c1.y - c0.y) * (q.x - c0.x);
+                    if (sp >= 0f) next.Add(p);
+                    if ((sp >= 0f) != (sq >= 0f)) next.Add(p + (q - p) * (sp / (sp - sq)));
+                }
+                poly = next;
+            }
+            var area = 0f;
+            for (var i = 0; i < poly.Count; i++) { var p = poly[i]; var q = poly[(i + 1) % poly.Count]; area += p.x * q.y - q.x * p.y; }
+            return Mathf.Abs(area) / 2f;
+        }
+
         static bool Covered(Vector3 p)
         {
             foreach (var c in Physics.OverlapSphere(p, Probe, ~0, QueryTriggerInteraction.Ignore))
@@ -270,7 +417,7 @@ namespace EverythingWorld.World
             new Vector2Int(Mathf.RoundToInt((p.x - ctx.MinX + 40f) / Px), Mathf.RoundToInt((ctx.MaxZ + 40f - p.z) / Px));
 
         static void Picture(IslandWorldData data, LandContext ctx, HashSet<(int, int)> scenery, HashSet<(int, int)> empty, float cell,
-                            List<Vector3> lights, List<Cluster> bare, HashSet<string> problems, string path)
+                            List<Vector3> lights, List<Cluster> bare, List<Overlap> overlaps, HashSet<string> problems, string path)
         {
             int w = Mathf.CeilToInt((ctx.MaxX - ctx.MinX + 80f) / Px), h = Mathf.CeilToInt((ctx.MaxZ - ctx.MinZ + 80f) / Px);
             if (w <= 0 || h <= 0 || w > 4000 || h > 4000) return;
@@ -313,6 +460,7 @@ namespace EverythingWorld.World
                 foreach (var (x, y) in new[] { (pz.x + k, pz.y), (pz.x, pz.y + k) })
                     if (x >= 0 && y >= 0 && x < w && y < h) px[(h - 1 - y) * w + x] = new Color(.2f, 1f, 1f);
             foreach (var c in bare) Dot(c.At, 2, new Color(1f, 0f, 0f), true);
+            foreach (var o in overlaps) Dot(o.At, 2, new Color(1f, 0f, 1f), true);
             var tex = new Texture2D(w, h, TextureFormat.RGBA32, false);
             tex.SetPixels32(px); tex.Apply();
             File.WriteAllBytes(path, tex.EncodeToPNG());

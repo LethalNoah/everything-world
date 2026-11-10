@@ -114,6 +114,26 @@ namespace EverythingWorld.World
                 var landRoot = GameObject.Find("Land: " + isl.name);
                 if (landRoot != null) foreach (var t in landRoot.GetComponentsInChildren<Transform>(true)) if (t.name.StartsWith("Shot: ")) marks.Add(t);
                 foreach (var m in marks) yield return Shot(m.name.Substring(6), m.position, m.eulerAngles.y, 6f, 1f);
+                // inside the buildings: every room the land registered (IndoorSpaces), biggest first, from just inside
+                // one end looking down its length, and from the far end looking back
+                var rooms = new List<(Vector3 center, Quaternion rotation, Vector3 size)>();
+                foreach (var r in IndoorSpaces.All) if (data.IslandAt(r.center.x, r.center.z) == isl) rooms.Add(r);
+                rooms.Sort((a, b) => (b.size.x * b.size.z).CompareTo(a.size.x * a.size.z));
+                for (var i = 0; i < rooms.Count && i < 14; i++)
+                {
+                    var (rc, rr, rs) = rooms[i];
+                    var along = rs.z >= rs.x ? rr * Vector3.forward : rr * Vector3.right; along.y = 0f; along.Normalize();
+                    var len = Mathf.Max(rs.z, rs.x); var floorY = rc.y - rs.y / 2f;
+                    var eye = Mathf.Min(.95f, rs.y / 2f - .1f);
+                    string near = null; var nd = float.MaxValue;
+                    foreach (var a in data.layout.artists) { if (a.sceneId != isl.sceneId) continue; var d = Vector2.Distance(new Vector2(a.x, a.z), new Vector2(rc.x, rc.z)); if (d < nd) { nd = d; near = a.name; } }
+                    var label = near != null && nd < 60f ? $"inside {i + 1}, near {near}" : $"inside {i + 1}";
+                    foreach (var s in new[] { -1f, 1f })
+                    {
+                        var at = rc + along * s * len * .38f; at.y = floorY + eye;
+                        yield return Shot($"{label}{(s > 0 ? ", looking back" : "")}", at, Quaternion.LookRotation(-along * s).eulerAngles.y, 4f, .8f);
+                    }
+                }
                 // the land's song-triggered moments (each kit lists its own in SpecialSongs)
                 var kit = LandKit.For(isl.name);
                 if (kit != null)

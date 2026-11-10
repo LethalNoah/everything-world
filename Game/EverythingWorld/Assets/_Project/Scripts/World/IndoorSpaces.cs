@@ -16,6 +16,12 @@ namespace EverythingWorld.World
         public static void Add(Vector3 center, Quaternion rotation, Vector3 size) =>
             rooms.Add(new Room { center = center, inverse = Quaternion.Inverse(rotation), half = size / 2f });
 
+        /// Every room: its centre, rotation and full size (the photo tour looks inside each one).
+        public static IEnumerable<(Vector3 center, Quaternion rotation, Vector3 size)> All
+        {
+            get { foreach (var r in rooms) yield return (r.center, Quaternion.Inverse(r.inverse), r.half * 2f); }
+        }
+
         public static bool Contains(Vector3 p)
         {
             foreach (var r in rooms)
