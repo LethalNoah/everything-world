@@ -19,6 +19,8 @@ namespace EverythingWorld.World
         {
             (PeaceTrain, "Peace Train", "Yusuf / Cat Stevens"), (RockyMountainHigh, "Rocky Mountain High", "John Denver"),
             (EdmundFitzgerald, "The Wreck of the Edmund Fitzgerald", "@the lake"), (BridgeOverTroubledWater, "Bridge over Troubled Water", "@the bridge"),
+            (Werewolves, "Werewolves of London", "Warren Zevon"), (RunningUpThatHill, "Running Up That Hill", "Kate Bush"), (EarthMove, "I Feel the Earth Move", "Carole King"),
+            (CountryRoads, "Take Me Home, Country Roads", "John Denver"), (SweetCaroline, "Sweet Caroline", "@the village"),
         };
 
         static readonly Color Warm = new Color(1f, .82f, .55f), Ink = new Color(.97f, .95f, .9f);
@@ -42,7 +44,7 @@ namespace EverythingWorld.World
 
         Material GlowM(Color c, float s = 2f) => WorldMaterials.Glow(c, s * .65f);
         static bool HasStation(IslandWorldData.Artist a) => a.station || a.stationId != 0;
-        static float Foot(IslandWorldData.Artist a) => HasStation(a) ? 14f : 8f;
+        static float Foot(IslandWorldData.Artist a) => HasStation(a) ? 18f : 11f;
 
         public override bool Ground(float height, float slope, float patch, out Color color)
         {
@@ -123,6 +125,7 @@ namespace EverythingWorld.World
             GreatTree(ctx, mk, solid);
             if (hasLake) { Lake(ctx, mk, solid); Railway(ctx, mk, solid); Footbridge(ctx, mk, solid); }
             Trails(ctx, mk, solid);
+            Village(ctx, mk, solid);
             Woods(ctx, mk, solid);
             mk.Build("Folk Woods", ctx.Root, false);
             soft.Build("Soft folk woods crowns and reeds", ctx.Root, false);   // "Soft…": walked through, so the land audit skips it
@@ -463,7 +466,80 @@ namespace EverythingWorld.World
             foreach (var s in new[] { -1.8f, 1.8f }) mk.Box(GlowM(Warm, 1.6f), at + up * 1.7f + face * 2.45f + side * s, new Vector3(.9f, .8f, .04f), rot);
             var ch = at + up * 4f + side * 2f; mk.Box(stone, ch, new Vector3(.8f, 2.2f, .8f), rot);
             life.chimneys.Add(ch + up * 1.2f);
+            Porch(ctx, mk, solid, at, face, side);
             noGrass.Add(new Vector3(at.x, 5f, at.z));
+        }
+
+        /// A porch along a cabin's front: a plank deck, posts and a little roof, a rocking chair, a lantern by the door.
+        void Porch(LandContext ctx, MeshKit mk, MeshKit solid, Vector3 at, Vector3 face, Vector3 side)
+        {
+            var up = Vector3.up; var rot = Quaternion.LookRotation(face); var pc = at + face * 3.4f;
+            mk.Box(wood, pc + up * .25f, new Vector3(6.2f, .3f, 1.9f), rot); solid.Box(wood, pc + up * .2f, new Vector3(6.2f, .4f, 1.9f), rot);
+            foreach (var s in new[] { -3f, 3f }) { mk.Prism(logM, pc + side * s + face * .8f, up, .1f, 2.7f, 6); ArtistBits.PostCollider(ctx.Root, pc + side * s + face * .8f, 2.7f, .12f); }
+            mk.Box(WorldMaterials.Solid(new Color(.35f, .32f, .3f)), pc + up * 2.75f, new Vector3(6.4f, .1f, 2.1f), rot * Quaternion.Euler(10f, 0, 0));
+            var chair = pc + up * .4f + side * 1.8f; mk.Box(wood, chair + up * .45f, new Vector3(.65f, .06f, .6f), rot); mk.Box(wood, chair + up * .9f - face * .28f, new Vector3(.65f, .8f, .06f), rot * Quaternion.Euler(-10f, 0, 0));
+            foreach (var s in new[] { -.28f, .28f }) mk.Box(wood, chair + up * .12f + side * s, new Vector3(.05f, .08f, .9f), rot);
+            solid.Box(wood, chair + up * .5f, new Vector3(.7f, 1f, .7f), rot);
+            var lamp = at + face * 2.6f + up * 2.2f - side * 1.1f; mk.Box(GlowM(Warm, 2.4f), lamp, new Vector3(.22f, .3f, .22f), Quaternion.identity); halos.Add(lamp, 1.2f, Warm, .7f);
+        }
+
+        /// The village: a few cabins with porches round a little green near where you arrive, a general store with a
+        /// lit window and a bench out front, a stone well, a washing line, a fire circle of log benches, string lights
+        /// between the porches.
+        void Village(LandContext ctx, MeshKit mk, MeshKit solid)
+        {
+            var up = Vector3.up; Vector3 green = default; var found = false;
+            for (var r = 34f; r <= 70f && !found; r += 6f)
+                for (var k = 0; k < 16 && !found; k++)
+                {
+                    var a = k * Mathf.PI / 8f + .2f; var px = center.x + Mathf.Cos(a) * r; var pz = center.z + Mathf.Sin(a) * r;
+                    if (!ctx.IsLand(px, pz, 30f) || InLake(px, pz, 24f) || InFootprint(ctx, px, pz, 24f) || OnRail(px, pz, 14f)) continue;
+                    green = ctx.OnGround(px, pz); found = true;
+                }
+            if (!found) return;
+            var toHeart = new Vector3(center.x - green.x, 0, center.z - green.z).normalized; var gside = Vector3.Cross(up, toHeart);
+            // cabins round the green, facing it
+            var porchLamps = new List<Vector3>();
+            for (var k = 0; k < 4; k++)
+            {
+                var a = (k * 90f + 45f) * Mathf.Deg2Rad; var at = green + (toHeart * Mathf.Cos(a) + gside * Mathf.Sin(a)) * 15f; at = ctx.OnGround(at.x, at.z);
+                VillageCabin(ctx, mk, solid, at, (green - at).normalized); porchLamps.Add(at + (green - at).normalized * 4.4f + up * 2.6f);
+            }
+            for (var k = 0; k < porchLamps.Count; k++) { var a = porchLamps[k]; var b = porchLamps[(k + 1) % porchLamps.Count]; for (var j = 1; j < 12; j++) { var t = j / 12f; var p = Vector3.Lerp(a, b, t) - up * Mathf.Sin(t * Mathf.PI) * 1f; mk.Blob(GlowM(Warm, 2.4f), p, Vector3.one * .1f, ctx.Rng, 0f); } halos.Add((a + b) / 2f - up, 2f, Warm, .4f); }
+            // the general store on the far side
+            var gs = green - toHeart * 20f; gs = ctx.OnGround(gs.x, gs.z); var grot = Quaternion.LookRotation(toHeart); var white = WorldMaterials.Solid(new Color(.9f, .88f, .82f));
+            mk.Box(white, gs + up * 2f, new Vector3(8f, 4f, 6f), grot); solid.Box(white, gs + up * 2f, new Vector3(8f, 4f, 6f), grot);
+            mk.Box(white, gs + up * 4.6f + toHeart * 3f, new Vector3(8f, 1.4f, .2f), grot); ArtistBits.Label(ctx.Root, "GENERAL STORE", gs + up * 4.6f + toHeart * 3.12f, toHeart, .3f, new Color(.25f, .15f, .1f), TextAnchor.MiddleCenter);
+            mk.GableRoof(WorldMaterials.Solid(new Color(.4f, .3f, .28f)), gs + up * 4f, new Vector3(6.6f, 0, 8.6f), 1.8f, Quaternion.LookRotation(gside));
+            mk.Box(dark, gs + up * 1.1f + toHeart * 3.01f, new Vector3(1.2f, 2.2f, .04f), grot);
+            foreach (var s in new[] { -2.4f, 2.4f }) mk.Box(GlowM(Warm, 1.6f), gs + up * 1.8f + toHeart * 3.01f + gside * s, new Vector3(1.8f, 1.4f, .04f), grot);
+            Porch(ctx, mk, solid, gs, toHeart, gside);
+            ArtistBits.PointLight(ctx.Root, gs + up * 3f + toHeart * 5f, Warm, 14f, 1.4f); noGrass.Add(new Vector3(gs.x, 8f, gs.z));
+            // a stone well, a washing line, a fire circle with log benches in the middle of the green
+            var well = green + gside * 6f; well = ctx.OnGround(well.x, well.z); mk.Prism(stone, well, up, 1f, .9f, 12); mk.Prism(dark, well + up * .9f, up, .8f, .02f, 12); foreach (var s in new[] { -.85f, .85f }) mk.Box(wood, well + gside * s + up * 1.6f, new Vector3(.12f, 1.6f, .12f), Quaternion.identity);
+            mk.Box(wood, well + up * 2.4f, new Vector3(2f, .1f, .1f), Quaternion.LookRotation(toHeart) * Quaternion.Euler(0, 90f, 0)); mk.GableRoof(WorldMaterials.Solid(new Color(.4f, .3f, .28f)), well + up * 2.5f, new Vector3(1.6f, 0, 2.2f), .5f, Quaternion.LookRotation(gside)); solid.Prism(stone, well, up, 1f, 1f, 8);
+            var wl = green - gside * 7f; var wa = ctx.OnGround(wl.x + toHeart.x * 3f, wl.z + toHeart.z * 3f); var wb = ctx.OnGround(wl.x - toHeart.x * 3f, wl.z - toHeart.z * 3f);
+            foreach (var p in new[] { wa, wb }) { mk.Prism(wood, p, up, .06f, 2f, 6); ArtistBits.PostCollider(ctx.Root, p, 2f, .1f); }
+            Color[] cloth = { new Color(.95f, .95f, .9f), new Color(.6f, .75f, .95f), new Color(.95f, .7f, .6f), new Color(.8f, .9f, .7f) };
+            for (var k = 0; k < 5; k++) { var p = Vector3.Lerp(wa, wb, .15f + k * .17f) + up * 1.55f; soft.Box(WorldMaterials.Solid(cloth[k % cloth.Length], .2f), p, new Vector3(.6f, .7f, .03f), Quaternion.LookRotation(gside)); }
+            Campfire(ctx, mk, solid, green);
+            for (var k = 0; k < 4; k++) { var d = Quaternion.Euler(0, k * 90f, 0) * toHeart; var lg = green + d * 3.6f; lg = ctx.OnGround(lg.x, lg.z) + up * .3f; mk.Prism(logM, lg - Vector3.Cross(up, d) * 1.3f, Vector3.Cross(up, d), .3f, 2.6f, 8); }
+            noGrass.Add(new Vector3(green.x, 6f, green.z));
+            var mark = new GameObject("Shot: the village").transform; mark.SetParent(ctx.Root, false); var cam = green + toHeart * 22f; cam = ctx.OnGround(cam.x, cam.z); mark.SetPositionAndRotation(cam, Quaternion.LookRotation(-toHeart));
+            life.village = green;
+        }
+
+        void VillageCabin(LandContext ctx, MeshKit mk, MeshKit solid, Vector3 at, Vector3 face)
+        {
+            face.y = 0; face.Normalize(); var up = Vector3.up; var rot = Quaternion.LookRotation(face); var side = Vector3.Cross(up, face);
+            for (var k = 0; k < 7; k++) { mk.Prism(logM, at + up * (.25f + k * .45f) - side * 3f + face * 2.2f, side, .24f, 6f, 8); mk.Prism(logM, at + up * (.25f + k * .45f) - side * 3f - face * 2.2f, side, .24f, 6f, 8); mk.Prism(logM, at + up * (.45f + k * .45f) - face * 2.4f + side * 2.8f, face, .24f, 4.8f, 8); mk.Prism(logM, at + up * (.45f + k * .45f) - face * 2.4f - side * 2.8f, face, .24f, 4.8f, 8); }
+            solid.Box(logM, at + up * 1.6f, new Vector3(6f, 3.2f, 4.8f), rot);
+            mk.GableRoof(WorldMaterials.Solid(new Color(.35f, .32f, .3f)), at + up * 3.2f, new Vector3(5.6f, 0, 6.8f), 1.8f, Quaternion.LookRotation(side));
+            mk.Box(dark, at + up * 1.1f + face * 2.45f, new Vector3(1f, 2f, .05f), rot);
+            foreach (var s in new[] { -1.8f, 1.8f }) mk.Box(GlowM(Warm, 1.6f), at + up * 1.7f + face * 2.45f + side * s, new Vector3(.9f, .8f, .04f), rot);
+            var ch = at + up * 4f + side * 2f; mk.Box(stone, ch, new Vector3(.8f, 2.2f, .8f), rot); life.chimneys.Add(ch + up * 1.2f);
+            Porch(ctx, mk, solid, at, face, side);
+            noGrass.Add(new Vector3(at.x, 6f, at.z));
         }
 
         void Campfire(LandContext ctx, MeshKit mk, MeshKit solid, Vector3 at)

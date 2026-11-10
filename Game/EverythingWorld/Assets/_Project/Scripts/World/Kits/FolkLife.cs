@@ -12,7 +12,7 @@ namespace EverythingWorld.World
     ///   Mountain High": shooting stars fall through the morning sky and the light turns golden; "The Wreck of the
     ///   Edmund Fitzgerald": a storm rolls over the lake, dark and wet and windy; "Bridge over Troubled Water": the
     ///   footbridge glows and the light goes soft and still.
-    public class FolkLife : MonoBehaviour
+    public partial class FolkLife : MonoBehaviour
     {
         const string Land = "The Folk Woods";
         public Vector3 center, tree, lake; public float lakeR = 70f;
@@ -105,6 +105,7 @@ namespace EverythingWorld.World
                 foreach (var s in new[] { -1f, 1f }) { mk.Tri(bird, new Vector3(0, 0, .2f), new Vector3(s * .6f, .12f, -.05f), new Vector3(0, 0, -.2f), Vector3.up); mk.Tri(bird, new Vector3(0, 0, .2f), new Vector3(0, 0, -.2f), new Vector3(s * .6f, .12f, -.05f), Vector3.down); }
                 birds.Add(mk.BuildSingle("Bird", transform, false).transform);
             }
+            StoriesStart();
         }
 
         static Material Additive(string name)
@@ -160,6 +161,7 @@ namespace EverythingWorld.World
             rocky = Mathf.MoveTowards(rocky, here && id == FolkKit.RockyMountainHigh ? 1f : 0f, dt / 3f);
             storm = Mathf.MoveTowards(storm, here && id == FolkKit.EdmundFitzgerald ? 1f : 0f, dt / 4f);
             bridge = Mathf.MoveTowards(bridge, here && id == FolkKit.BridgeOverTroubledWater ? 1f : 0f, dt / 3f);
+            StoriesUpdate(dt, t, id, here);
 
             var tint = new Color(.85f, .95f, 1f); var amount = .1f;
             if (rocky > 0f) { tint = Color.Lerp(tint, new Color(1f, .85f, .5f), rocky); amount = Mathf.Lerp(amount, .4f, rocky); }

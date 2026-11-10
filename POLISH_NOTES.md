@@ -49,11 +49,10 @@ Snapshot numbers refer to `Game/EverythingWorld/Logs/Live/` (not committed).
   Hotel California; Redbone and Rick Springfield are the same deck chair and umbrella; Phil Collins
   unreadable.
 
-## Folk Woods
-- Works: the lake and long footbridge, Big Pink, Country Roads mountains, Don McLean's Chevy, Carole King's
-  split rock, Lightfoot's ship.
-- Fix: most artists are just signs on bright flat grass; the misty-morning mood barely shows (no visible sun
-  shafts or mist in play); a lone smoking trunk with nothing round it.
+## Folk Woods (deep pass done, 2026-11-10)
+- Done: every artist a story scene from its songs with song-lit glows, lantern-lit clearings for the small ones,
+  a village of porched cabins with a general store, porches on every cabin.
+- Still to check in play: the misty-morning mood (mist and sun shafts still faint); frame rate.
 
 ## Bluegrass Hollows
 - Works: barn and porch stage, the picking circle, covered bridge, stepping stones, wagon and mule, Nickel
