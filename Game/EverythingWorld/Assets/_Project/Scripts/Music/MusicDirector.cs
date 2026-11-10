@@ -14,6 +14,10 @@ namespace EverythingWorld.Music
     {
         public static MusicDirector Instance { get; private set; }
 
+        /// For testing only (the photo tour, ShotTour): pretend this track is playing, so a land's song-triggered
+        /// moment (a rainbow, the sun breaking through) shows. Null in normal play.
+        public static string ForcedTrackId;
+
         [Tooltip("Assets/_Project/Data/scenes.json")]
         public TextAsset sceneData;
 

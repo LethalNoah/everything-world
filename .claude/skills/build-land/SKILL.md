@@ -49,6 +49,14 @@ Every item below is something that went wrong before.
   Pattern: `DriftwoodKit.Walk` and `Boardwalk`.
 - Start a joining path at the edge of the one it joins, not its centre. Leave railings open at junctions.
 
+- An artist's radio ring (their `r`) must contain their whole scene: a pier, a garden, a jetty. If the scene
+  is bigger, grow `r` in ShapeGround; a ring that cuts across the scene feels like the zone ends abruptly
+  (Phoebe Bridgers' pier).
+- Anything big built relative to an artist (a house, a pier, a lake, stairs) levels its own ground in
+  ShapeGround, and keeps working wherever the artist ends up: artists move when spacing changes, and a
+  house that lands on a slope rises on stilts and throws its ramps over everything (Lanternwood's boathouse).
+- Ramps and stairs never overlap another walkway; if a pier or path starts at a door, there's no ramp there.
+
 **Collision (the most common fix)**
 - Everything you could walk into gets a collider: buildings, walls, furniture, rails and ropes, posts,
   trunks, rocks, and small props on the ground (buoys, pots, crates). Add a `solid.Box` or
@@ -75,6 +83,15 @@ Every item below is something that went wrong before.
 - The centrepiece must read clearly from a distance: a recognisable shape (an arch, a tree, a tower), not
   an abstract pile (the Driftwood A-frame was unreadable).
 
+- Ground colours by height must only catch the feature they're for: a "below the water is mud" rule also
+  caught the low coast of the Fens and made a black band. Limit each band to its own place (or a narrow
+  height range), and check the top-down photo.
+- Nothing floats: tables, benches, shelves, platforms and signs need legs, posts or brackets down to what
+  holds them (the Electric Fields' picnic tables were legless planks).
+- Curved things (hulls, canopies, arches, domes) are built as continuous surfaces (`MeshKit.Quad` strips over
+  a profile), not boxes turned at angles: the first boat sheds and willows were boxes and looked strange.
+  Trees and other hero props deserve real shape: a trunk that splits into limbs, foliage hanging from them.
+
 **Density**
 - Fill the whole land, not just round the artists: scatter several kinds of things over the wilds on a
   jittered grid (pattern: `DriftwoodWilds.Wilds`): trees, small structures, benches with lanterns, ruins,
@@ -87,12 +104,27 @@ Every item below is something that went wrong before.
   titles): the owner always asked for more here.
 - Keep the owner's special requests exactly (song-triggered events, named designs).
 
+- Every artist scene must read from 20 m away: something at least 2.5 m tall or wide and lit. Small props on
+  their own vanish (the Fens' microphone and toy car); make them giant or put them on a stage.
+
 **Variety and happenings**
 - Things that happen now and then, decided by the shared clock so friends see the same thing
   (`SharedChance`: per song with `CurrentSong`, per day with `Day`): animals, passing things, weather
   events, light changes, something that moves each day. Pattern: `DriftwoodHappenings.cs`, `DownsLife`.
 - Lights and glows answer the music (`SurpriseDirector.Energy`, song valence).
-- Any song-triggered event (like the Driftwood rainbow) checks the track id.
+- Any song-triggered event (like the Driftwood rainbow) checks `MusicDirector.ForcedTrackId ?? the track id`,
+  and the kit lists it in `SpecialSongs` (song, label, the artist where it happens) so the photo tour can force
+  it and photograph it there. Make song moments steady and big while the song plays (not quick bursts), or a
+  photo (and a player arriving mid-song) misses them.
+- Kits whose artist scenes don't face where you arrive override `ArtistFront` (garages face the street), so
+  the tour photographs their fronts.
+
+**Shared systems and performance**
+- When you change a shared system (placement, sky, glows, the audit), re-check every land that uses it:
+  its photo, and the owner's next play-test. One change to spacing moved two lands at once.
+- Every land adds load you feel from the hub (grass, small props, halos, lights are all drawn at any
+  distance). Keep ground cover reasonable, merge props into the land's big meshes, keep point lights to
+  what matters, and note anything heavy under "Performance" in IDEAS.md.
 
 ## 3. Before handing it over
 
@@ -107,6 +139,12 @@ Every item below is something that went wrong before.
    problems, and big empty stretches, before asking the owner to look.
    The audit also photographs the land from above (`<Land>_top.png`); run `python build/land_map.py "<Land>"`
    to label it (`<Land>_map.png`) and look at it: every artist scene, path and landmark should be visible.
+   **Look at it yourself from eye level** before the owner does: with the Unity editor closed (ask the owner
+   to close it), run `python build/take_shots.py "<Land>"`. Unity photographs the land in the background with
+   Spotify off (from where you arrive looking four ways, in front of every artist area, one high view; it also
+   reruns the audit) and makes contact sheets in `Game/EverythingWorld/Logs/Shots/<Land>/sheet_*.png`. Read
+   the sheets (and single photos for detail): fix anything that looks wrong, odd or unreadable (props built
+   from boxes at angles, overlaps, floating things, blown-out glows), and shoot again.
 5. Then the owner's quality check in play. Ask for screenshots of anything unclear.
 6. Commit when the owner approves: check `git status` for secrets first (keys, tokens, playlist.csv,
    display_names.json, Spotify config), commit the `.meta` files with new scripts, and push only when asked.

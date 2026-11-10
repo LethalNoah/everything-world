@@ -538,65 +538,71 @@ namespace EverythingWorld.World
             ArtistBits.PostCollider(z.root, post, 3f, .1f);
         }
 
-        /// Everyone else: one of a set of dreamy, noisy things, chosen by name.
+        /// Everyone else: one of a set of dreamy, noisy things, chosen by name, at double size (giant, so it reads
+        /// from across the water, and fits the dream).
         void Generic(Isle z)
         {
-            var ctx = z.ctx; var p = z.At(-1f, 0); var up = Vector3.up; var rot = Quaternion.LookRotation(z.front);
+            var ctx = z.ctx; var at = z.At(-1f, 0); var p = Vector3.zero; var up = Vector3.up;
+            var rot = Quaternion.LookRotation(z.front);
+            var big = new MeshKit(); var bigSolid = new MeshKit();            // built small at the origin, then shown at double size
             var col = Glows[Mathf.Abs(z.a.name.GetHashCode()) % Glows.Length];
             switch (Mathf.Abs(z.a.name.GetHashCode() / 3) % 8)
             {
                 case 0: // a stack of pedals with a cable snaking off
-                    for (var k = 0; k < 4; k++) z.mk.Box(WorldMaterials.Solid(Glows[(k + 1) % Glows.Length] * .8f), p + up * (.25f + k * .45f), new Vector3(.9f - k * .1f, .42f, .7f - k * .05f), rot * Quaternion.Euler(0, k * 12f, 0));
-                    z.mk.Prism(GlowM(col, 3f), p + up * 1.9f, up, .06f, .05f, 6);
-                    z.solid.Box(black, p + up * .9f, new Vector3(.9f, 1.8f, .7f), rot);
+                    for (var k = 0; k < 4; k++) big.Box(WorldMaterials.Solid(Glows[(k + 1) % Glows.Length] * .8f), p + up * (.25f + k * .45f), new Vector3(.9f - k * .1f, .42f, .7f - k * .05f), rot * Quaternion.Euler(0, k * 12f, 0));
+                    big.Prism(GlowM(col, 3f), p + up * 1.9f, up, .06f, .05f, 6);
+                    bigSolid.Box(black, p + up * .9f, new Vector3(.9f, 1.8f, .7f), rot);
                     break;
                 case 1: // an amp with a lamp on it
-                    z.mk.Box(black, p + up * .6f, new Vector3(1.2f, 1.2f, .6f), rot);
-                    z.mk.Box(WorldMaterials.Solid(new Color(.75f, .7f, .6f)), p + up * .6f + z.front * .31f, new Vector3(1f, .8f, .02f), rot);
-                    z.mk.Prism(WorldMaterials.Solid(new Color(.6f, .5f, .4f)), p + up * 1.2f, up, .08f, .5f, 6);
-                    z.mk.Prism(GlowM(col, 2.4f), p + up * 1.65f, up, .3f, .35f, 10, .6f);
-                    z.solid.Box(black, p + up * .6f, new Vector3(1.2f, 1.2f, .6f), rot);
+                    big.Box(black, p + up * .6f, new Vector3(1.2f, 1.2f, .6f), rot);
+                    big.Box(WorldMaterials.Solid(new Color(.75f, .7f, .6f)), p + up * .6f + z.front * .31f, new Vector3(1f, .8f, .02f), rot);
+                    big.Prism(WorldMaterials.Solid(new Color(.6f, .5f, .4f)), p + up * 1.2f, up, .08f, .5f, 6);
+                    big.Prism(GlowM(col, 2.4f), p + up * 1.65f, up, .3f, .35f, 10, .6f);
+                    bigSolid.Box(black, p + up * .6f, new Vector3(1.2f, 1.2f, .6f), rot);
                     break;
                 case 2: // a microphone stand, the mic glowing
-                    z.mk.Prism(iron, p, up, .04f, 1.6f, 6);
-                    z.mk.Blob(GlowM(col, 3f), p + up * 1.7f + z.front * .1f, new Vector3(.1f, .14f, .1f), ctx.Rng, 0f);
-                    ArtistBits.PostCollider(z.root, p, 1.6f, .1f);
+                    big.Prism(iron, p, up, .04f, 1.6f, 6);
+                    big.Blob(GlowM(col, 3f), p + up * 1.7f + z.front * .1f, new Vector3(.1f, .14f, .1f), ctx.Rng, 0f);
+                    bigSolid.Box(black, p + up * (1.6f / 2f), new Vector3(.1f * 2f, 1.6f, .1f * 2f), Quaternion.identity);
                     break;
                 case 3: // a giant cassette leaning in the moss
-                    z.mk.Box(black, p + up * .9f, new Vector3(2.4f, 1.6f, .25f), rot * Quaternion.Euler(-10f, 0, 0));
-                    z.mk.Box(WorldMaterials.Solid(DustyPink), p + up * 1.05f + z.front * .14f, new Vector3(2f, .7f, .02f), rot * Quaternion.Euler(-10f, 0, 0));
-                    foreach (var s in new[] { -.55f, .55f }) z.mk.Prism(GlowM(col, 2f), p + up * .75f + z.side * s + z.front * .12f, z.front, .2f, .03f, 10);
-                    z.solid.Box(black, p + up * .9f, new Vector3(2.4f, 1.8f, .5f), rot);
+                    big.Box(black, p + up * .9f, new Vector3(2.4f, 1.6f, .25f), rot * Quaternion.Euler(-10f, 0, 0));
+                    big.Box(WorldMaterials.Solid(DustyPink), p + up * 1.05f + z.front * .14f, new Vector3(2f, .7f, .02f), rot * Quaternion.Euler(-10f, 0, 0));
+                    foreach (var s in new[] { -.55f, .55f }) big.Prism(GlowM(col, 2f), p + up * .75f + z.side * s + z.front * .12f, z.front, .2f, .03f, 10);
+                    bigSolid.Box(black, p + up * .9f, new Vector3(2.4f, 1.8f, .5f), rot);
                     break;
                 case 4: // a dream catcher hanging from a crooked post
-                    z.mk.Prism(wood, p, (up - z.front * .1f).normalized, .07f, 2.8f, 6);
+                    big.Prism(wood, p, (up - z.front * .1f).normalized, .07f, 2.8f, 6);
                     var hoop = p + up * 2f + z.front * .35f;
-                    for (var k = 0; k < 16; k++) { var a = k * Mathf.PI / 8f; var b = (k + 1) * Mathf.PI / 8f; Vector3 Q(float t) => hoop + (z.side * Mathf.Cos(t) + up * Mathf.Sin(t)) * .5f; z.mk.Box(wood, (Q(a) + Q(b)) / 2f, new Vector3(.03f, .03f, Vector3.Distance(Q(a), Q(b)) + .01f), Quaternion.LookRotation(Q(b) - Q(a))); }
-                    z.mk.Blob(GlowM(col, 3f), hoop, Vector3.one * .08f, ctx.Rng, 0f);
-                    for (var k = 0; k < 3; k++) z.mk.Box(WorldMaterials.Solid(PaleFog), hoop - up * (.8f + k * .05f) + z.side * (k - 1) * .25f, new Vector3(.08f, .35f, .02f), rot);
-                    ArtistBits.PostCollider(z.root, p, 2.6f, .1f);
+                    for (var k = 0; k < 16; k++) { var a = k * Mathf.PI / 8f; var b = (k + 1) * Mathf.PI / 8f; Vector3 Q(float t) => hoop + (z.side * Mathf.Cos(t) + up * Mathf.Sin(t)) * .5f; big.Box(wood, (Q(a) + Q(b)) / 2f, new Vector3(.03f, .03f, Vector3.Distance(Q(a), Q(b)) + .01f), Quaternion.LookRotation(Q(b) - Q(a))); }
+                    big.Blob(GlowM(col, 3f), hoop, Vector3.one * .08f, ctx.Rng, 0f);
+                    for (var k = 0; k < 3; k++) big.Box(WorldMaterials.Solid(PaleFog), hoop - up * (.8f + k * .05f) + z.side * (k - 1) * .25f, new Vector3(.08f, .35f, .02f), rot);
+                    bigSolid.Box(black, p + up * (2.6f / 2f), new Vector3(.1f * 2f, 2.6f, .1f * 2f), Quaternion.identity);
                     break;
                 case 5: // a lava lamp as tall as you
-                    z.mk.Prism(iron, p, up, .4f, .5f, 10, .6f);
-                    z.mk.Prism(GlowM(col, 1.8f), p + up * .5f, up, .3f, 1.3f, 10, .7f);
-                    for (var k = 0; k < 3; k++) z.mk.Blob(GlowM(Color.Lerp(col, Color.white, .4f), 3f), p + up * (.8f + k * .35f), Vector3.one * .12f, ctx.Rng, .3f);
-                    z.mk.Prism(iron, p + up * 1.8f, up, .21f, .3f, 10, .5f);
-                    ArtistBits.PostCollider(z.root, p, 2f, .4f);
+                    big.Prism(iron, p, up, .4f, .5f, 10, .6f);
+                    big.Prism(GlowM(col, 1.8f), p + up * .5f, up, .3f, 1.3f, 10, .7f);
+                    for (var k = 0; k < 3; k++) big.Blob(GlowM(Color.Lerp(col, Color.white, .4f), 3f), p + up * (.8f + k * .35f), Vector3.one * .12f, ctx.Rng, .3f);
+                    big.Prism(iron, p + up * 1.8f, up, .21f, .3f, 10, .5f);
+                    bigSolid.Box(black, p + up * (2f / 2f), new Vector3(.4f * 2f, 2f, .4f * 2f), Quaternion.identity);
                     break;
                 case 6: // a television of static on a crate
-                    z.mk.Box(wood, p + up * .3f, new Vector3(.8f, .6f, .6f), rot);
-                    z.mk.Box(black, p + up * .95f, new Vector3(.9f, .7f, .7f), rot);
-                    z.mk.Box(GlowM(new Color(.85f, .85f, .95f), 2f), p + up * .95f + z.front * .36f, new Vector3(.66f, .5f, .02f), rot);
-                    z.solid.Box(black, p + up * .65f, new Vector3(.9f, 1.3f, .7f), rot);
+                    big.Box(wood, p + up * .3f, new Vector3(.8f, .6f, .6f), rot);
+                    big.Box(black, p + up * .95f, new Vector3(.9f, .7f, .7f), rot);
+                    big.Box(GlowM(new Color(.85f, .85f, .95f), 2f), p + up * .95f + z.front * .36f, new Vector3(.66f, .5f, .02f), rot);
+                    bigSolid.Box(black, p + up * .65f, new Vector3(.9f, 1.3f, .7f), rot);
                     break;
                 default: // a record on a stand
-                    z.mk.Box(wood, p + up * .3f, new Vector3(.3f, .6f, .3f), rot);
-                    z.mk.Prism(black, p + up * 1.25f - z.front * .02f, z.front, .7f, .03f, 24);
-                    z.mk.Prism(GlowM(col, 2.4f), p + up * 1.25f + z.front * .015f, z.front, .2f, .01f, 12);
-                    ArtistBits.PostCollider(z.root, p, 1.9f, .4f);
+                    big.Box(wood, p + up * .3f, new Vector3(.3f, .6f, .3f), rot);
+                    big.Prism(black, p + up * 1.25f - z.front * .02f, z.front, .7f, .03f, 24);
+                    big.Prism(GlowM(col, 2.4f), p + up * 1.25f + z.front * .015f, z.front, .2f, .01f, 12);
+                    bigSolid.Box(black, p + up * (1.9f / 2f), new Vector3(.4f * 2f, 1.9f, .4f * 2f), Quaternion.identity);
                     break;
             }
-            halos.Add(p + up * 1.4f + z.front * 1.4f, 1.3f, col, .7f);
+            var go = big.Build("Giant thing", z.root, false);
+            go.transform.SetPositionAndRotation(at, Quaternion.identity); go.transform.localScale = Vector3.one * 2f;
+            bigSolid.BuildCollider("Giant thing walls", go.transform);
+            halos.Add(at + (up * 1.4f + z.front * 1.4f) * 2f, 2.4f, col, .7f);
         }
     }
 }

@@ -9,6 +9,22 @@
  },
  "lands": [
   {
+   "land": "Garage Rock Row",
+   "sunPitch": -6, "sunYaw": -40, "sunIntensity": 0.6, "sunColor": "#9FE6F0",
+   "skyLight": "#5FA8B8", "horizonLight": "#3D8C9C", "groundLight": "#5A5038",
+   "fogColor": "#1D5A68", "fogStart": 90, "fogEnd": 950,
+   "stars": 0.5, "sunShadows": false, "dailyWeather": false, "bloom": 1.0,
+   "weather": "", "weatherAmount": 0
+  },
+  {
+   "land": "The Electric Fields",
+   "sunPitch": 7, "sunYaw": -100, "sunIntensity": 1.25, "sunColor": "#FFB070",
+   "skyLight": "#B9A2D6", "horizonLight": "#FFB98A", "groundLight": "#5B5040",
+   "fogColor": "#E8B39A", "fogStart": 120, "fogEnd": 1300,
+   "stars": 0.35, "sunShadows": false, "dailyWeather": false, "bloom": 0.95,
+   "weather": "", "weatherAmount": 0
+  },
+  {
    "land": "The Shoegaze Fens",
    "sunPitch": 5, "sunYaw": -120, "sunIntensity": 1.1, "sunColor": "#FFB0C8",
    "skyLight": "#B7A6D8", "horizonLight": "#F0A8C4", "groundLight": "#5A4A66",

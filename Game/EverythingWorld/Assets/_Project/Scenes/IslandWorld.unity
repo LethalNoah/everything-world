@@ -279,6 +279,7 @@ MonoBehaviour:
   toonShading: 1
   zoneFields: 1
   targetFrameRate: 60
+  auditLands: 1
 --- !u!4 &1517454431
 Transform:
   m_ObjectHideFlags: 0
@@ -564,6 +565,7 @@ MonoBehaviour:
   runSpeed: 16
   mouseSensitivity: 0.1
   gravity: -20
+  jumpHeight: 1.2
 --- !u!143 &1766069514
 CharacterController:
   m_ObjectHideFlags: 0

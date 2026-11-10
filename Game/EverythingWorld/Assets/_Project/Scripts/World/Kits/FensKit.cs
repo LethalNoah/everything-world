@@ -15,7 +15,10 @@ namespace EverythingWorld.World
     /// FensWilds, FensLife.
     public partial class FensKit : LandKit
     {
+        public override Vector3 ArtistFront(IslandWorldData data, IslandWorldData.Artist a) =>
+            facing.TryGetValue(a.name, out var f) ? f : base.ArtistFront(data, a);
         public override string Land => "The Shoegaze Fens";
+        public override (string song, string label, string artist)[] SpecialSongs => new[] { (SunSong, "When the Sun Hits", "Slowdive") };
 
         static readonly Color DustyPink = new Color(.84f, .65f, .7f), Lavender = new Color(.65f, .61f, .78f), FenGreen = new Color(.44f, .55f, .48f), PaleFog = new Color(.91f, .9f, .93f);
         static readonly Color Mud = new Color(.27f, .22f, .27f), Moss = new Color(.42f, .52f, .42f), MossPink = new Color(.6f, .55f, .58f);
@@ -46,8 +49,8 @@ namespace EverythingWorld.World
             wood = WorldMaterials.Solid(new Color(.36f, .3f, .3f));
             iron = WorldMaterials.Solid(new Color(.16f, .15f, .18f));
             black = WorldMaterials.Solid(new Color(.07f, .07f, .08f), .6f);
-            water = new Material(WorldMaterials.Glow(new Color(.5f, .4f, .64f), .4f)) { name = "Fen water" };
-            water.SetFloat("_Smoothness", .96f);
+            water = new Material(WorldMaterials.Glow(new Color(.34f, .28f, .46f), .12f)) { name = "Fen water" };     // dark lilac, a faint glow: brighter and the fog washes it white
+            water.SetFloat("_Smoothness", .55f);                                   // glossier mirrors the pale sky and reads white
             leafM = WorldMaterials.Solid(new Color(.52f, .6f, .5f));
             mossM = WorldMaterials.Solid(Moss);
             cloth = WorldMaterials.Solid(DustyPink);

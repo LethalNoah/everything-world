@@ -251,7 +251,7 @@ namespace EverythingWorld.World
             var playing = d != null && d.CurrentSlot.IsValid;
             var energy = SurpriseDirector.Energy;
             var valence = playing ? d.CurrentSlot.track.valence : .45f;
-            var id = playing ? d.CurrentSlot.track.id : null;
+            var id = MusicDirector.ForcedTrackId ?? (playing ? d.CurrentSlot.track.id : null);
 
             // a new song: what happens during it
             if (SharedChance.CurrentSong(out var song, out var start, out var length) && song != songKey)

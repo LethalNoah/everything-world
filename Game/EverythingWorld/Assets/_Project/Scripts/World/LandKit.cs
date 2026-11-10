@@ -22,6 +22,21 @@ namespace EverythingWorld.World
         /// Runs before the terrain is built: change heights in data.heights on this land (dig a lake...).
         public virtual void ShapeGround(IslandWorldData data, int islandIndex) { }
 
+        /// Songs that make something special happen on this land (track id, what happens), so the photo tour
+        /// (ShotTour) can show them.
+        /// Which way an artist's scene faces (where you'd stand to look at it), for the photo tour. By default,
+        /// toward where you arrive.
+        public virtual Vector3 ArtistFront(IslandWorldData data, IslandWorldData.Artist a)
+        {
+            var isl = data.IslandAt(a.x, a.z);
+            if (isl == null) return Vector3.forward;
+            var d = new Vector3(isl.labelX - a.x, 0f, isl.labelZ - a.z);
+            return d.sqrMagnitude < 1f ? Vector3.forward : d.normalized;
+        }
+
+        /// The artist is where it happens (null: everywhere, shot from where you arrive).
+        public virtual (string song, string label, string artist)[] SpecialSongs => new (string, string, string)[0];
+
         /// The landmark, scenery and props.
         public abstract void Dress(LandContext ctx);
 
@@ -38,7 +53,7 @@ namespace EverythingWorld.World
             if (kits == null)
             {
                 kits = new Dictionary<string, LandKit>();
-                foreach (var k in new LandKit[] { new LanternwoodKit(), new HubKit(), new IndieDownsKit(), new MeadowsKit(), new SmallHoursKit(), new DriftwoodKit(), new FensKit() }) kits[k.Land] = k;
+                foreach (var k in new LandKit[] { new LanternwoodKit(), new HubKit(), new IndieDownsKit(), new MeadowsKit(), new SmallHoursKit(), new DriftwoodKit(), new FensKit(), new ElectricKit(), new GarageKit() }) kits[k.Land] = k;
             }
             return land != null && kits.TryGetValue(land, out var kit) ? kit : null;
         }

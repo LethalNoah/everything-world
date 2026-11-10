@@ -309,22 +309,22 @@ Softer and greener than the continent. Overcast skies, fairy lights, dusk. Close
 **Artist areas:** Small daydream scenes off the loop, each in a soft version of the colour of whoever added it. Clairo: a giant swing hanging from a great tree full of fairy lights. beabadoobee: a blanket fort big enough to walk into, glowing inside. Everyone else: a hammock between trees, a beanbag and lamp, a heap of pillows, a swing, a paper-star mobile or a big plush bear. The older generation of the music (The Postal Service, fun., Foster the People, The Apples in Stereo) is faded, like an older dream. A warm light hangs over every daydream and swells while that artist is playing; the lava lamps out in the field cast their own coloured light on the grass.
 
 ### Garage Rock Row
-*20 songs · 13 artists · 0.63 km²*
+*20 songs · 12 artists · 0.63 km² · built in Unity*
 
-**Arriving:** A gritty small-town main street of garages, pubs and back alleys, ending in a neon casino.
+**Arriving:** A gritty small-town main street late at night after rain. You arrive at one end of the Row by a zebra crossing: wet asphalt shining with neon and puddles, orange sodium street lamps, muscle cars at the kerb, and the street running away to a neon casino at the far end.
 
-**The vibe:** Late night. Muscle cars, pub signs, leather jackets on hooks.
+**The vibe:** Loud, late and a bit rough, nothing like the Small Hours' sleeping hamlet. Down both sides: a garage for every artist, door rolled up, the band's gear set up inside under string lights, their name in neon over the door; between them a pub, a diner, a gas station, a laundromat, a record shop, a bar, a pawn shop and a motel, each with a neon sign, and back alleys with dumpsters, burn barrels and steam. The casino closes off the street: marquee bulbs chasing, gold doors, a sign tower with a star. Round the town, dark hills with a water tower, lit billboards, a junkyard, a radio mast blinking red, power lines and chain-link fences. Cars cruise up and down the Row with their headlights on (the same cars for everyone), sometimes a police car with its lights going; some sad songs bring drizzle. "Sex on Fire" sets every burn barrel roaring; "505" floods the street red and room 505's door pulses; "When You Were Young" sends searchlights sweeping from the casino and the marquee goes wild.
 
-**Artist areas:** One open garage per artist, each with a band set up inside. Arctic Monkeys get the one nearest the casino.
+**Artist areas:** Arctic Monkeys: the biggest garage, nearest the casino, a giant neon soundwave across the front ("Do I Wanna Know?"), a black muscle car outside, a leather jacket on a hook, and the motel's room 505 nearby. Kings of Leon: burn barrels at the door. The Killers: a frame of Vegas bulbs and a neon star. The Black Keys: two giant neon piano keys. Silversun Pickups: a half-closed neon eye on the roof ("Lazy Eye"). The Kooks: a camper van with a surfboard. The Strokes: a Mets pennant. The Voidz: a glitching sign. Cage the Elephant: a getaway car. Everyone else: a couch on the pavement or a burn barrel.
 
 ### The Electric Fields
-*18 songs · 9 artists · 0.65 km²*
+*18 songs · 9 artists · 0.65 km² · built in Unity*
 
-**Arriving:** Open festival fields on rolling hills. A huge festival tent with a disco ball bursting through its roof.
+**Arriving:** A whimsical music festival on rolling hills at golden dusk, sliding into night. You arrive at the festival gate, scaffold towers wrapped in flags under a light-up sign, with a ring of tall flags, a striped merch tent and a map of the fields round it. Flag-lined walkways of trodden straw, strung with bunting and festoon lights, lead to every stage.
 
-**The vibe:** Festival evening. Flags, string lights, synths on hay bales, giant inflatables.
+**The vibe:** Uplifting, upbeat, a little weird. MGMT's Big Top is the heart: a huge red-and-cream striped tent with a mirrored disco ball bursting through its roof, throwing beams; inside, a stage of synths under a light rig. Round the fields: a Ferris wheel turning on the highest hill, campsites of bright tents with little fires and flags, food trucks with lit hatches and picnic tables, hay bales with synths set up on them, giant inflatables (a flower, a smiling sun, a rainbow arch, a mushroom), light towers, a row of portable toilets, glowsticks dropped in the grass. Lasers sweep from the main stage, faster in loud songs; the lights and the LED wall pulse with the music; now and then a short fireworks show, and a hot-air balloon drifting over. "Kids" fills the sky over the Big Top with fireworks and confetti for the whole song; "Electric Feel" sends electric blue along every string of lights and every light tower, and the neon eel blazes; "Disparate Youth" sets off the flame cannons on the main stage; and LCD Soundsystem's dome sits dim and waiting until one of their songs plays, when its mirror ball spins and every light in it comes on: the set that finally happens.
 
-**Artist areas:** MGMT gets a hall (the big tent). Others are smaller tents and stages.
+**Artist areas:** MGMT: the Big Top, with a carousel beside it ("Congratulations") and a neon eel arching over the way in ("Electric Feel"). Santigold: the main stage, black and yellow, an LED wall, speaker towers, a lighting truss, a painted road up to the crowd barrier ("Run the Road"). LCD Soundsystem: a silver dome stage with a huge mirror ball, and a ring of camp chairs and a cooler outside ("All My Friends"). Empire of the Sun: a great golden sunburst ("Walking On A Dream"). Phoenix: a white bandstand with a piano and a chandelier ("Lisztomania"). Passion Pit: a chill-out tent with hammocks ("Sleepyhead"). Two Door Cinema Club: an outdoor cinema with deckchairs and two doors standing alone in the grass. Django Django: a comet on poles ("Hail Bop"). Imogen Heap: a microphone in a ring of light ("Headlock"). Everyone has a plaque, a board of covers and a light pole by the walkway.
 
 ### The Small Hours
 *15 songs plus a whole discography · 11 artists · 0.66 km² · built in Unity*

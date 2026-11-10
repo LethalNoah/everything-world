@@ -28,7 +28,7 @@ namespace EverythingWorld.World
             if (tvWindow != null) tvWindow.SetColor("_EmissionColor", new Color(.55f, .7f, 1f) * (1.4f + Mathf.PerlinNoise(t * 3f, 0f) * 2.2f));
 
             var d0 = MusicDirector.Instance;
-            var id = d0 != null && d0.CurrentSlot.IsValid ? d0.CurrentSlot.track.id : null;
+            var id = MusicDirector.ForcedTrackId ?? (d0 != null && d0.CurrentSlot.IsValid ? d0.CurrentSlot.track.id : null);
             var energy = SurpriseDirector.Energy;
             if (moon != null) moon.SetColor("_EmissionColor", new Color(1f, .74f, .06f) * (1.5f + .9f * energy + .25f * Mathf.Sin(t * .8f)));
 

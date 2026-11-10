@@ -17,7 +17,10 @@ namespace EverythingWorld.World
     /// Weather and music: DriftwoodLife.
     public partial class DriftwoodKit : LandKit
     {
+        public override Vector3 ArtistFront(IslandWorldData data, IslandWorldData.Artist a) =>
+            facing.TryGetValue(a.name, out var f) ? f : base.ArtistFront(data, a);
         public override string Land => "The Driftwood Shore";
+        public override (string song, string label, string artist)[] SpecialSongs => new[] { (RainbowSong, "Over the Rainbow", (string)null) };
 
         // the palette, from the covers: Jack Johnson's silver-grey and rose, Agnes Obel's ember, pencil-grey
         static readonly Color WetSand = new Color(.42f, .4f, .38f), DuneSand = new Color(.7f, .66f, .58f), Heath = new Color(.47f, .51f, .46f), HeathB = new Color(.54f, .55f, .5f);
