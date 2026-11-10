@@ -86,7 +86,9 @@ Snapshot numbers refer to `Game/EverythingWorld/Logs/Live/` (not committed).
 ## Iron Range
 - Works: Metallica's crosses on strings, Sabbath's figure and lightning, the sword in the stone, Rainbow's
   tower, Elena Siegman's bunker, the forge and molten river.
-- Fix: still very dark; the steep slopes are featureless brown; artists hard to find between them.
+- The owner likes it dark (2026-11-10): keep it. Deep pass: a tall burning beacon at every artist so they can be
+  found; storm surges with more lightning, striking the beacons; song pieces for every artist; the zombies
+  corner (Kevin Sherwood moved here from the Djent Spires). Still open: the steep slopes are featureless brown.
 
 ## Alt Rock Moors (deep pass done, 2026-11-10)
 - Rebuilt: Radiohead's nine-room district, the Chili Peppers' California corner, a design for every small artist,

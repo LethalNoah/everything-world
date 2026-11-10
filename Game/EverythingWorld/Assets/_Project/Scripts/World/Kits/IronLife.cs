@@ -13,7 +13,7 @@ namespace EverythingWorld.World
     ///   the puppet strings blaze and the light turns red; "War Pigs": the sky burns red and the arcs roar; "115": the
     ///   meteorite floods the range with green light; "Crazy Train": the carts race; "Ace of Spades": the card spins
     ///   fast, throwing sparks.
-    public class IronLife : MonoBehaviour
+    public partial class IronLife : MonoBehaviour
     {
         const string Land = "The Iron Range";
         public Vector3 center, forge, forgeFace = Vector3.forward, pool, arcA, arcB, meteorAt, crate;
@@ -49,6 +49,7 @@ namespace EverythingWorld.World
             var gdm = gold.main; gdm.startLifetime = new ParticleSystem.MinMaxCurve(2f, 3f); gdm.startSpeed = new ParticleSystem.MinMaxCurve(3f, 5f);
             var gs = gold.shape; gs.shapeType = ParticleSystemShapeType.Cone; gs.angle = 2f; gs.radius = .5f; gs.rotation = new Vector3(-90f, 0, 0);
             bolt = Line("Lightning", new Color(.85f, .9f, 1f), .9f); arc = Line("Electric arc", new Color(.65f, .55f, 1f), .2f);
+            StormStart();
             if (loop.Length > 1) { loopLen = new float[loop.Length]; for (var i = 1; i < loop.Length; i++) loopLen[i] = loopLen[i - 1] + Vector3.Distance(loop[i - 1], loop[i]); loopTotal = loopLen[loop.Length - 1]; }
         }
 
@@ -113,12 +114,14 @@ namespace EverythingWorld.World
             ace = Mathf.MoveTowards(ace, here && id == IronKit.AceOfSpades ? 1f : 0f, dt / 2f);
 
             // lightning: a strike every few seconds (thick and fast in "Enter Sandman"), the range flashing white
+            var surge = Storm(dt); StormUpdate(dt, t, id, here);
             nextBolt -= dt; boltLeft -= dt; flash = Mathf.MoveTowards(flash, 0f, dt * 5f);
             var cam = Camera.main;
             if (here && nextBolt <= 0f && cam != null)
             {
-                nextBolt = sandman > .3f ? Random.Range(.6f, 2f) : Random.Range(5f, 14f); boltLeft = .22f; flash = 1f;
-                var hit = cam.transform.position + new Vector3(Random.Range(-260f, 260f), 0, Random.Range(-260f, 260f)); hit.y = cam.transform.position.y - 10f;
+                nextBolt = sandman > .3f ? Random.Range(.6f, 2f) : Mathf.Lerp(Random.Range(3f, 9f), Random.Range(1f, 3.5f), surge); boltLeft = .22f; flash = 1f;
+                var hit = StrikePoint(cam.transform.position, out var onBeacon);
+                if (onBeacon) { sparks.transform.position = hit; sparks.Emit(30); }
                 Jag(bolt, hit + Vector3.up * 220f + Random.insideUnitSphere * 30f, hit, 14, 9f);
             }
             if (boltLeft <= 0f && bolt.positionCount > 0) bolt.positionCount = 0;
@@ -129,8 +132,8 @@ namespace EverythingWorld.World
             if (e115 > 0f) { tint = Color.Lerp(tint, new Color(.35f, 1f, .45f), e115); amount = Mathf.Lerp(amount, .55f, e115); }
             if (flash > 0f) { tint = Color.Lerp(tint, new Color(.9f, .92f, 1f), flash); amount = Mathf.Max(amount, .7f * flash); }
             SkyDirector.SetSongTint(Land, tint, amount);
-            SkyDirector.SetSongRain(Land, .25f + sandman * .4f);
-            if (here) { var w = clouds != null ? clouds.Wind : new Vector2(1, 0); Shader.SetGlobalFloat("_EW_Wind", .7f + .4f * energy + sandman * .6f); Shader.SetGlobalVector("_EW_WindDir", new Vector4(w.x, 0, w.y, 0)); }
+            SkyDirector.SetSongRain(Land, Mathf.Clamp01(.35f + surge * .55f + sandman * .3f));
+            if (here) { var w = clouds != null ? clouds.Wind : new Vector2(1, 0); Shader.SetGlobalFloat("_EW_Wind", .7f + .4f * energy + sandman * .6f + surge * .5f); Shader.SetGlobalVector("_EW_WindDir", new Vector4(w.x, 0, w.y, 0)); }
 
             if (lava != null) lava.SetColor("_EmissionColor", IronKit.Molten * (1.2f + .35f * Mathf.Sin(t * 1.7f) + energy * .9f + sandman * 1.4f + warPigs * .6f));
             if (strings != null) strings.SetColor("_EmissionColor", Color.Lerp(new Color(.9f, .9f, .95f) * .35f, new Color(1f, .35f, .3f) * 4f, puppets));

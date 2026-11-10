@@ -70,7 +70,7 @@ Classic, jam, prog, southern, glam and heavy metal: the old heartland of rock.
 
 ### 27. The Iron Range
 
-*heavy metal, metal, thrash metal, hard rock, speed metal* · 29 songs · energy 0.82, acoustic 0.06, mood 0.39 · top artists: Metallica, Black Sabbath, Elena Siegman, Anthrax, Ozzy Osbourne
+*heavy metal, metal, thrash metal, hard rock, speed metal* · 30 songs · energy 0.82, acoustic 0.05, mood 0.39 · top artists: Metallica, Black Sabbath, Elena Siegman, Anthrax, Ozzy Osbourne
 
 - **Terrain:** The tallest peaks in the world, honeycombed with mines.
 - **Colours:** `#4B4F55 iron grey`, `#8E3B1E rust`, `#F07C1E molten orange`, `#111111 black`
@@ -174,7 +174,7 @@ Alternative, grunge, punk, emo, metalcore, prog metal and J-rock.
 
 ### 18. The Djent Spires
 
-*progressive metal, djent, progressive rock, math rock, death metal* · 30 songs · energy 0.79, acoustic 0.08, mood 0.30 · top artists: Leprous, Plini, Angel Vivaldi, Anima Tempo, Animals As Leaders
+*progressive metal, djent, progressive rock, math rock, death metal* · 29 songs · energy 0.79, acoustic 0.08, mood 0.30 · top artists: Leprous, Plini, Angel Vivaldi, Anima Tempo, Animals As Leaders
 
 - **Terrain:** Precise crystal spires and terraced cliffs with clean, fractal edges.
 - **Colours:** `#3FD0E0 cyan`, `#4A5563 steel`, `#F2F5F7 white`, `#7C5CFF violet`

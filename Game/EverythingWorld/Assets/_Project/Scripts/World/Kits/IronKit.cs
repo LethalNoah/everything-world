@@ -21,6 +21,7 @@ namespace EverythingWorld.World
         {
             (Sandman, "Enter Sandman", "@the forge"), (Puppets, "Master of Puppets", "Metallica"), (WarPigs, "War Pigs", "Black Sabbath"),
             (Element115, "115", "Elena Siegman"), (CrazyTrain, "Crazy Train", "Ozzy Osbourne"), (AceOfSpades, "Ace of Spades", "Motörhead"),
+            (Beauty, "Beauty Of Annihilation", "Elena Siegman"), (Lullaby, "Lullaby Of A Deadman", "Kevin Sherwood"), (One, "One", "Metallica"), (Paranoid, "Paranoid", "Black Sabbath"),
         };
 
         public static readonly Color Molten = new Color(1f, .45f, .08f), Ink = new Color(.95f, .9f, .85f);
@@ -45,7 +46,7 @@ namespace EverythingWorld.World
 
         Material GlowM(Color c, float s = 2f) => WorldMaterials.Glow(c, s * .65f);
         static bool HasStation(IslandWorldData.Artist a) => a.stationId != 0;
-        static float Foot(IslandWorldData.Artist a) => a.name == "Metallica" ? 16f : HasStation(a) ? 13f : 8f;
+        static float Foot(IslandWorldData.Artist a) => a.name == "Metallica" ? 20f : a.name == "Black Sabbath" ? 16f : a.name == "Ozzy Osbourne" || a.name == "Elena Siegman" ? 14f : HasStation(a) ? 13f : 8f;
 
         public override bool Ground(float height, float slope, float patch, out Color color)
         {
