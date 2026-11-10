@@ -49,51 +49,6 @@ namespace EverythingWorld.World
             avoid.Add(new Vector3(pool2.x, PoolR * 1.5f + 14f, pool2.y));
         }
 
-        // ---------------------------------------------------------------- Radiohead's hall
-        void RadioheadHall(Plot z)
-        {
-            var up = Vector3.up; var rot = z.Rot; var c = z.At(-6f, 0);
-            const float W = 18f, D = 12f, H = 6f;
-            Vector3 P(float x, float y, float d) => c + z.side * x + up * y + z.front * d;
-            // a brutalist concrete box with a wide doorway, slit windows glowing
-            z.mk.Box(concrete, P(0, H / 2f, -D / 2f), new Vector3(W, H, .4f), rot);
-            foreach (var s in new[] { -1f, 1f }) z.mk.Box(concrete, P(s * (W / 2f - .2f), H / 2f, 0), new Vector3(.4f, H, D - .8f), rot);
-            foreach (var s in new[] { -1f, 1f }) z.mk.Box(concrete, P(s * (W / 4f + 1.25f), H / 2f, D / 2f), new Vector3(W / 2f - 2.5f, H, .4f), rot);
-            z.mk.Box(concrete, P(0, H - .9f, D / 2f), new Vector3(5f, 1.8f, .4f), rot);
-            z.mk.Box(concrete, P(0, H + .25f, 0), new Vector3(W + .8f, .5f, D + .8f), rot);
-            z.mk.Box(slate, P(0, .06f, 0), new Vector3(W - .8f, .12f, D - .8f), rot);
-            // the front: rows of slit windows glowing signal orange, the doorway lit from within, a red ticker over it
-            for (var k = 0; k < 4; k++) foreach (var s in new[] { -1f, 1f }) z.mk.Box(GlowM(Signal, 1.8f), P(s * (3.4f + k * 1.4f), 3.6f - (k % 2) * 1.4f, D / 2f + .21f), new Vector3(.9f, .22f, .02f), rot);
-            z.mk.Box(GlowM(new Color(1f, .45f, .35f), 1.4f), P(0, 2f, -D / 2f + .25f), new Vector3(5f, 3.6f, .05f), rot);
-            z.mk.Box(GlowM(new Color(1f, .15f, .1f), 2.4f), P(0, H - .4f, D / 2f + .22f), new Vector3(4.6f, .25f, .02f), rot);
-            halos.Add(P(0, 2f, D / 2f + 1f), 4f, new Color(1f, .45f, .35f), .3f);
-            z.solid.Box(concrete, P(0, H / 2f, -D / 2f), new Vector3(W, H, .6f), rot);
-            foreach (var s in new[] { -1f, 1f }) { z.solid.Box(concrete, P(s * (W / 2f - .2f), H / 2f, 0), new Vector3(.6f, H, D), rot); z.solid.Box(concrete, P(s * (W / 4f + 1.25f), H / 2f, D / 2f), new Vector3(W / 2f - 2.5f, H, .6f), rot); }
-            for (var k = 0; k < 6; k++) z.mk.Box(GlowM(Signal, 1.4f), P(-W / 2f + 1.5f + k * 3f, H - 1.2f, -D / 2f - .21f), new Vector3(1.6f, .25f, .02f), rot);
-            IndoorSpaces.Add(P(0, H / 2f, 0), rot, new Vector3(W - .8f, H, D - .8f));
-            // on the roof: dishes and a small mast with a blinking light
-            for (var k = 0; k < 3; k++) { var dp = P(-5f + k * 5f, H + .5f, -2f); z.mk.Prism(steel, dp, up, .08f, 1.2f, 6); z.mk.Prism(white, dp + up * 1.6f, (z.front + up).normalized, 1.4f, .2f, 16, .35f); }
-            var mast = P(6f, H + .5f, 2f); z.mk.Prism(steel, mast, up, .15f, 14f, 6); life.warning.Add(mast + up * 14.2f);
-            // inside: the words on the dark walls (changed by MoorsLife), the wall of televisions
-            var words = new List<TextMesh>();
-            for (var k = 0; k < 3; k++) words.Add(ArtistBits.Label(z.labels, Titles[k], P(-W / 4f + k * (W / 4f), 3.6f - (k % 2) * .9f, -D / 2f + .25f), z.front, .4f, new Color(1f, .45f, .35f), TextAnchor.MiddleCenter));
-            foreach (var s in new[] { -1f, 1f }) words.Add(ArtistBits.Label(z.labels, Titles[s > 0 ? 3 : 4], P(s * (W / 2f - .45f), 3f, -1f), -z.side * s, .35f, new Color(.6f, .8f, 1f), TextAnchor.MiddleCenter));
-            life.words = words;
-            var tv = new Material(WorldMaterials.Glow(new Color(.75f, .8f, .85f), .8f)) { name = "Television static" }; life.static_ = tv;
-            for (var i = 0; i < 5; i++) for (var j = 0; j < 3; j++)
-            {
-                var tp = P(W / 2f - 3.2f + (j % 2) * .1f, .7f + j * 1.1f, -D / 2f + 1.2f + i * 1.25f);
-                z.mk.Box(WorldMaterials.Solid(new Color(.18f, .16f, .14f)), tp, new Vector3(1.1f, .95f, 1.05f), Quaternion.LookRotation(-z.side));
-                z.mk.Box(tv, tp - z.side * .56f, new Vector3(.02f, .7f, .85f), Quaternion.LookRotation(-z.side));
-            }
-            z.solid.Box(dark, P(W / 2f - 3.2f, 1.7f, 0), new Vector3(1.2f, 3.4f, D - 1f), rot);
-            ArtistBits.PointLight(z.root, P(0, 4f, 0), new Color(1f, .5f, .4f), 14f, 1.2f, true);
-            ArtistBits.PointLight(z.root, P(W / 2f - 4f, 2f, 0), new Color(.7f, .8f, 1f), 8f, 1.2f, true);
-            ArtistBits.Label(z.labels, "RADIOHEAD", P(0, H - .9f, D / 2f + .22f), z.front, .5f, Ink, TextAnchor.MiddleCenter);
-            noGrass.Add(new Vector3(c.x, 14f, c.z));
-            var mark = new GameObject("Shot: inside the transmitter station").transform; mark.SetParent(z.ctx.Root, false); mark.SetPositionAndRotation(P(-3f, 0, D / 2f - 1.5f), Quaternion.LookRotation(-z.front * 1f + z.side * .35f));
-        }
-
         // ---------------------------------------------------------------- the marvels
         void Marvels(LandContext ctx, MeshKit mk, MeshKit solid)
         {
@@ -115,7 +70,6 @@ namespace EverythingWorld.World
                 return Vector3.positiveInfinity;
             }
             if (hasPool) SunkenPool(ctx, mk, solid);
-            var cubes = Spot(14f); if (!float.IsInfinity(cubes.x)) Cubes(ctx, mk, solid, cubes);
             var road = Spot(18f); if (!float.IsInfinity(road.x)) Motorway(ctx, mk, solid, road);
             var city = Spot(13f); if (!float.IsInfinity(city.x)) WordCity(ctx, mk, solid, city);
             var peaks = Spot(16f, 400f); if (!float.IsInfinity(peaks.x)) IcePeaks(ctx, mk, solid, peaks);
@@ -127,23 +81,6 @@ namespace EverythingWorld.World
             var back = new Vector3(target.x - center.x, 0, target.z - center.z); if (back.sqrMagnitude < 1f) back = Vector3.forward; back.Normalize();
             var cam = ctx.OnGround(target.x - back.x * dist, target.z - back.z * dist); var look = target - cam; look.y = 0;
             var mark = new GameObject("Shot: " + name).transform; mark.SetParent(ctx.Root, false); mark.SetPositionAndRotation(cam, Quaternion.LookRotation(look.normalized + Vector3.up * lift));
-        }
-
-        /// Everything in its right place: a 7 by 7 grid of white cubes on a pale stone square, all in perfect line
-        /// except one, a little off and turned (MoorsLife eases it into place while the song plays).
-        void Cubes(LandContext ctx, MeshKit mk, MeshKit solid, Vector3 c)
-        {
-            var up = Vector3.up; var face = new Vector3(center.x - c.x, 0, center.z - c.z).normalized; var rot = Quaternion.LookRotation(face); var side = Vector3.Cross(up, face);
-            mk.Box(WorldMaterials.Solid(new Color(.82f, .82f, .8f)), c + up * .05f, new Vector3(22f, .3f, 22f), rot); solid.Box(white, c, new Vector3(22f, .3f, 22f), rot);
-            var cubeM = new Material(WorldMaterials.Glow(new Color(.95f, .95f, .95f), .08f)) { name = "Right place cubes" }; life.cubeGlow = cubeM;
-            for (var i = 0; i < 7; i++) for (var j = 0; j < 7; j++)
-            {
-                var p = c + side * ((i - 3f) * 3f) + face * ((j - 3f) * 3f) + up * .85f;
-                if (i == 4 && j == 2) { var odd = new MeshKit(); odd.Box(cubeM, Vector3.zero, Vector3.one * 1.1f, Quaternion.identity); var t = odd.BuildSingle("The cube out of place", life.transform, false).transform; life.oddCube = t; life.oddHome = p; life.oddRot = rot; life.oddAway = p + side * .9f - face * .6f; t.SetPositionAndRotation(life.oddAway, rot * Quaternion.Euler(0, 23f, 0)); solid.Box(white, p, Vector3.one * 1.6f, rot); continue; }
-                mk.Box(cubeM, p, Vector3.one * 1.1f, rot); solid.Box(white, p, Vector3.one * 1.1f, rot);
-            }
-            ArtistBits.PointLight(ctx.Root, c + up * 6f, new Color(1f, .95f, .9f), 18f, 1f);
-            Mark(ctx, "the cubes", c + up * 1f, 20f, -.25f);
         }
 
         /// The sunken pool: a flooded square reservoir with a stone rim, a drowned village on its floor (cottages, a
@@ -174,7 +111,7 @@ namespace EverythingWorld.World
             solid.Box(stone, c + up * 7.2f, new Vector3(10f, 14.4f, 10f), Quaternion.Euler(0, 45f, 0));
             halos.Add(c + up * 15f, 2.4f, new Color(.6f, .95f, 1f), .8f);
             // the water: a glassy dark sheet you can see the village through
-            var water = ArtistBits.GlassBox(ctx.Root, new Vector3(pool2.x, waterY - .05f, pool2.y), new Vector3(PoolR * 2f, .1f, PoolR * 2f), new Color(.16f, .36f, .42f, .4f));
+            var water = Glass(ctx.Root, new Vector3(pool2.x, waterY - .05f, pool2.y), new Vector3(PoolR * 2f, .1f, PoolR * 2f), new Color(.08f, .22f, .28f, .45f));
             life.water = water; life.pool = new Vector3(pool2.x, waterY, pool2.y);
             ArtistBits.PointLight(ctx.Root, c + up * 2f, new Color(.4f, .9f, .85f), 18f, 1.2f);
             { var back = new Vector3(pool2.x - center.x, 0, pool2.y - center.z).normalized; var cam = new Vector3(pool2.x, waterY + 1.2f, pool2.y) - back * (PoolR + .5f); var mark = new GameObject("Shot: the sunken pool").transform; mark.SetParent(ctx.Root, false); mark.SetPositionAndRotation(cam, Quaternion.LookRotation(back + Vector3.down * .25f)); }
@@ -191,9 +128,9 @@ namespace EverythingWorld.World
             for (var k = 0; k + 1 < pts.Count; k++)
             {
                 var a = pts[k]; var b = pts[k + 1]; var d = b - a; var sd = Vector3.Cross(up, new Vector3(d.x, 0, d.z).normalized); var rot = Quaternion.LookRotation(d);
-                mk.Box(white, (a + b) / 2f, new Vector3(8f, .6f, d.magnitude + .05f), rot); mk.Box(WorldMaterials.Solid(new Color(.75f, .76f, .78f)), (a + b) / 2f + up * .31f, new Vector3(7.6f, .02f, d.magnitude + .05f), rot);
+                mk.Box(white, (a + b) / 2f, new Vector3(8f, .6f, d.magnitude + .05f), rot); mk.Box(WorldMaterials.Solid(new Color(.75f, .76f, .78f)), (a + b) / 2f + up * .36f, new Vector3(7.6f, .02f, d.magnitude + .05f), rot);
                 foreach (var s in new[] { -1f, 1f }) mk.Box(white, (a + b) / 2f + sd * s * 3.9f + up * .7f, new Vector3(.25f, .8f, d.magnitude + .05f), rot);
-                mk.Box(GlowM(new Color(1f, 1f, 1f), 1f), (a + b) / 2f + up * .33f, new Vector3(.15f, .02f, d.magnitude * .5f), rot);
+                mk.Box(GlowM(new Color(1f, 1f, 1f), 1f), (a + b) / 2f + up * .4f, new Vector3(.15f, .02f, d.magnitude * .5f), rot);
                 if (k % 3 == 0) { var g = ctx.Ground(a.x, a.z); mk.Prism(white, new Vector3(a.x, g - .5f, a.z), up, .8f, a.y - g + .2f, 12); solid.Prism(white, new Vector3(a.x, g - .5f, a.z), up, .8f, a.y - g + .2f, 8); }
                 if (k % 4 == 2) { var lp = a + sd * 3.9f + up * .7f; mk.Prism(steel, lp, up, .07f, 4f, 6); mk.Box(GlowM(Lamp, 2.2f), lp + up * 4f - sd * .5f, new Vector3(.25f, .1f, .6f), rot); halos.Add(lp + up * 3.9f - sd * .5f, 1.4f, Lamp, .7f); }
             }
@@ -221,13 +158,15 @@ namespace EverythingWorld.World
             for (var i = 0; i < 5; i++) for (var j = 0; j < 5; j++)
             {
                 if ((i == 2) || (j == 2)) continue;   // the streets
-                var bw = ctx.Range(3f, 4.2f); var bd = ctx.Range(3f, 4.2f); var bh = ctx.Range(.8f, 3.6f);
+                var bw = ctx.Range(3.2f, 4.2f); var bd = ctx.Range(3.2f, 4.2f); var bh = ctx.Range(1.6f, 6.5f);
                 var p = c + side * ((i - 2f) * 5f) + face * ((j - 2f) * 5f) + up * (bh / 2f);
                 var m = WorldMaterials.Solid(cols[(i * 3 + j * 5) % cols.Length], .3f);
                 mk.Box(m, p, new Vector3(bw, bh, bd), rot); solid.Box(m, p, new Vector3(bw, bh, bd), rot);
-                if (w < words.Length) ArtistBits.Label(ctx.Root, words[w++], p + up * (bh / 2f + .02f), up, .22f, (i + j) % 2 == 0 ? Color.white : new Color(.1f, .1f, .1f), TextAnchor.MiddleCenter);
+                var ci = (i * 3 + j * 5) % cols.Length; var ink = ci == 3 || ci == 5 ? new Color(.08f, .08f, .08f) : Color.white;
+                if (w < words.Length) { var wf = j < 2 ? -face : face; var sd = i < 2 ? -side : side; var wd = (i + j) % 2 == 0 ? wf : sd; var depth = wd == wf ? bd : bw; var text = words[w++]; ArtistBits.Label(ctx.Root, text, p + wd * (depth / 2f + .03f) + up * Mathf.Min(bh * .2f, 1f), wd, Mathf.Min(.42f, 3.4f / (text.Length * .62f + 1f)), ink, TextAnchor.MiddleCenter); }
             }
             mk.Box(WorldMaterials.Solid(new Color(.85f, .84f, .8f)), c + up * .03f, new Vector3(25f, .1f, 25f), rot);
+            mk.Box(WorldMaterials.Solid(new Color(.3f, .3f, .32f)), c + up * .1f, new Vector3(2.4f, .04f, 25f), rot); mk.Box(WorldMaterials.Solid(new Color(.3f, .3f, .32f)), c + up * .1f + side * 0f, new Vector3(25f, .04f, 2.4f), rot);
             ArtistBits.PointLight(ctx.Root, c + up * 7f, new Color(1f, .9f, .8f), 18f, 1f);
             Mark(ctx, "the word city", c + up * 1f, 22f, -.15f);
         }

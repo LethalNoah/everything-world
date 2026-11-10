@@ -15,18 +15,20 @@ namespace EverythingWorld.World
         public override Vector3 ArtistFront(IslandWorldData data, IslandWorldData.Artist a) => facing.TryGetValue(a.name, out var f) ? f : base.ArtistFront(data, a);
 
         public const string RightPlace = "2kRFrWaLWiKq48YYVdGcm8", PyramidSong = "55q3Ro66yXWi9rsEddeEN4", WeirdFishes = "4wajJ1o7jWIg62YqpkHC7S", KarmaPolice = "63OQupATfueTdZMWTxW03A",
-            Disappear = "2rtGaCAeYtmcIvuZsvgTf6", Videotape = "4T1iiabe7G0UjWQJCY6NE2", FeelGood = "0d28khcov6AiegSCpG5TuT", Supernova = "40bynawzslg9U7ACq07fAj";
+            Disappear = "2rtGaCAeYtmcIvuZsvgTf6", Videotape = "4T1iiabe7G0UjWQJCY6NE2", FeelGood = "0d28khcov6AiegSCpG5TuT", Supernova = "40bynawzslg9U7ACq07fAj",
+            Californication = "48UPSzbZjgc449aqz8bxox", CantStop = "3ZOEytgrvLwQaqXreDs2Jx", SoulToSqueeze = "3arKRnq9OUd7yq6LRwVW8I", DropsOfJupiter = "2hKdd3qO7cWr2Jo0Bcs0MA", KillingInTheName = "59WN2psjkt1tyaxjspN8fp";
         public override (string song, string label, string artist)[] SpecialSongs => new[]
         {
-            (RightPlace, "Everything In Its Right Place", "@the cubes"), (PyramidSong, "Pyramid Song", "@the sunken pool"), (WeirdFishes, "Weird Fishes / Arpeggi", "@the sunken pool"),
-            (KarmaPolice, "Karma Police", "@the lonely road"), (Disappear, "How to Disappear Completely", "Radiohead"), (Videotape, "Videotape", "Radiohead"),
-            (FeelGood, "Feel Good Inc.", "Gorillaz"), (Supernova, "Champagne Supernova", "Oasis"),
+            (RightPlace, "Everything In Its Right Place", "@the cubes"), (PyramidSong, "Pyramid Song", "@the sunken pool"), (WeirdFishes, "Weird Fishes / Arpeggi", "@the aquarium"),
+            (KarmaPolice, "Karma Police", "@the lonely road"), (Disappear, "How to Disappear Completely", "@the mist room"), (Videotape, "Videotape", "@the station"),
+            (LetDown, "Let Down", "@the platform"), (Paranoid, "Paranoid Android", "@the rain room"), (Jigsaw, "Jigsaw Falling Into Place", "@the jigsaw court"),
+            (Californication, "Californication", "Red Hot Chili Peppers"),
         };
 
         public static readonly Color Signal = new Color(1f, .48f, .2f), Ink = new Color(.95f, .95f, .92f), Lamp = new Color(1f, .8f, .5f);
         const float TrailW = 2.4f;
 
-        Material stone, wallStone, slate, dark, wood, steel, redPaint, white, concrete;
+        Material stone, wallStone, copeStone, slate, dark, wood, steel, redPaint, white, concrete;
         GlowHalos halos; Vector3 center; MoorsLife life; MeshKit soft;
         readonly Dictionary<(int, int), List<Vector3>> pathCells = new Dictionary<(int, int), List<Vector3>>();
         readonly List<(Vector3 p, int w)> walkPoints = new List<(Vector3, int)>();
@@ -36,14 +38,31 @@ namespace EverythingWorld.World
 
         void MakeMaterials()
         {
-            stone = WorldMaterials.Solid(new Color(.55f, .54f, .5f)); wallStone = WorldMaterials.Solid(new Color(.5f, .49f, .46f)); slate = WorldMaterials.Solid(new Color(.3f, .33f, .37f));
+            stone = WorldMaterials.Solid(new Color(.6f, .6f, .56f)); wallStone = WorldMaterials.Solid(new Color(.52f, .53f, .5f)); copeStone = WorldMaterials.Solid(new Color(.44f, .45f, .43f)); slate = WorldMaterials.Solid(new Color(.3f, .33f, .37f));
             dark = WorldMaterials.Solid(new Color(.07f, .07f, .08f)); wood = WorldMaterials.Solid(new Color(.42f, .33f, .25f)); steel = WorldMaterials.Solid(new Color(.6f, .62f, .64f), .7f);
             redPaint = WorldMaterials.Solid(new Color(.8f, .1f, .08f), .7f); white = WorldMaterials.Solid(new Color(.92f, .92f, .9f)); concrete = WorldMaterials.Solid(new Color(.62f, .62f, .6f));
         }
 
         Material GlowM(Color c, float s = 2f) => WorldMaterials.Glow(c, s * .65f);
+
+        static readonly Dictionary<Color, Material> glassCache = new Dictionary<Color, Material>();
+        /// A see-through box (window glass, water, a display case): unlit, alpha-blended, no collider.
+        static Renderer Glass(Transform parent, Vector3 center, Vector3 size, Color col, Quaternion? rotation = null)
+        {
+            if (!glassCache.TryGetValue(col, out var m) || m == null)
+            {
+                m = new Material(Shader.Find("Universal Render Pipeline/Particles/Unlit")) { name = "Moors glass" };
+                m.SetFloat("_Surface", 1f); m.SetFloat("_Blend", 0f); m.SetFloat("_SrcBlend", (float)UnityEngine.Rendering.BlendMode.SrcAlpha); m.SetFloat("_DstBlend", (float)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+                m.SetFloat("_ZWrite", 0f); m.SetFloat("_Cull", 2f); m.EnableKeyword("_SURFACE_TYPE_TRANSPARENT"); m.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent; m.SetColor("_BaseColor", col);
+                glassCache[col] = m;
+            }
+            var go = GameObject.CreatePrimitive(PrimitiveType.Cube); Object.Destroy(go.GetComponent<Collider>()); go.name = "Glass";
+            go.transform.SetParent(parent, false); go.transform.position = center; if (rotation.HasValue) go.transform.rotation = rotation.Value; go.transform.localScale = size;
+            var r = go.GetComponent<Renderer>(); r.sharedMaterial = m; r.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off; r.receiveShadows = false;
+            return r;
+        }
         static bool HasStation(IslandWorldData.Artist a) => a.stationId != 0;
-        static float Foot(IslandWorldData.Artist a) => a.name == "Radiohead" ? 20f : HasStation(a) ? 11f : 7f;
+        static float Foot(IslandWorldData.Artist a) => a.name == "Radiohead" ? 44f : a.name == "Red Hot Chili Peppers" ? 16f : HasStation(a) ? 11f : 7f;
 
         public override bool Ground(float height, float slope, float patch, out Color color)
         {
@@ -81,7 +100,9 @@ namespace EverythingWorld.World
                 }
             var avoid = new List<Vector3>(); if (hasHill) avoid.Add(new Vector3(hill2.x, 26f, hill2.y));
             PickPool(data, index, avoid);
-            ArtistPlacement.Spread(data, index, 48f, heart2, 40f, 34f, avoid, null, Land, 320f);
+            PickDistrict(data, index, avoid);
+            if (hasDistrict) foreach (var a in data.layout.artists) if (a.sceneId == isl.sceneId && a.name == "Radiohead") { a.x = district2.x; a.z = district2.y; a.r = 50f; }
+            ArtistPlacement.Spread(data, index, 48f, heart2, 40f, 34f, avoid, hasDistrict ? new[] { "Radiohead" } : null, Land, 320f);
             foreach (var a in data.layout.artists)
             {
                 if (a.sceneId != isl.sceneId) continue;
@@ -89,6 +110,7 @@ namespace EverythingWorld.World
                 Level(data, index, new Vector2(a.x, a.z), Foot(a) + 1f, Foot(a) + 10f);
             }
             Level(data, index, heart2, 14f, 28f);
+            if (hasDistrict) Level(data, index, district2, 46f, 58f);
             if (hasHill) Level(data, index, hill2, 9f, 16f);
         }
 
@@ -115,6 +137,7 @@ namespace EverythingWorld.World
             halos = new GlowHalos(); soft = new MeshKit();
             pathCells.Clear(); walkPoints.Clear(); facing.Clear(); noGrass.Clear();
             center = ctx.Plaza;
+            if (hasDistrict) { districtFront = new Vector3(center.x - district2.x, 0, center.z - district2.y).normalized; facing["Radiohead"] = districtFront; }
             life = new GameObject("Moors life").AddComponent<MoorsLife>();
             life.transform.SetParent(ctx.Root, false);
             life.center = center;
@@ -125,11 +148,14 @@ namespace EverythingWorld.World
             Marvels(ctx, mk, solid);
             Moor(ctx, mk, solid);
             mk.Build("Alt Rock Moors", ctx.Root, false);
-            soft.Build("Soft moors heather and gorse", ctx.Root, false);   // "Soft…": walked through, so the land audit skips it
             solid.BuildCollider("Alt Rock Moors walls", ctx.Root);
         }
 
-        public override void Finish(LandContext ctx) { GroundCover(ctx); halos.Build("Moors glow", ctx.Root); }
+        public override void Finish(LandContext ctx)
+        {
+            soft.Build("Soft moors leaves and gorse", ctx.Root, false);   // after the artists, who add palms and bushes; "Soft…": walked through, so the land audit skips it
+            GroundCover(ctx); halos.Build("Moors glow", ctx.Root);
+        }
 
         // ---------------------------------------------------------------- helpers
         void Remember(Vector3 p, int walk)
@@ -195,18 +221,32 @@ namespace EverythingWorld.World
             ArtistBits.PostCollider(ctx.Root, g, 4f, .1f);
         }
 
-        /// A dry-stone wall from a to b, following the ground, with a little gap now and then.
-        void DryWall(LandContext ctx, MeshKit mk, MeshKit solid, Vector3 a, Vector3 b)
+        /// A dry-stone wall from a to b: upright 2 m lengths stepping with the ground (never tilted), a darker coping along
+        /// the top, two shades of stone; a gateway gap at gate (0 to 1 along the wall, or none).
+        void DryWall(LandContext ctx, MeshKit mk, MeshKit solid, Vector3 a, Vector3 b, float gate = -1f)
         {
-            var dir = b - a; dir.y = 0; var len = dir.magnitude; if (len < 4f) return; dir /= len;
-            for (var d = 0f; d < len; d += 2f)
+            var dir = b - a; dir.y = 0; var len = dir.magnitude; if (len < 4f) return; dir /= len; var rot = Quaternion.LookRotation(dir); var up = Vector3.up;
+            var n = 0;
+            for (var d = 0f; d < len - .5f; d += 2f, n++)
             {
-                var p = a + dir * d; if (!ctx.IsLand(p.x, p.z, 1f) || NearPath(p.x, p.z, 2.4f) || InFootprint(ctx, p.x, p.z, 1f) || InNoGrass(p.x, p.z, 1f)) continue;
-                var q = a + dir * Mathf.Min(d + 2f, len); var g0 = ctx.OnGround(p.x, p.z); var g1 = ctx.OnGround(q.x, q.z);
-                var mid = (g0 + g1) / 2f + Vector3.up * .55f; var rot = Quaternion.LookRotation(g1 - g0);
-                mk.Box(wallStone, mid, new Vector3(.7f, 1.1f, Vector3.Distance(g0, g1) + .05f), rot); mk.Box(stone, mid + Vector3.up * .6f, new Vector3(.8f, .14f, Vector3.Distance(g0, g1) + .05f), rot);
-                solid.Box(wallStone, mid, new Vector3(.7f, 1.4f, Vector3.Distance(g0, g1)), rot);
+                var seg = Mathf.Min(2f, len - d); var p = a + dir * (d + seg / 2f);
+                if (gate >= 0f && Mathf.Abs(d + seg / 2f - gate * len) < 1.8f) continue;
+                if (!ctx.IsLand(p.x, p.z, 1f) || NearPath(p.x, p.z, 2.6f) || InFootprint(ctx, p.x, p.z, 1.5f) || InNoGrass(p.x, p.z, 1f)) continue;
+                float g0 = ctx.Ground(p.x - dir.x * seg / 2f, p.z - dir.z * seg / 2f), g1 = ctx.Ground(p.x + dir.x * seg / 2f, p.z + dir.z * seg / 2f);
+                var bottom = Mathf.Min(g0, g1) - .4f; var top = (g0 + g1) / 2f + .95f;
+                var m = n % 3 == 1 ? stone : wallStone;
+                mk.Box(m, new Vector3(p.x, (bottom + top) / 2f, p.z), new Vector3(.62f, top - bottom, seg + .02f), rot);
+                mk.Box(copeStone, new Vector3(p.x, top + .09f, p.z), new Vector3(.74f, .18f, seg + .06f), rot);
+                solid.Box(wallStone, new Vector3(p.x, (bottom + top) / 2f + .15f, p.z), new Vector3(.62f, top - bottom + .3f, seg), rot);
             }
+        }
+
+        /// A walled field: a rectangle of dry-stone wall with a gateway in its first side.
+        void Field(LandContext ctx, MeshKit mk, MeshKit solid, Vector3 c, Vector3 f, float w, float d)
+        {
+            var s = Vector3.Cross(Vector3.up, f);
+            Vector3[] k = { c + s * w / 2f + f * d / 2f, c - s * w / 2f + f * d / 2f, c - s * w / 2f - f * d / 2f, c + s * w / 2f - f * d / 2f };
+            for (var i = 0; i < 4; i++) DryWall(ctx, mk, solid, k[i], k[(i + 1) % 4], i == 0 ? .5f : -1f);
         }
 
         /// A red phone box with lit windows.
@@ -304,19 +344,26 @@ namespace EverythingWorld.World
             {
                 IslandWorldData.Artist next = null; Vector3 join = default; var best = float.MaxValue;
                 foreach (var a in todo)
-                    foreach (var (p, w) in walkPoints) { if (w >= 400) continue; var d = Vector2.Distance(new Vector2(p.x, p.z), new Vector2(a.x, a.z)) - Foot(a); if (d < best) { best = d; next = a; join = p; } }
+                    foreach (var (p, w) in walkPoints) { if (w >= 400) continue; var g = Goal(a); var d = Vector2.Distance(new Vector2(p.x, p.z), new Vector2(g.x, g.z)) - Reach(a); if (d < best) { best = d; next = a; join = p; } }
                 if (next == null) break;
                 todo.Remove(next);
-                var from = new Vector3(join.x, 0, join.z); var to = new Vector3(next.x, 0, next.z);
+                var from = new Vector3(join.x, 0, join.z); var to = Goal(next); to.y = 0;
                 var dir = to - from; var total = dir.magnitude; if (total < 2f) continue; dir /= total;
-                facing[next.name] = -dir;
-                var side = Vector3.Cross(Vector3.up, dir); var end = total - Foot(next) * .8f;
+                if (next.name != "Radiohead" || !hasDistrict) facing[next.name] = -dir;
+                var side = Vector3.Cross(Vector3.up, dir);
                 var pts = new List<Vector3>();
-                for (var d = walk == 1 ? 9f : TrailW / 2f + .1f; ; d += 1.5f)
+                var route = Route(from, to, Reach(next) * .8f);
+                for (var leg = 0; leg + 1 < route.Count; leg++)
                 {
-                    var dd = Mathf.Min(d, end); var q = from + dir * dd + side * Mathf.Sin(dd / 17f) * Mathf.Min(3f, end * .05f);
-                    if (!ctx.IsLand(q.x, q.z, 0f)) break;
-                    pts.Add(ctx.OnGround(q.x, q.z)); if (dd >= end) break;
+                    var a0 = route[leg]; var a1 = route[leg + 1]; var ld = a1 - a0; var len = ld.magnitude; if (len < .5f) continue; ld /= len; var ls = Vector3.Cross(Vector3.up, ld);
+                    var broken = false;
+                    for (var d = leg == 0 ? (walk == 1 ? 9f : TrailW / 2f + .1f) : 1.5f; ; d += 1.5f)
+                    {
+                        var dd = Mathf.Min(d, len); var q = a0 + ld * dd + ls * Mathf.Sin(dd / 17f) * Mathf.Min(3f, len * .05f) * Mathf.Sin(Mathf.PI * dd / len);
+                        if (!ctx.IsLand(q.x, q.z, 0f)) { broken = true; break; }
+                        pts.Add(ctx.OnGround(q.x, q.z)); if (dd >= len) break;
+                    }
+                    if (broken) break;
                 }
                 if (pts.Count < 2) continue;
                 Strip(mk, pts, road, TrailW, .2f, ctx);
@@ -339,17 +386,38 @@ namespace EverythingWorld.World
             }
         }
 
+        Vector3 Goal(IslandWorldData.Artist a) => a.name == "Radiohead" && hasDistrict ? DistrictDoor : new Vector3(a.x, 0, a.z);
+        float Reach(IslandWorldData.Artist a) => a.name == "Radiohead" && hasDistrict ? 0f : Foot(a);
+
+        /// A walk from a to b (stopping short by stop), bent round the Radiohead district if the straight line would cross
+        /// it: through one or two of its corners, kept a few metres clear of the walls.
+        List<Vector3> Route(Vector3 a, Vector3 b, float stop)
+        {
+            var dir = b - a; var len = dir.magnitude; var end = len > stop ? a + dir / len * (len - stop) : a;
+            if (!hasDistrict) return new List<Vector3> { a, end };
+            var c = new Vector3(district2.x, 0, district2.y); var f = districtFront; var s = Vector3.Cross(Vector3.up, f); var half = Cell * 1.5f + 5f;
+            bool Hits(Vector3 p, Vector3 q)
+            {
+                for (var t = 0f; t <= 1f; t += .02f) { var v = Vector3.Lerp(p, q, t) - c; v.y = 0; if (Mathf.Abs(Vector3.Dot(v, s)) < half - .5f && Mathf.Abs(Vector3.Dot(v, f)) < half - .5f) return true; }
+                return false;
+            }
+            if (!Hits(a, end)) return new List<Vector3> { a, end };
+            var corners = new[] { c + (s + f) * half, c + (f - s) * half, c - (s + f) * half, c + (s - f) * half };
+            List<Vector3> bestR = null; var best = float.MaxValue;
+            for (var i = 0; i < 4; i++)
+            {
+                if (!Hits(a, corners[i]) && !Hits(corners[i], end)) { var l = Vector3.Distance(a, corners[i]) + Vector3.Distance(corners[i], end); if (l < best) { best = l; bestR = new List<Vector3> { a, corners[i], end }; } }
+                foreach (var j in new[] { (i + 1) % 4, (i + 3) % 4 })
+                    if (!Hits(a, corners[i]) && !Hits(corners[j], end)) { var l = Vector3.Distance(a, corners[i]) + Vector3.Distance(corners[i], corners[j]) + Vector3.Distance(corners[j], end); if (l < best) { best = l; bestR = new List<Vector3> { a, corners[i], corners[j], end }; } }
+            }
+            return bestR ?? new List<Vector3> { a, end };
+        }
+
         // ---------------------------------------------------------------- the moor
         /// Dry-stone walls over the hills, power-line pylons striding across with sagging wires, little stone hamlets,
         /// gorse and heather, boulders and tors, lone hawthorns bent by the wind, sheep.
         void Moor(LandContext ctx, MeshKit mk, MeshKit solid)
         {
-            // walls: long lines across the land at a few angles
-            for (var k = 0; k < 9; k++)
-            {
-                var a = (k * 37f + 11f) * Mathf.Deg2Rad; var dir = new Vector3(Mathf.Cos(a), 0, Mathf.Sin(a)); var off = new Vector3(-dir.z, 0, dir.x) * ((k - 4f) * 55f);
-                var mid = new Vector3(center.x, 0, center.z) + off; DryWall(ctx, mk, solid, mid - dir * 400f, mid + dir * 400f);
-            }
             // pylons
             var pd = hasHill ? new Vector3(hill2.x - center.x, 0, hill2.y - center.z).normalized : Vector3.forward; pd = Quaternion.Euler(0, 70f, 0) * pd; var po = new Vector3(center.x, 0, center.z) + Vector3.Cross(Vector3.up, pd) * 60f;
             var pylons = new List<Vector3>();
@@ -363,6 +431,15 @@ namespace EverythingWorld.World
                 if (!Open(ctx, px, pz, 18f) || !NearPath(px, pz, 30f) || Vector2.Distance(new Vector2(px, pz), new Vector2(center.x, center.z)) < 60f) continue;
                 for (var k = 0; k < 5; k++) { var a = k * 72f * Mathf.Deg2Rad + ctx.Range(-.3f, .3f); var at = ctx.OnGround(px + Mathf.Cos(a) * 10f, pz + Mathf.Sin(a) * 10f); Cottage(ctx, mk, solid, at, new Vector3(px - at.x, 0, pz - at.z).normalized); }
                 StreetLamp(ctx, mk, ctx.OnGround(px, pz)); hamlets++;
+                // two walled fields beside the hamlet, gates facing it
+                for (var k = 0; k < 2; k++) { var a = ctx.Range(0f, Mathf.PI * 2f); var fd = new Vector3(Mathf.Cos(a), 0, Mathf.Sin(a)); var fc = new Vector3(px, 0, pz) + fd * 34f; if (ctx.IsLand(fc.x, fc.z, 18f)) Field(ctx, mk, solid, fc, -fd, ctx.Range(26f, 34f), ctx.Range(20f, 26f)); }
+            }
+            // and a few more fields out on the moor
+            for (int tries = 0, fields = 0; tries < 200 && fields < 7; tries++)
+            {
+                var fx = ctx.Range(ctx.MinX, ctx.MaxX); var fz = ctx.Range(ctx.MinZ, ctx.MaxZ);
+                if (!ctx.IsLand(fx, fz, 22f) || !Open(ctx, fx, fz, 14f)) continue;
+                var a = ctx.Range(0f, Mathf.PI); Field(ctx, mk, solid, new Vector3(fx, 0, fz), new Vector3(Mathf.Cos(a), 0, Mathf.Sin(a)), ctx.Range(24f, 36f), ctx.Range(18f, 28f)); fields++;
             }
             int tors = 0, thorns = 0, gorse = 0, sheep = 0;
             const float cell = 18f; var thornBark = WorldMaterials.Solid(new Color(.3f, .26f, .22f)); var thornLeaf = WorldMaterials.Solid(new Color(.32f, .4f, .26f)); var gorseM = WorldMaterials.Solid(new Color(.3f, .4f, .22f)); var gorseFlower = WorldMaterials.Solid(new Color(1f, .82f, .2f));
@@ -373,10 +450,10 @@ namespace EverythingWorld.World
                 float px = x + ctx.Range(0f, cell), pz = z + ctx.Range(0f, cell);
                 if (!Open(ctx, px, pz, 3f)) continue;
                 var p = ctx.OnGround(px, pz); var roll = ctx.Range(0f, 1f);
-                if (roll < .08f) { var n = ctx.Rng.Next(2, 5); for (var k = 0; k < n; k++) mk.Box(stone, p + new Vector3(ctx.Range(-2f, 2f), .8f + k * .5f, ctx.Range(-2f, 2f)), new Vector3(ctx.Range(1.5f, 3f), ctx.Range(.8f, 1.6f), ctx.Range(1.4f, 2.6f)), Quaternion.Euler(0, ctx.Range(0, 90f), ctx.Range(-6f, 6f))); solid.Box(stone, p + Vector3.up * 1.3f, new Vector3(4f, 2.6f, 4f), Quaternion.identity); tors++; }
+                if (roll < .08f) { var n = ctx.Rng.Next(2, 5); for (var k = 0; k < n; k++) mk.Box(stone, p + new Vector3(ctx.Range(-2f, 2f), .8f + k * .5f, ctx.Range(-2f, 2f)), new Vector3(ctx.Range(1.5f, 3f), ctx.Range(.8f, 1.6f), ctx.Range(1.4f, 2.6f)), Quaternion.Euler(0, ctx.Range(0, 90f), ctx.Range(-6f, 6f))); solid.Box(stone, p + Vector3.up * 1.6f, new Vector3(6.4f, 3.4f, 6.4f), Quaternion.identity); tors++; }
                 else if (roll < .18f) { var lean = (Quaternion.Euler(0, 40f, 0) * Vector3.forward + Vector3.up * 1.6f).normalized; mk.Prism(thornBark, p - Vector3.up * .2f, lean, .25f, 3.2f, 6, .6f); var top = p + lean * 3f; for (var k = 0; k < 4; k++) soft.Blob(thornLeaf, top + Quaternion.Euler(0, k * 90f, 0) * Vector3.forward * 1f + Vector3.Cross(lean, Vector3.up) * .3f, new Vector3(1.4f, .9f, 1.2f), ctx.Rng, .35f); ArtistBits.PostCollider(ctx.Root, p, 3f, .3f); thorns++; }
                 else if (roll < .3f) { for (var k = 0; k < 3; k++) { var gp = p + new Vector3(ctx.Range(-1.2f, 1.2f), .5f, ctx.Range(-1.2f, 1.2f)); soft.Blob(gorseM, gp, new Vector3(.9f, .7f, .9f), ctx.Rng, .35f); for (var f = 0; f < 4; f++) soft.Blob(gorseFlower, gp + new Vector3(ctx.Range(-.7f, .7f), ctx.Range(-.2f, .6f), ctx.Range(-.7f, .7f)), Vector3.one * .12f, ctx.Rng, 0f); } gorse++; }
-                else if (roll < .34f) { var face = Quaternion.Euler(0, ctx.Range(0, 360f), 0) * Vector3.forward; mk.Blob(wool, p + Vector3.up * .7f, new Vector3(.55f, .45f, .8f), ctx.Rng, .2f); mk.Blob(dark, p + Vector3.up * .85f + face * .7f, new Vector3(.18f, .2f, .25f), ctx.Rng, 0f); foreach (var s in new[] { -.2f, .2f }) foreach (var f in new[] { -.4f, .4f }) mk.Box(dark, p + Vector3.up * .25f + Vector3.Cross(Vector3.up, face) * s + face * f, new Vector3(.08f, .5f, .08f), Quaternion.identity); sheep++; }
+                else if (roll < .34f) { var face = Quaternion.Euler(0, ctx.Range(0, 360f), 0) * Vector3.forward; mk.Blob(wool, p + Vector3.up * .7f, new Vector3(.55f, .45f, .8f), ctx.Rng, .2f); mk.Blob(dark, p + Vector3.up * .85f + face * .7f, new Vector3(.18f, .2f, .25f), ctx.Rng, 0f); foreach (var s in new[] { -.2f, .2f }) foreach (var f in new[] { -.4f, .4f }) mk.Box(dark, p + Vector3.up * .25f + Vector3.Cross(Vector3.up, face) * s + face * f, new Vector3(.08f, .5f, .08f), Quaternion.identity); solid.Box(wool, p + Vector3.up * .55f, new Vector3(.8f, 1.1f, 1.6f), Quaternion.LookRotation(face)); sheep++; }
             }
             Debug.Log($"The Alt Rock Moors: hill {(hasHill ? "yes" : "no")}, {tors} tors, {thorns} hawthorns, {gorse} gorse, {sheep} sheep, {hamlets} hamlets");
         }
@@ -387,7 +464,7 @@ namespace EverythingWorld.World
             foreach (var s in new[] { -1f, 1f }) foreach (var f in new[] { -1f, 1f }) { var foot = g + side * s * 2.6f + along * f * 2.6f; var top = g + side * s * .7f + along * f * .7f + up * H; mk.Box(steel, (foot + top) / 2f, new Vector3(.18f, .18f, Vector3.Distance(foot, top)), Quaternion.LookRotation(top - foot)); }
             for (var y = 4f; y < H; y += 5f) { var w = Mathf.Lerp(2.6f, .7f, y / H); mk.Box(steel, g + up * y, new Vector3(w * 2f, .1f, w * 2f), Quaternion.LookRotation(along)); }
             foreach (var y in new[] { H * .7f, H * .88f }) mk.Box(steel, g + up * y, new Vector3(9f, .25f, .4f), Quaternion.LookRotation(along));
-            solid.Box(steel, g + up * 3f, new Vector3(5f, 6f, 5f), Quaternion.LookRotation(along));
+            solid.Box(steel, g + up * 3f, new Vector3(5.8f, 6f, 5.8f), Quaternion.LookRotation(along));
         }
 
         void Wires(MeshKit mk, List<Vector3> pylons)

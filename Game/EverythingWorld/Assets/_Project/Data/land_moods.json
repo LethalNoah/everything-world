@@ -10,10 +10,10 @@
  "lands": [
   {
    "land": "The Alt Rock Moors",
-   "sunPitch": 24, "sunYaw": 230, "sunIntensity": 0.95, "sunColor": "#FFE2B0",
-   "skyLight": "#A2ACB6", "horizonLight": "#C4C6BC", "groundLight": "#68745A",
-   "fogColor": "#9AA2A2", "fogStart": 80, "fogEnd": 1100,
-   "stars": 0, "sunShadows": true, "dailyWeather": true, "bloom": 0.85,
+   "sunPitch": 17, "sunYaw": 230, "sunIntensity": 1.2, "sunColor": "#FFD49A",
+   "skyLight": "#94A6BE", "horizonLight": "#D8CCB0", "groundLight": "#6E7A58",
+   "fogColor": "#A2ABB4", "fogStart": 90, "fogEnd": 1200,
+   "stars": 0, "sunShadows": true, "dailyWeather": true, "bloom": 1.0,
    "weather": "", "weatherAmount": 0
   },
   {

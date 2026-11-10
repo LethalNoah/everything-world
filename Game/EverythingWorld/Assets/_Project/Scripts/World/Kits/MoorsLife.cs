@@ -27,12 +27,27 @@ namespace EverythingWorld.World
         public List<TextMesh> words = new List<TextMesh>();
         public Material static_, cubeGlow, drowned, ice, figureM, nova;
         public Transform oddCube, figure, island, sails; public Renderer water;
+        // Radiohead's district (MoorsDistrict)
+        public List<Transform> ripples = new List<Transform>(), pieces = new List<Transform>(), ribbons = new List<Transform>();
+        public List<Vector3> rippleBase = new List<Vector3>(), pieceHome = new List<Vector3>(), pieceAway = new List<Vector3>();
+        public Vector3 rippleSide, spotAt, spotFloor, bubbles, trackA, trackB, rainAt, mistAt, windDir;
+        public Quaternion trackRot = Quaternion.identity, pieceRot = Quaternion.identity, windRot = Quaternion.identity;
+        public Material redNeon, rainColumns, mistFigureM; public Transform mistFigure;
+        public List<(Vector3 c, Vector3 along, Vector3 across, Vector3 half)> tanks = new List<(Vector3, Vector3, Vector3, Vector3)>();
+        public List<Material> arp = new List<Material>();
+        // the Red Hot Chili Peppers' corner (MoorsArtists)
+        public Transform rhcpStar; public Quaternion rhcpStarRot = Quaternion.identity; public Material rhcpPool, rhcpLights; public List<Transform> carousel = new List<Transform>(); public Vector3 carouselAt;
+        // Train's drops of Jupiter
+        public Vector3 jupiterAt;
 
         CloudLayer clouds; ParticleSystem smoke; Material shaftM, warnM;
         readonly List<Transform> breaks = new List<Transform>(), fish = new List<Transform>(); readonly List<Vector3> fishSeed = new List<Vector3>();
         Transform car; Material headlights; float[] roadLen = new float[0]; float roadTotal;
         float right, pyramid, fishes, karma, disappear, video, feel, supernova, odd;
-        float nextSmoke; int lastWord = -1;
+        float creep, bends, letDown, paranoid, jigsaw, ill, cali, cantStop, soul, drops, killing;
+        float nextSmoke, nextBubble, nextMist, nextDrop; int lastWord = -1;
+        ParticleSystem bubblePS, rainPS, mistPS, dropPS; Light spot; Material beamM, tramLights;
+        readonly List<Transform> tram = new List<Transform>(), tankFish = new List<Transform>();
 
         void Start()
         {
@@ -49,7 +64,7 @@ namespace EverythingWorld.World
             var tex = new Texture2D(8, 32, TextureFormat.RGBA32, false) { wrapMode = TextureWrapMode.Clamp };
             for (var y = 0; y < 32; y++) for (var x = 0; x < 8; x++) { var e = Mathf.Sin((x + .5f) / 8f * Mathf.PI); var v = y / 31f; tex.SetPixel(x, y, new Color(1, 1, 1, e * Mathf.SmoothStep(0f, .06f, v) * Mathf.SmoothStep(1f, .5f, v))); }
             tex.Apply(); shaftM.SetTexture("_BaseMap", tex); shaftM.SetColor("_BaseColor", new Color(1f, .85f, .5f, .3f));
-            for (var i = 0; i < 6; i++)
+            for (var i = 0; i < 8; i++)
             {
                 var mesh = new Mesh { name = "Sun break" }; var verts = new List<Vector3>(); var uvs = new List<Vector2>(); var cols = new List<Color>(); var tris = new List<int>();
                 var lean = new Vector3(.35f, 1f, -.2f).normalized; var w = 16f + i * 2f; const float len = 140f;
@@ -89,6 +104,58 @@ namespace EverythingWorld.World
                 foreach (var s in new[] { -.55f, .55f }) ck.Prism(headlights, new Vector3(s, .7f, 2.1f), Vector3.forward, .15f, .05f, 10);
                 car = ck.BuildSingle("The car on the lonely road", transform, false).transform;
             }
+            DistrictStart();
+        }
+
+        static Material Alpha(string name, Color c)
+        {
+            var m = new Material(Shader.Find("Universal Render Pipeline/Particles/Unlit")) { name = name };
+            m.SetFloat("_Surface", 1f); m.SetFloat("_Blend", 0f); m.SetFloat("_SrcBlend", (float)UnityEngine.Rendering.BlendMode.SrcAlpha); m.SetFloat("_DstBlend", (float)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+            m.SetFloat("_ZWrite", 0f); m.SetFloat("_Cull", 0f); m.EnableKeyword("_SURFACE_TYPE_TRANSPARENT"); m.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent; m.SetColor("_BaseColor", c);
+            return m;
+        }
+
+        void DistrictStart()
+        {
+            if (bubbles != Vector3.zero)
+            {
+                bubblePS = Particles("Bubbles", 400, new Color(.7f, .9f, 1f, .6f), .08f, .22f);
+                // the spotlight on the lone microphone, and its beam
+                var sl = new GameObject("Spotlight"); sl.transform.SetParent(transform, false); sl.transform.SetPositionAndRotation(spotAt, Quaternion.LookRotation(Vector3.down));
+                spot = sl.AddComponent<Light>(); spot.type = LightType.Spot; spot.spotAngle = 32f; spot.range = 10f; spot.color = new Color(1f, .95f, .85f); spot.intensity = 1f; spot.shadows = LightShadows.None;
+                beamM = Alpha("Spotlight beam", new Color(1f, .95f, .85f, .08f));
+                var bk = new MeshKit(); var h = spotAt.y - spotFloor.y; bk.Cone(beamM, spotFloor, 1.7f, h, 20); bk.BuildSingle("Spotlight beam", transform, false);
+            }
+            if (trackA != trackB)
+            {
+                var body = WorldMaterials.Solid(new Color(.86f, .84f, .76f), .5f); var band = WorldMaterials.Solid(new Color(.15f, .45f, .5f), .5f); var roof = WorldMaterials.Solid(new Color(.4f, .42f, .44f));
+                tramLights = new Material(WorldMaterials.Glow(new Color(1f, .9f, .68f), 1.4f)) { name = "Tram windows" };
+                for (var k = 0; k < 8; k++)
+                {
+                    var mk = new MeshKit();
+                    mk.Box(body, new Vector3(0, 1.55f, 0), new Vector3(2.6f, 2.5f, 1.12f), Quaternion.identity); mk.Box(band, new Vector3(0, .55f, 0), new Vector3(2.62f, .5f, 1.13f), Quaternion.identity);
+                    mk.Box(roof, new Vector3(0, 2.85f, 0), new Vector3(2.3f, .12f, 1.14f), Quaternion.identity);
+                    if (k > 0 && k < 7) foreach (var s in new[] { -1.31f, 1.31f }) mk.Box(tramLights, new Vector3(s, 1.95f, 0), new Vector3(.02f, .8f, .78f), Quaternion.identity);
+                    if (k == 0) foreach (var s in new[] { -.7f, .7f }) mk.Box(tramLights, new Vector3(s, 1f, .57f), new Vector3(.3f, .2f, .02f), Quaternion.identity);
+                    if (k == 0 || k == 7) mk.Box(tramLights, new Vector3(0, 2f, k == 0 ? .57f : -.57f), new Vector3(1.8f, .7f, .02f), Quaternion.identity);
+                    var t = mk.BuildSingle("Tram car", transform, false).transform; t.gameObject.SetActive(false); tram.Add(t);
+                }
+            }
+            if (rainAt != Vector3.zero)
+            {
+                rainPS = Particles("Indoor rain", 2500, new Color(.75f, .8f, .9f, .55f), .03f, .05f);
+                var rr = rainPS.GetComponent<ParticleSystemRenderer>(); rr.renderMode = ParticleSystemRenderMode.Stretch; rr.velocityScale = .06f; rr.lengthScale = 1f;
+            }
+            if (mistAt != Vector3.zero) mistPS = Particles("Mist", 260, new Color(1f, 1f, 1f, .2f), 2.5f, 4.5f);
+            // fish in the aquarium tanks
+            Color[] fc = { new Color(.3f, .8f, 1f), new Color(1f, .55f, .2f), new Color(.6f, 1f, .7f), new Color(1f, .4f, .7f), new Color(1f, .9f, .3f) };
+            for (var i = 0; i < tanks.Count * 7; i++)
+            {
+                var m = new Material(WorldMaterials.Glow(fc[i % fc.Length], 1.2f)) { name = "Tank fish" }; var f = new MeshKit();
+                f.Blob(m, Vector3.zero, new Vector3(.1f, .15f, .3f), new System.Random(100 + i), 0f); f.Tri(m, new Vector3(0, 0, -.27f), new Vector3(0, .15f, -.48f), new Vector3(0, -.15f, -.48f), Vector3.right); f.Tri(m, new Vector3(0, 0, -.27f), new Vector3(0, -.15f, -.48f), new Vector3(0, .15f, -.48f), Vector3.left);
+                tankFish.Add(f.BuildSingle("Tank fish", transform, false).transform);
+            }
+            if (jupiterAt != Vector3.zero) dropPS = Particles("Drops of Jupiter", 200, new Color(1f, .85f, .6f, .9f), .12f, .22f);
         }
 
         ParticleSystem Particles(string name, int max, Color col, float s0, float s1)
@@ -127,11 +194,17 @@ namespace EverythingWorld.World
             feel = Mathf.MoveTowards(feel, here && id == MoorsKit.FeelGood ? 1f : 0f, dt / 2f);
             supernova = Mathf.MoveTowards(supernova, here && id == MoorsKit.Supernova ? 1f : 0f, dt / 2f);
             odd = Mathf.MoveTowards(odd, right > .5f ? 1f : 0f, dt / 6f);
+            float Toward(float v, string song, float secs) => Mathf.MoveTowards(v, here && id == song ? 1f : 0f, dt / secs);
+            creep = Toward(creep, MoorsKit.Creep, 2f); bends = Toward(bends, MoorsKit.TheBends, 2f); letDown = Toward(letDown, MoorsKit.LetDown, 3f); paranoid = Toward(paranoid, MoorsKit.Paranoid, 2f);
+            jigsaw = Toward(jigsaw, MoorsKit.Jigsaw, 5f); ill = Toward(ill, MoorsKit.IllWind, 3f); cali = Toward(cali, MoorsKit.Californication, 4f); cantStop = Toward(cantStop, MoorsKit.CantStop, 1f);
+            soul = Toward(soul, MoorsKit.SoulToSqueeze, 3f); drops = Toward(drops, MoorsKit.DropsOfJupiter, 2f); killing = Toward(killing, MoorsKit.KillingInTheName, 1f);
 
             var tint = new Color(.92f, .93f, .96f); var amount = .08f;
             void Mix(Color c, float k, float a) { if (k <= 0f) return; tint = Color.Lerp(tint, c, k); amount = Mathf.Lerp(amount, a, k); }
             Mix(new Color(1f, .35f, .3f), right, .5f); Mix(new Color(.3f, .6f, .72f), pyramid, .5f); Mix(new Color(.4f, .55f, .9f), fishes * .7f, .35f);
             Mix(new Color(.55f, .45f, .8f), karma, .5f); Mix(new Color(.96f, .97f, 1f), disappear, .65f); Mix(new Color(.28f, .3f, .4f), video, .55f); Mix(new Color(1f, .85f, .6f), supernova * .7f, .4f);
+            Mix(new Color(.6f, .85f, .95f), letDown, .3f); Mix(new Color(.9f, .3f, .28f), paranoid, .4f); Mix(new Color(1f, .82f, .6f), jigsaw, .3f); Mix(new Color(.68f, .74f, .86f), ill, .35f);
+            Mix(new Color(1f, .58f, .38f), cali, .5f); Mix(new Color(.35f, .55f, .95f), bends, .35f); Mix(new Color(1f, .45f, .2f), killing * .8f, .35f);
             SkyDirector.SetSongTint(Land, tint, amount);
             SkyDirector.SetSongRain(Land, 0f);
             if (here) { var w = clouds != null ? clouds.Wind : new Vector2(1, 0); Shader.SetGlobalFloat("_EW_Wind", .5f + .3f * energy); Shader.SetGlobalVector("_EW_WindDir", new Vector4(w.x, 0, w.y, 0)); }
@@ -143,10 +216,10 @@ namespace EverythingWorld.World
             {
                 breaks[i].gameObject.SetActive(here && video < .5f && disappear < .5f);
                 if (!here) continue;
-                var along = Mathf.Repeat((float)(now * 3.5) + i * 133f, 800f) - 400f; var p = center + wind * along + cross * ((i - 2.5f) * 90f + Mathf.Sin(i * 1.7f) * 40f);
+                var along = Mathf.Repeat((float)(now * 3.5) + i * 133f, 800f) - 400f; var p = center + wind * along + cross * ((i - 3.5f) * 75f + Mathf.Sin(i * 1.7f) * 40f);
                 p.y = center.y - 5f; breaks[i].position = p;
             }
-            shaftM.SetColor("_BaseColor", new Color(1f, .85f, .5f, .32f + .08f * Mathf.Sin(t * .3f) + supernova * .15f));
+            shaftM.SetColor("_BaseColor", new Color(1f, .83f, .48f, .42f + .08f * Mathf.Sin(t * .3f) + supernova * .15f + cali * .1f));
             // the warning lights blink together, a slow beat
             if (warnM != null) warnM.SetColor("_EmissionColor", MoorsKit.Signal * (Mathf.Repeat((float)now, 1.6f) < .5f ? 4f : .15f));
             // the transmitter station: the titles change, the televisions flicker
@@ -191,8 +264,97 @@ namespace EverythingWorld.World
             if (sails != null) sails.localRotation = Quaternion.Euler(0, 0, -(float)(now * (40f + feel * 300f) % 360.0));
             if (nova != null) nova.SetColor("_EmissionColor", new Color(1f, .9f, .6f) * (1.4f + .3f * Mathf.Sin(t * 1.5f) + supernova * (6f + 3f * Mathf.Sin(t * 6f))));
 
+            if (here) DistrictUpdate(dt, t, now, energy);
             nextSmoke -= dt;
             if (here && nextSmoke <= 0f) { nextSmoke = .7f; foreach (var c in chimneys) { smoke.transform.position = c; smoke.Emit(1); } }
+        }
+
+        static void Emit(ParticleSystem ps, Vector3 at, Vector3 velocity, float life)
+        {
+            var ep = new ParticleSystem.EmitParams { position = at, velocity = velocity, startLifetime = life, applyShapeToPosition = false };
+            ps.Emit(ep, 1);
+        }
+
+        static Vector3 Disc(float r) { var a = Random.value * Mathf.PI * 2f; var d = Mathf.Sqrt(Random.value) * r; return new Vector3(Mathf.Cos(a) * d, 0, Mathf.Sin(a) * d); }
+
+        void DistrictUpdate(float dt, float t, double now, float energy)
+        {
+            // the deep water room: light rippling on the ceiling, bubbles rising, the spotlight on the microphone
+            for (var i = 0; i < ripples.Count; i++) ripples[i].position = rippleBase[i] + rippleSide * Mathf.Sin(t * (.5f + bends) + i * 1.7f) * .8f;
+            if (bubblePS != null)
+            {
+                nextBubble -= dt;
+                while (nextBubble <= 0f) { nextBubble += .07f / (1f + bends * 4f); Emit(bubblePS, bubbles + Disc(7.5f), Vector3.up * Random.Range(.8f, 1.8f), Random.Range(3f, 4.5f)); }
+                spot.intensity = .8f + creep * 5f; beamM.SetColor("_BaseColor", new Color(1f, .95f, .85f, .05f + creep * .2f));
+            }
+            // the platform: a tram comes in out of one tunnel, waits, and leaves into the other (every 34 s, shared clock)
+            if (tram.Count > 0)
+            {
+                var L = Vector3.Distance(trackA, trackB); var ph = (float)(now % 34.0); var stopAt = L / 2f + 4.6f; float head;
+                if (letDown > .5f) head = stopAt;
+                else if (ph < 7f) head = Mathf.Lerp(-.5f, stopAt, Mathf.SmoothStep(0, 1, ph / 7f));
+                else if (ph < 15f) head = stopAt;
+                else if (ph < 22f) { var k = (ph - 15f) / 7f; head = stopAt + (L + 10f - stopAt) * k * k; }
+                else head = -100f;
+                for (var k = 0; k < tram.Count; k++)
+                {
+                    var s = head - k * 1.15f - .58f; var show = s > .6f && s < L - .6f; tram[k].gameObject.SetActive(show);
+                    if (show) tram[k].SetPositionAndRotation(Vector3.Lerp(trackA, trackB, s / L), trackRot);
+                }
+                tramLights.SetColor("_EmissionColor", new Color(1f, .9f, .68f) * (1.6f + letDown * 2.5f));
+            }
+            // the rain room
+            if (rainPS != null)
+            {
+                var n = Mathf.Min(60, Mathf.FloorToInt(dt * (260f + paranoid * 1400f) + Random.value));
+                for (var k = 0; k < n; k++) Emit(rainPS, rainAt + Disc(8.6f), Vector3.down * Random.Range(9f, 11f), .75f);
+                redNeon.SetColor("_EmissionColor", new Color(1f, .15f, .1f) * (1f + .4f * Mathf.Sin(t * .8f) + paranoid * (2f + 2f * Mathf.Sin(t * 6f))));
+                rainColumns.SetColor("_EmissionColor", new Color(1f, .3f, .22f) * (.4f + paranoid * Mathf.PerlinNoise(t * 4f, 1.7f) * 3.5f));
+            }
+            // the mist room
+            if (mistPS != null)
+            {
+                nextMist -= dt;
+                while (nextMist <= 0f) { nextMist += .22f / (1f + disappear * 3f); Emit(mistPS, mistAt + Disc(8f) + Vector3.up * Random.Range(.3f, 3f), new Vector3(Random.Range(-.2f, .2f), Random.Range(0f, .08f), Random.Range(-.2f, .2f)), Random.Range(7f, 10f)); }
+                if (mistFigure != null) { mistFigure.gameObject.SetActive(disappear > .3f || Mathf.PerlinNoise(t * .9f, 7.7f) > .42f); mistFigureM.SetColor("_EmissionColor", new Color(.85f, .9f, 1f) * (.6f + disappear * 2.4f)); }
+            }
+            // the aquarium: fish in the tanks, and the floor lights playing an arpeggio
+            for (var i = 0; i < tankFish.Count && tanks.Count > 0; i++)
+            {
+                var (c, along, across, half) = tanks[i % tanks.Count]; var sp = (.25f + (i % 5) * .06f) * (1f + fishes * 1.4f); var a = t * sp + i * 2.1f;
+                var p = c + along * (Mathf.Sin(a) * half.z) + across * (Mathf.Sin(a * 1.7f + i) * half.x * .8f) + Vector3.up * (Mathf.Sin(a * .6f + i * .9f) * half.y * .7f);
+                var v = along * Mathf.Cos(a) * half.z + across * Mathf.Cos(a * 1.7f + i) * half.x * 1.4f; if (v.sqrMagnitude < .0001f) v = along;
+                tankFish[i].SetPositionAndRotation(p, Quaternion.LookRotation(v.normalized) * Quaternion.Euler(0, Mathf.Sin(t * 8f + i) * 12f, 0));
+            }
+            if (arp.Count > 0)
+            {
+                var step = Mathf.FloorToInt(t * (3f + fishes * 7f + energy * 2f)) % arp.Count;
+                for (var k = 0; k < arp.Count; k++) arp[k].SetColor("_EmissionColor", Color.Lerp(new Color(.3f, .8f, 1f), new Color(1f, .6f, .25f), (k % 3) / 2f) * (k == step ? 3f + fishes * 3f : .12f));
+            }
+            // the jigsaw court: the loose pieces drift, and slide home while the song plays
+            for (var i = 0; i < pieces.Count; i++)
+            {
+                var f = Mathf.SmoothStep(0, 1, Mathf.Clamp01(jigsaw * 1.8f - i * .2f));
+                var bob = Vector3.up * Mathf.Sin(t * .6f + i * 1.3f) * .25f * (1f - f);
+                pieces[i].SetPositionAndRotation(Vector3.Lerp(pieceAway[i], pieceHome[i], f) + bob, Quaternion.Slerp(pieceRot * Quaternion.Euler(Mathf.Sin(t * .4f + i) * 14f, Mathf.Sin(t * .3f + i * 2f) * 20f, 9f + i * 7f), pieceRot, f));
+            }
+            // the wind room: the ribbons sway, and lean hard in the ill wind
+            for (var i = 0; i < ribbons.Count; i++)
+            {
+                var amt = .25f + ill * 1.2f + energy * .3f;
+                ribbons[i].rotation = windRot * Quaternion.Euler(Mathf.Sin(t * .7f + i * 1.1f) * 6f * amt + ill * 14f, 0, Mathf.Cos(t * .5f + i * 1.3f) * 5f * amt);
+            }
+            // the Red Hot Chili Peppers: the star turns, the pool and the lights glow warmer for Californication
+            if (rhcpStar != null) rhcpStar.rotation = rhcpStarRot * Quaternion.AngleAxis((float)(now * (12.0 + cantStop * 90.0 + cali * 30.0) % 360.0), Vector3.forward);
+            if (rhcpPool != null) rhcpPool.SetColor("_EmissionColor", new Color(.2f, .72f, .9f) * (.8f + .15f * Mathf.Sin(t * 1.3f) + cali * 1.2f));
+            if (rhcpLights != null) rhcpLights.SetColor("_EmissionColor", new Color(1f, .78f, .45f) * (1.2f + soul * 2f + Mathf.Repeat(t * 2f, 1f) * soul));
+            for (var i = 0; i < carousel.Count; i++) carousel[i].rotation = Quaternion.Euler(0, (float)(now * (14.0 + soul * 40.0) % 360.0), 0);
+            // drops falling from Train's Jupiter
+            if (dropPS != null)
+            {
+                nextDrop -= dt;
+                while (nextDrop <= 0f) { nextDrop += .5f / (1f + drops * 8f); Emit(dropPS, jupiterAt + Disc(2.4f) - Vector3.up * 2.6f, Vector3.down * Random.Range(1.5f, 3f), 3f); }
+            }
         }
     }
 }

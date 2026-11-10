@@ -74,13 +74,11 @@ Snapshot numbers refer to `Game/EverythingWorld/Logs/Live/` (not committed).
   tower, Elena Siegman's bunker, the forge and molten river.
 - Fix: still very dark; the steep slopes are featureless brown; artists hard to find between them.
 
-## Alt Rock Moors
-- Works: the crossroads (phone box, bus shelter, fingerpost), Pulp's disco floor, the motorway ending in the
-  air, Hootie's puffer fish, the transmitter on its hill.
-- Fix: **Radiohead's station is a plain grey shed** outside and bare inside: it has to be the strongest place
-  in the world; dry-stone walls are thick brown wedges that cross everywhere and look like ramps; the word
-  city is blank white blocks; 311's coloured blocks are crude; houses have walls running into them; the
-  moor overall is flat and grey.
+## Alt Rock Moors (deep pass done, 2026-11-10)
+- Rebuilt: Radiohead's nine-room district, the Chili Peppers' California corner, a design for every small artist,
+  walled fields instead of wedge walls, readable word city, warmer sky, real see-through glass and water.
+- Still to check in play: the tram timing, the rain and mist density, how dark the rooms feel, frame rate in the
+  district. The shared GlassBox helper is opaque on every other land too (worth a shared fix).
 
 ## Other lands seen in passing
 - Southern Rock Bayou: the swamp and moss trees look good.
