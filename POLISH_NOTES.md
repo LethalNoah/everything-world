@@ -1,0 +1,87 @@
+# Polish notes
+
+What stood out in the owner's first walk through the main-landmass lands (158 snapshots, 2026-11-10), plus
+the land audit's new overlap check. Each land's own session starts here: fix what's listed, keep what works.
+Snapshot numbers refer to `Game/EverythingWorld/Logs/Live/` (not committed).
+
+## Across every land
+
+- **Artist areas are mostly the same kit:** plaque, cover board, lantern and one small prop. Small artists
+  read as a row of signs (Folk Woods and Riviera most of all; Hair Metal venues are one box repeated). Each
+  needs its own small scene; the big ones need a whole place.
+- **Unreadable props:** shapes that don't say what they are. Examples: Phil Collins (an orange ball on a red
+  ball, a red box and an orange disc), Rage Against the Machine (a black box with a red disc and bar), String
+  Cheese Incident (an orange block with fingers), Kansas (stacked flat boxes), the purple and blue wedges in
+  the Commonwealth, the disc round the Moors transmitter.
+- **Zone curtains** (the striped light walls round radio rings) fill whole views at night (Goose, Phish,
+  Blue Öyster Cult, Bayou). Tone them down or fade them near the player.
+- **Interiors are bare:** Zappa's garage, Radiohead's hall, the Hair Metal venues. Bluegrass barn shows sky
+  through the roof from inside (one-sided faces).
+- **Overlapping surfaces** (audit, flicker): Hair Metal Strip 134 (each venue has a dark floor on a grey
+  floor), Everything Hub 99 (cover-ring frames on covers), Shoegaze Fens 100, Alt Rock Moors 97 (stone walls),
+  Kingdom of Classic Rock 82, Garage Rock Row 70. Others under 25.
+- **Walk-through objects** (audit): 37 to 344 per land.
+
+## Hair Metal Strip
+- Works: THE STRIP gate and boulevard at dusk, the hairspray can, "Spandex Sale" billboard.
+- Fix: every venue is the same dark box with an orange awning and a pink wall; doubled floors flicker; desert
+  either side of the road is empty; billboard undersides are black slabs.
+
+## Arena Rock Ridge
+- Works: Journey's wheel against the stars, the neon heart, Blue Öyster Cult's view over the realm.
+- Fix: Kansas reads as stacked boxes; zone curtain dominates Blue Öyster Cult.
+
+## Psychedelic Wilds
+- Works: Grateful Dead stage with the dancing bears; the colour.
+- Fix: mushrooms everywhere at the same size flatten it; ground is one flat yellow; small artists are a sign
+  and one shape.
+
+## Jam Band Commonwealth
+- Works: Phish's stage and light beams, the Lot's rainbow tents and bus, A Picture of Nectar, Oysterhead's
+  clam, Gamehendge tower and swing.
+- Fix: very dark between places; unexplained shapes (purple sheet, blue wedge, black bar, floating box);
+  hot-dog trailer and the black building beside it are crude; the cyan light beam cuts straight through
+  the view at eye height.
+
+## Yacht Rock Riviera
+- Works: lighthouse and promenade, the Marina, Hotel California, Chicago's clock, Starship's city, Jimmy
+  Buffett's tiki bar, Fleetwood Mac's arches.
+- Fix: boats in the marina are flat slabs with black undersides; palm trunks without crowns stick through
+  Hotel California; Redbone and Rick Springfield are the same deck chair and umbrella; Phil Collins
+  unreadable.
+
+## Folk Woods
+- Works: the lake and long footbridge, Big Pink, Country Roads mountains, Don McLean's Chevy, Carole King's
+  split rock, Lightfoot's ship.
+- Fix: most artists are just signs on bright flat grass; the misty-morning mood barely shows (no visible sun
+  shafts or mist in play); a lone smoking trunk with nothing round it.
+
+## Bluegrass Hollows
+- Works: barn and porch stage, the picking circle, covered bridge, stepping stones, wagon and mule, Nickel
+  Creek's lighthouse, the fire tower, Flatt & Scruggs' truck and banjo.
+- Fix: the blue moon on two black poles reads as a lollipop sign; barn roof open from inside; a footbridge
+  ramp sticks up into the air; wagon wheels are solid black discs.
+
+## Prog Marches
+- Works: the eclipse and organ, King Crimson's face, the Möbius ring, the half-buried clock and gears, Rush's
+  star, Zappa's UFO.
+- Fix: the spectrum leaving the Prism becomes a huge flat salmon wedge on the ground near it; the Prism glass
+  reads as a grey box; the pond is a white sheet above the ground; Floyd's posts and wall unclear; Zappa's
+  garage empty inside.
+
+## Iron Range
+- Works: Metallica's crosses on strings, Sabbath's figure and lightning, the sword in the stone, Rainbow's
+  tower, Elena Siegman's bunker, the forge and molten river.
+- Fix: still very dark; the steep slopes are featureless brown; artists hard to find between them.
+
+## Alt Rock Moors
+- Works: the crossroads (phone box, bus shelter, fingerpost), Pulp's disco floor, the motorway ending in the
+  air, Hootie's puffer fish, the transmitter on its hill.
+- Fix: **Radiohead's station is a plain grey shed** outside and bare inside: it has to be the strongest place
+  in the world; dry-stone walls are thick brown wedges that cross everywhere and look like ramps; the word
+  city is blank white blocks; 311's coloured blocks are crude; houses have walls running into them; the
+  moor overall is flat and grey.
+
+## Other lands seen in passing
+- Southern Rock Bayou: the swamp and moss trees look good.
+- The Moors' TV static wall is visible from the Bluegrass Hollows across the sea: a good landmark.
