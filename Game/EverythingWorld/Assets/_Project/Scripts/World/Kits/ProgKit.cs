@@ -117,7 +117,7 @@ namespace EverythingWorld.World
             Marvels(ctx, mk, solid);
             Marches(ctx, mk, solid);
             mk.Build("Prog Marches", ctx.Root, false);
-            soft.Build("Prog reeds and heather", ctx.Root, false);   // not "Soft…": LandCuller hides those at grass distance
+            soft.Build("Soft prog reeds and heather", ctx.Root, false);   // "Soft…": walked through, so the land audit skips it
             solid.BuildCollider("Prog Marches walls", ctx.Root);
         }
 

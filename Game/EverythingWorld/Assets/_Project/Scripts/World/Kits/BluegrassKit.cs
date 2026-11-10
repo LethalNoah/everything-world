@@ -200,7 +200,7 @@ namespace EverythingWorld.World
             Trails(ctx, mk, solid);
             Hollows(ctx, mk, solid);
             mk.Build("Bluegrass Hollows", ctx.Root, false);
-            crowns.Build("Bluegrass crowns and leaves", ctx.Root, false);   // not "Soft…": LandCuller hides those at grass distance
+            crowns.Build("Soft bluegrass crowns and leaves", ctx.Root, false);   // "Soft…": walked through, so the land audit skips it
             solid.BuildCollider("Bluegrass Hollows walls", ctx.Root);
         }
 

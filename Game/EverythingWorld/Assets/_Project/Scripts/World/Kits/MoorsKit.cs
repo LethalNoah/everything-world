@@ -125,7 +125,7 @@ namespace EverythingWorld.World
             Marvels(ctx, mk, solid);
             Moor(ctx, mk, solid);
             mk.Build("Alt Rock Moors", ctx.Root, false);
-            soft.Build("Moors heather and gorse", ctx.Root, false);   // not "Soft…": LandCuller hides those at grass distance
+            soft.Build("Soft moors heather and gorse", ctx.Root, false);   // "Soft…": walked through, so the land audit skips it
             solid.BuildCollider("Alt Rock Moors walls", ctx.Root);
         }
 

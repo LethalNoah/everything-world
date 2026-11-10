@@ -34,7 +34,7 @@ namespace EverythingWorld.World
                 var b = r.bounds; var size = b.size.magnitude;
                 var mat = r.sharedMaterial; var shader = mat != null && mat.shader != null ? mat.shader.name : "";
                 float far;
-                if (shader.Contains("Wind") || r.name.StartsWith("Soft")) far = Grass;
+                if (shader.Contains("Wind")) far = Grass;   // swaying grass only: "Soft…" meshes (tree crowns, leaves) are culled by size, so far trees keep their crowns
                 else if (shader.Contains("Glow Halo")) far = Glow;
                 else if (size < 8f) far = Small;
                 else if (size < 60f) far = Medium;

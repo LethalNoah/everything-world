@@ -125,7 +125,7 @@ namespace EverythingWorld.World
             Trails(ctx, mk, solid);
             Woods(ctx, mk, solid);
             mk.Build("Folk Woods", ctx.Root, false);
-            soft.Build("Folk woods crowns and reeds", ctx.Root, false);   // not "Soft…": LandCuller hides those at grass distance, and the crowns are the skyline
+            soft.Build("Soft folk woods crowns and reeds", ctx.Root, false);   // "Soft…": walked through, so the land audit skips it
             solid.BuildCollider("Folk Woods walls", ctx.Root);
         }
 
