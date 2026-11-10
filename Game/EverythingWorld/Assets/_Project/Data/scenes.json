@@ -15,8 +15,8 @@
     "progressive rock",
     "americana"
    ],
-   "x": 145.97,
-   "y": 63.85,
+   "x": 140.22,
+   "y": 79.03,
    "r": 10.77,
    "energy": 0.701,
    "acousticness": 0.352,
@@ -985,8 +985,8 @@
     "djent",
     "hardcore punk"
    ],
-   "x": 85.53,
-   "y": 23.46,
+   "x": 82.92,
+   "y": 26.63,
    "r": 9.22,
    "energy": 0.912,
    "acousticness": 0.008,
@@ -1707,8 +1707,8 @@
     "blues rock",
     "acid rock"
    ],
-   "x": 144.71,
-   "y": 40.99,
+   "x": 135.67,
+   "y": 43.79,
    "r": 9.27,
    "energy": 0.596,
    "acousticness": 0.303,
@@ -2437,8 +2437,8 @@
     "red dirt",
     "traditional country"
    ],
-   "x": 126.36,
-   "y": 106.51,
+   "x": 125.45,
+   "y": 107.93,
    "r": 8.0,
    "energy": 0.602,
    "acousticness": 0.389,
@@ -2991,8 +2991,8 @@
     "madchester",
     "sufi"
    ],
-   "x": 86.93,
-   "y": 50.88,
+   "x": 83.54,
+   "y": 60.79,
    "r": 8.12,
    "energy": 0.708,
    "acousticness": 0.142,
@@ -3561,8 +3561,8 @@
     "krautrock",
     "classic rock"
    ],
-   "x": 116.15,
-   "y": 51.34,
+   "x": 123.46,
+   "y": 66.55,
    "r": 7.62,
    "energy": 0.662,
    "acousticness": 0.209,
@@ -4067,8 +4067,8 @@
     "ska punk",
     "skate punk"
    ],
-   "x": 61.3,
-   "y": 36.89,
+   "x": 69.09,
+   "y": 39.82,
    "r": 7.07,
    "energy": 0.819,
    "acousticness": 0.088,
@@ -4509,8 +4509,8 @@
     "ambient",
     "j rock"
    ],
-   "x": 46.89,
-   "y": 28.77,
+   "x": 37.23,
+   "y": 30.75,
    "r": 6.56,
    "energy": 0.702,
    "acousticness": 0.173,
@@ -4889,20 +4889,20 @@
     "shoegaze",
     "dream pop",
     "slowcore",
-    "region:bedroom",
     "black metal",
     "indie rock",
     "post rock",
+    "region:bedroom",
     "indie pop"
    ],
-   "x": 54.11,
-   "y": 87.56,
-   "r": 6.63,
-   "energy": 0.585,
-   "acousticness": 0.185,
-   "valence": 0.255,
-   "danceability": 0.387,
-   "tempo": 120.334,
+   "x": 47.72,
+   "y": 97.11,
+   "r": 6.48,
+   "energy": 0.581,
+   "acousticness": 0.18,
+   "valence": 0.259,
+   "danceability": 0.382,
+   "tempo": 121.041,
    "neighbours": [
     9,
     49,
@@ -5255,22 +5255,6 @@
      "duration_ms": 438959,
      "energy": 0.62,
      "valence": 0.373
-    },
-    {
-     "name": "Humility",
-     "artist": "unclepat",
-     "id": "2lEP6EfwFP42KEdbo9MzTp",
-     "duration_ms": 282197,
-     "energy": 0.71,
-     "valence": 0.189
-    },
-    {
-     "name": "It Doesn't Matter to Me Anymore",
-     "artist": "unclepat",
-     "id": "4ZG8lKeeGsRpO2d2L5v0KY",
-     "duration_ms": 120000,
-     "energy": 0.607,
-     "valence": 0.165
     }
    ]
   },
@@ -5289,8 +5273,8 @@
     "post punk",
     "indie electronic"
    ],
-   "x": 70.0,
-   "y": 100.23,
+   "x": 69.22,
+   "y": 100.52,
    "r": 6.86,
    "energy": 0.653,
    "acousticness": 0.194,
@@ -5707,8 +5691,8 @@
     "singer songwriter",
     "kpop"
    ],
-   "x": 106.74,
-   "y": 120.63,
+   "x": 113.4,
+   "y": 122.4,
    "r": 7.94,
    "energy": 0.701,
    "acousticness": 0.15,
@@ -6253,8 +6237,8 @@
     "uk drill",
     "the muppets"
    ],
-   "x": 113.99,
-   "y": 149.41,
+   "x": 126.3,
+   "y": 149.21,
    "r": 7.81,
    "energy": 0.666,
    "acousticness": 0.212,
@@ -6783,8 +6767,8 @@
     "alternative metal",
     "romanian"
    ],
-   "x": 69.64,
-   "y": 50.64,
+   "x": 67.21,
+   "y": 55.71,
    "r": 6.32,
    "energy": 0.757,
    "acousticness": 0.101,
@@ -7145,8 +7129,8 @@
     "piano",
     "80s"
    ],
-   "x": 126.82,
-   "y": 39.14,
+   "x": 111.12,
+   "y": 55.81,
    "r": 6.16,
    "energy": 0.637,
    "acousticness": 0.28,
@@ -7491,8 +7475,8 @@
     "chamber folk",
     "folk pop"
    ],
-   "x": 92.61,
-   "y": 86.33,
+   "x": 98.82,
+   "y": 98.18,
    "r": 6.4,
    "energy": 0.5,
    "acousticness": 0.476,
@@ -7858,22 +7842,22 @@
     "surf rock",
     "danish",
     "indie rock",
-    "celtic",
-    "chinese"
+    "region:bedroom",
+    "slowcore"
    ],
-   "x": 101.65,
-   "y": 74.58,
-   "r": 6.08,
-   "energy": 0.445,
-   "acousticness": 0.564,
-   "valence": 0.444,
-   "danceability": 0.563,
-   "tempo": 122.389,
+   "x": 84.61,
+   "y": 102.34,
+   "r": 5.74,
+   "energy": 0.453,
+   "acousticness": 0.515,
+   "valence": 0.378,
+   "danceability": 0.558,
+   "tempo": 116.685,
    "neighbours": [
     17,
     14,
     9,
-    64
+    49
    ],
    "terrain": "Sheltered beach coves, tide pools and low sea cliffs.",
    "palette": [
@@ -7935,22 +7919,6 @@
      "valence": 0.455
     },
     {
-     "name": "Imperial Concubine's Tears",
-     "artist": "Ancient Chinese composer",
-     "id": "2YdYOmcCptg8zWsOlE8mG0",
-     "duration_ms": 157160,
-     "energy": 0.094,
-     "valence": 0.142
-    },
-    {
-     "name": "White Snow In Early Spring",
-     "artist": "Ancient Chinese composer",
-     "id": "3sHcWA4z8QomPRQVOP3Exg",
-     "duration_ms": 177560,
-     "energy": 0.341,
-     "valence": 0.745
-    },
-    {
      "name": "Art Of Motion",
      "artist": "Andy McKee",
      "id": "4LgsQlPmwr1GyRqnWc3cx1",
@@ -7981,30 +7949,6 @@
      "duration_ms": 300929,
      "energy": 0.503,
      "valence": 0.304
-    },
-    {
-     "name": "High Tide Or Low Tide",
-     "artist": "Ben Harper",
-     "id": "3lGqz047x1WtLJjMV0tdA4",
-     "duration_ms": 304053,
-     "energy": 0.447,
-     "valence": 0.353
-    },
-    {
-     "name": "Ratlin' Bog",
-     "artist": "Brigham Phillips",
-     "id": "0EaYaOmZoEIjUWzZM8YJyn",
-     "duration_ms": 328746,
-     "energy": 0.795,
-     "valence": 0.819
-    },
-    {
-     "name": "A Holly Jolly Christmas",
-     "artist": "Burl Ives",
-     "id": "77khP2fIVhSW23NwxrRluh",
-     "duration_ms": 135533,
-     "energy": 0.375,
-     "valence": 0.888
     },
     {
      "name": "Analogue",
@@ -8047,6 +7991,14 @@
      "valence": 0.321
     },
     {
+     "name": "High Tide Or Low Tide",
+     "artist": "Jack Johnson",
+     "id": "3lGqz047x1WtLJjMV0tdA4",
+     "duration_ms": 304053,
+     "energy": 0.447,
+     "valence": 0.353
+    },
+    {
      "name": "If I Had Eyes",
      "artist": "Jack Johnson",
      "id": "3FnkZFv7kbxwlgaLgbqeDc",
@@ -8085,14 +8037,6 @@
      "duration_ms": 478413,
      "energy": 0.582,
      "valence": 0.381
-    },
-    {
-     "name": "Wellerman - Sea Shanty",
-     "artist": "Nathan Evans",
-     "id": "54OBgO0Xwu20Jak9TMXbR7",
-     "duration_ms": 155333,
-     "energy": 0.359,
-     "valence": 0.792
     },
     {
      "name": "Pink Moon",
@@ -8167,20 +8111,28 @@
      "valence": 0.504
     },
     {
-     "name": "Drunken Sailor",
-     "artist": "The Irish Rovers",
-     "id": "5Su5ILFp6U83cnIXwfmlC5",
-     "duration_ms": 176853,
-     "energy": 0.897,
-     "valence": 0.955
-    },
-    {
      "name": "Fast Car",
      "artist": "Tracy Chapman",
      "id": "2M9ro2krNb7nr7HSprkEgo",
      "duration_ms": 296800,
      "energy": 0.292,
      "valence": 0.194
+    },
+    {
+     "name": "Humility",
+     "artist": "unclepat",
+     "id": "2lEP6EfwFP42KEdbo9MzTp",
+     "duration_ms": 282197,
+     "energy": 0.71,
+     "valence": 0.189
+    },
+    {
+     "name": "It Doesn't Matter to Me Anymore",
+     "artist": "unclepat",
+     "id": "4ZG8lKeeGsRpO2d2L5v0KY",
+     "duration_ms": 120000,
+     "energy": 0.607,
+     "valence": 0.165
     }
    ]
   },
@@ -8199,8 +8151,8 @@
     "acid rock",
     "jazz fusion"
    ],
-   "x": 112.83,
-   "y": 33.84,
+   "x": 108.61,
+   "y": 40.63,
    "r": 6.08,
    "energy": 0.626,
    "acousticness": 0.24,
@@ -8537,8 +8489,8 @@
     "acoustic",
     "yacht rock"
    ],
-   "x": 126.08,
-   "y": 64.81,
+   "x": 108.83,
+   "y": 73.34,
    "r": 6.24,
    "energy": 0.491,
    "acousticness": 0.49,
@@ -8891,8 +8843,8 @@
     "metal",
     "math metal"
    ],
-   "x": 67.56,
-   "y": 22.4,
+   "x": 54.6,
+   "y": 33.63,
    "r": 5.74,
    "energy": 0.795,
    "acousticness": 0.073,
@@ -9197,8 +9149,8 @@
     "melodic bass",
     "drum and bass"
    ],
-   "x": 34.13,
-   "y": 140.2,
+   "x": 43.75,
+   "y": 150.02,
    "r": 5.39,
    "energy": 0.713,
    "acousticness": 0.088,
@@ -9471,8 +9423,8 @@
     "experimental",
     "region:idm"
    ],
-   "x": 22.17,
-   "y": 102.84,
+   "x": 26.88,
+   "y": 112.51,
    "r": 5.57,
    "energy": 0.476,
    "acousticness": 0.376,
@@ -9761,8 +9713,8 @@
     "ska",
     "crank wave"
    ],
-   "x": 77.86,
-   "y": 64.63,
+   "x": 82.73,
+   "y": 77.06,
    "r": 6.24,
    "energy": 0.694,
    "acousticness": 0.141,
@@ -10115,8 +10067,8 @@
     "future garage",
     "rock"
    ],
-   "x": 109.97,
-   "y": 104.97,
+   "x": 89.04,
+   "y": 133.42,
    "r": 5.57,
    "energy": 0.533,
    "acousticness": 0.394,
@@ -10405,8 +10357,8 @@
     "electro",
     "electro house"
    ],
-   "x": 30.49,
-   "y": 126.88,
+   "x": 52.64,
+   "y": 139.53,
    "r": 5.48,
    "energy": 0.783,
    "acousticness": 0.042,
@@ -10687,8 +10639,8 @@
     "melodic bass",
     "edm"
    ],
-   "x": 19.01,
-   "y": 134.66,
+   "x": 29.45,
+   "y": 143.11,
    "r": 5.48,
    "energy": 0.839,
    "acousticness": 0.032,
@@ -10969,8 +10921,8 @@
     "boom bap",
     "southern hip hop"
    ],
-   "x": 129.62,
-   "y": 147.01,
+   "x": 142.15,
+   "y": 149.04,
    "r": 5.1,
    "energy": 0.695,
    "acousticness": 0.157,
@@ -11219,14 +11171,14 @@
     "hard rock",
     "medieval"
    ],
-   "x": 29.01,
-   "y": 77.79,
-   "r": 6.56,
-   "energy": 0.677,
-   "acousticness": 0.291,
-   "valence": 0.629,
-   "danceability": 0.65,
-   "tempo": 126.584,
+   "x": 44.24,
+   "y": 70.43,
+   "r": 6.86,
+   "energy": 0.671,
+   "acousticness": 0.321,
+   "valence": 0.649,
+   "danceability": 0.648,
+   "tempo": 128.272,
    "neighbours": [
     36,
     39,
@@ -11283,6 +11235,22 @@
      "duration_ms": 217182,
      "energy": 0.852,
      "valence": 0.565
+    },
+    {
+     "name": "Ratlin' Bog",
+     "artist": "Brigham Phillips",
+     "id": "0EaYaOmZoEIjUWzZM8YJyn",
+     "duration_ms": 328746,
+     "energy": 0.795,
+     "valence": 0.819
+    },
+    {
+     "name": "A Holly Jolly Christmas",
+     "artist": "Burl Ives",
+     "id": "77khP2fIVhSW23NwxrRluh",
+     "duration_ms": 135533,
+     "energy": 0.375,
+     "valence": 0.888
     },
     {
      "name": "Fallen Kingdom",
@@ -11371,6 +11339,14 @@
      "duration_ms": 266055,
      "energy": 0.655,
      "valence": 0.5
+    },
+    {
+     "name": "Wellerman - Sea Shanty",
+     "artist": "Nathan Evans",
+     "id": "54OBgO0Xwu20Jak9TMXbR7",
+     "duration_ms": 155333,
+     "energy": 0.359,
+     "valence": 0.792
     },
     {
      "name": "The Bare Necessities - From \"The Jungle Book\" Soundtrack",
@@ -11517,6 +11493,14 @@
      "valence": 0.673
     },
     {
+     "name": "Drunken Sailor",
+     "artist": "The Irish Rovers",
+     "id": "5Su5ILFp6U83cnIXwfmlC5",
+     "duration_ms": 176853,
+     "energy": 0.897,
+     "valence": 0.955
+    },
+    {
      "name": "Conjunction Junction",
      "artist": "The Little Singers",
      "id": "0RG8jH2BDK3yB5aQPF3H9d",
@@ -11605,8 +11589,8 @@
     "doom metal",
     "groove metal"
    ],
-   "x": 130.7,
-   "y": 14.56,
+   "x": 111.49,
+   "y": 26.22,
    "r": 5.39,
    "energy": 0.822,
    "acousticness": 0.056,
@@ -11879,8 +11863,8 @@
     "vocaloid",
     "jpop"
    ],
-   "x": 74.32,
-   "y": 10.0,
+   "x": 65.49,
+   "y": 24.67,
    "r": 5.39,
    "energy": 0.88,
    "acousticness": 0.055,
@@ -12153,8 +12137,8 @@
     "soul blues",
     "northern soul"
    ],
-   "x": 153.87,
-   "y": 107.28,
+   "x": 158.88,
+   "y": 103.21,
    "r": 5.66,
    "energy": 0.575,
    "acousticness": 0.32,
@@ -12451,8 +12435,8 @@
     "psychedelic soul",
     "city pop"
    ],
-   "x": 162.85,
-   "y": 117.56,
+   "x": 164.75,
+   "y": 115.54,
    "r": 5.0,
    "energy": 0.666,
    "acousticness": 0.254,
@@ -12693,8 +12677,8 @@
     "dance",
     "art pop"
    ],
-   "x": 93.22,
-   "y": 111.94,
+   "x": 97.74,
+   "y": 123.39,
    "r": 5.2,
    "energy": 0.707,
    "acousticness": 0.119,
@@ -12951,8 +12935,8 @@
     "grunge",
     "progressive rock"
    ],
-   "x": 76.43,
-   "y": 38.2,
+   "x": 83.53,
+   "y": 44.31,
    "r": 5.2,
    "energy": 0.786,
    "acousticness": 0.033,
@@ -13209,8 +13193,8 @@
     "experimental",
     "drumstep"
    ],
-   "x": 18.49,
-   "y": 118.63,
+   "x": 20.69,
+   "y": 125.15,
    "r": 5.48,
    "energy": 0.72,
    "acousticness": 0.107,
@@ -13491,8 +13475,8 @@
     "rock",
     "hard rock"
    ],
-   "x": 131.86,
-   "y": 51.81,
+   "x": 137.65,
+   "y": 60.56,
    "r": 5.0,
    "energy": 0.664,
    "acousticness": 0.208,
@@ -13733,8 +13717,8 @@
     "folk punk",
     "anti folk"
    ],
-   "x": 63.74,
-   "y": 63.77,
+   "x": 70.31,
+   "y": 69.85,
    "r": 5.29,
    "energy": 0.639,
    "acousticness": 0.2,
@@ -13999,8 +13983,8 @@
     "video game",
     "bangla pop"
    ],
-   "x": 38.99,
-   "y": 66.81,
+   "x": 31.01,
+   "y": 77.72,
    "r": 5.39,
    "energy": 0.614,
    "acousticness": 0.351,
@@ -14273,8 +14257,8 @@
     "hip hop",
     "region:idm"
    ],
-   "x": 91.67,
-   "y": 142.9,
+   "x": 108.4,
+   "y": 157.91,
    "r": 4.8,
    "energy": 0.458,
    "acousticness": 0.42,
@@ -14499,8 +14483,8 @@
     "hair metal",
     "80s"
    ],
-   "x": 123.35,
-   "y": 25.41,
+   "x": 121.1,
+   "y": 34.94,
    "r": 4.69,
    "energy": 0.839,
    "acousticness": 0.06,
@@ -14715,16 +14699,16 @@
     "opera",
     "instrumental",
     "orchestral",
-    "composers"
+    "japanese classical"
    ],
-   "x": 29.56,
-   "y": 58.08,
-   "r": 4.58,
-   "energy": 0.372,
-   "acousticness": 0.639,
-   "valence": 0.27,
-   "danceability": 0.37,
-   "tempo": 102.357,
+   "x": 31.39,
+   "y": 63.17,
+   "r": 4.8,
+   "energy": 0.359,
+   "acousticness": 0.668,
+   "valence": 0.285,
+   "danceability": 0.376,
+   "tempo": 106.633,
    "neighbours": [
     59,
     36,
@@ -14742,6 +14726,22 @@
    "props": "Music stands, marble statues, grand pianos, a conductor's podium, banners.",
    "mood": "Epic golden light with drifting clouds.",
    "tracks": [
+    {
+     "name": "Imperial Concubine's Tears",
+     "artist": "Ancient Chinese composer",
+     "id": "2YdYOmcCptg8zWsOlE8mG0",
+     "duration_ms": 157160,
+     "energy": 0.094,
+     "valence": 0.142
+    },
+    {
+     "name": "White Snow In Early Spring",
+     "artist": "Ancient Chinese composer",
+     "id": "3sHcWA4z8QomPRQVOP3Exg",
+     "duration_ms": 177560,
+     "energy": 0.341,
+     "valence": 0.745
+    },
     {
      "name": "Jack's Lament",
      "artist": "Danny Elfman",
@@ -14927,8 +14927,8 @@
     "library music",
     "vocal jazz"
    ],
-   "x": 174.93,
-   "y": 91.54,
+   "x": 180.85,
+   "y": 91.75,
    "r": 4.9,
    "energy": 0.501,
    "acousticness": 0.569,
@@ -15161,8 +15161,8 @@
     "experimental jazz",
     "alternative hip hop"
    ],
-   "x": 167.11,
-   "y": 102.4,
+   "x": 172.88,
+   "y": 104.9,
    "r": 5.48,
    "energy": 0.601,
    "acousticness": 0.239,
@@ -15443,8 +15443,8 @@
     "experimental rock",
     "britpop"
    ],
-   "x": 67.34,
-   "y": 86.7,
+   "x": 59.67,
+   "y": 90.74,
    "r": 4.12,
    "energy": 0.726,
    "acousticness": 0.193,
@@ -15621,8 +15621,8 @@
     "folk metal",
     "metal"
    ],
-   "x": 96.08,
-   "y": 10.5,
+   "x": 82.47,
+   "y": 10.0,
    "r": 4.47,
    "energy": 0.957,
    "acousticness": 0.001,
@@ -15823,8 +15823,8 @@
     "retrowave",
     "nu disco"
    ],
-   "x": 63.0,
-   "y": 124.24,
+   "x": 76.21,
+   "y": 136.17,
    "r": 4.36,
    "energy": 0.759,
    "acousticness": 0.087,
@@ -16017,8 +16017,8 @@
     "rap",
     "east coast hip hop"
    ],
-   "x": 130.63,
-   "y": 133.65,
+   "x": 138.11,
+   "y": 134.18,
    "r": 5.29,
    "energy": 0.573,
    "acousticness": 0.24,
@@ -16283,8 +16283,8 @@
     "70s",
     "quiet storm"
    ],
-   "x": 149.13,
-   "y": 118.86,
+   "x": 150.92,
+   "y": 113.03,
    "r": 4.0,
    "energy": 0.749,
    "acousticness": 0.25,
@@ -16453,8 +16453,8 @@
     "lo fi",
     "japanese"
    ],
-   "x": 21.37,
-   "y": 66.45,
+   "x": 22.11,
+   "y": 86.51,
    "r": 4.12,
    "energy": 0.565,
    "acousticness": 0.34,
@@ -16631,8 +16631,8 @@
     "swing",
     "swing music"
    ],
-   "x": 161.81,
-   "y": 89.68,
+   "x": 167.52,
+   "y": 92.16,
    "r": 5.39,
    "energy": 0.406,
    "acousticness": 0.651,
@@ -16905,8 +16905,8 @@
     "dream pop",
     "indietronica"
    ],
-   "x": 78.85,
-   "y": 89.77,
+   "x": 76.53,
+   "y": 112.98,
    "r": 4.8,
    "energy": 0.659,
    "acousticness": 0.241,
@@ -17131,8 +17131,8 @@
     "indie pop",
     "alternative dance"
    ],
-   "x": 55.93,
-   "y": 101.31,
+   "x": 64.66,
+   "y": 114.04,
    "r": 4.24,
    "energy": 0.767,
    "acousticness": 0.144,
@@ -17317,8 +17317,8 @@
     "folktronica",
     "turntablism"
    ],
-   "x": 30.34,
-   "y": 114.29,
+   "x": 39.27,
+   "y": 120.57,
    "r": 4.24,
    "energy": 0.604,
    "acousticness": 0.491,
@@ -17503,8 +17503,8 @@
     "80s",
     "arena rock"
    ],
-   "x": 134.55,
-   "y": 28.47,
+   "x": 120.3,
+   "y": 46.6,
    "r": 4.0,
    "energy": 0.686,
    "acousticness": 0.076,
@@ -17666,8 +17666,8 @@
    "tags": [
     "region:bedroom"
    ],
-   "x": 45.29,
-   "y": 97.81,
+   "x": 56.57,
+   "y": 106.63,
    "r": 4.0,
    "energy": 0.528,
    "acousticness": 0.513,
@@ -17675,10 +17675,10 @@
    "danceability": 0.477,
    "tempo": 123.916,
    "neighbours": [
-    8,
     42,
-    31,
-    51
+    8,
+    15,
+    31
    ],
    "terrain": "A quiet hamlet of tiny cottages in a hollow.",
    "palette": [
@@ -17836,8 +17836,8 @@
     "dub",
     "idm"
    ],
-   "x": 40.34,
-   "y": 119.24,
+   "x": 47.4,
+   "y": 128.22,
    "r": 4.0,
    "energy": 0.565,
    "acousticness": 0.185,
@@ -18006,8 +18006,8 @@
     "hard house",
     "swing music"
    ],
-   "x": 23.63,
-   "y": 145.76,
+   "x": 32.79,
+   "y": 154.67,
    "r": 3.61,
    "energy": 0.727,
    "acousticness": 0.032,
@@ -18152,8 +18152,8 @@
     "spanish",
     "dance"
    ],
-   "x": 117.12,
-   "y": 93.98,
+   "x": 103.96,
+   "y": 134.72,
    "r": 4.8,
    "energy": 0.577,
    "acousticness": 0.342,
@@ -18379,7 +18379,7 @@
     "celtic"
    ],
    "x": 10.0,
-   "y": 48.2,
+   "y": 68.76,
    "r": 3.46,
    "energy": 0.502,
    "acousticness": 0.476,
@@ -18516,8 +18516,8 @@
     "eurodance",
     "chillstep"
    ],
-   "x": 41.89,
-   "y": 130.88,
+   "x": 40.74,
+   "y": 138.34,
    "r": 3.74,
    "energy": 0.775,
    "acousticness": 0.031,
@@ -18670,8 +18670,8 @@
     "contemporary classical",
     "opera"
    ],
-   "x": 41.37,
-   "y": 53.65,
+   "x": 41.82,
+   "y": 55.71,
    "r": 5.0,
    "energy": 0.165,
    "acousticness": 0.89,
@@ -18912,8 +18912,8 @@
     "alternative rnb",
     "summer"
    ],
-   "x": 141.88,
-   "y": 140.37,
+   "x": 151.09,
+   "y": 135.77,
    "r": 4.8,
    "energy": 0.491,
    "acousticness": 0.28,
@@ -19138,8 +19138,8 @@
     "electronic",
     "neurofunk"
    ],
-   "x": 47.21,
-   "y": 141.0,
+   "x": 32.6,
+   "y": 130.39,
    "r": 4.69,
    "energy": 0.867,
    "acousticness": 0.025,
@@ -19356,8 +19356,8 @@
     "dub",
     "lovers rock"
    ],
-   "x": 83.75,
-   "y": 133.59,
+   "x": 96.2,
+   "y": 156.6,
    "r": 4.47,
    "energy": 0.615,
    "acousticness": 0.196,
@@ -19558,8 +19558,8 @@
     "delta blues",
     "chicago blues"
    ],
-   "x": 149.54,
-   "y": 92.68,
+   "x": 169.3,
+   "y": 78.66,
    "r": 4.36,
    "energy": 0.53,
    "acousticness": 0.539,
@@ -19752,8 +19752,8 @@
     "traditional country",
     "southern gospel"
    ],
-   "x": 133.07,
-   "y": 76.82,
+   "x": 119.43,
+   "y": 82.16,
    "r": 4.58,
    "energy": 0.45,
    "acousticness": 0.593,
@@ -19962,8 +19962,8 @@
     "afroswing",
     "african"
    ],
-   "x": 178.13,
-   "y": 107.34,
+   "x": 184.94,
+   "y": 104.95,
    "r": 3.61,
    "energy": 0.666,
    "acousticness": 0.198,
@@ -21531,14 +21531,6 @@
      "valence": 0.605
     },
     {
-     "name": "High Tide Or Low Tide",
-     "artist": "Ben Harper",
-     "id": "3lGqz047x1WtLJjMV0tdA4",
-     "duration_ms": 304053,
-     "energy": 0.447,
-     "valence": 0.353
-    },
-    {
      "name": "Dark Energy",
      "artist": "Ben Rosett",
      "id": "4oFaYjcKSWaw86hmOHcY6R",
@@ -26657,6 +26649,14 @@
      "duration_ms": 210893,
      "energy": 0.644,
      "valence": 0.321
+    },
+    {
+     "name": "High Tide Or Low Tide",
+     "artist": "Jack Johnson",
+     "id": "3lGqz047x1WtLJjMV0tdA4",
+     "duration_ms": 304053,
+     "energy": 0.447,
+     "valence": 0.353
     },
     {
      "name": "If I Had Eyes",
@@ -41026,6 +41026,14 @@
      "duration_ms": 210893,
      "energy": 0.644,
      "valence": 0.321
+    },
+    {
+     "name": "High Tide Or Low Tide",
+     "artist": "Jack Johnson",
+     "id": "3lGqz047x1WtLJjMV0tdA4",
+     "duration_ms": 304053,
+     "energy": 0.447,
+     "valence": 0.353
     },
     {
      "name": "If I Had Eyes",

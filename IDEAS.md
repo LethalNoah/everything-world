@@ -11,6 +11,7 @@ The playlist is meant to be surprising and spontaneous, so the world shouldn't b
 ## Social spaces and minigames (2026-11-09, later)
 
 - A big Christmas lodge (probably in or near Lanternwood) you can go inside, sit down in and talk with friends.
+- Pub songs and Christmas songs might get an area of their own one day. For now the sea shanties and pub songs (Drunken Sailor, Wellerman, Ratlin' Bog) and A Holly Jolly Christmas live on the Isle of Memes & Musicals.
 - Minigames somewhere in the world.
 - Generally: buildings sized for groups (doorways 2.5 m+, rooms for 4-6 people), and places to sit and reflect in every land.
 

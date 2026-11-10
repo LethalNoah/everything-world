@@ -158,7 +158,11 @@ namespace EverythingWorld.World
                     v.Add(new Vector3(Mathf.Cos(a0) * r0, Mathf.Sin(a0) * r0, 0)); v.Add(new Vector3(Mathf.Cos(a1) * r0, Mathf.Sin(a1) * r0, 0));
                     v.Add(new Vector3(Mathf.Cos(a1) * r1, Mathf.Sin(a1) * r1, 0)); v.Add(new Vector3(Mathf.Cos(a0) * r1, Mathf.Sin(a0) * r1, 0));
                     var edge = (b == 0 || b == cols.Length - 1) ? .25f : .55f;
-                    for (var q = 0; q < 4; q++) c.Add(new Color(cols[b].r, cols[b].g, cols[b].b, edge));
+                    // each end melts away toward the ground instead of stopping at a hard line
+                    float F(float a) => Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(Mathf.Sin(a) / .45f));
+                    float f0 = F(a0), f1 = F(a1);
+                    c.Add(new Color(cols[b].r, cols[b].g, cols[b].b, edge * f0)); c.Add(new Color(cols[b].r, cols[b].g, cols[b].b, edge * f1));
+                    c.Add(new Color(cols[b].r, cols[b].g, cols[b].b, edge * f1)); c.Add(new Color(cols[b].r, cols[b].g, cols[b].b, edge * f0));
                     t.AddRange(new[] { k, k + 1, k + 2, k, k + 2, k + 3 });
                 }
             }
@@ -275,8 +279,11 @@ namespace EverythingWorld.World
             if (clouds != null) clouds.cover = Mathf.Lerp(.95f, .3f, mood);
 
             var w = clouds != null ? clouds.Wind : new Vector2(1, 0);
-            Shader.SetGlobalFloat("_EW_Wind", gusty);
-            Shader.SetGlobalVector("_EW_WindDir", new Vector4(w.x, 0, w.y, 0));
+            if (here)       // each land sets the wind only while you're on it
+            {
+                Shader.SetGlobalFloat("_EW_Wind", gusty);
+                Shader.SetGlobalVector("_EW_WindDir", new Vector4(w.x, 0, w.y, 0));
+            }
             var dir = new Vector3(w.x, 0, w.y);
             var t = Time.time;
             if (cam == null) cam = Camera.main;

@@ -238,7 +238,7 @@ Indie rock, shoegaze, bedroom pop and indie folk.
 
 ### 8. The Shoegaze Fens
 
-*shoegaze, dream pop, slowcore, region:bedroom, black metal* · 44 songs · energy 0.58, acoustic 0.18, mood 0.26 · top artists: Deafheaven, Mazzy Star, Fine, Knifeplay, M83
+*shoegaze, dream pop, slowcore, black metal, indie rock* · 42 songs · energy 0.58, acoustic 0.18, mood 0.26 · top artists: Deafheaven, Mazzy Star, Fine, Knifeplay, M83
 
 - **Terrain:** A reverb-drowned marsh of reeds, still pools and willows.
 - **Colours:** `#D7A6B3 dusty pink`, `#A79BC8 lavender haze`, `#6F8B7A fen green`, `#E9E6EE pale fog`
@@ -268,7 +268,7 @@ Indie rock, shoegaze, bedroom pop and indie folk.
 
 ### 15. The Driftwood Shore
 
-*folk, acoustic, singer songwriter, surf rock, danish* · 37 songs · energy 0.45, acoustic 0.56, mood 0.44 · top artists: Jack Johnson, Agnes Obel, Angus & Julia Stone, Ancient Chinese composer, Shearwater
+*folk, acoustic, singer songwriter, surf rock, danish* · 33 songs · energy 0.45, acoustic 0.52, mood 0.38 · top artists: Jack Johnson, Agnes Obel, Angus & Julia Stone, Shearwater, unclepat
 
 - **Terrain:** Sheltered beach coves, tide pools and low sea cliffs.
 - **Colours:** `#3BA3A3 sea teal`, `#B59E7E driftwood`, `#EBDDB5 sand`, `#E05A5A hibiscus`
@@ -648,7 +648,7 @@ Film scores, classical, musicals, game music and novelties.
 
 ### 26. The Isle of Memes & Musicals
 
-*comedy, soundtrack, region:novelty, musicals, disney* · 43 songs · energy 0.68, acoustic 0.29, mood 0.63 · top artists: Phineas and Ferb, Stantough, Captainsparklez, The Little Singers, Zac Efron
+*comedy, soundtrack, region:novelty, musicals, disney* · 47 songs · energy 0.67, acoustic 0.32, mood 0.65 · top artists: Phineas and Ferb, Stantough, Captainsparklez, The Little Singers, Zac Efron
 
 - **Terrain:** A storybook island of round hills and winding paths.
 - **Colours:** `#4A90E2 storybook blue`, `#F7A1C4 pink`, `#FFE066 candy yellow`, `#7CCB5A cartoon grass`
@@ -668,7 +668,7 @@ Film scores, classical, musicals, game music and novelties.
 
 ### 39. The Isle of Scores
 
-*soundtrack, classical, score, ballet, opera* · 21 songs · energy 0.37, acoustic 0.64, mood 0.27 · top artists: John Williams, Danny Elfman, Ennio Morricone, Jerry Goldsmith, Joe Hisaishi
+*soundtrack, classical, score, ballet, opera* · 23 songs · energy 0.36, acoustic 0.67, mood 0.28 · top artists: John Williams, Danny Elfman, Ancient Chinese composer, Ennio Morricone, Jerry Goldsmith
 
 - **Terrain:** Sweeping cliffs and plateaus under a huge sky.
 - **Colours:** `#F2EFE8 marble`, `#2E4A8C royal blue`, `#D4AF37 gold`, `#7A1F2B velvet red`

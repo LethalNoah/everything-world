@@ -9,6 +9,14 @@
  },
  "lands": [
   {
+   "land": "The Driftwood Shore",
+   "sunPitch": 6, "sunYaw": -70, "sunIntensity": 0.75, "sunColor": "#F2C4B2",
+   "skyLight": "#8E99A4", "horizonLight": "#C7B4AE", "groundLight": "#5A5650",
+   "fogColor": "#A9B0B6", "fogStart": 30, "fogEnd": 720,
+   "stars": 0, "sunShadows": false, "dailyWeather": false, "bloom": 0.9,
+   "weather": "", "weatherAmount": 0
+  },
+  {
    "land": "The Small Hours",
    "sunPitch": 35, "sunYaw": 160, "sunIntensity": 0.22, "sunColor": "#9DB2E8",
    "skyLight": "#1F2650", "horizonLight": "#2A2F5C", "groundLight": "#141628",
