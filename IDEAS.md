@@ -93,3 +93,4 @@ Open questions:
 ## Done
 
 - **Zone radio** (2026-11-08): every scene is an always-on station on a shared clock, so friends hear the same part of the same song.
+- Prog Marches: the owner plans to add much more prog to the playlist; leave the open marsh for new artists and give each new big band its own song places like the Floyd world.

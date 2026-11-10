@@ -71,9 +71,11 @@ Snapshot numbers refer to `Game/EverythingWorld/Logs/Live/` (not committed).
 ## Prog Marches
 - Works: the eclipse and organ, King Crimson's face, the Möbius ring, the half-buried clock and gears, Rush's
   star, Zappa's UFO.
-- Fix: the spectrum leaving the Prism becomes a huge flat salmon wedge on the ground near it; the Prism glass
-  reads as a grey box; the pond is a white sheet above the ground; Floyd's posts and wall unclear; Zappa's
-  garage empty inside.
+- Fixed in the deep pass (2026-11-10): the spectrum is now fading ribbons of light that stay off the ground;
+  the Prism is see-through glass; marsh pools only on flat ground and less mirror-like; Floyd's short wall
+  replaced by the wall place and a power station; Zappa's garage furnished.
+- Deep pass (2026-11-10): a walkable Floyd world (eight song places with signs and song glows), more songs as
+  things for Zappa, King Crimson, Rush and Alan Parsons. Room left for the prog the owner will add later.
 
 ## Iron Range
 - Works: Metallica's crosses on strings, Sabbath's figure and lightning, the sword in the stone, Rainbow's

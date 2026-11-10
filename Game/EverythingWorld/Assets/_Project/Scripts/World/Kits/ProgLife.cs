@@ -13,7 +13,7 @@ namespace EverythingWorld.World
     ///   passes and the whole sky turns bright blue; "Wish You Were Here": the burning man blazes; "Any Colour You
     ///   Like": the spectrum and the organ pipes cycle through every colour; "YYZ": the beacon flashes fast and the
     ///   light pulses red; "Inca Roads": the saucer drops low over the terraces, lights blazing.
-    public class ProgLife : MonoBehaviour
+    public partial class ProgLife : MonoBehaviour
     {
         const string Land = "The Prog Marches";
         public Vector3 center, prism, beamDir = Vector3.forward;
@@ -62,6 +62,7 @@ namespace EverythingWorld.World
             var dk = new MeshKit(); dk.Prism(discM, Vector3.zero, Vector3.back, 1f, .01f, 40);
             eclipse = dk.BuildSingle("Eclipse", transform, false).transform;
             Beam();
+            FloydStart();
         }
 
         /// The white beam into the Prism: two camera-facing sheets of light (a soft wide glow and a bright core) along
@@ -198,7 +199,8 @@ namespace EverythingWorld.World
             for (var k = 0; k < spectrum.Count; k++)
             {
                 var baseCol = ProgKit.Spectrum[k % ProgKit.Spectrum.Length]; var cyc = Color.HSVToRGB(Mathf.Repeat(t * .15f + k / 6f, 1f), 1f, 1f);
-                spectrum[k].SetColor("_EmissionColor", Color.Lerp(baseCol, cyc, colours) * (1.2f + .25f * Mathf.Sin(t * 1.3f + k) + energy * .4f + colours * .8f));
+                var sc = Color.Lerp(baseCol, cyc, colours) * (.8f + .2f * Mathf.Sin(t * 1.3f + k) + energy * .3f + colours * .6f); sc.a = .85f;
+                spectrum[k].SetColor("_BaseColor", sc);
             }
             for (var k = 0; k < pipes.Count; k++)
             {
@@ -242,6 +244,7 @@ namespace EverythingWorld.World
                 motes.transform.position = prism + beamDir * along + side * ((k - 2.5f) * .045f * along) + Vector3.down * along * .1f;
                 var mmain = motes.main; mmain.startColor = ProgKit.Spectrum[k]; motes.Emit(1);
             }
+            FloydUpdate(dt, t, id, here, energy);
         }
     }
 }

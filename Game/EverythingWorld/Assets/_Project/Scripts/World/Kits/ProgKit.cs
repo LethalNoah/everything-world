@@ -19,8 +19,11 @@ namespace EverythingWorld.World
             AnyColour = "6FBPOJLxUZEair6x4kLDhf", YYZ = "3lpDrxUkr0tIe1kmJvdK7d", IncaRoads = "1OLT5z6hQdZuNdljDPhWbh";
         public override (string song, string label, string artist)[] SpecialSongs => new[]
         {
-            (TimeSong, "Time", "@the clockwork"), (BlueSky, "Mr. Blue Sky", "Electric Light Orchestra"), (WishYouWereHere, "Wish You Were Here", "Pink Floyd"),
+            (TimeSong, "Time", "@the hall of clocks"), (BlueSky, "Mr. Blue Sky", "Electric Light Orchestra"), (WishYouWereHere, "Wish You Were Here", "Pink Floyd"),
             (AnyColour, "Any Colour You Like", "@the Prism"), (YYZ, "YYZ", "Rush"), (IncaRoads, "Inca Roads", "Frank Zappa"),
+            (ComfortablyNumb, "Comfortably Numb", "@the wall"), (SheepSong, "Sheep", "@the sheep pen"), (HaveACigar, "Have a Cigar", "@the cigar office"),
+            (AstronomyDomine, "Astronomy Domine", "@the orrery"), (Fearless, "Fearless", "@the tor"), (JoesGarage, "Joe's Garage", "Frank Zappa"),
+            (Starless, "Starless", "King Crimson"), (SpiritOfRadio, "The Spirit Of Radio", "Rush"), (SiriusSong, "Sirius", "The Alan Parsons Project"),
         };
 
         public static readonly Color Amber = new Color(1f, .66f, .2f), Violet = new Color(.55f, .32f, .9f), Ink = new Color(.95f, .93f, .98f);
@@ -47,7 +50,7 @@ namespace EverythingWorld.World
 
         Material GlowM(Color c, float s = 2f) => WorldMaterials.Glow(c, s * .65f);
         static bool HasStation(IslandWorldData.Artist a) => a.stationId != 0;
-        static float Foot(IslandWorldData.Artist a) => a.name == "Pink Floyd" || a.name == "Frank Zappa" ? 16f : HasStation(a) ? 12f : 8f;
+        static float Foot(IslandWorldData.Artist a) => a.name == "Pink Floyd" ? 20f : a.name == "Frank Zappa" ? 18f : a.name == "Rush" ? 14f : HasStation(a) || a.name == "The Alan Parsons Project" ? 12f : 8f;
 
         public override bool Ground(float height, float slope, float patch, out Color color)
         {
@@ -114,6 +117,7 @@ namespace EverythingWorld.World
             Prism(ctx, mk, solid);
             LoopRoad(ctx, mk, solid);
             Trails(ctx, mk, solid);
+            FloydWorld(ctx, mk, solid);
             Marvels(ctx, mk, solid);
             Marches(ctx, mk, solid);
             mk.Build("Prog Marches", ctx.Root, false);
@@ -213,22 +217,27 @@ namespace EverythingWorld.World
             var bd = new Vector3(beamDir2.x, 0, beamDir2.y); var bs = Vector3.Cross(up, bd);
             var pc = c - bd * 14f; pc.y = c.y;   // the Prism stands back from where you arrive, the beam fans past you
             mk.Prism(darkStone, pc - up * .6f, up, 13f, 1.4f, 3, 1f, 0f); solid.Prism(darkStone, pc - up * .6f, up, 13f, 1.4f, 3);
-            mk.Prism(stone, pc + up * .6f, up, 12f, .2f, 3);
+            mk.Prism(stone, pc + up * .65f, up, 12f, .2f, 3);
             // the crystal: a triangle in plan, one edge facing the beam's way
             const float side = 15f, H = 20f;
             var corners = new Vector3[3];
             for (var k = 0; k < 3; k++) { var a = (k * 120f + 90f) * Mathf.Deg2Rad; corners[k] = pc + (bd * Mathf.Cos(a + Mathf.PI / 2f) + bs * Mathf.Sin(a + Mathf.PI / 2f)) * (side / Mathf.Sqrt(3f)) + up * .8f; }
             // order the corners so the face between 0 and 1 faces the beam out
             var mid = (corners[0] + corners[1] + corners[2]) / 3f;
+            var gv = new List<Vector3>(); var gc = new List<Color>(); var gt = new List<int>();
+            void GlassTri(Vector3 p0, Vector3 p1, Vector3 p2) { var b0 = gv.Count; gv.Add(p0); gv.Add(p1); gv.Add(p2); gc.Add(Color.white); gc.Add(new Color(1, 1, 1, .7f)); gc.Add(Color.white); gt.AddRange(new[] { b0, b0 + 1, b0 + 2 }); }
             for (var k = 0; k < 3; k++)
             {
                 var a = corners[k]; var b = corners[(k + 1) % 3];
-                mk.Quad(glass, a, b, b + up * H, a + up * H, mid + up * H / 2f);
+                GlassTri(a, b, b + up * H); GlassTri(a, b + up * H, a + up * H);
+                mk.Box(GlowM(new Color(.75f, .85f, 1f), 1.6f), a + up * H / 2f, new Vector3(.12f, H, .12f), Quaternion.identity);
                 mk.Prism(chrome, a, up, .25f, H, 6);
                 mk.Box(chrome, (a + b) / 2f + up * H, new Vector3(.4f, .4f, Vector3.Distance(a, b)), Quaternion.LookRotation(b - a));
                 mk.Box(chrome, (a + b) / 2f, new Vector3(.4f, .4f, Vector3.Distance(a, b)), Quaternion.LookRotation(b - a));
             }
-            mk.Tri(glass, corners[0] + up * H, corners[1] + up * H, corners[2] + up * H, mid);
+            GlassTri(corners[0] + up * H, corners[1] + up * H, corners[2] + up * H);
+            FadeMesh(ctx.Root, "Prism glass", gv, gc, gt, SeeThroughM(new Color(.7f, .82f, 1f, .2f), false));
+            for (var k = 0; k < 4; k++) mk.Prism(GlowM(new Color(.8f, .88f, 1f), .8f), mid + up * (2f + k * 4.5f), up, (side / Mathf.Sqrt(3f)) * .5f, .05f, 3);   // faint inner light planes
             solid.Prism(glass, mid - up * .2f, up, side / Mathf.Sqrt(3f), H + 1f, 3);
             halos.Add(mid + up * H * .55f, 7f, new Color(.75f, .8f, 1f), .3f);
             ArtistBits.PointLight(ctx.Root, mid + up * 8f + bd * 10f, new Color(.9f, .9f, 1f), 30f, 1.6f);
@@ -238,12 +247,11 @@ namespace EverythingWorld.World
             var outOf = mid + up * H * .55f + bd * 4f; life.spectrum.Clear();
             for (var k = 0; k < 6; k++)
             {
-                var m = new Material(WorldMaterials.Glow(Spectrum[k], 1.2f)) { name = "Spectrum " + k }; life.spectrum.Add(m);
+                var m = SeeThroughM(Spectrum[k], true); m.name = "Spectrum " + k; life.spectrum.Add(m);
                 var spread = (k - 2.5f) * .045f; var dir = (bd + bs * spread).normalized; var len = Mathf.Max(60f, best - 20f);
-                var end = outOf + dir * len; end.y = ctx.Ground(end.x, end.z) + 1.2f;
+                var end = outOf + dir * len; end.y = Mathf.Max(ctx.Ground(end.x, end.z) + 5f, outOf.y - len * .08f);
                 var s0 = outOf + bs * (k - 2.5f) * .5f;
-                mk.Box(m, (s0 + end) / 2f, new Vector3(1.4f + k * .02f, .5f, Vector3.Distance(s0, end)), Quaternion.LookRotation(end - s0));
-                halos.Add(end, 3f, Spectrum[k], .45f);
+                Ribbon(ctx.Root, "Spectrum band", s0, end, 1.3f, m);
             }
             life.prism = mid + up * H * .55f; life.beamDir = bd;
             noGrass.Add(new Vector3(pc.x, 14f, pc.z));
@@ -442,7 +450,7 @@ namespace EverythingWorld.World
         void Marches(LandContext ctx, MeshKit mk, MeshKit solid)
         {
             int trees = 0, rocks = 0, pools = 0, cairns = 0;
-            const float cell = 19f; var bark = WorldMaterials.Solid(new Color(.25f, .22f, .26f)); var pool = new Material(WorldMaterials.Glow(new Color(.25f, .2f, .45f), .15f)) { name = "Marsh pool" }; pool.SetFloat("_Smoothness", .95f);
+            const float cell = 19f; var bark = WorldMaterials.Solid(new Color(.25f, .22f, .26f)); var pool = new Material(WorldMaterials.Glow(new Color(.16f, .13f, .3f), .1f)) { name = "Marsh pool" }; pool.SetFloat("_Smoothness", .55f);
             for (var x = ctx.MinX; x < ctx.MaxX; x += cell)
             for (var z = ctx.MinZ; z < ctx.MaxZ; z += cell)
             {
@@ -451,7 +459,7 @@ namespace EverythingWorld.World
                 var p = ctx.OnGround(px, pz); var roll = ctx.Range(0f, 1f);
                 if (roll < .22f) { TwistedTree(ctx, mk, bark, p); trees++; }
                 else if (roll < .3f) { mk.Blob(stone, p + Vector3.up * .5f, new Vector3(ctx.Range(1f, 2.4f), ctx.Range(.6f, 1.4f), ctx.Range(1f, 2f)), ctx.Rng, .4f); solid.Box(stone, p + Vector3.up * .6f, new Vector3(2.6f, 1.3f, 2.4f), Quaternion.identity); rocks++; }
-                else if (roll < .36f) { var r = ctx.Range(2.5f, 5f); for (var k = 0; k < 16; k++) { float a0 = k * Mathf.PI / 8f, a1 = (k + 1) * Mathf.PI / 8f; var w = p + Vector3.up * .05f; mk.Tri(pool, w, w + new Vector3(Mathf.Cos(a0), 0, Mathf.Sin(a0)) * r, w + new Vector3(Mathf.Cos(a1), 0, Mathf.Sin(a1)) * r, w - Vector3.up); } for (var k = 0; k < 8; k++) { var a = ctx.Range(0, Mathf.PI * 2f); var q = p + new Vector3(Mathf.Cos(a), 0, Mathf.Sin(a)) * (r + .3f); soft.Box(reed, q + Vector3.up * .6f, new Vector3(.05f, 1.2f, .05f), Quaternion.Euler(ctx.Range(-8f, 8f), 0, ctx.Range(-8f, 8f))); } noGrass.Add(new Vector3(p.x, r + .5f, p.z)); pools++; }
+                else if (roll < .36f && FlatEnough(ctx, p, 5f)) { var r = ctx.Range(2.5f, 5f); for (var k = 0; k < 16; k++) { float a0 = k * Mathf.PI / 8f, a1 = (k + 1) * Mathf.PI / 8f; var w = p + Vector3.up * .05f; mk.Tri(pool, w, w + new Vector3(Mathf.Cos(a0), 0, Mathf.Sin(a0)) * r, w + new Vector3(Mathf.Cos(a1), 0, Mathf.Sin(a1)) * r, w - Vector3.up); } for (var k = 0; k < 8; k++) { var a = ctx.Range(0, Mathf.PI * 2f); var q = p + new Vector3(Mathf.Cos(a), 0, Mathf.Sin(a)) * (r + .3f); soft.Box(reed, q + Vector3.up * .6f, new Vector3(.05f, 1.2f, .05f), Quaternion.Euler(ctx.Range(-8f, 8f), 0, ctx.Range(-8f, 8f))); } noGrass.Add(new Vector3(p.x, r + .5f, p.z)); pools++; }
                 else if (roll < .39f) { for (var k = 0; k < 5; k++) mk.Blob(stone, p + Vector3.up * (.3f + k * .45f), Vector3.one * (.6f - k * .09f), ctx.Rng, .3f); solid.Box(stone, p + Vector3.up * 1f, new Vector3(1.2f, 2f, 1.2f), Quaternion.identity); cairns++; }
                 else if (roll < .55f) { for (var k = 0; k < 4; k++) soft.Blob(WorldMaterials.Solid(new Color(.45f, .3f, .5f)), p + new Vector3(ctx.Range(-1.2f, 1.2f), .3f, ctx.Range(-1.2f, 1.2f)), new Vector3(.7f, .35f, .7f), ctx.Rng, .3f); }
             }
