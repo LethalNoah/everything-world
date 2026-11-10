@@ -13,7 +13,7 @@ namespace EverythingWorld.World
     ///   in waves; "Come Sail Away": the Styx ship rises into the sky, glowing, and comes back down; "Eye of the
     ///   Tiger": the tiger's eye lights and a spotlight hits the ring; "More Than a Feeling": the guitar ship flies
     ///   a wide loop over the ridge.
-    public class ArenaLife : MonoBehaviour
+    public partial class ArenaLife : MonoBehaviour
     {
         const string Land = "Arena Rock Ridge";
         public Vector3 center, stadium, stage, searchFrom, buses, reaper, guitarShipHome, trainA, trainB, shipHome, ring;
@@ -40,6 +40,7 @@ namespace EverythingWorld.World
             var sm = sparks.main; sm.startLifetime = new ParticleSystem.MinMaxCurve(.2f, .5f); sm.startSpeed = new ParticleSystem.MinMaxCurve(4f, 9f);
             var ss = sparks.shape; ss.shapeType = ParticleSystemShapeType.Sphere; ss.radius = .3f;
             if (searchFrom != Vector3.zero) beams = Beams(searchFrom, 5, out beamMat);
+            ShowStart();
         }
 
         static Material Additive(string name)
@@ -130,7 +131,7 @@ namespace EverythingWorld.World
             if (ringSpot != null) ringSpot.intensity = here ? .4f + tiger * 8f : 0f;
 
             if (wheel != null) wheel.Rotate(0, 0, (4f + 6f * energy) * dt, Space.Self);
-            if (tornado != null) tornado.Rotate(0, (40f + 60f * energy) * dt, 0, Space.World);
+            if (tornado != null) tornado.Rotate(0, (40f + 60f * energy + Amount(ArenaKit.CarryOn) * 160f) * dt, 0, Space.World);
             if (train != null)
             {
                 var f = believe > .05f ? Mathf.PingPong(progress * 4f, 1f) : 0f;
@@ -152,6 +153,7 @@ namespace EverythingWorld.World
                 guitarShip.position = p;
             }
 
+            ShowUpdate(dt, t, id, here, energy, progress, now);
             nextFlame -= dt;
             if (here && nextFlame <= 0f) { nextFlame = .1f; foreach (var f in fires) { flame.transform.position = f; flame.Emit(2); } }
             nextSpark -= dt;

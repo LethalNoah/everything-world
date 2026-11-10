@@ -29,7 +29,10 @@ Snapshot numbers refer to `Game/EverythingWorld/Logs/Live/` (not committed).
 
 ## Arena Rock Ridge
 - Works: Journey's wheel against the stars, the neon heart, Blue Öyster Cult's view over the realm.
-- Fix: Kansas reads as stacked boxes; zone curtain dominates Blue Öyster Cult.
+- Fixed in the deep pass (2026-11-10): Kansas is a smooth twisting funnel with debris; the surface overlaps on the
+  buses, the arch sign and the posters. Still open: the zone curtain dominates Blue Öyster Cult (shared system).
+- Deep pass (2026-11-10): the stadium is a live show (band, crowd, lasers, flame jets, fireworks, merch tent);
+  Journey's station, Boston's domes, Blue Öyster Cult's graveyard; song glows.
 - Added 2026-11-10: Starship (a lit night skyline) and U2 (a white flag over a stage), moved here from the
   Yacht Rock Riviera. The audit finds 10 surface overlaps in the land kit itself (the biggest about 88 m2 at
   2.3 m, 277 m SW of arrival, and a few round the entry arch): fix in the Arena deep pass.

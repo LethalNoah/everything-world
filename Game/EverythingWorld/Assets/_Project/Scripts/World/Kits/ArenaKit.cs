@@ -20,6 +20,8 @@ namespace EverythingWorld.World
         {
             (Reaper, "(Don't Fear) The Reaper", "Blue Öyster Cult"), (Believin, "Don't Stop Believin'", "Journey"), (SailAway, "Come Sail Away", "Styx"),
             (Tiger, "Eye of the Tiger", "Survivor"), (Feeling, "More Than a Feeling", "Boston"),
+            (Renegade, "Renegade", "@the show"), (BurninForYou, "Burnin' for You", "Blue Öyster Cult"), (WheelInTheSky, "Wheel in the Sky", "Journey"),
+            (PeaceOfMind, "Peace of Mind", "Boston"), (CarryOn, "Carry on Wayward Son", "Kansas"),
         };
 
         static readonly Color Flame = new Color(1f, .62f, .25f), Spot = new Color(.9f, .95f, 1f), Ink = new Color(.92f, .94f, 1f), Orange = new Color(1f, .55f, .16f);
@@ -44,7 +46,7 @@ namespace EverythingWorld.World
 
         Material GlowM(Color c, float s = 2f) => WorldMaterials.Glow(c, s * .65f);
         static bool HasStation(IslandWorldData.Artist a) => a.station || a.stationId != 0;
-        static float Foot(IslandWorldData.Artist a) => HasStation(a) ? 16f : 11f;
+        static float Foot(IslandWorldData.Artist a) => a.name == "Journey" || a.name == "Boston" || a.name == "Blue Öyster Cult" ? 18f : HasStation(a) ? 16f : 11f;
 
         public override bool Ground(float height, float slope, float patch, out Color color)
         {
@@ -200,22 +202,22 @@ namespace EverythingWorld.World
             foreach (var s in new[] { -1f, 1f })
             {
                 var b = gate + side * s * 7f;
-                mk.Box(WorldMaterials.Solid(new Color(.6f, .1f, .12f)), b + up * 1.6f, new Vector3(3f, 3.2f, 2.4f), rot); solid.Box(dark, b + up * 1.6f, new Vector3(3f, 3.2f, 2.4f), rot);
+                mk.Box(WorldMaterials.Solid(new Color(.6f, .1f, .12f)), b + up * 1.6f, new Vector3(3f, 3.2f, 2.4f), rot); solid.Box(WorldMaterials.Solid(new Color(.6f, .1f, .12f)), b + up * 1.6f, new Vector3(3f, 3.2f, 2.4f), rot);
                 mk.Box(GlowM(new Color(1f, .9f, .7f), 1.8f), b + up * 1.8f - face * 1.21f, new Vector3(2f, .8f, .02f), rot);
                 ArtistBits.Label(ctx.Root, "TICKETS", b + up * 2.9f - face * 1.22f, -face, .25f, Ink, TextAnchor.MiddleCenter);
             }
             for (var k = -2; k <= 2; k++) { var t = gate + side * k * 1.4f; mk.Box(metal, t + up * .5f, new Vector3(.15f, 1f, 1.2f), rot); mk.Box(metal, t + up * .9f + side * .35f, new Vector3(.6f, .06f, .06f), rot); }
             foreach (var s in new[] { -1f, 1f }) { mk.Box(dark, gate + side * s * 9.5f + up * 4f, new Vector3(.5f, 8f, .5f), rot); ArtistBits.PostCollider(ctx.Root, gate + side * s * 9.5f, 8f, .3f); }
             mk.Box(dark, gate + up * 8.2f, new Vector3(19.5f, 1.6f, .5f), rot);
-            mk.Box(GlowM(Orange, 2.2f), gate + up * 8.2f - face * .26f, new Vector3(18.5f, 1.2f, .02f), rot);
-            ArtistBits.Label(ctx.Root, "ARENA ROCK RIDGE  ·  TONIGHT", gate + up * 8.2f - face * .28f, -face, .5f, new Color(.15f, .05f, .02f), TextAnchor.MiddleCenter);
+            mk.Box(GlowM(Orange, 2.2f), gate + up * 8.2f - face * .29f, new Vector3(18.5f, 1.2f, .02f), rot);
+            ArtistBits.Label(ctx.Root, "ARENA ROCK RIDGE  ·  TONIGHT", gate + up * 8.2f - face * .32f, -face, .5f, new Color(.15f, .05f, .02f), TextAnchor.MiddleCenter);
             halos.Add(gate + up * 8f - face * 2f, 6f, Orange, .5f);
             // tour posters on boards
             for (var k = 0; k < 4; k++)
             {
                 var p = c - face * 6f + side * ((k - 1.5f) * 4f);
                 mk.Box(dark, p + up * 1.4f, new Vector3(2.4f, 2.8f, .1f), rot);
-                mk.Box(WorldMaterials.Solid(Paint[k % Paint.Length]), p + up * 1.6f + face * .06f, new Vector3(2f, 2.2f, .02f), rot);
+                mk.Box(WorldMaterials.Solid(Paint[k % Paint.Length]), p + up * 1.6f + face * .12f, new Vector3(2f, 2.2f, .02f), rot);
                 mk.Box(GlowM(new Color(1f, .95f, .85f), 1.4f), p + up * 2.95f + face * .1f, new Vector3(2f, .08f, .08f), rot);
                 solid.Box(dark, p + up * 1.4f, new Vector3(2.4f, 2.8f, .2f), rot);
             }
@@ -348,6 +350,7 @@ namespace EverythingWorld.World
             }
             for (var k = 0; k < 4; k++) foreach (var s in new[] { -1f, 1f }) { var amp = st + up * (2.2f + .9f + (k / 2) * 1.8f) + sside * s * (7f + (k % 2) * 2f) - gateDir * 2f; mk.Box(dark, amp, new Vector3(1.9f, 1.75f, 1f), srot); }
             ArtistBits.PointLight(ctx.Root, st + up * 10f + gateDir * 6f, Spot, 40f, 2.4f);
+            Show(ctx, mk, solid, best, st, gateDir, sside, crowd);
             life.stadium = best; life.stage = st + up * 2.2f; life.searchFrom = st + up * 14f;
             var m1 = new GameObject("Shot: the stadium").transform; m1.SetParent(ctx.Root, false);
             var outside = best + gateDir * (R + 30f); outside.y = ctx.Ground(outside.x, outside.z); m1.SetPositionAndRotation(outside, Quaternion.LookRotation(-gateDir));
@@ -414,8 +417,8 @@ namespace EverythingWorld.World
                 var p = ctx.OnGround(best.x + side.x * (k - 1.5f) * 4.5f, best.z + side.z * (k - 1.5f) * 4.5f); var rot = Quaternion.LookRotation(dir);
                 var body = WorldMaterials.Solid(liveries[k], .7f);
                 mk.Box(body, p + up * 2.1f, new Vector3(2.6f, 3.4f, 13f), rot);
-                mk.Box(WorldMaterials.Solid(new Color(.1f, .14f, .2f), .95f), p + up * 2.6f, new Vector3(2.62f, 1f, 10.5f), rot);
-                mk.Box(GlowM(Orange, 1.4f), p + up * 1.2f, new Vector3(2.63f, .1f, 12.6f), rot);
+                mk.Box(WorldMaterials.Solid(new Color(.1f, .14f, .2f), .95f), p + up * 2.6f, new Vector3(2.74f, 1f, 10.5f), rot);
+                mk.Box(GlowM(Orange, 1.4f), p + up * 1.2f, new Vector3(2.68f, .1f, 12.6f), rot);
                 foreach (var s in new[] { -1f, 1f }) foreach (var z in new[] { -4.5f, 4.5f }) mk.Prism(dark, p + side * s * 1.2f + dir * z + up * .55f, side * s, .55f, .3f, 12);
                 foreach (var s in new[] { -.8f, .8f }) mk.Prism(GlowM(new Color(1f, .95f, .85f), 2f), p + up * 1f + dir * 6.52f + side * s, dir, .18f, .05f, 10);
                 solid.Box(body, p + up * 2f, new Vector3(2.7f, 4f, 13.2f), rot);

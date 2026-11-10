@@ -39,9 +39,9 @@ namespace EverythingWorld.World
             for (var k = 0; k < 16; k++) { var d = Quaternion.Euler(0, k * 22.5f, 0) * Vector3.forward; z.mk.Box(GlowM(Orange, 2f), z.c + Vector3.up * .12f + d * (Foot(a) * .75f), new Vector3(.4f, .1f, .4f), Quaternion.LookRotation(d)); }
             switch (a.name)
             {
-                case "Blue Öyster Cult": ReaperSet(z); break;
-                case "Boston": GuitarShip(z); break;
-                case "Journey": Wheel(z); break;
+                case "Blue Öyster Cult": ReaperSet(z); ReaperMore(z); break;
+                case "Boston": GuitarShip(z); BostonMore(z); break;
+                case "Journey": Wheel(z); JourneyMore(z); break;
                 case "Styx": Ship(z); break;
                 case "Survivor": Ring(z); break;
                 case "Cheap Trick": Checkered(z); break;
@@ -229,7 +229,7 @@ namespace EverythingWorld.World
 
         void HeartFish(Plot z)
         {
-            var up = Vector3.up; var c = z.At(-3f, 0); var red = GlowM(new Color(1f, .15f, .3f), 2.4f);
+            var up = Vector3.up; var c = z.At(-3f, 0); var red = SongGlow(Barracuda, new Color(1f, .15f, .3f), 2.4f);
             for (var k = 0; k < 24; k++)
             {
                 float a0 = k / 24f * Mathf.PI * 2f, a1 = (k + 1) / 24f * Mathf.PI * 2f;
@@ -247,8 +247,10 @@ namespace EverythingWorld.World
 
         void Tornado(Plot z)
         {
-            var up = Vector3.up; var c = z.At(-3f, 0); var k = new MeshKit(); var grey = WorldMaterials.Solid(new Color(.5f, .52f, .58f));
-            for (var i = 0; i < 14; i++) { var r = .6f + i * i * .045f; k.Prism(grey, new Vector3(Mathf.Sin(i * .7f) * .6f, i * 1.1f, Mathf.Cos(i * .7f) * .6f), Vector3.up, r, 1.15f, 10, 1.05f, i * 20f); }
+            var up = Vector3.up; var c = z.At(-3f, 0); var k = new MeshKit(); var grey = WorldMaterials.Solid(new Color(.5f, .52f, .58f)); var pale = WorldMaterials.Solid(new Color(.68f, .7f, .76f));
+            // a smooth funnel of many thin twisted bands, debris whirling round it
+            for (var i = 0; i < 30; i++) { var y = i * .5f; var r = .4f + y * y * .028f; k.Prism(i % 3 == 0 ? pale : grey, new Vector3(Mathf.Sin(y * .45f) * .7f, y, Mathf.Cos(y * .45f) * .7f), Vector3.up, r, .52f, 18, 1.04f, i * 13f); }
+            for (var i = 0; i < 14; i++) { var a = i * 2.4f; var y = 1f + i * .9f; var r = 1.4f + y * y * .03f; k.Box(i % 2 == 0 ? wood : dark, new Vector3(Mathf.Cos(a) * r, y, Mathf.Sin(a) * r), new Vector3(.6f, .12f, .25f), Quaternion.Euler(i * 40f, a * 57f, i * 25f)); }
             life.tornado = Mover(z, "Tornado", k, c, Quaternion.identity);
             z.solid.Prism(grey, c, up, 1.5f, 6f, 8);
             var sign = z.At(4f, 6f); z.mk.Prism(wood, sign, up, .08f, 2.4f, 6); z.mk.Box(wood, sign + up * 2.2f - z.side * .6f, new Vector3(.05f, .45f, 1.6f), Quaternion.LookRotation(z.side));
