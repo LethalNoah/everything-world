@@ -32,23 +32,22 @@ namespace EverythingWorld.World
             var area = root.gameObject.AddComponent<ArtistArea>();
             area.artistName = a.name; area.stationId = a.stationId; area.radius = a.r; area.glowColor = Sunset;
             var z = new Plot { ctx = ctx, root = root, labels = labels, mk = new MeshKit(), solid = new MeshKit(), pictures = new MeshKit(), a = a, c = ctx.OnGround(a.x, a.z), front = front, side = Vector3.Cross(Vector3.up, front), glows = new List<Renderer>(), area = area };
-            z.mk.Prism(stone, z.c - Vector3.up * .3f, Vector3.up, Foot(a) * .7f, .4f, 20);
+            z.mk.Prism(a.name == "Jimmy Buffett" ? sand : stone, z.c - Vector3.up * .3f, Vector3.up, Foot(a) * (a.name == "Jimmy Buffett" ? .95f : .7f), .4f, 20);
             switch (a.name)
             {
-                case "Elton John": Elton(z); break;
+                case "Elton John": Elton(z); EltonMore(z); break;
                 case "Fleetwood Mac": Tusk(z); break;
                 case "Billy Joel": PianoBar(z); break;
                 case "Eagles": Hotel(z); break;
-                case "Jimmy Buffett": Tiki(z); break;
+                case "Jimmy Buffett": Tiki(z); BuffettMore(z); break;
                 case "TOTO": Kilimanjaro(z); break;
                 case "Kenny Loggins": Jet(z); break;
-                case "Phil Collins": Drums(z); break;
-                case "Starship": Skyline(z); break;
+                case "Phil Collins": PhilCollins(z); break;
                 case "Chicago": Clock(z); break;
-                case "Steely Dan": Pavilion(z); break;
+                case "Steely Dan": Pavilion(z); SteelyMore(z); break;
                 case "America": Convertible(z); break;
                 case "Stevie Nicks": Dove(z); break;
-                default: PianoDeck(z); break;
+                default: if (!SmallDesign(z)) PianoDeck(z); break;
             }
             var reach = Foot(a);
             Board(z, z.At(reach * .85f, -reach * .5f - 2.5f), front);
@@ -81,8 +80,8 @@ namespace EverythingWorld.World
 
         void Elton(Plot z)
         {
-            var up = Vector3.up; var ctx = z.ctx; var gold = WorldMaterials.Solid(new Color(1f, .82f, .2f), .6f);
-            for (var k = 0; k < 10; k++) for (var b = 0; b < 3; b++) z.mk.Box(gold, z.At(9f - k * 1.2f, (b - 1f) * 1f + ((k % 2) * .5f)) + up * .05f, new Vector3(.95f, .1f, 1.1f), Quaternion.LookRotation(z.front));
+            var up = Vector3.up; var ctx = z.ctx; var gold = SongGlow(YellowBrickRoad, new Color(1f, .78f, .2f), .35f);
+            for (var k = 0; k < 10; k++) for (var b = 0; b < 3; b++) z.mk.Box(gold, z.At(9f - k * 1.2f, (b - 1f) * 1f + ((k % 2) * .5f)) + up * .17f, new Vector3(.95f, .1f, 1.1f), Quaternion.LookRotation(z.front));
             var pp = z.At(-4f, 0) + up * .1f; var seq = WorldMaterials.Solid(new Color(.9f, .5f, .95f), .98f);
             Piano(ctx, z.mk, z.solid, pp, z.front);
             for (var k = 0; k < 24; k++) z.mk.Blob(GlowM(new[] { new Color(1f, .5f, .9f), new Color(.6f, .9f, 1f), new Color(1f, .9f, .4f) }[k % 3], 2.2f), pp + up * (.9f + (k % 4) * .1f) + z.side * ((k % 6) * .3f - .8f) + z.front * ((k / 6) * .4f - .6f), Vector3.one * .07f, ctx.Rng, 0f);

@@ -19,6 +19,8 @@ namespace EverythingWorld.World
         {
             (RocketMan, "Rocket Man", "Elton John"), (Africa, "Africa", "TOTO"), (HotelCalifornia, "Hotel California", "Eagles"),
             (Margaritaville, "Margaritaville", "Jimmy Buffett"), (DangerZone, "Danger Zone", "@the bay"),
+            (YellowBrickRoad, "Goodbye Yellow Brick Road", "Elton John"), (Cheeseburger, "Cheeseburger In Paradise", "Jimmy Buffett"), (Aja, "Aja", "Steely Dan"),
+            (InTheAirTonight, "In the Air Tonight", "Phil Collins"), (Moonlight, "Dancing in the Moonlight", "King Harvest"),
         };
 
         static readonly Color Sunset = new Color(1f, .7f, .45f), Navy = new Color(.12f, .2f, .42f), Ink = new Color(1f, .97f, .92f);
@@ -43,7 +45,7 @@ namespace EverythingWorld.World
 
         Material GlowM(Color c, float s = 2f) => WorldMaterials.Glow(c, s * .65f);
         static bool HasStation(IslandWorldData.Artist a) => a.station || a.stationId != 0;
-        static float Foot(IslandWorldData.Artist a) => HasStation(a) ? 15f : 8f;
+        static float Foot(IslandWorldData.Artist a) => a.name == "Elton John" ? 20f : a.name == "Jimmy Buffett" ? 16f : a.name == "Steely Dan" ? 12f : HasStation(a) ? 15f : 9f;
 
         public override bool Ground(float height, float slope, float patch, out Color color)
         {
@@ -87,6 +89,7 @@ namespace EverythingWorld.World
                 }
             }
             var avoid = new List<Vector3>(); if (hasBay) avoid.Add(new Vector3(bayC.x, bayR * 1.2f + 14f, bayC.y));
+            foreach (var a in data.layout.artists) if (a.sceneId == isl.sceneId) a.r = Mathf.Max(a.r, Foot(a) + 6f);
             ArtistPlacement.Spread(data, index, 62f, heart, 46f, 40f, avoid, null, Land, 300f);
             foreach (var a in data.layout.artists)
             {
@@ -127,11 +130,10 @@ namespace EverythingWorld.World
             Paths(ctx, mk, solid);
             Hills(ctx, mk, solid);
             mk.Build("Riviera", ctx.Root, false);
-            soft.Build("Soft riviera", ctx.Root, false);
             solid.BuildCollider("Riviera walls", ctx.Root);
         }
 
-        public override void Finish(LandContext ctx) { GroundCover(ctx); halos.Build("Riviera glow", ctx.Root); }
+        public override void Finish(LandContext ctx) { GroundCover(ctx); halos.Build("Riviera glow", ctx.Root); soft.Build("Soft riviera", ctx.Root, false); }   // soft last, so the artists' palm crowns are in it
 
         // ---------------------------------------------------------------- helpers
         void Remember(Vector3 p, int walk)
@@ -299,6 +301,7 @@ namespace EverythingWorld.World
             mk.Box(metal, new Vector3(0, 2.3f, -1.4f), new Vector3(.08f, .08f, 4.4f), Quaternion.identity);
             mk.Box(white, new Vector3(0, 2.4f, -1.4f), new Vector3(.3f, .3f, 4.2f), Quaternion.identity);
             mk.Blob(WorldMaterials.Glow(new Color(1f, .3f, .2f), 2.6f), new Vector3(0, 13f, .8f), Vector3.one * .12f, new System.Random(k), 0f);
+            Sails(mk);
             var t = mk.BuildSingle("Sailboat", parent, false).transform; t.SetPositionAndRotation(at, Quaternion.LookRotation(dir)); return t;
         }
 
@@ -306,7 +309,7 @@ namespace EverythingWorld.World
         {
             var mk = new MeshKit();
             mk.Box(white, new Vector3(0, .7f, 0), new Vector3(3f, 1.4f, 10f), Quaternion.identity); mk.Prism(white, new Vector3(0, .7f, 5f), Vector3.forward, 1.5f, 2.6f, 4, .1f, 45f);
-            mk.Box(navy, new Vector3(0, .45f, 0), new Vector3(3.02f, .3f, 10.02f), Quaternion.identity);
+            mk.Box(navy, new Vector3(0, .45f, 0), new Vector3(3.06f, .3f, 10.06f), Quaternion.identity);
             mk.Box(white, new Vector3(0, 1.9f, -.5f), new Vector3(2.6f, 1.2f, 5f), Quaternion.identity);
             mk.Box(WorldMaterials.Solid(new Color(.15f, .2f, .3f), .95f), new Vector3(0, 2f, -.5f), new Vector3(2.62f, .5f, 4.6f), Quaternion.identity);
             mk.Box(white, new Vector3(0, 2.8f, -1f), new Vector3(2f, .6f, 2.6f), Quaternion.identity);

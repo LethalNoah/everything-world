@@ -50,10 +50,10 @@
   },
   {
    "land": "The Yacht Rock Riviera",
-   "sunPitch": 4, "sunYaw": 280, "sunIntensity": 1.0, "sunColor": "#FF9A5C",
-   "skyLight": "#E0A0B8", "horizonLight": "#FFB070", "groundLight": "#6A5048",
-   "fogColor": "#F2B4A0", "fogStart": 160, "fogEnd": 1500,
-   "stars": 0, "sunShadows": false, "dailyWeather": false, "bloom": 0.95,
+   "sunPitch": 3, "sunYaw": 280, "sunIntensity": 1.0, "sunColor": "#FFA060",
+   "skyLight": "#9C8AC8", "horizonLight": "#FFA466", "groundLight": "#5A4850",
+   "fogColor": "#D894A0", "fogStart": 220, "fogEnd": 1800,
+   "stars": 0, "sunShadows": false, "dailyWeather": false, "bloom": 1.05,
    "weather": "", "weatherAmount": 0
   },
   {

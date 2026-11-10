@@ -11,7 +11,7 @@ namespace EverythingWorld.World
     ///   drums glow; "Hotel California": the light deepens to a dusky red and the hotel's windows blaze;
     ///   "Margaritaville": the tiki lights blaze and the bay glows tropical teal; "Danger Zone": a jet screams low
     ///   over the bay, round and round.
-    public class YachtLife : MonoBehaviour
+    public partial class YachtLife : MonoBehaviour
     {
         const string Land = "The Yacht Rock Riviera";
         public Vector3 center, bay, club, lighthouse, rocketPad; public float bayR = 90f;
@@ -29,7 +29,7 @@ namespace EverythingWorld.World
             clouds = gameObject.AddComponent<CloudLayer>();
             clouds.center = center; clouds.count = 55; clouds.span = 2400f; clouds.key = "yacht";
             clouds.minHeight = 110f; clouds.maxHeight = 170f; clouds.size = 1.6f; clouds.speed = 2.5f; clouds.cover = .4f;
-            clouds.color = new Color(1f, .7f, .65f);
+            clouds.color = new Color(1f, .62f, .55f);
             exhaust = Particles("Rocket exhaust", 800, new Color(1f, .8f, .5f, .8f), 1f, 3f);
             var em = exhaust.main; em.startLifetime = new ParticleSystem.MinMaxCurve(.6f, 1.4f); em.startSpeed = new ParticleSystem.MinMaxCurve(4f, 8f);
             var es = exhaust.shape; es.shapeType = ParticleSystemShapeType.Cone; es.angle = 20f; es.radius = .5f; es.rotation = new Vector3(90f, 0, 0);
@@ -53,6 +53,7 @@ namespace EverythingWorld.World
             gk.Box(hull, new Vector3(0, .5f, 0), new Vector3(2.2f, 1f, 7f), Quaternion.identity); gk.Box(new Material(WorldMaterials.Solid(new Color(.95f, .9f, .85f))), new Vector3(0, 5f, .3f), new Vector3(.06f, 7f, 4f), Quaternion.identity);
             gk.Box(WorldMaterials.Solid(new Color(.8f, .82f, .85f), .9f), new Vector3(0, 5.5f, 1.8f), new Vector3(.12f, 10f, .12f), Quaternion.identity);
             glider = gk.BuildSingle("Gliding sailboat", transform, false).transform; glider.gameObject.SetActive(false);
+            SunsetStart();
         }
 
         static Material Additive(string name)
@@ -114,7 +115,7 @@ namespace EverythingWorld.World
             if (here) { var w = clouds != null ? clouds.Wind : new Vector2(1, 0); Shader.SetGlobalFloat("_EW_Wind", .25f + .2f * energy); Shader.SetGlobalVector("_EW_WindDir", new Vector4(w.x, 0, w.y, 0)); }
 
             for (var i = 0; i < boats.Length; i++) { if (boats[i] == null) continue; boats[i].SetPositionAndRotation(boatHome[i] + Vector3.up * Mathf.Sin(t * .7f + i) * .12f, boatRot[i] * Quaternion.Euler(Mathf.Sin(t * .5f + i) * 1.5f, 0, Mathf.Sin(t * .6f + i * 1.3f) * 3f)); }
-            if (dancer != null) dancer.Rotate(0, 60f * dt, 0, Space.World);
+            if (dancer != null) dancer.Rotate(0, (60f + Amount(YachtKit.TinyDancer) * 120f) * dt, 0, Space.World);
             for (var i = 0; i < gulls.Count; i++)
             {
                 gulls[i].gameObject.SetActive(here);
@@ -142,6 +143,7 @@ namespace EverythingWorld.World
             }
             var gt = (float)(now - glideAt); var gon = here && glideAt > 0 && gt > 0f && gt < 120f;
             glider.gameObject.SetActive(gon);
+            SunsetUpdate(dt, t, id, here, energy);
             if (gon) { var x = Mathf.Lerp(-bayR * .8f, bayR * .8f, gt / 120f); glider.SetPositionAndRotation(bay + new Vector3(x, -.05f + Mathf.Sin(t) * .08f, bayR * .25f), Quaternion.LookRotation(Vector3.right) * Quaternion.Euler(0, 0, 6f)); }
         }
     }

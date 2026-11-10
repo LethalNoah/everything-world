@@ -48,9 +48,12 @@ Snapshot numbers refer to `Game/EverythingWorld/Logs/Live/` (not committed).
 ## Yacht Rock Riviera
 - Works: lighthouse and promenade, the Marina, Hotel California, Chicago's clock, Starship's city, Jimmy
   Buffett's tiki bar, Fleetwood Mac's arches.
-- Fix: boats in the marina are flat slabs with black undersides; palm trunks without crowns stick through
-  Hotel California; Redbone and Rick Springfield are the same deck chair and umbrella; Phil Collins
-  unreadable.
+- Fixed in the deep pass (2026-11-10): sailboats have sails; the artists' palms keep their crowns; every small
+  artist has its own design; Phil Collins is a drum riser under a moon.
+- Deep pass (2026-11-10): deeper sunset with a big low sun and a sun path on the bay; Elton John's area much
+  bigger; Jimmy Buffett's own beach; Steely Dan's koi garden; song glows for every artist.
+- Still to check in play: the low sun disc may sit behind the far hills from some spots, and the sun path on the
+  bay is faint in the photos; the pale stone paths read salmon in the low light (fine for a sunset, but watch it).
 
 ## Folk Woods (deep pass done, 2026-11-10)
 - Done: every artist a story scene from its songs with song-lit glows, lantern-lit clearings for the small ones,
