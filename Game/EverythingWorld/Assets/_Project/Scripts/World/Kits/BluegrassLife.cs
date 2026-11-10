@@ -5,6 +5,10 @@ using UnityEngine;
 namespace EverythingWorld.World
 {
     /// The Bluegrass Hollows on a bright summer afternoon, answering the music:
+    /// - glows tied to songs brighten while their song plays (Billy Strings' jail window, mire and tinfoil, Bill
+    ///   Monroe's footlights, Doc Watson's window, Tony Rice's chapel window, Ricky Skaggs' lamp, Del McCoury's
+    ///   headlight); Billy Strings' panel wall cycles its colours and two rings of light swirl round the banjo,
+    ///   faster with the music; mist lies round Ricky Skaggs, Del McCoury, Flatt & Scruggs, the mire and the mine;
     /// - the instruments over the picking circle float round it, bobbing and swaying as if played (faster with the
     ///   music's energy); the mill wheel turns; a mule pulls a covered wagon along the longest trail and back (from
     ///   the shared clock, so friends see the same wagon); butterflies flutter; chimney smoke and the still's fire;
@@ -23,7 +27,12 @@ namespace EverythingWorld.World
         public Vector3[] creek = new Vector3[0], route = new Vector3[0];
         public Transform wheel; public Vector3 wheelAxis = Vector3.right;
         public Material blueMoon;
-        public List<Vector3> chimneys = new List<Vector3>(), fires = new List<Vector3>();
+        public List<Vector3> chimneys = new List<Vector3>(), fires = new List<Vector3>(), mists = new List<Vector3>();
+        public List<(string song, Material m, Color c)> songGlows = new List<(string, Material, Color)>();
+        public List<(Material m, Color c, float phase)> panels = new List<(Material, Color, float)>();
+        public List<(Transform t, float dir)> swirls = new List<(Transform, float)>();
+        readonly Dictionary<string, float> songAmount = new Dictionary<string, float>();
+        ParticleSystem mist; float nextMist;
 
         CloudLayer clouds; ParticleSystem smoke, flame, fog, sparkle, fizz, oil, sparks;
         Transform moon, wagon; Material moonM;
@@ -51,6 +60,8 @@ namespace EverythingWorld.World
             oil = Particles("Gusher", 400, new Color(.05f, .05f, .06f, .9f), .2f, .45f, false);
             var om = oil.main; om.startLifetime = new ParticleSystem.MinMaxCurve(1.5f, 2.4f); om.startSpeed = new ParticleSystem.MinMaxCurve(8f, 12f); om.gravityModifier = 1f;
             var os = oil.shape; os.shapeType = ParticleSystemShapeType.Cone; os.angle = 8f; os.radius = .2f; os.rotation = new Vector3(-90f, 0, 0);
+            mist = Particles("Ground mist", 500, new Color(.92f, .95f, 1f, .2f), 3.5f, 7f, false);
+            var mm = mist.main; mm.startLifetime = new ParticleSystem.MinMaxCurve(7f, 11f); mm.startSpeed = new ParticleSystem.MinMaxCurve(.1f, .35f);
             sparks = Particles("Sparks", 300, new Color(1f, .6f, .2f, 1f), .08f, .18f, true);
             var skm = sparks.main; skm.startLifetime = new ParticleSystem.MinMaxCurve(2f, 4f); skm.startSpeed = new ParticleSystem.MinMaxCurve(.5f, 2f); skm.gravityModifier = -.05f;
             // the day moon: a pale disc far off in the sky, kept in place round the camera
@@ -64,7 +75,14 @@ namespace EverythingWorld.World
                 var w = new MeshKit(); var wood = WorldMaterials.Solid(new Color(.55f, .4f, .27f)); var canvas = WorldMaterials.Solid(new Color(.95f, .92f, .84f)); var dark = WorldMaterials.Solid(new Color(.1f, .1f, .1f)); var mule = WorldMaterials.Solid(new Color(.45f, .35f, .28f));
                 w.Box(wood, new Vector3(0, 1f, -1f), new Vector3(1.6f, .5f, 3f), Quaternion.identity);
                 for (var k = 0; k < 7; k++) { var a = Mathf.Lerp(-80f, 80f, k / 6f) * Mathf.Deg2Rad; w.Box(canvas, new Vector3(Mathf.Sin(a) * .85f, 1.3f + Mathf.Cos(a) * .9f, -1f), new Vector3(.42f, .1f, 3f), Quaternion.Euler(0, 0, -Mathf.Rad2Deg * a)); }
-                foreach (var s in new[] { -.85f, .85f }) foreach (var zz in new[] { -2.1f, .1f }) w.Prism(dark, new Vector3(s, .55f, zz), Vector3.right * Mathf.Sign(s), .55f, .12f, 12);
+                // spoked wheels: a rim, eight spokes and a hub
+                foreach (var s in new[] { -.85f, .85f }) foreach (var zz in new[] { -2.1f, .1f })
+                {
+                    var hub = new Vector3(s, .55f, zz);
+                    for (var k = 0; k < 14; k++) { float a0 = k * Mathf.PI / 7f, a1 = (k + 1) * Mathf.PI / 7f; var p0 = hub + new Vector3(0, Mathf.Cos(a0), Mathf.Sin(a0)) * .52f; var p1 = hub + new Vector3(0, Mathf.Cos(a1), Mathf.Sin(a1)) * .52f; w.Box(dark, (p0 + p1) / 2f, new Vector3(.1f, .07f, Vector3.Distance(p0, p1) + .03f), Quaternion.LookRotation(p1 - p0)); }
+                    for (var k = 0; k < 4; k++) w.Box(wood, hub, new Vector3(.05f, 1f, .05f), Quaternion.Euler(k * 45f, 0, 0));
+                    w.Prism(wood, hub - Vector3.right * .1f, Vector3.right, .1f, .2f, 8);
+                }
                 w.Box(wood, new Vector3(0, .9f, .9f), new Vector3(.12f, .12f, 1.6f), Quaternion.identity);
                 w.Box(mule, new Vector3(0, 1.25f, 2.3f), new Vector3(.7f, .7f, 1.5f), Quaternion.identity); w.Box(mule, new Vector3(0, 1.75f, 3.2f), new Vector3(.4f, .45f, .8f), Quaternion.Euler(-30f, 0, 0));
                 foreach (var s in new[] { -.12f, .12f }) w.Box(mule, new Vector3(s, 2.2f, 3.3f), new Vector3(.08f, .45f, .1f), Quaternion.Euler(-10f, 0, s * 80f));
@@ -192,7 +210,7 @@ namespace EverythingWorld.World
                     moonM.SetColor("_EmissionColor", mc); moonM.SetColor("_BaseColor", Color.Lerp(new Color(.9f, .93f, 1f), new Color(.6f, .75f, 1f), blue));
                 }
             }
-            if (blueMoon != null) blueMoon.SetColor("_EmissionColor", new Color(.4f, .62f, 1f) * (.22f + blue * 2.6f + Mathf.Sin(t * .8f) * .04f));
+            if (blueMoon != null) blueMoon.SetColor("_EmissionColor", new Color(.35f, .55f, 1f) * (.25f + blue * 1.1f + Mathf.Sin(t * .8f) * .04f));
 
             nextSmoke -= dt;
             if (here && nextSmoke <= 0f) { nextSmoke = .6f; foreach (var c in chimneys) { smoke.transform.position = c; smoke.Emit(1); } }
@@ -206,6 +224,18 @@ namespace EverythingWorld.World
             if (here && lemonade != Vector3.zero && nextFizz <= 0f) { nextFizz = candyOn > .1f ? .02f : .5f; fizz.transform.position = lemonade + new Vector3(Random.Range(-.6f, .6f), .2f, Random.Range(-.6f, .6f)); fizz.Emit(1); }
             nextOil -= dt;
             if (here && jed > .1f && gusher != Vector3.zero && nextOil <= 0f) { nextOil = .02f; oil.transform.position = gusher; oil.Emit(2); }
+            // song glows, Billy Strings' panels and swirls, mist round the old-timers
+            foreach (var (song, m, c) in songGlows)
+            {
+                if (m == null) continue;
+                songAmount.TryGetValue(song, out var k);
+                k = Mathf.MoveTowards(k, here && id == song ? 1f : 0f, dt / 2f); songAmount[song] = k;
+                m.SetColor("_EmissionColor", c * (1f + k * (2.5f + Mathf.Sin(t * 2.2f) * .6f)));
+            }
+            foreach (var (m, c, phase) in panels) if (m != null) m.SetColor("_EmissionColor", c * (.4f + 1f * (.5f + .5f * Mathf.Sin(t * (1.1f + energy * 1.5f) + phase))) * (1f + energy * .6f));
+            foreach (var (tr, sd) in swirls) if (tr != null) tr.Rotate(0, 0, sd * (25f + energy * 70f) * dt, Space.Self);
+            nextMist -= dt;
+            if (here && mists.Count > 0 && nextMist <= 0f) { nextMist = .3f; var mp = mists[Random.Range(0, mists.Count)]; mist.transform.position = mp + new Vector3(Random.Range(-8f, 8f), Random.Range(.4f, 1.6f), Random.Range(-8f, 8f)); mist.Emit(1); }
             nextSpark -= dt;
             if (here && embers != Vector3.zero && nextSpark <= 0f) { nextSpark = wild > .1f ? .02f : .7f; sparks.transform.position = embers + new Vector3(Random.Range(-1.2f, 1.2f), 1f, Random.Range(-1.2f, 1.2f)); sparks.Emit(1); }
         }

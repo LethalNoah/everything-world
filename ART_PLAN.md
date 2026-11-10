@@ -10,7 +10,7 @@ Classic, jam, prog, southern, glam and heavy metal: the old heartland of rock.
 
 ### 0. The Jam Band Commonwealth
 
-*jam band, experimental jazz, newgrass, rock, bluegrass* · 112 songs · energy 0.71, acoustic 0.34, mood 0.52 · top artists: Phish, Trey Anastasio, Widespread Panic, Umphrey's McGee, Billy Strings
+*jam band, experimental jazz, rock, newgrass, southern rock* · 109 songs · energy 0.71, acoustic 0.34, mood 0.52 · top artists: Phish, Trey Anastasio, Widespread Panic, Umphrey's McGee, Goose
 
 - **Terrain:** Vast rolling woods cut by long winding trails that loop back on themselves; open meadows used as festival lawns.
 - **Colours:** `#5E7D3A moss`, `#E8833A tie-dye orange`, `#7B4BA0 tie-dye purple`, `#3FA7A0 teal sky`
@@ -40,7 +40,7 @@ Classic, jam, prog, southern, glam and heavy metal: the old heartland of rock.
 
 ### 13. The Yacht Rock Riviera
 
-*classic rock, soft rock, yacht rock, rock, singer songwriter* · 38 songs · energy 0.64, acoustic 0.27, mood 0.66 · top artists: Elton John, Fleetwood Mac, Billy Joel, Eagles, Jimmy Buffett
+*classic rock, soft rock, yacht rock, rock, singer songwriter* · 36 songs · energy 0.63, acoustic 0.27, mood 0.66 · top artists: Elton John, Fleetwood Mac, Billy Joel, Eagles, Jimmy Buffett
 
 - **Terrain:** Palm-lined coves, white-sand beaches and a calm marina.
 - **Colours:** `#8FD3C1 seafoam`, `#EED9A6 sand`, `#F08A6B coral`, `#23395B navy`
@@ -100,7 +100,7 @@ Classic, jam, prog, southern, glam and heavy metal: the old heartland of rock.
 
 ### 52. Arena Rock Ridge
 
-*classic rock, aor, hard rock, progressive rock, rock* · 16 songs · energy 0.69, acoustic 0.08, mood 0.50 · top artists: Blue Öyster Cult, Boston, Journey, Styx, Cheap Trick
+*classic rock, aor, hard rock, rock, progressive rock* · 18 songs · energy 0.71, acoustic 0.09, mood 0.53 · top artists: Blue Öyster Cult, Boston, Journey, Styx, Cheap Trick
 
 - **Terrain:** A long mountain ridge with a stadium carved into it.
 - **Colours:** `#C0C6CF chrome`, `#1A2340 night blue`, `#FFFFFF spotlight white`, `#F28C28 orange`
@@ -110,7 +110,7 @@ Classic, jam, prog, southern, glam and heavy metal: the old heartland of rock.
 
 ### 64. The Bluegrass Hollows
 
-*bluegrass, newgrass, americana, christian bluegrass, folk* · 25 songs · energy 0.46, acoustic 0.62, mood 0.64 · top artists: Alison Krauss & Union Station, Flatt & Scruggs, Molly Tuttle, Nickel Creek, Bill Monroe
+*bluegrass, newgrass, americana, folk, christian bluegrass* · 28 songs · energy 0.48, acoustic 0.59, mood 0.64 · top artists: Billy Strings, Alison Krauss & Union Station, Flatt & Scruggs, Molly Tuttle, Nickel Creek
 
 - **Terrain:** Blue-green Appalachian ridges with deep wooded hollows, creeks and split-rail fences.
 - **Colours:** `#4A6FA5 ridge blue`, `#5B7F3A hollow green`, `#B5651D banjo wood`, `#F3E9D2 cabin cream`

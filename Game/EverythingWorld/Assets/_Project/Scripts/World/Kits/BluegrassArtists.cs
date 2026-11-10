@@ -37,21 +37,22 @@ namespace EverythingWorld.World
             area.artistName = a.name; area.stationId = a.stationId; area.radius = a.r; area.glowColor = Warm;
             var z = new Plot { ctx = ctx, root = root, labels = labels, mk = new MeshKit(), solid = new MeshKit(), pictures = new MeshKit(), a = a, c = ctx.OnGround(a.x, a.z), front = front, side = Vector3.Cross(Vector3.up, front), glows = new List<Renderer>(), area = area };
             var n = a.name;
-            if (n == "Bill Monroe") Statue(z, 4.2f, (mk, o, r, s) => Mandolin(mk, o, r, s));
+            if (n == "Billy Strings") Billy(z);
+            else if (n == "Bill Monroe") { Statue(z, 4.2f, (mk, o, r, s) => Mandolin(mk, o, r, s)); MonroeMic(z); }
             else if (n == "Bill Monroe & His Blue Grass Boys") BlueMoonFence(z);
             else if (n.StartsWith("B") && n.Contains("Fleck and the Flecktones")) Flecktones(z);
             else if (n.StartsWith("B") && n.EndsWith("Fleck")) Statue(z, 3.6f, (mk, o, r, s) => Banjo(mk, o, r, s, false));
             else if (n == "Harry McClintock") CandyPeaks(z);
-            else if (n == "Flatt & Scruggs") Derrick(z);
+            else if (n == "Flatt & Scruggs") { Derrick(z); life.mists.Add(z.c); }
             else if (n == "Old Crow Medicine Show") WagonWheelFence(z);
             else if (n == "Punch Brothers") Still(z);
-            else if (n == "Ricky Skaggs") FiddleOnRocker(z);
+            else if (n == "Ricky Skaggs") { FiddleOnRocker(z); life.mists.Add(z.c); }
             else if (n == "Doc Watson") BlackMountain(z);
             else if (n == "Molly Tuttle") CrookedTree(z);
             else if (n == "Nickel Creek") Lighthouse(z);
             else if (n == "Sierra Hull") BlackRiver(z);
             else if (n == "The Chieftains") DanceFloor(z);
-            else if (n == "The Del McCoury Band") Motorcycle(z);
+            else if (n == "The Del McCoury Band") { Motorcycle(z); life.mists.Add(z.c); }
             else if (n == "The Infamous Stringdusters") Statue(z, 2.6f, (mk, o, r, s) => UprightBass(mk, o, r, s));
             else if (n == "The Stanley Brothers") LonelyLine(z);
             else if (n == "Tony Rice") Chapel(z);
@@ -102,14 +103,14 @@ namespace EverythingWorld.World
                 if (k < 5) foreach (var h in new[] { .55f, 1.15f }) z.mk.Box(white, z.At(-3f, -6f + k * 3f) + up * h, new Vector3(3f, .18f, .06f), Quaternion.LookRotation(z.side) * Quaternion.Euler(0, 90f, 0));
             }
             z.solid.Box(white, z.At(-3f, 0) + up * .7f, new Vector3(15f, 1.4f, .4f), Quaternion.LookRotation(z.front) * Quaternion.Euler(0, 0, 0) * Quaternion.identity);
-            // the blue moon on a tall frame behind the fence
-            var mc = z.At(-6f, 0) + up * 7.5f; var moon = new Material(WorldMaterials.Glow(new Color(.45f, .65f, 1f), .3f)) { name = "Blue moon" };
-            z.mk.Prism(moon, mc - z.front * .15f, z.front, 3f, .3f, 24);
-            foreach (var s in new[] { -1f, 1f }) z.mk.Prism(dark, z.At(-6.4f, s * 2f), up, .1f, 6.5f, 6);
-            halos.Add(mc + z.front * .5f, 4.5f, new Color(.45f, .65f, 1f), .35f);
-            ArtistBits.PostCollider(z.root, z.At(-6.4f, 0), 6f, 2f);
+            // the blue moon hanging low over the paddock, two horses in it
+            var mc = z.At(-9f, 0) + up * 12f; var moon = new Material(WorldMaterials.Glow(new Color(.45f, .65f, 1f), .3f)) { name = "Blue moon" };
+            z.mk.Prism(moon, mc - z.front * .1f, z.front, 3f, .2f, 32);
+            halos.Add(mc, 7f, new Color(.45f, .65f, 1f), .35f);
             life.blueMoon = moon;
-            ArtistBits.PointLight(z.root, mc + z.front * 3f, new Color(.6f, .75f, 1f), 14f, 1.2f);
+            Horse(z, z.At(-6.5f, -3.5f), Quaternion.Euler(0, 75f, 0) * z.front, new Color(.45f, .28f, .17f), true);
+            Horse(z, z.At(-7.5f, 3.8f), Quaternion.Euler(0, -125f, 0) * z.front, new Color(.82f, .8f, .76f), false);
+            ArtistBits.PointLight(z.root, z.At(-3f, 0) + up * 6f + z.front * 3f, new Color(.6f, .75f, 1f), 16f, 1.3f);
         }
 
         void Flecktones(Plot z)
@@ -189,7 +190,7 @@ namespace EverythingWorld.World
             z.mk.Box(plank, deck + up * .15f, new Vector3(4f, .3f, 3f), z.Rot); z.solid.Box(plank, deck + up * .15f, new Vector3(4f, .3f, 3f), z.Rot);
             Rocker(z.mk, z.solid, z.ctx, deck + up * .3f, z.front);
             Fiddle(z.mk, deck + up * 1f + z.front * .05f, z.Rot * Quaternion.Euler(-60f, 0, 0), 1f);
-            var lp = deck + z.side * 1.4f + up * .3f; z.mk.Prism(GlowM(Warm, 2.6f), lp, up, .14f, .3f, 8); halos.Add(lp + up * .15f, .8f, Warm, .8f);
+            var lp = deck + z.side * 1.4f + up * .3f; z.mk.Prism(SongGlow(UnclePenSkaggs, Warm, 2.6f), lp, up, .14f, .3f, 8); halos.Add(lp + up * .15f, .8f, Warm, .8f);
         }
 
         void BlackMountain(Plot z)
@@ -197,7 +198,7 @@ namespace EverythingWorld.World
             var up = Vector3.up; var c = z.At(-5f, 0); var rock = WorldMaterials.Solid(new Color(.16f, .16f, .2f));
             z.mk.Cone(rock, c, 4.2f, 8f, 7, 10f); z.mk.Cone(rock, c + z.side * 3.5f, 3f, 5f, 6, 30f); z.mk.Cone(rock, c - z.side * 3.2f, 2.6f, 4f, 6, 50f);
             z.solid.Box(rock, c + up * 2.5f, new Vector3(10f, 5f, 6f), z.Rot);
-            var st = z.At(-.5f, 1.5f); z.mk.Prism(wood, st, up, .3f, .7f, 8); Guitar(z.mk, st + up * 1.25f + z.side * .5f, z.Rot * Quaternion.Euler(-10f, 0, 15f), 1f);
+            DocPorch(z);
         }
 
         void CrookedTree(Plot z)
@@ -248,7 +249,7 @@ namespace EverythingWorld.World
             z.mk.Box(black, c + up * 1.05f + dir * .15f, new Vector3(.32f, .3f, .7f), rot); z.mk.Box(black, c + up * .95f - dir * .5f, new Vector3(.3f, .12f, .7f), rot);
             z.mk.Box(chrome, c + up * .7f, new Vector3(.36f, .4f, .5f), rot); z.mk.Box(chrome, c + up * .55f - dir * .5f, new Vector3(.08f, .08f, 1.2f), rot * Quaternion.Euler(-6f, 0, 0));
             z.mk.Box(chrome, c + up * .95f + dir * .85f, new Vector3(.06f, .9f, .06f), rot * Quaternion.Euler(-20f, 0, 0)); z.mk.Box(chrome, c + up * 1.4f + dir * .7f, new Vector3(.8f, .05f, .05f), rot);
-            var head = c + up * 1.2f + dir * 1f; z.mk.Prism(GlowM(new Color(1f, .95f, .8f), 3f), head, dir, .12f, .08f, 10); halos.Add(head + dir * .2f, .8f, Warm, .8f);
+            var head = c + up * 1.2f + dir * 1f; z.mk.Prism(SongGlow(Vincent, new Color(1f, .95f, .8f), 3f), head, dir, .12f, .08f, 10); halos.Add(head + dir * .2f, .8f, Warm, .8f);
             z.solid.Box(black, c + up * .7f, new Vector3(.8f, 1.4f, 2.6f), rot);
         }
 
@@ -268,9 +269,10 @@ namespace EverythingWorld.World
         {
             var up = Vector3.up; var c = z.At(-4.5f, 0); var rot = z.Rot;
             z.mk.Box(trim, c + up * 1.8f, new Vector3(4f, 3.6f, 6f), rot); z.solid.Box(trim, c + up * 1.8f, new Vector3(4f, 3.6f, 6f), rot);
-            z.mk.GableRoof(roofM, c + up * 3.6f, new Vector3(4.6f, 0, 6.6f), 1.8f, rot);
+            z.mk.GableRoof(roofM, c + up * 3.63f, new Vector3(4.6f, 0, 6.6f), 1.8f, rot);
             var tw = c + z.front * 2.4f; z.mk.Box(trim, tw + up * 4.8f, new Vector3(1.4f, 2.4f, 1.4f), rot); z.mk.Cone(roofM, tw + up * 6f, 1f, 3f, 4, 45f);
             z.mk.Box(dark, c + up * 1.1f + z.front * 3.01f, new Vector3(1.1f, 2.2f, .04f), rot);
+            z.mk.Prism(trim, c + up * 2.9f + z.front * 3f, z.front, .5f, .03f, 14); z.mk.Prism(SongGlow(ChurchStreet, new Color(1f, .85f, .5f), 2f), c + up * 2.9f + z.front * 3.02f, z.front, .4f, .03f, 14);
             foreach (var s in new[] { -1f, 1f }) for (var k = 0; k < 2; k++) z.mk.Box(GlowM(new Color(1f, .85f, .5f), 1.8f), c + up * 2f + z.side * s * 2.01f + z.front * (-1.2f + k * 2f), new Vector3(.04f, 1.4f, .7f), rot);
             var step = c + z.front * 3.6f; z.mk.Box(stone, step + up * .15f, new Vector3(2f, .3f, 1.2f), rot);
             Guitar(z.mk, step + up * 1f + z.side * .7f, rot * Quaternion.Euler(-12f, 0, -8f), .9f);

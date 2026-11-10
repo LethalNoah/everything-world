@@ -3,14 +3,15 @@ using UnityEngine;
 
 namespace EverythingWorld.World
 {
-    /// The Bluegrass Hollows (WORLD_GUIDE.md): Blue Ridge hills on a bright, clear summer afternoon, blue haze on
+    /// The Bluegrass Hollows (WORLD_GUIDE.md): an Appalachian holler, steep green ridges either side of a creek bottom, on a bright, clear summer afternoon, blue haze on
     /// the far ridges and a pale moon hanging in the daytime sky. Where you arrive: a red barn with its doors open
     /// on a porch stage, and in front of it a picking circle of rocking chairs where a banjo, a fiddle, a mandolin,
     /// a guitar and an upright bass float and play themselves. A creek winds through the hollow under a red
     /// covered bridge, past a mill with a turning water wheel; split-rail fences, hay bales, porch cabins with
     /// rockers, beehives, a mule and wagon on the trails. Files: BluegrassKit (ground, the creek, the barn and
-    /// the picking circle, bridges, the mill, trails, the hollows), BluegrassInstruments, BluegrassArtists,
-    /// BluegrassLife.
+    /// the picking circle, bridges, the mill, trails, the hollows), BluegrassTown (the ridges, the mountain town on
+    /// its main street, the trestle, the coal mine, the stills), BluegrassInstruments, BluegrassArtists, BluegrassBilly
+    /// (Billy Strings' stage and the classics' additions), BluegrassLife.
     public partial class BluegrassKit : LandKit
     {
         public override string Land => "The Bluegrass Hollows";
@@ -23,6 +24,7 @@ namespace EverythingWorld.World
             (FoggyMountain, "Foggy Mountain Breakdown", "@the picking circle"), (BlueMoon, "Blue Moon Of Kentucky", "Bill Monroe & His Blue Grass Boys"),
             (CandyMountain, "Big Rock Candy Mountain", "Harry McClintock"), (WagonWheel, "Wagon Wheel", "Old Crow Medicine Show"),
             (ConstantSorrow, "I'm a Man of Constant Sorrow", "The Stanley Brothers"), (SuperMoon, "Super Moon", "Molly Tuttle"),
+            (DustInABaggie, "Dust in a Baggie", "Billy Strings"), (BlackMountainRag, "Black Mountain Rag", "Doc Watson"), (ChurchStreet, "Church Street Blues", "Tony Rice"),
         };
 
         static readonly Color Warm = new Color(1f, .78f, .4f), Ink = new Color(.97f, .94f, .86f), Cream = new Color(.95f, .91f, .82f);
@@ -50,7 +52,7 @@ namespace EverythingWorld.World
         }
 
         Material GlowM(Color c, float s = 2f) => WorldMaterials.Glow(c, s * .65f);
-        static float Foot(IslandWorldData.Artist a) => a.name == "Harry McClintock" || a.name == "Flatt & Scruggs" || a.name == "Trampled by Turtles" ? 13f : 9f;
+        static float Foot(IslandWorldData.Artist a) => a.name == "Billy Strings" ? 20f : a.name == "Harry McClintock" || a.name == "Flatt & Scruggs" || a.name == "Trampled by Turtles" ? 13f : 9f;
 
         public override bool Ground(float height, float slope, float patch, out Color color)
         {
@@ -134,10 +136,13 @@ namespace EverythingWorld.World
                 for (var pass = 0; pass < 8; pass++) for (var i = 1; i + 1 < creek.Count; i++) { var p = creek[i]; p.y = Mathf.Min(p.y, (creek[i - 1].y + p.y * 2f + creek[i + 1].y) / 4f); creek[i] = p; }
                 pools.Add((creek[0], 9f)); pools.Add((creek[creek.Count - 1], 14f));
                 Carve(data, index);
+                creekDir2 = dir; Ridges(data, index); StreetLine(data, index, Id);
             }
             var avoid = new List<Vector3>();
             for (var i = 0; i < creek.Count; i += 4) avoid.Add(new Vector3(creek[i].x, CreekW / 2f + 9f, creek[i].z));
             foreach (var (c, r) in pools) avoid.Add(new Vector3(c.x, r + 10f, c.z));
+            for (var i = 0; i < street.Count; i += 2) avoid.Add(new Vector3(street[i].x, 22f, street[i].z));
+            foreach (var a in data.layout.artists) if (a.sceneId == isl.sceneId) a.r = Mathf.Max(a.r, Foot(a) + 6f);
             ArtistPlacement.Spread(data, index, 54f, heart2, 44f, 46f, avoid, null, Land, 320f);
             foreach (var a in data.layout.artists)
             {
@@ -189,7 +194,7 @@ namespace EverythingWorld.World
         {
             MakeMaterials();
             halos = new GlowHalos(); crowns = new MeshKit();
-            pathCells.Clear(); walkPoints.Clear(); facing.Clear(); noGrass.Clear();
+            pathCells.Clear(); walkPoints.Clear(); facing.Clear(); noGrass.Clear(); millAt = Vector3.zero; TownMaterials();
             center = ctx.Plaza;
             life = new GameObject("Bluegrass life").AddComponent<BluegrassLife>();
             life.transform.SetParent(ctx.Root, false);
@@ -197,7 +202,11 @@ namespace EverythingWorld.World
             var mk = new MeshKit(); var solid = new MeshKit();
             Barn(ctx, mk, solid);
             if (creek.Count > 1) { Creek(ctx, mk, solid); Mill(ctx, mk, solid); }
+            Street(ctx, mk, solid);
             Trails(ctx, mk, solid);
+            Town(ctx, mk, solid);
+            if (creek.Count > 1) Trestle(ctx, mk, solid);
+            Mine(ctx, mk, solid);
             Hollows(ctx, mk, solid);
             mk.Build("Bluegrass Hollows", ctx.Root, false);
             crowns.Build("Soft bluegrass crowns and leaves", ctx.Root, false);   // "Soft…": walked through, so the land audit skips it
@@ -326,6 +335,7 @@ namespace EverythingWorld.World
                 var z0 = zz * (D / 2f); var inside = P(0, H + 1f, 0);
                 var g0 = P(-W / 2f, H, z0); var g1 = P(-k, kh, z0); var g2 = P(0, top, z0); var g3 = P(k, kh, z0); var g4 = P(W / 2f, H, z0);
                 mk.Quad(barnRed, g0, g1, g3, g4, inside); mk.Tri(barnRed, g1, g2, g3, inside);
+                var outside = P(0, H + 1f, z0 * 4f); mk.Quad(barnRed, g0, g1, g3, g4, outside); mk.Tri(barnRed, g1, g2, g3, outside);   // seen from inside too
                 if (zz > 0) { mk.Box(trim, P(0, H + 2.2f, D / 2f + .17f), new Vector3(1.6f, 1.6f, .05f), rot); mk.Box(dark, P(0, H + 2.2f, D / 2f + .19f), new Vector3(1.3f, 1.3f, .02f), rot); }
             }
             foreach (var s in new[] { -1f, 1f })
@@ -333,13 +343,17 @@ namespace EverythingWorld.World
                 var inside = P(0, H, 0);
                 mk.Quad(roofM, P(s * e, H - .2f, -D / 2f - .4f), P(s * e, H - .2f, D / 2f + .4f), P(s * k, kh, D / 2f + .4f), P(s * k, kh, -D / 2f - .4f), inside);
                 mk.Quad(roofM, P(s * k, kh, -D / 2f - .4f), P(s * k, kh, D / 2f + .4f), P(0, top + .05f, D / 2f + .4f), P(0, top + .05f, -D / 2f - .4f), inside);
+                // the underside, so the roof is closed when you look up from inside the barn
+                var sky = P(0, top + 30f, 0); var under = WorldMaterials.Solid(new Color(.42f, .3f, .22f));
+                mk.Quad(under, P(s * (W / 2f - .3f), H - .15f, -D / 2f + .3f), P(s * (W / 2f - .3f), H - .15f, D / 2f - .3f), P(s * k, kh - .15f, D / 2f - .3f), P(s * k, kh - .15f, -D / 2f + .3f), sky);
+                mk.Quad(under, P(s * k, kh - .15f, -D / 2f + .3f), P(s * k, kh - .15f, D / 2f - .3f), P(0, top - .1f, D / 2f - .3f), P(0, top - .1f, -D / 2f + .3f), sky);
             }
             // white trim on the corners and round the doorway; the two great doors swung open with white X braces
             foreach (var s in new[] { -1f, 1f }) { mk.Box(trim, P(s * W / 2f, H / 2f, D / 2f + .05f), new Vector3(.3f, H, .3f), rot); mk.Box(trim, P(s * 3.2f, (H - 1f) / 2f, D / 2f + .17f), new Vector3(.25f, H - 1f, .05f), rot); }
             mk.Box(trim, P(0, H - 1f, D / 2f + .17f), new Vector3(6.6f, .25f, .05f), rot);
             foreach (var s in new[] { -1f, 1f })
             {
-                var hinge = P(s * 3.2f, 0, D / 2f + .2f); var drot = rot * Quaternion.Euler(0, s * 100f, 0); var dc = hinge + drot * new Vector3(s * 1.6f, (H - 1f) / 2f, 0);
+                var hinge = P(s * 3.2f, 0, D / 2f + .2f); var drot = rot * Quaternion.Euler(0, s * 100f, 0); var dc = hinge + drot * new Vector3(s * 1.6f, (H - 1f) / 2f + .05f, 0);
                 mk.Box(barnRed, dc, new Vector3(3.2f, H - 1f, .15f), drot); solid.Box(barnRed, dc, new Vector3(3.2f, H - 1f, .25f), drot);
                 foreach (var a in new[] { -50f, 50f }) mk.Box(trim, dc + drot * new Vector3(0, 0, .09f * (1f)), new Vector3(.18f, Mathf.Sqrt(3.2f * 3.2f + (H - 1f) * (H - 1f)) - .3f, .03f), drot * Quaternion.Euler(0, 0, a > 0 ? 38f : -38f));
                 mk.Box(trim, dc + drot * new Vector3(0, 0, .09f), new Vector3(3.2f, .18f, .03f), drot);
@@ -484,7 +498,7 @@ namespace EverythingWorld.World
             }
             if (best < 0) return;
             var c0 = creek[best]; var dir = (creek[best + 1] - creek[best - 1]); dir.y = 0; dir.Normalize(); var side = Vector3.Cross(up, dir) * millSide;
-            var hc = c0 + side * (CreekW / 2f + 5.5f); hc.y = ctx.Ground(hc.x, hc.z); var rot = Quaternion.LookRotation(dir);
+            var hc = c0 + side * (CreekW / 2f + 5.5f); hc.y = ctx.Ground(hc.x, hc.z); millAt = hc; var rot = Quaternion.LookRotation(dir);
             mk.Box(stone, hc + up * 1.6f, new Vector3(7f, 3.2f, 8f), Quaternion.LookRotation(side)); solid.Box(stone, hc + up * 3f, new Vector3(7f, 6f, 8f), Quaternion.LookRotation(side));
             mk.Box(WorldMaterials.Solid(new Color(.78f, .7f, .55f)), hc + up * 4.4f, new Vector3(7f, 2.4f, 8f), Quaternion.LookRotation(side));
             mk.GableRoof(roofM, hc + up * 5.6f, new Vector3(7.8f, 0, 8.8f), 2.4f, rot);
@@ -520,9 +534,9 @@ namespace EverythingWorld.World
             var dirt = WorldMaterials.Solid(new Color(.66f, .55f, .38f)); var longest = new List<Vector3>();
             while (todo.Count > 0)
             {
-                IslandWorldData.Artist next = null; Vector3 join = default; var best = float.MaxValue;
+                IslandWorldData.Artist next = null; Vector3 join = default; var best = float.MaxValue; var joinW = 0;
                 foreach (var a in todo)
-                    foreach (var (p, w) in walkPoints) { if (w >= 400) continue; var d = Vector2.Distance(new Vector2(p.x, p.z), new Vector2(a.x, a.z)) - Foot(a); if (d < best) { best = d; next = a; join = p; } }
+                    foreach (var (p, w) in walkPoints) { if (w >= 400) continue; var d = Vector2.Distance(new Vector2(p.x, p.z), new Vector2(a.x, a.z)) - Foot(a); if (d < best) { best = d; next = a; join = p; joinW = w; } }
                 if (next == null) break;
                 todo.Remove(next);
                 var from = new Vector3(join.x, 0, join.z); var to = new Vector3(next.x, 0, next.z);
@@ -530,7 +544,8 @@ namespace EverythingWorld.World
                 facing[next.name] = -dir;
                 var side = Vector3.Cross(Vector3.up, dir); var end = total - Foot(next) * .8f;
                 var pts = new List<Vector3>(); var wet = new List<bool>();
-                for (var d = walk == 1 ? 8f : TrailW / 2f + .1f; ; d += 1.5f)
+                var atHeart = Vector2.Distance(new Vector2(join.x, join.z), new Vector2(center.x, center.z)) < 1f;
+                for (var d = atHeart ? 8f : joinW == 0 ? 3.1f : TrailW / 2f + .1f; ; d += 1.5f)
                 {
                     var dd = Mathf.Min(d, end); var q = from + dir * dd + side * Mathf.Sin(dd / 18f) * Mathf.Min(3f, end * .05f);
                     if (!ctx.IsLand(q.x, q.z, 0f)) break;
@@ -543,9 +558,15 @@ namespace EverythingWorld.World
                     if (!wet[i]) continue;
                     var j = i; while (j + 1 < pts.Count && wet[j + 1]) j++;
                     var i0 = Mathf.Max(0, i - 1); var i1 = Mathf.Min(pts.Count - 1, j + 1);
-                    var deck = Mathf.Max(pts[i0].y, pts[i1].y) + .35f;
-                    for (var k = i0; k <= i1; k++) { var p = pts[k]; p.y = deck; pts[k] = p; }
-                    var a = pts[i0] - dir * 1f; var b = pts[i1] + dir * 1f; a.y = b.y = deck;
+                    // the deck runs from bank to bank (sloping if one bank is higher), always clear of the water
+                    float ya = pts[i0].y + .35f, yb = pts[i1].y + .35f;
+                    for (var k = i0; k <= i1; k++)
+                    {
+                        var p = pts[k]; CreekDist(p.x, p.z, out var bedHere);
+                        p.y = Mathf.Max(Mathf.Lerp(ya, yb, (k - i0) / (float)Mathf.Max(1, i1 - i0)), bedHere + 1.7f); pts[k] = p;
+                    }
+                    ya = pts[i0].y; yb = pts[i1].y;
+                    var a = pts[i0] - dir * 1f; var b = pts[i1] + dir * 1f; a.y = ya; b.y = yb;
                     var covered = bridges == 0; Bridge(ctx, mk, solid, a, b, covered); bridges++;
                     if (covered) { var mark = new GameObject("Shot: the covered bridge").transform; mark.SetParent(ctx.Root, false); var cam = (a + b) / 2f - side * 14f - dir * 9f; mark.SetPositionAndRotation(ctx.OnGround(cam.x, cam.z), Quaternion.LookRotation(((a + b) / 2f - cam).normalized)); }
                     i = j + 1;
@@ -572,7 +593,7 @@ namespace EverythingWorld.World
         /// meadows, beehives, a laundry line, corn patches, an old pickup, mossy boulders.
         void Hollows(LandContext ctx, MeshKit mk, MeshKit solid)
         {
-            int trees = 0, cabins = 0, bales = 0, other = 0;
+            int trees = 0, cabins = 0, bales = 0, other = 0, stills = 0;
             const float cell = 17f;
             for (var x = ctx.MinX; x < ctx.MaxX; x += cell)
             for (var z = ctx.MinZ; z < ctx.MaxZ; z += cell)
@@ -596,10 +617,11 @@ namespace EverythingWorld.World
                 {
                     if (roll < .72f) { Hardwood(ctx, mk, p, ctx.Range(.85f, 1.45f)); trees++; }
                     else if (roll < .84f) { Rhododendron(ctx, p); other++; }
+                    else if (roll < .925f && stills < 5 && !NearPath(px, pz, 10f)) { Moonshine(ctx, mk, solid, p); stills++; }
                     else if (roll < .9f) { mk.Blob(stone, p + Vector3.up * .5f, new Vector3(ctx.Range(1f, 2.2f), ctx.Range(.6f, 1.3f), ctx.Range(1f, 2f)), ctx.Rng, .35f); crowns.Blob(leaves[2], p + Vector3.up * 1.2f, new Vector3(1.1f, .2f, 1f), ctx.Rng, .3f); solid.Box(stone, p + Vector3.up * .6f, new Vector3(2.6f, 1.3f, 2.4f), Quaternion.identity); other++; }
                 }
             }
-            Debug.Log($"The Bluegrass Hollows: creek {creek.Count * 4} m, {trees} hardwoods, {cabins} cabins, {bales} hay bales, {other} other things");
+            Debug.Log($"The Bluegrass Hollows: creek {creek.Count * 4} m, {trees} hardwoods, {cabins} cabins, {bales} hay bales, {stills} stills, {other} other things, street {street.Count * 6} m");
         }
 
         void HayBale(MeshKit mk, MeshKit solid, Vector3 at, float yaw)
@@ -637,7 +659,7 @@ namespace EverythingWorld.World
             var up = Vector3.up; var dir = Quaternion.Euler(0, ctx.Range(0, 360f), 0) * Vector3.forward; var rot = Quaternion.LookRotation(dir); var side = Vector3.Cross(up, dir);
             var paint = WorldMaterials.Solid(new Color(.3f, .5f, .6f), .6f); var rust = WorldMaterials.Solid(new Color(.55f, .3f, .18f));
             mk.Box(paint, at + up * .8f + dir * .9f, new Vector3(1.8f, .7f, 2f), rot); mk.Box(paint, at + up * 1.45f + dir * .2f, new Vector3(1.6f, .8f, 1.3f), rot);
-            mk.Box(WorldMaterials.Solid(new Color(.2f, .25f, .3f), .9f), at + up * 1.5f + dir * .2f, new Vector3(1.62f, .45f, 1.2f), rot);
+            mk.Box(WorldMaterials.Solid(new Color(.2f, .25f, .3f), .9f), at + up * 1.5f + dir * .2f, new Vector3(1.66f, .45f, 1.2f), rot);
             mk.Box(rust, at + up * .75f - dir * 1.3f, new Vector3(1.8f, .6f, 2.2f), rot);
             foreach (var s in new[] { -1f, 1f }) foreach (var zz in new[] { -1.3f, 1.3f }) mk.Prism(dark, at + side * s * .9f + dir * zz + up * .38f, side * s, .38f, .25f, 10);
             solid.Box(paint, at + up * .9f, new Vector3(2f, 1.8f, 4.6f), rot);
@@ -649,7 +671,7 @@ namespace EverythingWorld.World
             var up = Vector3.up; var face = new Vector3(center.x - at.x, 0, center.z - at.z).normalized; var rot = Quaternion.LookRotation(face); var side = Vector3.Cross(up, face);
             var logs = WorldMaterials.Solid(new Color(.5f, .38f, .27f));
             mk.Box(logs, at + up * 1.5f, new Vector3(6f, 3f, 5f), rot); solid.Box(logs, at + up * 1.5f, new Vector3(6f, 3f, 5f), rot);
-            for (var k = 0; k < 6; k++) mk.Box(WorldMaterials.Solid(new Color(.4f, .3f, .22f)), at + up * (.25f + k * .5f) + face * 2.52f, new Vector3(6.05f, .08f, .04f), rot);
+            for (var k = 1; k < 6; k++) mk.Box(WorldMaterials.Solid(new Color(.4f, .3f, .22f)), at + up * (.25f + k * .5f) + face * 2.52f, new Vector3(6.05f, .08f, .04f), rot);
             mk.GableRoof(roofM, at + up * 3f, new Vector3(6.8f, 0, 6.6f), 1.8f, Quaternion.LookRotation(side));
             mk.Box(plank, at + up * .3f + face * 3.7f, new Vector3(6f, .2f, 2.4f), rot); solid.Box(plank, at + up * .2f + face * 3.7f, new Vector3(6f, .4f, 2.4f), rot);
             foreach (var s in new[] { -2.8f, 2.8f }) mk.Box(wood, at + up * 1.6f + face * 4.7f + side * s, new Vector3(.15f, 2.6f, .15f), rot);

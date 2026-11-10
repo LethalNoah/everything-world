@@ -22,7 +22,7 @@ namespace EverythingWorld.World
         {
             var rim = Tone(electric ? new Color(.2f, .35f, .75f) : new Color(.7f, .45f, .2f), .7f); var head = electric ? WorldMaterials.Glow(new Color(.5f, .8f, 1f), .9f) : Tone(Cream, .3f);
             var chrome = Tone(new Color(.75f, .75f, .78f), .9f); var neck = Tone(new Color(.5f, .3f, .15f)); var board = Tone(new Color(.12f, .1f, .1f));
-            Disc(mk, rim, o, r, s, new Vector3(0, 0, -.02f), .52f, .2f, 20); Disc(mk, chrome, o, r, s, new Vector3(0, 0, .085f), .5f, .02f, 20); Disc(mk, head, o, r, s, new Vector3(0, 0, .1f), .46f, .01f, 20);
+            Disc(mk, rim, o, r, s, new Vector3(0, 0, -.02f), .52f, .2f, 20); Disc(mk, chrome, o, r, s, new Vector3(0, 0, .085f), .5f, .02f, 20); Disc(mk, head, o, r, s, new Vector3(0, 0, .108f), .46f, .01f, 20);
             Part(mk, neck, o, r, s, new Vector3(0, 1f, .02f), new Vector3(.1f, 1.2f, .07f), Quaternion.identity);
             Part(mk, board, o, r, s, new Vector3(0, 1f, .06f), new Vector3(.08f, 1.2f, .01f), Quaternion.identity);
             Part(mk, neck, o, r, s, new Vector3(0, 1.7f, .02f), new Vector3(.2f, .26f, .06f), Quaternion.identity);

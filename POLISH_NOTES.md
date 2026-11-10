@@ -30,6 +30,9 @@ Snapshot numbers refer to `Game/EverythingWorld/Logs/Live/` (not committed).
 ## Arena Rock Ridge
 - Works: Journey's wheel against the stars, the neon heart, Blue Öyster Cult's view over the realm.
 - Fix: Kansas reads as stacked boxes; zone curtain dominates Blue Öyster Cult.
+- Added 2026-11-10: Starship (a lit night skyline) and U2 (a white flag over a stage), moved here from the
+  Yacht Rock Riviera. The audit finds 10 surface overlaps in the land kit itself (the biggest about 88 m2 at
+  2.3 m, 277 m SW of arrival, and a few round the entry arch): fix in the Arena deep pass.
 
 ## Psychedelic Wilds (deep pass done, 2026-11-10)
 - Done: a walkable Grateful Dead world with signs and song moments, a bigger QOTSA generator party, a design for
@@ -57,8 +60,13 @@ Snapshot numbers refer to `Game/EverythingWorld/Logs/Live/` (not committed).
 ## Bluegrass Hollows
 - Works: barn and porch stage, the picking circle, covered bridge, stepping stones, wagon and mule, Nickel
   Creek's lighthouse, the fire tower, Flatt & Scruggs' truck and banjo.
-- Fix: the blue moon on two black poles reads as a lollipop sign; barn roof open from inside; a footbridge
-  ramp sticks up into the air; wagon wheels are solid black discs.
+- Fixed in the deep pass (2026-11-10): the blue moon now hangs over a horse paddock (no poles); the barn roof
+  is closed from inside; footbridge decks slope bank to bank; the wagon has spoked wheels.
+- Deep pass (2026-11-10): a holler with ridges, a mountain town on a main street (general store porch of
+  pickers, church, fiddlers' convention stage, post office, gas pump, power poles), a coal mine, a railroad
+  trestle, moonshine stills; Billy Strings' night-show stage with jail, mire and tinfoil trees; song glows and
+  mist for the classics.
+- Still to check in play: walking the ridges (steepness), the street lamps at dusk, frame rate with the town.
 
 ## Prog Marches
 - Works: the eclipse and organ, King Crimson's face, the Möbius ring, the half-buried clock and gears, Rush's

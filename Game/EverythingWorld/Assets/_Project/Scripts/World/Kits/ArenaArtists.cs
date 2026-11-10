@@ -50,6 +50,8 @@ namespace EverythingWorld.World
                 case "Night Ranger": HotRod(z); break;
                 case "REO Speedwagon": Speedwagon(z); break;
                 case "The Edgar Winter Group": Lab(z); break;
+                case "Starship": CityNight(z); break;
+                case "U2": WhiteFlag(z); break;
                 default: Mic(z); break;
             }
             var reach = Foot(a);
@@ -294,6 +296,32 @@ namespace EverythingWorld.World
             var up = Vector3.up; var c = z.At(-2f, 0);
             z.mk.Prism(metal, c, up, .12f, 5f, 8); z.mk.Blob(metal, c + up * 5.4f, new Vector3(.6f, .8f, .6f), z.ctx.Rng, 0f);
             ArtistBits.PostCollider(z.root, c, 5f, .2f);
+        }
+
+        /// Starship: We Built This City, a little night skyline of lit windows, a radio mast with a blinking light on top.
+        void CityNight(Plot z)
+        {
+            var up = Vector3.up; var c = z.At(-4f, 0); var rot = Quaternion.LookRotation(z.front); var wall = WorldMaterials.Solid(new Color(.2f, .2f, .28f));
+            for (var k = 0; k < 8; k++)
+            {
+                var h = 4f + (k * 37 % 7) * 1.2f; var p = c + z.side * ((k - 3.5f) * 1.9f) - z.front * (k % 2) * 1f;
+                z.mk.Box(wall, p + up * h / 2f, new Vector3(1.7f, h, 1.7f), rot);
+                for (var w = 1; w < h - .5f; w += 1) foreach (var x in new[] { -.4f, .4f }) if ((k * 7 + w * 3 + (x > 0 ? 1 : 0)) % 4 != 0) z.mk.Box(GlowM(new Color(1f, .85f, .55f), 1.8f), p + up * w + z.side * x + z.front * .86f, new Vector3(.45f, .35f, .02f), rot);
+            }
+            var mast = c + z.side * 1f + up * 12f; z.mk.Prism(metal, c + z.side * 1f + up * 9f, up, .1f, 4f, 6); z.mk.Blob(GlowM(new Color(1f, .15f, .1f), 2.6f), mast + up * 1.1f, Vector3.one * .25f, z.ctx.Rng, 0f);
+            z.solid.Box(dark, c + up * 5f, new Vector3(15f, 10f, 3f), rot);
+            ArtistBits.PointLight(z.root, c + up * 4f + z.front * 5f, new Color(1f, .8f, .55f), 16f, 1.4f);
+        }
+
+        /// U2: Sunday Bloody Sunday, a low stage with a big white flag on a tall pole and a marching drum, under a red glow.
+        void WhiteFlag(Plot z)
+        {
+            var up = Vector3.up; var c = z.At(-4f, 0); var rot = Quaternion.LookRotation(z.front);
+            z.mk.Box(dark, c + up * .5f, new Vector3(9f, 1f, 5f), rot); z.solid.Box(dark, c + up * .5f, new Vector3(9f, 1f, 5f), rot);
+            var pole = c + z.side * 2.5f + up * 1f; z.mk.Prism(metal, pole, up, .08f, 6.2f, 8); ArtistBits.PostCollider(z.root, pole - up * 1f, 7f, .15f);
+            for (var k = 0; k < 6; k++) { var t = k / 6f; z.mk.Box(white, pole + up * 4.6f + z.side * (.5f + t * 3.4f) + up * Mathf.Sin(t * 4f) * .3f, new Vector3(.6f, 2.4f, .05f), rot * Quaternion.Euler(0, Mathf.Sin(t * 5f) * 25f, 0)); }
+            var drum = c + up * 1.6f - z.side * 1.5f; z.mk.Prism(WorldMaterials.Solid(new Color(.85f, .85f, .82f)), drum - z.side * .5f, z.side, .65f, 1f, 16); z.mk.Prism(WorldMaterials.Solid(new Color(.6f, .1f, .1f)), drum - z.side * .55f, z.side, .67f, .15f, 16);
+            ArtistBits.PointLight(z.root, c + up * 6f + z.front * 3f, new Color(1f, .25f, .2f), 18f, 2f); halos.Add(c + up * 5f, 6f, new Color(1f, .25f, .2f), .3f);
         }
     }
 }

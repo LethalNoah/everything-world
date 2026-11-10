@@ -8,21 +8,21 @@
    "tags": [
     "jam band",
     "experimental jazz",
-    "newgrass",
     "rock",
-    "bluegrass",
+    "newgrass",
     "southern rock",
     "progressive rock",
+    "bluegrass",
     "jazz ballads"
    ],
-   "x": 128.52,
-   "y": 39.07,
-   "r": 10.58,
+   "x": 134.09,
+   "y": 91.71,
+   "r": 10.44,
    "energy": 0.709,
    "acousticness": 0.337,
-   "valence": 0.521,
-   "danceability": 0.464,
-   "tempo": 123.721,
+   "valence": 0.516,
+   "danceability": 0.465,
+   "tempo": 123.326,
    "neighbours": [
     64,
     5,
@@ -40,30 +40,6 @@
    "props": "Tour vans, tie-dye tapestries strung between trees, campfires, banjos on cabin porches, glowsticks hanging from branches.",
    "mood": "Golden late afternoon that slides into a lantern-lit night.",
    "tracks": [
-    {
-     "name": "Away From The Mire",
-     "artist": "Billy Strings",
-     "id": "6oPDKGwBri4OLQX5IYu02T",
-     "duration_ms": 463653,
-     "energy": 0.593,
-     "valence": 0.511
-    },
-    {
-     "name": "Dust in a Baggie",
-     "artist": "Billy Strings",
-     "id": "2Lk8XTulavagQOrYqFpGB8",
-     "duration_ms": 174173,
-     "energy": 0.776,
-     "valence": 0.653
-    },
-    {
-     "name": "Turmoil & Tinfoil",
-     "artist": "Billy Strings",
-     "id": "3kipE3F3ghfvZHPxDvbNQF",
-     "duration_ms": 382998,
-     "energy": 0.744,
-     "valence": 0.895
-    },
     {
      "name": "But Anyway",
      "artist": "Blues Traveler",
@@ -953,8 +929,8 @@
     "djent",
     "hardcore punk"
    ],
-   "x": 111.27,
-   "y": 10.82,
+   "x": 96.81,
+   "y": 34.82,
    "r": 9.17,
    "energy": 0.912,
    "acousticness": 0.007,
@@ -1667,8 +1643,8 @@
     "blues rock",
     "acid rock"
    ],
-   "x": 166.7,
-   "y": 56.98,
+   "x": 148.38,
+   "y": 56.72,
    "r": 9.27,
    "energy": 0.596,
    "acousticness": 0.303,
@@ -2397,8 +2373,8 @@
     "red dirt",
     "traditional country"
    ],
-   "x": 148.35,
-   "y": 100.67,
+   "x": 123.77,
+   "y": 122.09,
    "r": 8.0,
    "energy": 0.602,
    "acousticness": 0.389,
@@ -2951,8 +2927,8 @@
     "madchester",
     "sufi"
    ],
-   "x": 96.5,
-   "y": 71.59,
+   "x": 95.0,
+   "y": 54.8,
    "r": 7.94,
    "energy": 0.702,
    "acousticness": 0.146,
@@ -3497,8 +3473,8 @@
     "krautrock",
     "classic rock"
    ],
-   "x": 153.38,
-   "y": 71.56,
+   "x": 147.83,
+   "y": 76.25,
    "r": 7.62,
    "energy": 0.662,
    "acousticness": 0.209,
@@ -4003,8 +3979,8 @@
     "ska punk",
     "skate punk"
    ],
-   "x": 127.15,
-   "y": 81.85,
+   "x": 80.65,
+   "y": 44.75,
    "r": 7.0,
    "energy": 0.828,
    "acousticness": 0.081,
@@ -4437,8 +4413,8 @@
     "ambient",
     "j rock"
    ],
-   "x": 79.75,
-   "y": 19.18,
+   "x": 83.42,
+   "y": 21.98,
    "r": 6.56,
    "energy": 0.702,
    "acousticness": 0.173,
@@ -4823,8 +4799,8 @@
     "region:bedroom",
     "indie pop"
    ],
-   "x": 57.13,
-   "y": 80.44,
+   "x": 56.79,
+   "y": 70.64,
    "r": 6.48,
    "energy": 0.581,
    "acousticness": 0.18,
@@ -5201,8 +5177,8 @@
     "post punk",
     "indie electronic"
    ],
-   "x": 69.46,
-   "y": 110.37,
+   "x": 51.39,
+   "y": 91.94,
    "r": 6.86,
    "energy": 0.653,
    "acousticness": 0.194,
@@ -5619,8 +5595,8 @@
     "singer songwriter",
     "kpop"
    ],
-   "x": 128.12,
-   "y": 115.43,
+   "x": 104.77,
+   "y": 128.97,
    "r": 7.94,
    "energy": 0.701,
    "acousticness": 0.15,
@@ -6165,8 +6141,8 @@
     "uk drill",
     "the muppets"
    ],
-   "x": 121.41,
-   "y": 157.0,
+   "x": 106.21,
+   "y": 158.62,
    "r": 7.81,
    "energy": 0.666,
    "acousticness": 0.212,
@@ -6695,8 +6671,8 @@
     "alternative metal",
     "romanian"
    ],
-   "x": 110.7,
-   "y": 78.71,
+   "x": 96.66,
+   "y": 71.09,
    "r": 6.32,
    "energy": 0.757,
    "acousticness": 0.101,
@@ -7054,17 +7030,17 @@
     "rock",
     "singer songwriter",
     "pop",
-    "80s",
-    "piano"
+    "piano",
+    "80s"
    ],
-   "x": 136.43,
-   "y": 56.67,
-   "r": 6.16,
-   "energy": 0.643,
-   "acousticness": 0.272,
-   "valence": 0.662,
-   "danceability": 0.592,
-   "tempo": 132.604,
+   "x": 121.2,
+   "y": 63.85,
+   "r": 6.0,
+   "energy": 0.626,
+   "acousticness": 0.274,
+   "valence": 0.659,
+   "danceability": 0.591,
+   "tempo": 133.178,
    "neighbours": [
     52,
     2,
@@ -7331,14 +7307,6 @@
      "valence": 0.816
     },
     {
-     "name": "We Built This City",
-     "artist": "Starship",
-     "id": "6OnfBiiSc9RGKiBKKtZXgQ",
-     "duration_ms": 296080,
-     "energy": 0.908,
-     "valence": 0.656
-    },
-    {
      "name": "Aja",
      "artist": "Steely Dan",
      "id": "0w0Zs8pu4wx9iErRMEG96L",
@@ -7377,14 +7345,6 @@
      "duration_ms": 330943,
      "energy": 0.513,
      "valence": 0.739
-    },
-    {
-     "name": "Sunday Bloody Sunday",
-     "artist": "U2",
-     "id": "6Pztn1vmTohZrFICkaDOEa",
-     "duration_ms": 279960,
-     "energy": 0.984,
-     "valence": 0.779
     }
    ]
   },
@@ -7403,8 +7363,8 @@
     "chamber folk",
     "folk pop"
    ],
-   "x": 72.19,
-   "y": 85.32,
+   "x": 66.14,
+   "y": 114.76,
    "r": 6.4,
    "energy": 0.5,
    "acousticness": 0.476,
@@ -7773,8 +7733,8 @@
     "region:bedroom",
     "slowcore"
    ],
-   "x": 69.24,
-   "y": 71.3,
+   "x": 66.03,
+   "y": 94.1,
    "r": 5.74,
    "energy": 0.453,
    "acousticness": 0.515,
@@ -8079,8 +8039,8 @@
     "acid rock",
     "jazz fusion"
    ],
-   "x": 147.32,
-   "y": 34.21,
+   "x": 122.36,
+   "y": 48.88,
    "r": 6.08,
    "energy": 0.626,
    "acousticness": 0.24,
@@ -8088,8 +8048,8 @@
    "danceability": 0.423,
    "tempo": 126.178,
    "neighbours": [
-    52,
     2,
+    52,
     13,
     5
    ],
@@ -8417,8 +8377,8 @@
     "yacht rock",
     "piano"
    ],
-   "x": 111.55,
-   "y": 48.46,
+   "x": 114.91,
+   "y": 90.46,
    "r": 6.08,
    "energy": 0.484,
    "acousticness": 0.492,
@@ -8755,8 +8715,8 @@
     "metal",
     "melodic death metal"
    ],
-   "x": 101.2,
-   "y": 24.94,
+   "x": 109.39,
+   "y": 22.53,
    "r": 5.48,
    "energy": 0.787,
    "acousticness": 0.08,
@@ -9037,8 +8997,8 @@
     "melodic bass",
     "drum and bass"
    ],
-   "x": 21.65,
-   "y": 125.57,
+   "x": 21.54,
+   "y": 130.89,
    "r": 5.39,
    "energy": 0.713,
    "acousticness": 0.088,
@@ -9311,8 +9271,8 @@
     "experimental",
     "region:idm"
    ],
-   "x": 31.39,
-   "y": 91.83,
+   "x": 24.81,
+   "y": 89.14,
    "r": 5.57,
    "energy": 0.476,
    "acousticness": 0.376,
@@ -9601,8 +9561,8 @@
     "ska",
     "crank wave"
    ],
-   "x": 98.36,
-   "y": 87.46,
+   "x": 89.85,
+   "y": 84.67,
    "r": 6.24,
    "energy": 0.694,
    "acousticness": 0.141,
@@ -9955,8 +9915,8 @@
     "future garage",
     "rock"
    ],
-   "x": 100.72,
-   "y": 123.98,
+   "x": 98.0,
+   "y": 109.02,
    "r": 5.57,
    "energy": 0.533,
    "acousticness": 0.394,
@@ -10245,8 +10205,8 @@
     "electro",
     "electro house"
    ],
-   "x": 35.47,
-   "y": 122.89,
+   "x": 34.29,
+   "y": 124.87,
    "r": 5.83,
    "energy": 0.79,
    "acousticness": 0.042,
@@ -10559,8 +10519,8 @@
     "melodic bass",
     "edm"
    ],
-   "x": 14.41,
-   "y": 111.91,
+   "x": 14.62,
+   "y": 116.9,
    "r": 5.48,
    "energy": 0.839,
    "acousticness": 0.032,
@@ -10841,8 +10801,8 @@
     "boom bap",
     "southern hip hop"
    ],
-   "x": 137.01,
-   "y": 159.57,
+   "x": 121.5,
+   "y": 162.77,
    "r": 5.1,
    "energy": 0.695,
    "acousticness": 0.157,
@@ -11091,8 +11051,8 @@
     "hard rock",
     "medieval"
    ],
-   "x": 71.32,
-   "y": 44.97,
+   "x": 52.76,
+   "y": 44.11,
    "r": 6.78,
    "energy": 0.677,
    "acousticness": 0.309,
@@ -11501,8 +11461,8 @@
     "doom metal",
     "groove metal"
    ],
-   "x": 161.67,
-   "y": 32.66,
+   "x": 131.89,
+   "y": 33.09,
    "r": 5.39,
    "energy": 0.822,
    "acousticness": 0.056,
@@ -11511,8 +11471,8 @@
    "tempo": 137.136,
    "neighbours": [
     38,
-    52,
     43,
+    52,
     2
    ],
    "terrain": "The tallest peaks in the world, honeycombed with mines.",
@@ -11775,8 +11735,8 @@
     "artcore",
     "japanese indie"
    ],
-   "x": 93.79,
-   "y": 12.98,
+   "x": 97.16,
+   "y": 15.53,
    "r": 5.66,
    "energy": 0.88,
    "acousticness": 0.05,
@@ -12073,8 +12033,8 @@
     "soul blues",
     "northern soul"
    ],
-   "x": 166.6,
-   "y": 121.71,
+   "x": 151.21,
+   "y": 120.1,
    "r": 5.66,
    "energy": 0.575,
    "acousticness": 0.32,
@@ -12371,8 +12331,8 @@
     "psychedelic soul",
     "city pop"
    ],
-   "x": 170.93,
-   "y": 134.63,
+   "x": 159.48,
+   "y": 133.44,
    "r": 5.0,
    "energy": 0.666,
    "acousticness": 0.254,
@@ -12613,8 +12573,8 @@
     "dance",
     "art pop"
    ],
-   "x": 113.84,
-   "y": 122.57,
+   "x": 90.97,
+   "y": 121.04,
    "r": 5.2,
    "energy": 0.707,
    "acousticness": 0.119,
@@ -12871,8 +12831,8 @@
     "grunge",
     "progressive rock"
    ],
-   "x": 116.15,
-   "y": 91.47,
+   "x": 80.1,
+   "y": 59.48,
    "r": 5.2,
    "energy": 0.786,
    "acousticness": 0.033,
@@ -13129,8 +13089,8 @@
     "experimental",
     "drumstep"
    ],
-   "x": 34.39,
-   "y": 105.34,
+   "x": 16.64,
+   "y": 103.11,
    "r": 5.48,
    "energy": 0.72,
    "acousticness": 0.107,
@@ -13411,8 +13371,8 @@
     "rock",
     "hard rock"
    ],
-   "x": 150.28,
-   "y": 56.75,
+   "x": 133.3,
+   "y": 71.48,
    "r": 5.0,
    "energy": 0.664,
    "acousticness": 0.208,
@@ -13653,8 +13613,8 @@
     "folk punk",
     "anti folk"
    ],
-   "x": 105.44,
-   "y": 99.47,
+   "x": 82.43,
+   "y": 72.67,
    "r": 5.29,
    "energy": 0.639,
    "acousticness": 0.2,
@@ -13919,8 +13879,8 @@
     "comedy",
     "hindi pop"
    ],
-   "x": 86.44,
-   "y": 45.21,
+   "x": 58.7,
+   "y": 29.87,
    "r": 5.66,
    "energy": 0.6,
    "acousticness": 0.381,
@@ -14217,8 +14177,8 @@
     "hip hop",
     "region:idm"
    ],
-   "x": 96.21,
-   "y": 150.47,
+   "x": 86.9,
+   "y": 148.72,
    "r": 4.8,
    "energy": 0.458,
    "acousticness": 0.42,
@@ -14443,8 +14403,8 @@
     "hair metal",
     "80s"
    ],
-   "x": 155.56,
-   "y": 45.13,
+   "x": 135.55,
+   "y": 45.58,
    "r": 4.69,
    "energy": 0.839,
    "acousticness": 0.06,
@@ -14661,8 +14621,8 @@
     "orchestral",
     "japanese classical"
    ],
-   "x": 60.38,
-   "y": 35.33,
+   "x": 45.06,
+   "y": 29.27,
    "r": 4.8,
    "energy": 0.359,
    "acousticness": 0.668,
@@ -14887,8 +14847,8 @@
     "library music",
     "vocal jazz"
    ],
-   "x": 191.44,
-   "y": 112.47,
+   "x": 175.34,
+   "y": 112.79,
    "r": 4.9,
    "energy": 0.501,
    "acousticness": 0.569,
@@ -15121,8 +15081,8 @@
     "experimental jazz",
     "alternative hip hop"
    ],
-   "x": 184.3,
-   "y": 133.32,
+   "x": 172.71,
+   "y": 135.42,
    "r": 5.48,
    "energy": 0.601,
    "acousticness": 0.239,
@@ -15403,8 +15363,8 @@
     "experimental rock",
     "britpop"
    ],
-   "x": 76.5,
-   "y": 97.79,
+   "x": 61.49,
+   "y": 82.8,
    "r": 4.12,
    "energy": 0.726,
    "acousticness": 0.193,
@@ -15581,7 +15541,7 @@
     "folk metal",
     "metal"
    ],
-   "x": 127.76,
+   "x": 112.58,
    "y": 10.0,
    "r": 4.47,
    "energy": 0.957,
@@ -15783,8 +15743,8 @@
     "retrowave",
     "nu disco"
    ],
-   "x": 84.19,
-   "y": 130.62,
+   "x": 55.35,
+   "y": 136.75,
    "r": 4.36,
    "energy": 0.759,
    "acousticness": 0.087,
@@ -15977,8 +15937,8 @@
     "rap",
     "east coast hip hop"
    ],
-   "x": 141.69,
-   "y": 147.04,
+   "x": 122.78,
+   "y": 149.42,
    "r": 5.29,
    "energy": 0.573,
    "acousticness": 0.24,
@@ -16243,8 +16203,8 @@
     "70s",
     "quiet storm"
    ],
-   "x": 156.2,
-   "y": 128.78,
+   "x": 147.55,
+   "y": 132.09,
    "r": 4.0,
    "energy": 0.749,
    "acousticness": 0.25,
@@ -16413,8 +16373,8 @@
     "lo fi",
     "japanese"
    ],
-   "x": 58.37,
-   "y": 49.94,
+   "x": 39.53,
+   "y": 39.74,
    "r": 4.12,
    "energy": 0.565,
    "acousticness": 0.34,
@@ -16591,8 +16551,8 @@
     "swing",
     "swing music"
    ],
-   "x": 180.51,
-   "y": 119.98,
+   "x": 165.22,
+   "y": 121.35,
    "r": 5.39,
    "energy": 0.406,
    "acousticness": 0.651,
@@ -16865,8 +16825,8 @@
     "dream pop",
     "indietronica"
    ],
-   "x": 82.86,
-   "y": 107.38,
+   "x": 73.92,
+   "y": 104.1,
    "r": 4.8,
    "energy": 0.659,
    "acousticness": 0.241,
@@ -17091,8 +17051,8 @@
     "indie pop",
     "alternative dance"
    ],
-   "x": 65.35,
-   "y": 97.57,
+   "x": 57.73,
+   "y": 104.05,
    "r": 4.24,
    "energy": 0.767,
    "acousticness": 0.144,
@@ -17277,8 +17237,8 @@
     "folktronica",
     "turntablism"
    ],
-   "x": 44.22,
-   "y": 113.19,
+   "x": 29.28,
+   "y": 104.42,
    "r": 4.24,
    "energy": 0.604,
    "acousticness": 0.491,
@@ -17457,25 +17417,25 @@
     "classic rock",
     "aor",
     "hard rock",
-    "progressive rock",
     "rock",
-    "power pop",
+    "progressive rock",
     "80s",
-    "arena rock"
+    "soft rock",
+    "power pop"
    ],
-   "x": 144.22,
-   "y": 46.52,
-   "r": 4.0,
-   "energy": 0.686,
-   "acousticness": 0.076,
-   "valence": 0.503,
-   "danceability": 0.483,
-   "tempo": 124.41,
+   "x": 132.62,
+   "y": 57.04,
+   "r": 4.24,
+   "energy": 0.715,
+   "acousticness": 0.093,
+   "valence": 0.527,
+   "danceability": 0.496,
+   "tempo": 124.173,
    "neighbours": [
     13,
     38,
-    34,
-    16
+    2,
+    34
    ],
    "terrain": "A long mountain ridge with a stadium carved into it.",
    "palette": [
@@ -17585,6 +17545,14 @@
      "valence": 0.199
     },
     {
+     "name": "We Built This City",
+     "artist": "Starship",
+     "id": "6OnfBiiSc9RGKiBKKtZXgQ",
+     "duration_ms": 296080,
+     "energy": 0.908,
+     "valence": 0.656
+    },
+    {
      "name": "Come Sail Away",
      "artist": "Styx",
      "id": "11G0yprQtMU53BLPMSr093",
@@ -17615,6 +17583,14 @@
      "duration_ms": 284293,
      "energy": 0.669,
      "valence": 0.5
+    },
+    {
+     "name": "Sunday Bloody Sunday",
+     "artist": "U2",
+     "id": "6Pztn1vmTohZrFICkaDOEa",
+     "duration_ms": 279960,
+     "energy": 0.984,
+     "valence": 0.779
     }
    ]
   },
@@ -17627,8 +17603,8 @@
     "region:bedroom",
     "region:ambient"
    ],
-   "x": 54.68,
-   "y": 93.52,
+   "x": 46.13,
+   "y": 78.91,
    "r": 4.12,
    "energy": 0.518,
    "acousticness": 0.511,
@@ -17805,8 +17781,8 @@
     "dub",
     "idm"
    ],
-   "x": 48.22,
-   "y": 123.66,
+   "x": 37.07,
+   "y": 112.41,
    "r": 4.0,
    "energy": 0.565,
    "acousticness": 0.185,
@@ -17976,7 +17952,7 @@
     "swing music"
    ],
    "x": 10.0,
-   "y": 123.09,
+   "y": 127.97,
    "r": 3.61,
    "energy": 0.727,
    "acousticness": 0.032,
@@ -18121,8 +18097,8 @@
     "spanish",
     "dance"
    ],
-   "x": 124.22,
-   "y": 130.47,
+   "x": 110.17,
+   "y": 114.59,
    "r": 4.8,
    "energy": 0.577,
    "acousticness": 0.342,
@@ -18347,8 +18323,8 @@
     "contemporary classical",
     "celtic"
    ],
-   "x": 40.86,
-   "y": 62.57,
+   "x": 34.58,
+   "y": 60.6,
    "r": 3.46,
    "energy": 0.502,
    "acousticness": 0.476,
@@ -18485,8 +18461,8 @@
     "eurodance",
     "chillstep"
    ],
-   "x": 26.32,
-   "y": 114.43,
+   "x": 26.65,
+   "y": 115.11,
    "r": 3.74,
    "energy": 0.775,
    "acousticness": 0.031,
@@ -18639,8 +18615,8 @@
     "contemporary classical",
     "opera"
    ],
-   "x": 49.32,
-   "y": 41.8,
+   "x": 30.56,
+   "y": 31.57,
    "r": 5.0,
    "energy": 0.165,
    "acousticness": 0.89,
@@ -18881,8 +18857,8 @@
     "alternative rnb",
     "summer"
    ],
-   "x": 154.05,
-   "y": 151.42,
+   "x": 135.71,
+   "y": 151.45,
    "r": 4.8,
    "energy": 0.491,
    "acousticness": 0.28,
@@ -19107,8 +19083,8 @@
     "electronic",
     "neurofunk"
    ],
-   "x": 21.93,
-   "y": 101.15,
+   "x": 32.33,
+   "y": 138.26,
    "r": 4.69,
    "energy": 0.867,
    "acousticness": 0.025,
@@ -19325,8 +19301,8 @@
     "dub",
     "lovers rock"
    ],
-   "x": 107.91,
-   "y": 147.04,
+   "x": 77.8,
+   "y": 140.52,
    "r": 4.47,
    "energy": 0.615,
    "acousticness": 0.196,
@@ -19527,8 +19503,8 @@
     "delta blues",
     "chicago blues"
    ],
-   "x": 174.77,
-   "y": 99.34,
+   "x": 161.75,
+   "y": 99.63,
    "r": 4.36,
    "energy": 0.53,
    "acousticness": 0.539,
@@ -19715,23 +19691,23 @@
     "bluegrass",
     "newgrass",
     "americana",
-    "christian bluegrass",
     "folk",
+    "christian bluegrass",
     "country",
     "traditional country",
-    "southern gospel"
+    "alt country"
    ],
-   "x": 122.62,
-   "y": 56.72,
-   "r": 5.0,
-   "energy": 0.455,
-   "acousticness": 0.622,
-   "valence": 0.638,
-   "danceability": 0.498,
-   "tempo": 136.55,
+   "x": 121.49,
+   "y": 77.95,
+   "r": 5.29,
+   "energy": 0.482,
+   "acousticness": 0.59,
+   "valence": 0.643,
+   "danceability": 0.49,
+   "tempo": 136.713,
    "neighbours": [
-    0,
     3,
+    0,
     15,
     14
    ],
@@ -19777,6 +19753,30 @@
      "duration_ms": 126466,
      "energy": 0.368,
      "valence": 0.757
+    },
+    {
+     "name": "Away From The Mire",
+     "artist": "Billy Strings",
+     "id": "6oPDKGwBri4OLQX5IYu02T",
+     "duration_ms": 463653,
+     "energy": 0.593,
+     "valence": 0.511
+    },
+    {
+     "name": "Dust in a Baggie",
+     "artist": "Billy Strings",
+     "id": "2Lk8XTulavagQOrYqFpGB8",
+     "duration_ms": 174173,
+     "energy": 0.776,
+     "valence": 0.653
+    },
+    {
+     "name": "Turmoil & Tinfoil",
+     "artist": "Billy Strings",
+     "id": "3kipE3F3ghfvZHPxDvbNQF",
+     "duration_ms": 382998,
+     "energy": 0.744,
+     "valence": 0.895
     },
     {
      "name": "The over Grown Waltz",
@@ -19963,8 +19963,8 @@
     "afroswing",
     "african"
    ],
-   "x": 191.82,
-   "y": 123.93,
+   "x": 176.87,
+   "y": 124.12,
    "r": 3.61,
    "energy": 0.666,
    "acousticness": 0.198,
