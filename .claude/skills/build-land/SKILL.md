@@ -24,6 +24,8 @@ right in one pass, so the owner only needs one or two checks in play.
   and rebuild in the background: `scenes.py && layout_scenes.py && export_unity.py && islandmap.py`
   (about 6 minutes). Check no other land's counts changed.
 
+- Look at the neighbouring lands (built ones and their guide entries) and make this one clearly different from them: time of day, brightness, palette and its big idea. Give it one strong imaginative central idea (fantasy, sci-fi, supernatural or dreamlike imagery is welcome); realistic countryside alone reads as bland.
+
 ## 2. Build it in one pass: the checklist
 
 Write `Kits/<Land>Kit.cs` plus partial files (artists, places, life) and register it in `LandKit.For`.
@@ -122,9 +124,14 @@ Every item below is something that went wrong before.
 **Shared systems and performance**
 - When you change a shared system (placement, sky, glows, the audit), re-check every land that uses it:
   its photo, and the owner's next play-test. One change to spacing moved two lands at once.
-- Every land adds load you feel from the hub (grass, small props, halos, lights are all drawn at any
-  distance). Keep ground cover reasonable, merge props into the land's big meshes, keep point lights to
-  what matters, and note anything heavy under "Performance" in IDEAS.md.
+- Performance: never give a land's `Ground()` its own unlimited colours per spot for materials elsewhere
+  (the terrain rounds them; a material per distinct colour was the big slowdown). Build scenery through
+  `MeshKit.Build` (it chunks land-wide meshes so far parts can be skipped) and name walk-through foliage
+  "Soft..." (culled at 220 m like grass). After building a land, run `python build/take_shots.py perf` and
+  check the hub and the land stay under about 10 ms (see IDEAS.md, Performance).
+
+**Performance and memory**
+- After building, run `python build/take_shots.py perf` (Unity closed) and add the new land to its list. Keep frames under about 10 ms and watch the memory line: mesh memory near half the graphics card makes timings swing wildly. Keep ground cover modest (under about 1.5 million vertices per land).
 
 ## 3. Before handing it over
 

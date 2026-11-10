@@ -32,11 +32,31 @@ namespace EverythingWorld.World
             biggest = Mathf.Max(biggest, radius);
         }
 
+        /// Builds the halos; spread over a whole land, they're split into chunks so far ones can be skipped.
         public GameObject Build(string name, Transform parent)
         {
             if (v.Count == 0) return null;
             var shader = Shader.Find("Everything World/Glow Halo");
             if (shader == null) { Debug.LogWarning("Glow Halo shader not found: no halos."); return null; }
+            if (max.x - min.x > MeshKit.ChunkAbove || max.z - min.z > MeshKit.ChunkAbove)
+            {
+                var root = new GameObject(name); root.transform.SetParent(parent, false);
+                var mat = new Material(shader) { name = "Glow halos" };
+                var parts = new Dictionary<(int, int), GlowHalos>();
+                for (var q = 0; q < v.Count; q += 4)
+                {
+                    var key = (Mathf.FloorToInt(v[q].x / MeshKit.ChunkSize), Mathf.FloorToInt(v[q].z / MeshKit.ChunkSize));
+                    if (!parts.TryGetValue(key, out var h)) parts[key] = h = new GlowHalos();
+                    h.Add(v[q], size[q].x, c[q], c[q].a);
+                }
+                foreach (var kv in parts) kv.Value.BuildWith($"{name} {kv.Key.Item1},{kv.Key.Item2}", root.transform, mat);
+                return root;
+            }
+            return BuildWith(name, parent, new Material(shader) { name = "Glow halos" });
+        }
+
+        GameObject BuildWith(string name, Transform parent, Material material)
+        {
             var mesh = new Mesh { name = name, indexFormat = IndexFormat.UInt32 };
             mesh.SetVertices(v); mesh.SetColors(c); mesh.SetUVs(0, corner); mesh.SetUVs(1, size); mesh.SetTriangles(t, 0);
             // the quads are spread out in the shader, so the bounds must allow for their size
@@ -47,7 +67,7 @@ namespace EverythingWorld.World
             go.transform.SetParent(parent, false);
             go.AddComponent<MeshFilter>().sharedMesh = mesh;
             var r = go.AddComponent<MeshRenderer>();
-            r.sharedMaterial = new Material(shader) { name = "Glow halos" };
+            r.sharedMaterial = material;
             r.shadowCastingMode = ShadowCastingMode.Off;
             r.receiveShadows = false;
             return go;

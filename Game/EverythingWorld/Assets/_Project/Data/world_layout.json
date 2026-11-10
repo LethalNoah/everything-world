@@ -13010,7 +13010,7 @@
   "Hot Sause"
  ],
  "hubSongs": 2166,
- "hubArtists": 1324,
+ "hubArtists": 1322,
  "hubSince": 2022,
  "hubRadius": 240,
  "coverCols": 40,
@@ -17437,26 +17437,6 @@
    ]
   },
   {
-   "name": "Billy Eichner",
-   "sceneId": 26,
-   "x": 9872.0,
-   "z": 4091.7333915736654,
-   "r": 15.0,
-   "songs": 1,
-   "tier": "shrine",
-   "station": false,
-   "stationId": 0,
-   "genres": "",
-   "years": "2019",
-   "addedBy": "npgallagher",
-   "songList": [
-    {
-     "title": "The Lion Sleeps Tonight",
-     "cover": 798
-    }
-   ]
-  },
-  {
    "name": "Billy Joel",
    "sceneId": 13,
    "x": 6720.0,
@@ -18546,9 +18526,9 @@
   },
   {
    "name": "Béla Fleck",
-   "sceneId": 0,
-   "x": 5600.0,
-   "z": 3435.7333915736654,
+   "sceneId": 64,
+   "x": 6288.0,
+   "z": 4803.733391573665,
    "r": 15.0,
    "songs": 1,
    "tier": "shrine",
@@ -18566,9 +18546,9 @@
   },
   {
    "name": "Béla Fleck and the Flecktones",
-   "sceneId": 0,
-   "x": 5440.0,
-   "z": 3363.7333915736654,
+   "sceneId": 64,
+   "x": 6432.0,
+   "z": 4739.733391573665,
    "r": 15.0,
    "songs": 1,
    "tier": "shrine",
@@ -19226,9 +19206,9 @@
   },
   {
    "name": "Cash Cash",
-   "sceneId": 1,
-   "x": 6648.0,
-   "z": 7331.733391573665,
+   "sceneId": 23,
+   "x": 8576.0,
+   "z": 2779.7333915736654,
    "r": 15.0,
    "songs": 1,
    "tier": "shrine",
@@ -21822,9 +21802,9 @@
   },
   {
    "name": "Echoflesh",
-   "sceneId": 6,
-   "x": 7248.0,
-   "z": 8283.733391573665,
+   "sceneId": 53,
+   "x": 9600.0,
+   "z": 5819.733391573665,
    "r": 15.0,
    "songs": 1,
    "tier": "shrine",
@@ -22158,7 +22138,7 @@
    "x": 6688.0,
    "z": 4011.7333915736654,
    "r": 45.0,
-   "songs": 8,
+   "songs": 6,
    "tier": "hall",
    "station": true,
    "stationId": 518398,
@@ -22177,14 +22157,6 @@
     {
      "title": "Goodbye Yellow Brick Road - Remastered 2014",
      "cover": 1732
-    },
-    {
-     "title": "Can You Feel the Love Tonight - End Title",
-     "cover": 728
-    },
-    {
-     "title": "I Just Can't Wait to Be King",
-     "cover": 728
     },
     {
      "title": "Crocodile Rock - Remastered",
@@ -26425,26 +26397,6 @@
     {
      "title": "Lover, You Should've Come Over",
      "cover": 1238
-    }
-   ]
-  },
-  {
-   "name": "Jeremy Irons",
-   "sceneId": 36,
-   "x": 8544.0,
-   "z": 4358.99772110198,
-   "r": 15.0,
-   "songs": 1,
-   "tier": "shrine",
-   "station": false,
-   "stationId": 0,
-   "genres": "",
-   "years": "1994",
-   "addedBy": "npgallagher",
-   "songList": [
-    {
-     "title": "Be Prepared",
-     "cover": 728
     }
    ]
   },
@@ -31262,9 +31214,9 @@
   },
   {
    "name": "Molly Tuttle",
-   "sceneId": 0,
-   "x": 5480.0,
-   "z": 3355.7333915736654,
+   "sceneId": 64,
+   "x": 6320.0,
+   "z": 4651.733391573665,
    "r": 18.0,
    "songs": 2,
    "tier": "monument",
@@ -31901,26 +31853,6 @@
     {
      "title": "Wellerman - Sea Shanty",
      "cover": 1534
-    }
-   ]
-  },
-  {
-   "name": "Nathan Lane",
-   "sceneId": 36,
-   "x": 8544.0,
-   "z": 4294.99772110198,
-   "r": 15.0,
-   "songs": 1,
-   "tier": "shrine",
-   "station": false,
-   "stationId": 0,
-   "genres": "",
-   "years": "1994",
-   "addedBy": "npgallagher",
-   "songList": [
-    {
-     "title": "Hakuna Matata",
-     "cover": 728
     }
    ]
   },
@@ -36966,9 +36898,9 @@
   },
   {
    "name": "Sithu Aye",
-   "sceneId": 18,
-   "x": 6656.0,
-   "z": 5523.733391573665,
+   "sceneId": 28,
+   "x": 7320.0,
+   "z": 7483.733391573665,
    "r": 22.0,
    "songs": 3,
    "tier": "monument",
@@ -39845,6 +39777,42 @@
     {
      "title": "She Moves In Her Own Way",
      "cover": 796
+    }
+   ]
+  },
+  {
+   "name": "The Lion King",
+   "sceneId": 36,
+   "x": 8488.0,
+   "z": 4427.733391573665,
+   "r": 22.0,
+   "songs": 5,
+   "tier": "monument",
+   "station": true,
+   "stationId": 142745,
+   "genres": "",
+   "years": "1994-2019",
+   "addedBy": "npgallagher",
+   "songList": [
+    {
+     "title": "Hakuna Matata",
+     "cover": 728
+    },
+    {
+     "title": "Be Prepared",
+     "cover": 728
+    },
+    {
+     "title": "Can You Feel the Love Tonight - End Title",
+     "cover": 728
+    },
+    {
+     "title": "The Lion Sleeps Tonight",
+     "cover": 798
+    },
+    {
+     "title": "I Just Can't Wait to Be King",
+     "cover": 728
     }
    ]
   },
@@ -43366,9 +43334,9 @@
   },
   {
    "name": "Zero Eden",
-   "sceneId": 4,
-   "x": 7832.0,
-   "z": 9595.733391573665,
+   "sceneId": 23,
+   "x": 8408.0,
+   "z": 2819.7333915736654,
    "r": 22.0,
    "songs": 3,
    "tier": "monument",
@@ -44813,7 +44781,7 @@
    "name": "The Lo-Fi Lighthouse",
    "realm": "The Indie Isles",
    "sceneId": 9,
-   "x": 8679.626715442946,
+   "x": 8686.104048812678,
    "z": 5894.373366457522
   },
   {
@@ -44821,7 +44789,7 @@
    "realm": "The Bass Reaches",
    "sceneId": 19,
    "x": 9243.154718609763,
-   "z": 1962.6320110292618
+   "z": 1969.1093443989957
   },
   {
    "name": "The Hit Parade Tower",

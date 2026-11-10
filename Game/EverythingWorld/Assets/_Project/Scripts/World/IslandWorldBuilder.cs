@@ -31,6 +31,8 @@ namespace EverythingWorld.World
         public int targetFrameRate = 60;
         [Tooltip("In the editor, check each hand-built land after it's built (missing colliders, crowded or misplaced artists, empty stretches, light) and write a report and a picture to Logs/LandAudit/.")]
         public bool auditLands = true;
+        [Tooltip("Hide grass, small props, glows and lights on built lands when they're far away (LandCuller). Turn off to compare.")]
+        public bool cullByDistance = true;
 
         public static IslandWorldBuilder Instance { get; private set; }
         public IslandWorldData Data { get; private set; }
@@ -166,11 +168,21 @@ namespace EverythingWorld.World
             if (n.y < 0) { var t = b; b = c; c = t; }
             var avg = (a.y + b.y + c.y) / 3f;
             var slope = Mathf.Max(Mathf.Max(a.y, b.y), c.y) - Mathf.Min(Mathf.Min(a.y, b.y), c.y);
-            var mat = Mat(TerrainColor(avg, slope, island, col, row));
+            var mat = Mat(Quantise(TerrainColor(avg, slope, island, col, row)));
             if (!byMaterial.TryGetValue(mat, out var list)) byMaterial[mat] = list = new List<int>();
             list.Add(verts.Count); verts.Add(a);
             list.Add(verts.Count); verts.Add(b);
             list.Add(verts.Count); verts.Add(c);
+        }
+
+        /// Round a ground colour to one of a limited set of shades. Each distinct colour is its own material,
+        /// drawn separately, and the built lands blend their ground colours smoothly: unrounded, one terrain chunk
+        /// had thousands of materials, and looking toward the built lands took 140 ms a frame (4 ms without the
+        /// terrain). 24 steps per channel can't be seen on low-poly ground.
+        static Color Quantise(Color c)
+        {
+            const float Q = 24f;
+            return new Color(Mathf.Round(c.r * Q) / Q, Mathf.Round(c.g * Q) / Q, Mathf.Round(c.b * Q) / Q, 1f);
         }
 
         Color TerrainColor(float height, float slope, int island, int col, int row)
@@ -345,6 +357,9 @@ namespace EverythingWorld.World
                     Debug.LogException(e); // one broken land should not stop the rest of the world
                 }
             }
+            // hide what's too far away to matter (detail, small props, glows, lights), so views across built
+            // lands stay smooth
+            if (cullByDistance) gameObject.AddComponent<LandCuller>().Init(root);
         }
 
         // ---------- island name signs ----------

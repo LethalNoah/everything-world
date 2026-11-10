@@ -16,6 +16,7 @@ namespace EverythingWorld.World
         {
             if (wood == null) MakeMaterials();
             if (a.name == NoahName) { NoahPlace(ctx, a); return; }
+            if (a.name == MoonName) { MoonhunterPlace(ctx, a); return; }
             var root = new GameObject("Artist: " + a.name).transform; root.SetParent(ctx.Root, false);
             var front = facing.TryGetValue(a.name, out var f) ? f : new Vector3(center.x - a.x, 0, center.z - a.z).normalized;
             if (front.sqrMagnitude < .01f) front = Vector3.forward;

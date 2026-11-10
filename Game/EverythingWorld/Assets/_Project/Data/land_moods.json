@@ -9,6 +9,22 @@
  },
  "lands": [
   {
+   "land": "The Southern Rock Bayou",
+   "sunPitch": 16, "sunYaw": -120, "sunIntensity": 1.1, "sunColor": "#FFD27A",
+   "skyLight": "#C8C489", "horizonLight": "#E6CF8A", "groundLight": "#55603A",
+   "fogColor": "#BDB77E", "fogStart": 40, "fogEnd": 900,
+   "stars": 0, "sunShadows": false, "dailyWeather": false, "bloom": 0.9,
+   "weather": "", "weatherAmount": 0
+  },
+  {
+   "land": "Kingdom of Classic Rock",
+   "sunPitch": 13, "sunYaw": 120, "sunIntensity": 1.5, "sunColor": "#FFD08A",
+   "skyLight": "#A9C6EA", "horizonLight": "#FFD9A0", "groundLight": "#7A7448",
+   "fogColor": "#F2D7A6", "fogStart": 220, "fogEnd": 2000,
+   "stars": 0, "sunShadows": true, "dailyWeather": false, "bloom": 0.95,
+   "weather": "", "weatherAmount": 0
+  },
+  {
    "land": "Garage Rock Row",
    "sunPitch": -6, "sunYaw": -40, "sunIntensity": 0.6, "sunColor": "#9FE6F0",
    "skyLight": "#5FA8B8", "horizonLight": "#3D8C9C", "groundLight": "#5A5038",

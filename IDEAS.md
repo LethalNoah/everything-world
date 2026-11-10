@@ -12,16 +12,25 @@ The playlist is meant to be surprising and spontaneous, so the world shouldn't b
 
 - Run Unity from the command line (batch mode) to build the world, run the land audit and save screenshots from where you arrive, each artist area and above, so Claude can check a land without the owner testing every round. Unity has to be closed while it runs. The land audit and the `build-land` skill are already done.
 
+## Saved for other lands (2026-11-10)
+
+- **A crumbling stadium standing like a castle** (battlement stands, floodlight towers, a stage on the pitch): first built for the Kingdom of Classic Rock, taken out at the owner's request to save it for the stadium/arena rock land (Arena Rock Ridge).
+- The Kingdom took a gentle "heavenly" touch (golden light through the Hall's dome, gold dust). If another land needs heaven as its main idea, keep the Kingdom's version understated.
+
 ## Social spaces and minigames (2026-11-09, later)
 
 - A big Christmas lodge (probably in or near Lanternwood) you can go inside, sit down in and talk with friends.
 - Pub songs and Christmas songs might get an area of their own one day. For now the sea shanties and pub songs (Drunken Sailor, Wellerman, Ratlin' Bog) and A Holly Jolly Christmas live on the Isle of Memes & Musicals.
 - Minigames somewhere in the world.
 
-## Performance as the world fills up (2026-11-09, noticed, not urgent yet)
+## Performance (2026-11-10, first pass done)
 
-- Looking from the hub toward the Indie Downs causes lag, but looking toward unbuilt lands doesn't: the built lands draw everything at any distance (swaying grass and flowers, thousands of small props, glow halos, lights).
-- Likely fixes when it matters: hide ground cover and small props beyond a few hundred metres (Unity's per-layer cull distances, or turning far lands' detail off by distance); simpler stand-ins for far lands; fewer, bigger meshes; a cap on lights per land. Measure first with Unity's Profiler, from the hub, before changing anything.
+- **Measured** with `python build/take_shots.py perf` (Unity closed): it times rendering from the hub and two busy lands, eight ways each, and tries switching suspects off, writing `Game/EverythingWorld/Logs/perf.txt`.
+- **The cause was the terrain**, not the scenery: every distinct ground colour was its own material, and the built lands blend colours smoothly, so a terrain chunk had thousands of materials. Ground colours are now rounded to 24 shades per channel (`IslandWorldBuilder.Quantise`). The hub's view toward the Indie Isles went from 140 ms to 4 ms a frame; the busiest lands from about 58 ms to 3 ms.
+- Also done: land-wide scenery and glow meshes are split into 80 m chunks (`MeshKit.Build`; use `BuildSingle` for a mesh that's moved as a whole), and `LandCuller` hides grass beyond 220 m, small props 400 m, glows 650 m, mid-sized scenery 900 m, big pieces 1.6 km, and lights out of reach. Triangles drawn from the hub fell from about a million to 50 thousand.
+- **Memory (2026-11-10):** with eleven lands built, the meshes took 4.1 GB on the 8 GB graphics card, and frame times swung between 3 and 20 ms depending on what else was using it. Unity's static batching was keeping a second copy of all the scenery; it is now off (Player Settings, Standalone), which halved that to 2.1 GB at the same speed. `take_shots.py perf` now prints the memory and the biggest meshes.
+- The grass is now most of what's left (about 1.5 GB: each land's swaying ground cover is 1-2.6 million vertices). With ~45 lands to go, that needs a fix before long: build grass only near the player, or thinner grass far from paths.
+- Next, if it's ever needed: clouds (about 100 separate meshes per built land), simpler far versions of lands.
 
 ## A quest across the lands (2026-11-09, wanted, not designed yet)
 

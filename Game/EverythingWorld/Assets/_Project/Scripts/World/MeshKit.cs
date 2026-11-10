@@ -154,6 +154,37 @@ namespace EverythingWorld.World
             }
         }
 
+        public const float ChunkAbove = 200f, ChunkSize = 80f;
+
+        /// Makes the mesh as one object, never split (for a mesh that is moved as a whole, like a cloud, or whose
+        /// renderer the caller needs).
+        public GameObject BuildSingle(string name, Transform parent, bool collider) => verts.Count == 0 ? null : BuildOne(name, parent, collider);
+
+        GameObject BuildChunks(string name, Transform parent, bool collider)
+        {
+            var root = new GameObject(name);
+            root.transform.SetParent(parent, false);
+            root.isStatic = true;
+            var chunks = new Dictionary<(int, int), MeshKit>();
+            foreach (var kv in tris)
+            {
+                var list = kv.Value;
+                for (var i = 0; i < list.Count; i += 3)
+                {
+                    Vector3 a = verts[list[i]], b = verts[list[i + 1]], c = verts[list[i + 2]];
+                    var centre = (a + b + c) / 3f;
+                    var key = (Mathf.FloorToInt(centre.x / ChunkSize), Mathf.FloorToInt(centre.z / ChunkSize));
+                    if (!chunks.TryGetValue(key, out var mk)) chunks[key] = mk = new MeshKit();
+                    if (!mk.tris.TryGetValue(kv.Key, out var t)) mk.tris[kv.Key] = t = new List<int>();
+                    t.Add(mk.verts.Count); mk.verts.Add(a); mk.uvs.Add(uvs[list[i]]);
+                    t.Add(mk.verts.Count); mk.verts.Add(b); mk.uvs.Add(uvs[list[i + 1]]);
+                    t.Add(mk.verts.Count); mk.verts.Add(c); mk.uvs.Add(uvs[list[i + 2]]);
+                }
+            }
+            foreach (var kv in chunks) kv.Value.BuildOne($"{name} {kv.Key.Item1},{kv.Key.Item2}", root.transform, collider);
+            return root;
+        }
+
         /// Makes an invisible mesh that only blocks movement (walls, benches, firewood).
         public GameObject BuildCollider(string name, Transform parent)
         {
@@ -172,9 +203,20 @@ namespace EverythingWorld.World
         }
 
         /// Makes the mesh as a child of 'parent' (in world coordinates). Returns null if nothing was added.
+        /// A mesh spread over a whole land is split into chunks (children of the returned object), so Unity
+        /// only draws the parts in view and LandCuller can hide far ones: one land-wide mesh is drawn whole
+        /// whenever any corner of it is on screen.
         public GameObject Build(string name, Transform parent, bool collider)
         {
             if (verts.Count == 0) return null;
+            Vector3 lo = verts[0], hi = verts[0];
+            foreach (var p in verts) { lo = Vector3.Min(lo, p); hi = Vector3.Max(hi, p); }
+            if (hi.x - lo.x > ChunkAbove || hi.z - lo.z > ChunkAbove) return BuildChunks(name, parent, collider);
+            return BuildOne(name, parent, collider);
+        }
+
+        GameObject BuildOne(string name, Transform parent, bool collider)
+        {
             var mesh = new Mesh { name = name, indexFormat = IndexFormat.UInt32 };
             mesh.SetVertices(verts);
             mesh.SetUVs(0, uvs);

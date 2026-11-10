@@ -111,6 +111,9 @@ namespace EverythingWorld.World
             var homes = new List<IslandWorldData.Artist>();
             foreach (var a in data.layout.artists) if (a.sceneId == sid && a != mine) homes.Add(a);
             homes.Sort((p, q) => string.CompareOrdinal(p.name, q.name));
+            // the Moonhunter house and its yard need the most room: it goes first, with a wider area
+            var moonHome = homes.Find(h => h.name == MoonName);
+            if (moonHome != null) { homes.Remove(moonHome); homes.Insert(0, moonHome); moonHome.r = Mathf.Max(moonHome.r, 24f); }
             foreach (var a in homes)
             {
                 var bestD = float.MinValue; var at = new Vector3(a.x, 0, a.z);

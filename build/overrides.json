@@ -3,7 +3,8 @@
  "album_artist": {
   "Phineas And Ferb": "Phineas and Ferb",
   "The Gold (Phoebe Bridgers Version)": "Phoebe Bridgers",
-  "Jack Johnson & Friends": "Jack Johnson"
+  "Jack Johnson & Friends": "Jack Johnson",
+  "The Lion King": "The Lion King"
  },
  "same_scene_as": {
   "The Moonies": "Phineas and Ferb",
@@ -23,6 +24,14 @@
   "Brigham Phillips": "Phineas and Ferb",
   "Burl Ives": "Phineas and Ferb",
   "Ancient Chinese composer": "John Williams",
-  "unclepat": "Jack Johnson"
+  "unclepat": "Jack Johnson",
+  "The Lion King": "The Muppets",
+  "Zero Eden": "Avicii",
+  "Cash Cash": "Avicii",
+  "Sithu Aye": "Yorushika",
+  "Molly Tuttle": "Nickel Creek",
+  "Béla Fleck": "Nickel Creek",
+  "Béla Fleck and the Flecktones": "Nickel Creek",
+  "Echoflesh": "Steph.fm"
  }
 }

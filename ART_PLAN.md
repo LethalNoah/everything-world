@@ -10,7 +10,7 @@ Classic, jam, prog, southern, glam and heavy metal: the old heartland of rock.
 
 ### 0. The Jam Band Commonwealth
 
-*jam band, experimental jazz, newgrass, bluegrass, rock* · 116 songs · energy 0.70, acoustic 0.35, mood 0.52 · top artists: Phish, Trey Anastasio, Widespread Panic, Umphrey's McGee, Billy Strings
+*jam band, experimental jazz, newgrass, rock, bluegrass* · 112 songs · energy 0.71, acoustic 0.34, mood 0.52 · top artists: Phish, Trey Anastasio, Widespread Panic, Umphrey's McGee, Billy Strings
 
 - **Terrain:** Vast rolling woods cut by long winding trails that loop back on themselves; open meadows used as festival lawns.
 - **Colours:** `#5E7D3A moss`, `#E8833A tie-dye orange`, `#7B4BA0 tie-dye purple`, `#3FA7A0 teal sky`
@@ -40,7 +40,7 @@ Classic, jam, prog, southern, glam and heavy metal: the old heartland of rock.
 
 ### 13. The Yacht Rock Riviera
 
-*classic rock, soft rock, yacht rock, rock, pop* · 38 songs · energy 0.64, acoustic 0.28, mood 0.64 · top artists: Elton John, Fleetwood Mac, Billy Joel, Eagles, TOTO
+*classic rock, soft rock, yacht rock, rock, pop* · 36 songs · energy 0.64, acoustic 0.26, mood 0.65 · top artists: Elton John, Fleetwood Mac, Billy Joel, Eagles, TOTO
 
 - **Terrain:** Palm-lined coves, white-sand beaches and a calm marina.
 - **Colours:** `#8FD3C1 seafoam`, `#EED9A6 sand`, `#F08A6B coral`, `#23395B navy`
@@ -110,7 +110,7 @@ Classic, jam, prog, southern, glam and heavy metal: the old heartland of rock.
 
 ### 64. The Bluegrass Hollows
 
-*bluegrass, newgrass, christian bluegrass, folk, americana* · 21 songs · energy 0.45, acoustic 0.59, mood 0.65 · top artists: Alison Krauss & Union Station, Flatt & Scruggs, Nickel Creek, Bill Monroe, Bill Monroe & His Blue Grass Boys
+*bluegrass, newgrass, americana, christian bluegrass, folk* · 25 songs · energy 0.46, acoustic 0.62, mood 0.64 · top artists: Alison Krauss & Union Station, Flatt & Scruggs, Molly Tuttle, Nickel Creek, Bill Monroe
 
 - **Terrain:** Blue-green Appalachian ridges with deep wooded hollows, creeks and split-rail fences.
 - **Colours:** `#4A6FA5 ridge blue`, `#5B7F3A hollow green`, `#B5651D banjo wood`, `#F3E9D2 cabin cream`
@@ -124,7 +124,7 @@ Alternative, grunge, punk, emo, metalcore, prog metal and J-rock.
 
 ### 1. Metalcore Caldera
 
-*post hardcore, metalcore, screamo, hardcore, emo* · 85 songs · energy 0.91, acoustic 0.01, mood 0.32 · top artists: Killswitch Engage, Like Moths To Flames, Alexisonfire, Dayseeker, blessthefall
+*post hardcore, metalcore, screamo, hardcore, emo* · 84 songs · energy 0.91, acoustic 0.01, mood 0.32 · top artists: Killswitch Engage, Like Moths To Flames, Alexisonfire, Dayseeker, blessthefall
 
 - **Terrain:** A ring of black volcanoes around a sunken crater; lava cracks in the ground, ash drifting down.
 - **Colours:** `#2B2B2E basalt`, `#E2541E ember`, `#8C8C8C ash`, `#8E1B1B blood red`
@@ -134,7 +134,7 @@ Alternative, grunge, punk, emo, metalcore, prog metal and J-rock.
 
 ### 4. The Alt Rock Moors
 
-*alternative rock, rock, art rock, britpop, funk rock* · 66 songs · energy 0.71, acoustic 0.14, mood 0.42 · top artists: Radiohead, Gorillaz, The Cranberries, Weezer, Hootie & The Blowfish
+*alternative rock, rock, art rock, britpop, funk rock* · 63 songs · energy 0.70, acoustic 0.15, mood 0.42 · top artists: Radiohead, Gorillaz, The Cranberries, Weezer, Hootie & The Blowfish
 
 - **Terrain:** Grey-green moorland with dry-stone walls, low hills and scattered towns.
 - **Colours:** `#7A6C8F heather`, `#5D7350 moor green`, `#5B6670 slate`, `#E07B39 signal orange`
@@ -144,7 +144,7 @@ Alternative, grunge, punk, emo, metalcore, prog metal and J-rock.
 
 ### 6. The Punk Badlands
 
-*pop punk, punk rock, punk, emo, alternative rock* · 50 songs · energy 0.82, acoustic 0.09, mood 0.55 · top artists: Green Day, Fall Out Boy, Panic! At The Disco, The Offspring, Mayday Parade
+*pop punk, punk rock, punk, emo, alternative rock* · 49 songs · energy 0.83, acoustic 0.08, mood 0.56 · top artists: Green Day, Fall Out Boy, Panic! At The Disco, The Offspring, Mayday Parade
 
 - **Terrain:** Scrappy badlands of eroded rock with suburban ruins; skate bowls carved into the ground.
 - **Colours:** `#9BD13B safety green`, `#E8458B hot pink`, `#3A3A3A asphalt`, `#C9B38A bleached tan`
@@ -174,7 +174,7 @@ Alternative, grunge, punk, emo, metalcore, prog metal and J-rock.
 
 ### 18. The Djent Spires
 
-*progressive metal, djent, progressive rock, math rock, death metal* · 33 songs · energy 0.80, acoustic 0.07, mood 0.31 · top artists: Leprous, Plini, Sithu Aye, Angel Vivaldi, Anima Tempo
+*progressive metal, djent, progressive rock, math rock, death metal* · 30 songs · energy 0.79, acoustic 0.08, mood 0.30 · top artists: Leprous, Plini, Angel Vivaldi, Anima Tempo, Animals As Leaders
 
 - **Terrain:** Precise crystal spires and terraced cliffs with clean, fractal edges.
 - **Colours:** `#3FD0E0 cyan`, `#4A5563 steel`, `#F2F5F7 white`, `#7C5CFF violet`
@@ -194,7 +194,7 @@ Alternative, grunge, punk, emo, metalcore, prog metal and J-rock.
 
 ### 28. The J-Rock Isles
 
-*j pop, j rock, japanese, anime, artcore* · 29 songs · energy 0.88, acoustic 0.06, mood 0.46 · top artists: Hoshikuma Minami, Ado, DEATHNYANN, Ling tosite sigure, Yorushika
+*j pop, j rock, japanese, anime, progressive metal* · 32 songs · energy 0.88, acoustic 0.05, mood 0.45 · top artists: Hoshikuma Minami, Sithu Aye, Ado, DEATHNYANN, Ling tosite sigure
 
 - **Terrain:** A dense neon city on steep islands, softened by cherry trees.
 - **Colours:** `#F4A7C0 sakura`, `#3DE0F5 neon cyan`, `#1B2240 night navy`, `#D93A2F torii red`
@@ -308,7 +308,7 @@ Indie rock, shoegaze, bedroom pop and indie folk.
 
 ### 53. The Small Hours
 
-*region:bedroom* · 16 songs · energy 0.53, acoustic 0.51, mood 0.32 · top artists: Noah Gallagher, Steph.fm, Bell Thompson, Boowah, Carmen Silver
+*region:bedroom, region:ambient* · 17 songs · energy 0.52, acoustic 0.51, mood 0.31 · top artists: Noah Gallagher, Steph.fm, Bell Thompson, Boowah, Carmen Silver
 
 - **Terrain:** A quiet hamlet of tiny cottages in a hollow.
 - **Colours:** `#B8A9C9 muted lilac`, `#F2D7A6 warm cream`, `#7E9C8A sage`, `#2C3550 night`
@@ -342,7 +342,7 @@ Every kind of electronic music, from ambient to riddim.
 
 ### 23. The Four-on-the-Floor Steppe
 
-*house, electronic, progressive house, edm, dance* · 30 songs · energy 0.78, acoustic 0.04, mood 0.39 · top artists: Astronaut, deadmau5, Avicii, Daft Punk, Justice
+*house, electronic, edm, progressive house, dance* · 34 songs · energy 0.79, acoustic 0.04, mood 0.37 · top artists: Astronaut, Zero Eden, deadmau5, Avicii, Daft Punk
 
 - **Terrain:** Flat grassland laid out in a grid of glowing dance floors.
 - **Colours:** `#2E7CF6 electric blue`, `#E33FA2 magenta`, `#111111 black`, `#FFFFFF white`
@@ -648,7 +648,7 @@ Film scores, classical, musicals, game music and novelties.
 
 ### 26. The Isle of Memes & Musicals
 
-*comedy, soundtrack, region:novelty, musicals, disney* · 47 songs · energy 0.67, acoustic 0.32, mood 0.65 · top artists: Phineas and Ferb, Stantough, Captainsparklez, The Little Singers, Zac Efron
+*comedy, soundtrack, region:novelty, musicals, disney* · 46 songs · energy 0.68, acoustic 0.31, mood 0.64 · top artists: Phineas and Ferb, Stantough, Captainsparklez, The Little Singers, Zac Efron
 
 - **Terrain:** A storybook island of round hills and winding paths.
 - **Colours:** `#4A90E2 storybook blue`, `#F7A1C4 pink`, `#FFE066 candy yellow`, `#7CCB5A cartoon grass`
@@ -658,7 +658,7 @@ Film scores, classical, musicals, game music and novelties.
 
 ### 36. Studio Lot Island
 
-*soundtrack, italian, bollywood, hindi, comedy* · 29 songs · energy 0.61, acoustic 0.35, mood 0.54 · top artists: Daniele Zandara, Kishore Kumar, Martin O'Donnell, A.R. Rahman, Alberto Pomeranz
+*soundtrack, italian, bollywood, classic rock, pop* · 32 songs · energy 0.60, acoustic 0.38, mood 0.55 · top artists: The Lion King, Daniele Zandara, Kishore Kumar, Martin O'Donnell, A.R. Rahman
 
 - **Terrain:** A film studio back lot where sets from different films stand side by side.
 - **Colours:** `#D9C9A8 set beige`, `#C96A3E terracotta`, `#F2D16B spotlight yellow`, `#2E3440 soundstage black`

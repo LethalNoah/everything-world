@@ -817,8 +817,8 @@ namespace EverythingWorld.World
                     ArtistBits.Label(words, s.y.ToString(), top + outward * .3f, outward, 1.3f, Warm);
                 }
             }
-            frames.Build("Frames", ringGo.transform, false).GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-            pictures.Build("Covers", ringGo.transform, false).GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            frames.BuildSingle("Frames", ringGo.transform, false).GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            pictures.BuildSingle("Covers", ringGo.transform, false).GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             foreach (Transform child in ringGo.transform) child.gameObject.isStatic = false;
             // the light on the song playing now: a bright frame, and a beam of light down to the ground under it
             var hl = new GameObject("Now playing").transform;

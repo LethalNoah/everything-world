@@ -10,6 +10,11 @@ namespace EverythingWorld.World
     public class SmallHoursLife : MonoBehaviour
     {
         public Transform[] drums = new Transform[0];
+        // the Moonhunter house (SmallHoursMoonhunter)
+        public Transform[] moonGems = new Transform[0]; public int[] moonGemLanes = new int[0];
+        public Material[] moonFrets = new Material[0], moonWindows = new Material[0]; public Color[] moonFretColors = new Color[0];
+        public Vector3 moonA, moonB, moonSide; public float moonLane = .7f; public Light moonSpot; public Material moonTv; public string moonId;
+        float moonOn; float[] fretFlash = new float[5]; float[] gemPrev = new float[0];
         public Material aerialLight, tvWindow, moon, auroraMaterial;
         public Transform wheel, aurora;
         public Transform[] gondolas = new Transform[0];
@@ -19,6 +24,35 @@ namespace EverythingWorld.World
         public float wheelRadius = 13f;
         float[] gondolaGlow = new float[0], songGlow = new float[0];
         Quaternion auroraBase; bool auroraSet;
+
+        /// While "Moonhunter" plays: notes stream down the garden's highway, each fret flashing as a note hits
+        /// it; every dark window lights up; the spotlight over the karaoke mic comes on; the TV brightens.
+        void Moonhunter(string id, float t, float dt, float energy)
+        {
+            if (moonGems.Length == 0) return;
+            moonOn = Mathf.MoveTowards(moonOn, id != null && id == moonId ? 1f : 0f, dt / 1.5f);
+            if (gemPrev.Length != moonGems.Length) gemPrev = new float[moonGems.Length];
+            var len = Vector3.Distance(moonA, moonB); const float speed = 5f;
+            for (var i = 0; i < moonGems.Length; i++)
+            {
+                var g = moonGems[i]; var on = moonOn > .01f; g.gameObject.SetActive(on);
+                if (!on) continue;
+                var ph = Mathf.Repeat(t * speed / Mathf.Max(len, 1f) + i * (1f / moonGems.Length) + (i % 3) * .013f, 1f);
+                var lane = moonGemLanes[i];
+                g.position = Vector3.Lerp(moonA, moonB, ph) + moonSide * ((lane - 2f) * moonLane) + Vector3.up * .14f;
+                g.localScale = Vector3.one * Mathf.Min(moonOn, Mathf.Min(1f, (1f - ph) * 25f));
+                if (gemPrev[i] < .97f && ph >= .97f && lane < fretFlash.Length) fretFlash[lane] = 1f;
+                gemPrev[i] = ph;
+            }
+            for (var l = 0; l < moonFrets.Length && l < fretFlash.Length; l++)
+            {
+                fretFlash[l] = Mathf.MoveTowards(fretFlash[l], 0f, dt * 4f);
+                moonFrets[l].SetColor("_EmissionColor", moonFretColors[l] * (.9f + moonOn * 1f + fretFlash[l] * 5f));
+            }
+            foreach (var w in moonWindows) w.SetColor("_EmissionColor", Color.Lerp(new Color(.12f, .16f, .26f) * .25f, new Color(1f, .45f, .12f) * 1.5f, moonOn));
+            if (moonSpot != null) moonSpot.intensity = moonOn * (4f + Mathf.Sin(t * 2f) * .5f);
+            if (moonTv != null) moonTv.SetColor("_EmissionColor", new Color(.25f, .3f, .55f) * (1.2f + moonOn * (1.5f + Mathf.PerlinNoise(t * 4f, 0f))));
+        }
 
         void Update()
         {
@@ -45,6 +79,7 @@ namespace EverythingWorld.World
                     gondolaLamps[i].SetColor("_EmissionColor", gondolaColors[i] * (.9f + gondolaGlow[i] * (3.5f + 1.5f * Mathf.Sin(t * 3f))));
                 }
             }
+            Moonhunter(id, t, dt, energy);
             if (songGlow.Length != songLights.Length) songGlow = new float[songLights.Length];
             for (var i = 0; i < songLights.Length; i++)
             {

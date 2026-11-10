@@ -41,7 +41,7 @@ namespace EverythingWorld.World
                     var c = new Vector3(f * length, r * .25f + (float)rng.NextDouble() * 4f, ((float)rng.NextDouble() - .5f) * 18f * size);
                     mk.Blob(white, c, new Vector3(r, r * .6f, r * .85f), rng, .12f);
                 }
-                var go = mk.Build("Puffs", t, false);
+                var go = mk.BuildSingle("Puffs", t, false);
                 go.isStatic = false;
                 go.GetComponent<MeshRenderer>().shadowCastingMode = shadows ? UnityEngine.Rendering.ShadowCastingMode.On : UnityEngine.Rendering.ShadowCastingMode.Off;
                 t.localRotation = Quaternion.Euler(0, (float)rng.NextDouble() * 40f - 20f, 0);
