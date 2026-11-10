@@ -82,13 +82,13 @@ The heartland. Old hills, long roads and the tallest mountains in the world. Mos
 **Artist areas:** Cabins, lakeside benches and stumps with plaques. Fenne Lily and Cat Stevens get the biggest cabins.
 
 ### The Yacht Rock Riviera
-*38 songs · 23 artists · 0.50 km²*
+*38 songs · 24 artists · 0.50 km² · built in Unity*
 
-**Arriving:** Palm-lined coves, white sand and a calm marina. The yacht club's pier is shaped like a piano keyboard.
+**Arriving:** An endless golden-pink sunset over a calm bay. The land had no sea of its own, so a bay is dug into its heart: you arrive on the shore looking out over it, a lamp-lit stone promenade with a white balustrade, date palms and teak benches running all the way round.
 
-**The vibe:** An endless late-summer sunset. Sailboats, deck chairs, white grand pianos on the sand. Smooth and slightly cheesy, on purpose.
+**The vibe:** Smooth and a little classy (and a little cheesy, on purpose). A marina with a main pier laid out like a piano keyboard (white planks, black keys raised between), finger jetties with sailing yachts and motor yachts rocking at their moorings; the white Riviera Yacht Club on the shore with a blue-and-white striped awning over a terrace of round tables, string lights and a flagpole; a red-and-white lighthouse on a point; a sandy beach with white grand pianos, striped deck chairs and parasols. White villas with terracotta roofs, pools and bougainvillea on the slopes, cypress and olive trees, vineyards in rows. Gulls wheel over the bay and now and then a sailboat glides across it. "Rocket Man" launches Elton's rocket; "Africa" brings rain over the bay and sets the drums glowing; "Hotel California" deepens the light to a dusky red and blazes the hotel's windows; "Margaritaville" blazes the tiki lights; "Danger Zone" sends a jet screaming low round the bay.
 
-**Artist areas:** Elton John gets a hall (a white piano pavilion). The rest get moored boats, beach cabanas and deck-chair plaques.
+**Artist areas:** Elton John: a yellow brick road to a sequinned grand piano, a rocket on its pad, a tiny dancer turning on a music box, a crocodile in sunglasses. Fleetwood Mac: an arch of two giant curved tusks, a glowing crystal ball, a tumble of rocks. Billy Joel: a little piano bar with a glowing sign, a piano and stools inside. Eagles: a mission-style hotel with a bell tower, arches and lit windows under a "HOTEL CALIFORNIA" sign. Jimmy Buffett: a thatched tiki bar, a giant margarita, a giant cheeseburger, a parrot on a perch. TOTO: a snow-capped mountain over a ring of drums. Kenny Loggins: a jet on a pedestal. Phil Collins: a drum kit with a gong. Starship: a city skyline. Chicago: a clock at 3:35. Steely Dan: a lantern pavilion. America: a convertible by a "Ventura Highway" sign. Stevie Nicks: a white-winged dove. Everyone else: a white grand piano on a teak deck under a parasol.
 
 ### The Prog Marches
 *37 songs · 13 artists · 0.54 km²*
