@@ -9,6 +9,14 @@
  },
  "lands": [
   {
+   "land": "The Jam Band Commonwealth",
+   "sunPitch": -3, "sunYaw": 250, "sunIntensity": 0.55, "sunColor": "#FFB47A",
+   "skyLight": "#4A68B0", "horizonLight": "#F0A070", "groundLight": "#26302E",
+   "fogColor": "#344C80", "fogStart": 110, "fogEnd": 1200,
+   "stars": 0.5, "sunShadows": false, "dailyWeather": false, "bloom": 1.0,
+   "weather": "", "weatherAmount": 0
+  },
+  {
    "land": "The Psychedelic Wilds",
    "sunPitch": 62, "sunYaw": 30, "sunIntensity": 1.5, "sunColor": "#FFF0D8",
    "skyLight": "#8FA8F0", "horizonLight": "#E8C0F0", "groundLight": "#8A7060",
