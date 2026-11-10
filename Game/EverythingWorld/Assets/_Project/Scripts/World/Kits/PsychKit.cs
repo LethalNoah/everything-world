@@ -18,8 +18,9 @@ namespace EverythingWorld.World
             Shakedown = "1lNRVjK8MukRZpeurYssIx", SongForTheDeaf = "6aCZqq6JkwrfbeXU71VNk0";
         public override (string song, string label, string artist)[] SpecialSongs => new[]
         {
-            (BoxOfRain, "Box of Rain", "Grateful Dead"), (Sunshine, "Here Comes Sunshine", "Grateful Dead"), (EyesOfTheWorld, "Eyes of the World", "Grateful Dead"),
-            (Franklins, "Franklin's Tower", "Grateful Dead"), (Shakedown, "Shakedown Street", "Grateful Dead"), (SongForTheDeaf, "Song For The Deaf", "Queens of the Stone Age"),
+            (BoxOfRain, "Box of Rain", "Grateful Dead"), (Sunshine, "Here Comes Sunshine", "@the Dead's world"), (Franklins, "Franklin's Tower", "Grateful Dead"),
+            (Shakedown, "Shakedown Street", "Grateful Dead"), (Ripple, "Ripple", "@ripple"), (DireWolf, "Dire Wolf", "@dire wolf"), (ShipOfFools, "Ship of Fools", "@ship of fools"),
+            (StellaBlue, "Stella Blue", "@stella blue"), (Brokedown, "Brokedown Palace", "@brokedown palace"), (SongForTheDeaf, "Song For The Deaf", "Queens of the Stone Age"),
         };
 
         static readonly Color[] Rainbow = { new Color(1f, .3f, .4f), new Color(1f, .6f, .15f), new Color(1f, .9f, .2f), new Color(.35f, .9f, .4f), new Color(.25f, .65f, 1f), new Color(.65f, .4f, 1f) };
@@ -46,7 +47,7 @@ namespace EverythingWorld.World
 
         Material GlowM(Color c, float s = 2f) => WorldMaterials.Glow(c, s * .65f);
         static bool HasStation(IslandWorldData.Artist a) => a.station || a.stationId != 0;
-        static float Foot(IslandWorldData.Artist a) => a.name == "Grateful Dead" ? 30f : HasStation(a) ? 16f : 8f;
+        static float Foot(IslandWorldData.Artist a) => a.name == "Grateful Dead" ? 52f : a.name == "Queens of the Stone Age" ? 22f : HasStation(a) ? 16f : 8f;
 
         /// Flat ground is pale desert pink; slopes show bands of colour stacked by height, like striped mesas.
         public override bool Ground(float height, float slope, float patch, out Color color)
@@ -261,7 +262,7 @@ namespace EverythingWorld.World
                     var lp = pts[i] + side * ((i / 9) % 2 == 0 ? 1f : -1f) * (PathW / 2f + .9f);
                     var near = false; foreach (var o in lamps) if ((o - lp).sqrMagnitude < 22f * 22f) near = true;
                     if (near) continue;
-                    lamps.Add(lp); LavaLamp(ctx, mk, ctx.OnGround(lp.x, lp.z), .5f, (i + walk) % Rainbow.Length);
+                    lamps.Add(lp); if ((i / 9 + walk) % 3 == 1) PathBear(ctx, mk, ctx.OnGround(lp.x, lp.z), -side * ((i / 9) % 2 == 0 ? 1f : -1f), i + walk); else LavaLamp(ctx, mk, ctx.OnGround(lp.x, lp.z), .5f, (i + walk) % Rainbow.Length);
                 }
                 walk++;
             }
@@ -293,8 +294,9 @@ namespace EverythingWorld.World
                 if (!Open(ctx, px, pz, 4f)) continue;
                 var p = ctx.OnGround(px, pz); var roll = ctx.Range(0f, 1f);
                 var forest = Mathf.PerlinNoise(px * .006f + 3f, pz * .006f + 1f);
-                if (roll < .25f + forest * .4f) { for (var k = 0; k < ctx.Rng.Next(2, 6); k++) Mushroom(ctx, mk, solid, ctx.OnGround(px + ctx.Range(-9f, 9f), pz + ctx.Range(-9f, 9f)), ctx.Range(.7f, 2.4f) * (.6f + forest), ctx.Rng.Next(Rainbow.Length)); shrooms++; }
-                else if (roll < .72f) { Crystals(ctx, mk, solid, p); crystals++; }
+                if (forest > .56f && roll < .55f) { var kind = Mathf.FloorToInt(Mathf.PerlinNoise(px * .004f + 9f, pz * .004f) * 4f) % 4; var pal = Mathf.FloorToInt(Mathf.PerlinNoise(px * .005f, pz * .005f + 5f) * 6f) % Rainbow.Length; for (var k = 0; k < ctx.Rng.Next(2, 5); k++) Shroom(ctx, mk, solid, ctx.OnGround(px + ctx.Range(-8f, 8f), pz + ctx.Range(-8f, 8f)), ctx.Range(.6f, 2f) * (.5f + forest), (pal + (k % 2)) % Rainbow.Length, kind); shrooms++; }
+                else if (forest <= .56f && roll < .3f) { Desert(ctx, mk, solid, p); }
+                else if (roll < .62f) { Crystals(ctx, mk, solid, p); crystals++; }
                 else if (roll < .78f && vans < 6 && NearPath(px, pz, 14f)) { Camper(ctx, mk, solid, p, vans); vans++; }
                 else if (roll < .86f && lamps < 10) { LavaLamp(ctx, mk, p, ctx.Range(.6f, 1f), lamps % Rainbow.Length); lamps++; }
                 else if (roll < .93f) { Spiral(ctx, mk, p); spirals++; }
@@ -302,6 +304,43 @@ namespace EverythingWorld.World
                 noGrass.Add(new Vector3(px, 5f, pz));
             }
             Debug.Log($"The Psychedelic Wilds: {shrooms} mushroom groups, {crystals} crystal clusters, {vans} camper vans, {lamps} lava lamps, {spirals} spiral plants");
+        }
+
+        /// Mushrooms of four kinds, so the groves differ: the domed toadstool, a tall pointed cap, a wide flat plate,
+        /// and a clump of little ones.
+        void Shroom(LandContext ctx, MeshKit mk, MeshKit solid, Vector3 at, float s, int colour, int kind)
+        {
+            var up = Vector3.up; var col = WorldMaterials.Solid(Rainbow[colour % Rainbow.Length], .5f);
+            switch (kind)
+            {
+                case 1: // tall and pointed
+                    { var h = 5f * s; mk.Prism(stalk, at - up * .3f, up, .25f * s, h, 8, .7f); soft.Cone(col, at + up * h, 1.1f * s, 2.4f * s, 10); mk.Prism(capGlow[colour % capGlow.Length], at + up * (h - .05f), up, 1f * s, .08f, 10); ArtistBits.PostCollider(ctx.Root, at, h, .3f * s); break; }
+                case 2: // wide flat plate on a short thick stalk
+                    { var h = 2.2f * s; mk.Prism(stalk, at - up * .3f, up, .5f * s, h, 10, .85f); soft.Prism(col, at + up * h, up, 3f * s, .45f * s, 16, .7f); mk.Prism(capGlow[colour % capGlow.Length], at + up * (h - .04f), up, 2.8f * s, .06f, 16); ArtistBits.PostCollider(ctx.Root, at, h, .5f * s); noGrass.Add(new Vector3(at.x, 3f * s, at.z)); break; }
+                case 3: // a clump of little ones
+                    { for (var k = 0; k < 7; k++) { var p = at + new Vector3(ctx.Range(-1.4f, 1.4f), 0, ctx.Range(-1.4f, 1.4f)) * s; p.y = ctx.Ground(p.x, p.z); var h = ctx.Range(.5f, 1.1f) * s; mk.Prism(stalk, p - up * .1f, up, .08f * s, h, 6); soft.Blob(col, p + up * h, new Vector3(.4f, .25f, .4f) * s, ctx.Rng, .1f); mk.Prism(capGlow[(colour + k) % capGlow.Length], p + up * (h - .03f), up, .32f * s, .04f, 8); } break; }
+                default: Mushroom(ctx, mk, solid, at, s, colour); break;
+            }
+        }
+
+        /// Open desert: a rock outcrop, an agave, a tall cactus or a ripple of sand.
+        void Desert(LandContext ctx, MeshKit mk, MeshKit solid, Vector3 at)
+        {
+            var up = Vector3.up; var roll = ctx.Range(0f, 1f);
+            if (roll < .35f) { var rock = WorldMaterials.Solid(Bands[ctx.Rng.Next(Bands.Length)]); for (var k = 0; k < 3; k++) mk.Blob(rock, at + new Vector3(ctx.Range(-2f, 2f), .6f + k * .4f, ctx.Range(-2f, 2f)), new Vector3(ctx.Range(1.2f, 2.4f), ctx.Range(.8f, 1.4f), ctx.Range(1f, 2f)), ctx.Rng, .25f); solid.Box(rock, at + up * 1f, new Vector3(4.5f, 2f, 4.5f), Quaternion.identity); }
+            else if (roll < .65f) { var ag = WorldMaterials.Solid(new Color(.45f, .6f, .5f)); for (var k = 0; k < 9; k++) { var d = Quaternion.Euler(0, k * 40f, 0) * Vector3.forward; soft.Prism(ag, at, (d + up * 1.3f).normalized, .15f, 1.6f, 4, .1f); } }
+            else { var cac = WorldMaterials.Solid(new Color(.3f, .55f, .35f)); var h = ctx.Range(3f, 5f); mk.Prism(cac, at - up * .3f, up, .35f, h, 8, .9f); foreach (var s in new[] { -1f, 1f }) { if (ctx.Chance(.6f)) { var arm = at + up * h * ctx.Range(.4f, .6f); var d = Quaternion.Euler(0, ctx.Range(0, 360f), 0) * Vector3.forward; mk.Prism(cac, arm, d, .25f, .8f, 8); mk.Prism(cac, arm + d * .8f, up, .25f, 1.4f, 8, .9f); } } mk.Blob(GlowM(Rainbow[ctx.Rng.Next(Rainbow.Length)], 2f), at + up * (h + .1f), Vector3.one * .2f, ctx.Rng, 0f); ArtistBits.PostCollider(ctx.Root, at, h, .4f); }
+        }
+
+        /// A little dancing bear statue by the path, in one of the rainbow colours.
+        void PathBear(LandContext ctx, MeshKit mk, Vector3 at, Vector3 face, int colour)
+        {
+            var up = Vector3.up; var fur = WorldMaterials.Solid(Rainbow[colour % Rainbow.Length], .5f); var side = Vector3.Cross(up, face);
+            mk.Prism(WorldMaterials.Solid(new Color(.85f, .8f, .72f)), at - up * .2f, up, .45f, .4f, 10);
+            mk.Blob(fur, at + up * .95f, new Vector3(.32f, .42f, .26f), ctx.Rng, 0f); mk.Blob(fur, at + up * 1.5f, Vector3.one * .23f, ctx.Rng, 0f);
+            foreach (var s in new[] { -1f, 1f }) { mk.Blob(fur, at + up * 1.7f + side * s * .16f, Vector3.one * .08f, ctx.Rng, 0f); mk.Box(fur, at + up * 1.1f + side * s * .35f, new Vector3(.1f, .4f, .1f), Quaternion.LookRotation(face) * Quaternion.Euler(0, 0, s * -40f)); }
+            mk.Box(fur, at + up * .45f - side * .12f, new Vector3(.12f, .45f, .12f), Quaternion.LookRotation(face) * Quaternion.Euler(15f, 0, 0)); mk.Box(fur, at + up * .5f + side * .14f, new Vector3(.12f, .4f, .12f), Quaternion.LookRotation(face) * Quaternion.Euler(-40f, 0, 0));
+            ArtistBits.PostCollider(ctx.Root, at, 1.8f, .45f);
         }
 
         void Crystals(LandContext ctx, MeshKit mk, MeshKit solid, Vector3 at)

@@ -31,10 +31,10 @@ Snapshot numbers refer to `Game/EverythingWorld/Logs/Live/` (not committed).
 - Works: Journey's wheel against the stars, the neon heart, Blue Öyster Cult's view over the realm.
 - Fix: Kansas reads as stacked boxes; zone curtain dominates Blue Öyster Cult.
 
-## Psychedelic Wilds
-- Works: Grateful Dead stage with the dancing bears; the colour.
-- Fix: mushrooms everywhere at the same size flatten it; ground is one flat yellow; small artists are a sign
-  and one shape.
+## Psychedelic Wilds (deep pass done, 2026-11-10)
+- Done: a walkable Grateful Dead world with signs and song moments, a bigger QOTSA generator party, a design for
+  every small artist, mushroom groves of four kinds with open desert between, dancing bears along the paths.
+- Still to check in play: the ground is still one flat yellow-pink (left as it was); frame rate.
 
 ## Jam Band Commonwealth (deep pass done, 2026-11-10)
 - Done: a rig look for every Phish song and events for the big ones (the split sky for The Divided Sky), a crowd,

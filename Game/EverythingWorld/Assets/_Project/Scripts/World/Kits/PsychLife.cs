@@ -12,7 +12,7 @@ namespace EverythingWorld.World
     ///   bright gold; "Eyes of the World": the eye lights up and follows you; "Franklin's Tower": the bell blazes
     ///   and sparks pour off the tower; "Shakedown Street": the bears really dance; "Song For The Deaf": the light
     ///   drops to a red desert dusk, the car radio blazes and the tower beacon races.
-    public class PsychLife : MonoBehaviour
+    public partial class PsychLife : MonoBehaviour
     {
         const string Land = "The Psychedelic Wilds";
         public Vector3 center, spiral, tower, rainCloud, dead, tower2, generator;
@@ -21,6 +21,11 @@ namespace EverythingWorld.World
         public Transform rainBox, eye, kaleidoscope;
         public Material bell, iris, radio, beacon;
         public List<Vector3> fires = new List<Vector3>();
+        // the Dead's world (PsychDead)
+        public Transform ship, rowboat; public Material shipLantern, palace, wolfEyes, wolfMoon, rippleM, stella, samson, fadeaway;
+        public List<Transform> ripples = new List<Transform>(); public Vector3 ripplePool;
+        // the generator party (PsychArtists)
+        public Material partyBulbs, slotReels; public Vector3 bonfire;
 
         CloudLayer clouds; ParticleSystem motes, rain, sparks, flame, smoke;
         Vector3[] bearHome = new Vector3[0]; Vector3 boxHome; Quaternion eyeHome;
@@ -141,7 +146,8 @@ namespace EverythingWorld.World
             nextSpark -= dt;
             if (here && frank > .2f && nextSpark <= 0f && tower != Vector3.zero) { nextSpark = .05f; sparks.transform.position = tower; sparks.Emit(4); }
             nextFlame -= dt;
-            if (here && nextFlame <= 0f) { nextFlame = .1f; foreach (var f in fires) { flame.transform.position = f; flame.Emit(2); } }
+            if (here && nextFlame <= 0f) { nextFlame = .1f; foreach (var f in fires) { flame.transform.position = f; flame.Emit(f == bonfire + Vector3.up * .3f || (bonfire != Vector3.zero && (f - bonfire).sqrMagnitude < 2f) ? 6 : 2); } }
+            DeadUpdate(dt, t, id, here, energy);
             nextSmoke -= dt;
             if (here && nextSmoke <= 0f && generator != Vector3.zero) { nextSmoke = .5f; smoke.transform.position = generator + Vector3.up * 1.6f; smoke.Emit(1); }
         }
