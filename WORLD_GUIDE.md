@@ -138,21 +138,13 @@ The heartland. Old hills, long roads and the tallest mountains in the world. Mos
 **Artist areas:** Porches, rocking chairs and fiddle-shaped signposts. Lots of spare land here for the bluegrass you add later.
 
 ### Arena Rock Ridge
-*16 songs · 11 artists · 0.44 km²*
+*16 songs · 11 artists · 0.45 km² · built in Unity*
 
-**Arriving:** A long mountain ridge with a stadium carved into it, its spotlights sweeping the sky.
+**Arriving:** Deep night on a long pine ridge, the one true night among its neighbours: a dark blue sky full of stars, white searchlights sweeping it. You arrive at ticket booths and turnstiles under a lit "ARENA ROCK RIDGE · TONIGHT" arch, tour posters on boards. Roads lit by tall white stage lamps wind round the ridge.
 
-**The vibe:** Night under stadium lights. Lighters held up, tour buses, a cowbell somewhere. Big and earnest.
+**The vibe:** Big and earnest. On the highest part of the ridge a crumbling stadium stands like a castle, its hilltop cut flat: battlement stands with a gateway facing the road in, banks of seats packed with thousands of lighter flames, four floodlight towers, and a big stage with a truss light rig, two screens and amp stacks, searchlights sweeping up from it. Round the ridge: pines and rock outcrops, a lot of tour buses, tailgate parties with string lights and coolers, piles of road cases, speaker stacks facing out over the valley. The lighters glow with the song; the rig chases; Journey's wheel turns in the sky. "(Don't Fear) The Reaper" turns the light cold and blue, slows the searchlights and lights the reaper's eyes; "Don't Stop Believin'" sends the midnight train along its track and makes the stadium's lighters blaze in waves; "Come Sail Away" lifts the Styx ship into the sky; "Eye of the Tiger" lights the tiger's eye and swings the searchlights onto the boxing ring; "More Than a Feeling" sends the guitar spaceship on a wide loop over the ridge.
 
-**Artist areas:** Tour buses and lit stage-wings along the ridge. Blue Öyster Cult gets the biggest one (with a cowbell, obviously).
-
----
-
-## Riffland (north half of the continent)
-
-*Alternative, grunge, punk, emo, metalcore, prog metal and J-rock · tower: The Amp Stack Spire*
-
-Rougher, louder and more modern than the Old Kingdoms it's joined to. Weather turns: drizzle, ash, overcast moors, neon dusk.
+**Artist areas:** Each band on its own pad ringed with lights. Blue Öyster Cult: a giant hooded reaper with a scythe on a rock, a giant cowbell hung on a frame, a fire pit. Boston: a guitar-shaped spaceship hovering over a dome. Journey: a giant glowing wheel turning high on a frame, a stretch of track with streetlights and a little midnight train. Styx: a two-masted sailing ship in a cradle. Survivor: a boxing ring under a giant tiger's eye. Cheap Trick: a giant checkered guitar. Heart: a big neon heart and a barracuda. Kansas: a slowly turning tornado and a "WAYWARD" sign. Night Ranger: a hot rod with flames. REO Speedwagon: an old speedwagon. The Edgar Winter Group: a mad-science tower between sparking coils.
 
 ### Metalcore Caldera
 *85 songs · 48 artists · 1.09 km²*
