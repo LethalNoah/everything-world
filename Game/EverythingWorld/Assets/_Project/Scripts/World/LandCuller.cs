@@ -25,6 +25,9 @@ namespace EverythingWorld.World
             items.Clear(); lights.Clear();
             var skip = new HashSet<Transform>();
             foreach (var cl in lands.GetComponentsInChildren<CloudLayer>(true)) skip.Add(cl.transform);   // a land's life: left alone
+            // also anything under a land's life script (BayouLife, FolkLife…): its movers are often built at the origin
+            // and moved into place later, so their bounds now would be wrong (and its CloudLayer only arrives in Start)
+            foreach (var mb in lands.GetComponentsInChildren<MonoBehaviour>(true)) if (mb != null && mb.GetType().Name.EndsWith("Life")) skip.Add(mb.transform);
             foreach (var r in lands.GetComponentsInChildren<MeshRenderer>(true))
             {
                 if (UnderAny(r.transform, skip) || !r.enabled || r.GetComponent<Billboard>() != null) continue;   // hidden on purpose, or shown by its own script

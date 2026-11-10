@@ -9,6 +9,14 @@
  },
  "lands": [
   {
+   "land": "The Bluegrass Hollows",
+   "sunPitch": 46, "sunYaw": 215, "sunIntensity": 1.25, "sunColor": "#FFF2D6",
+   "skyLight": "#8EB4E8", "horizonLight": "#D2E2F2", "groundLight": "#6A7A50",
+   "fogColor": "#A8C4E4", "fogStart": 140, "fogEnd": 1300,
+   "stars": 0, "sunShadows": true, "dailyWeather": true, "bloom": 0.85,
+   "weather": "", "weatherAmount": 0
+  },
+  {
    "land": "The Folk Woods",
    "sunPitch": 12, "sunYaw": 95, "sunIntensity": 1.15, "sunColor": "#FFF0D0",
    "skyLight": "#B8D4E8", "horizonLight": "#E8F0E8", "groundLight": "#506048",
