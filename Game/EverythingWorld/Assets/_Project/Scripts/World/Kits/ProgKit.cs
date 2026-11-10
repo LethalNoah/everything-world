@@ -234,8 +234,7 @@ namespace EverythingWorld.World
             ArtistBits.PointLight(ctx.Root, mid + up * 8f + bd * 10f, new Color(.9f, .9f, 1f), 30f, 1.6f);
             // the white beam in from the sky behind, and the spectrum out the front, running down to the ground
             var into = mid + up * H * .55f - bd * 3f; var from = into - bd * 120f + up * 140f;
-            var white = new Material(WorldMaterials.Glow(Color.white, 1.4f)) { name = "White beam" };
-            mk.Box(white, (from + into) / 2f, new Vector3(1.6f, 1.6f, Vector3.Distance(from, into)), Quaternion.LookRotation(into - from));
+            life.beamInto = into; life.beamFrom = (from - into).normalized;   // ProgLife draws it: a soft shaft out of the eclipse that fades into the sky
             var outOf = mid + up * H * .55f + bd * 4f; life.spectrum.Clear();
             for (var k = 0; k < 6; k++)
             {

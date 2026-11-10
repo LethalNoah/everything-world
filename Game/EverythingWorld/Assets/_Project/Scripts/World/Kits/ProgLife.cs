@@ -17,6 +17,7 @@ namespace EverythingWorld.World
     {
         const string Land = "The Prog Marches";
         public Vector3 center, prism, beamDir = Vector3.forward;
+        public Vector3 beamInto, beamFrom = Vector3.up;   // where the white beam enters the Prism, and which way it comes from
         public List<Material> spectrum = new List<Material>(), pipes = new List<Material>();
         public List<Vector3> runes = new List<Vector3>(), organs = new List<Vector3>();
         public List<Transform> gears = new List<Transform>(), floaters = new List<Transform>();
@@ -26,7 +27,7 @@ namespace EverythingWorld.World
         public Material beacon, neon;
 
         CloudLayer clouds; ParticleSystem fire, motes, runeSpark;
-        Transform eclipse, corona; Material coronaM, discM;
+        Transform eclipse, corona, beam; Material coronaM, discM, beamM; Vector3 beamAxis;
         float time78, blueSky, wish, colours, yyz, inca;
         float nextFire, nextMote, nextRune; int lastBeat = -1;
         // Y = -.--  Y = -.--  Z = --..  (dot 1 unit, dash 3, gap in a letter 1, between letters 3, then a long rest)
@@ -60,6 +61,51 @@ namespace EverythingWorld.World
             corona = ck.BuildSingle("Corona", transform, false).transform;
             var dk = new MeshKit(); dk.Prism(discM, Vector3.zero, Vector3.back, 1f, .01f, 40);
             eclipse = dk.BuildSingle("Eclipse", transform, false).transform;
+            Beam();
+        }
+
+        /// The white beam into the Prism: two camera-facing sheets of light (a soft wide glow and a bright core) along
+        /// the beam's line. They start wide and faint high in the sky, so the beam seems to gather out of the air, and
+        /// narrow and brighten toward the crystal. On the land it points at the eclipse.
+        void Beam()
+        {
+            const float Len = 520f;
+            beamM = new Material(Shader.Find("Universal Render Pipeline/Particles/Unlit")) { name = "White beam" };
+            beamM.SetFloat("_Surface", 1f); beamM.SetFloat("_Blend", 0f); beamM.SetFloat("_SrcBlend", (float)UnityEngine.Rendering.BlendMode.SrcAlpha);
+            beamM.SetFloat("_DstBlend", (float)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha); beamM.SetFloat("_ZWrite", 0f); beamM.SetFloat("_Cull", 0f);
+            beamM.EnableKeyword("_SURFACE_TYPE_TRANSPARENT"); beamM.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+            beamM.SetColor("_BaseColor", new Color(1.8f, 1.75f, 1.6f, 1f));   // above 1 so the core blooms
+            // across the sheet: bright in the middle, soft to nothing at the edges; along it (v = 0 at the Prism): full
+            // near the crystal, then fading smoothly away, so it never ends in a hard line
+            var tex = new Texture2D(16, 64, TextureFormat.RGBA32, false) { wrapMode = TextureWrapMode.Clamp };
+            for (var y = 0; y < 64; y++) for (var x = 0; x < 16; x++)
+            {
+                var u = Mathf.Abs((x + .5f) / 16f * 2f - 1f); var v = y / 63f;
+                var across = Mathf.Pow(Mathf.Clamp01(1f - u), 1.8f);
+                var along = Mathf.SmoothStep(0f, .03f, v) * Mathf.Pow(1f - Mathf.SmoothStep(.05f, 1f, v), 1.4f);
+                tex.SetPixel(x, y, new Color(1, 1, 1, across * along));
+            }
+            tex.Apply(); beamM.SetTexture("_BaseMap", tex);
+            var verts = new List<Vector3>(); var uvs = new List<Vector2>(); var cols = new List<Color>(); var tris = new List<int>();
+            void Sheet(float w0, float w1, float len, float alpha)
+            {
+                const int Steps = 8; var b = verts.Count;
+                for (var i = 0; i <= Steps; i++)
+                {
+                    var f = i / (float)Steps; var w = Mathf.Lerp(w0, w1, f * f) * .5f;   // widens more toward the top: diffuse up high
+                    verts.Add(new Vector3(-w, 0, f * len)); verts.Add(new Vector3(w, 0, f * len));
+                    uvs.Add(new Vector2(0, f)); uvs.Add(new Vector2(1, f)); cols.Add(new Color(1, 1, 1, alpha)); cols.Add(new Color(1, 1, 1, alpha));
+                    if (i > 0) tris.AddRange(new[] { b + 2 * i - 2, b + 2 * i - 1, b + 2 * i + 1, b + 2 * i - 2, b + 2 * i + 1, b + 2 * i });
+                }
+            }
+            Sheet(7f, 70f, Len, .32f);         // the glow round it
+            Sheet(1.6f, 16f, Len * .8f, .85f);   // the core
+            var mesh = new Mesh { name = "White beam" };
+            mesh.SetVertices(verts); mesh.SetUVs(0, uvs); mesh.SetColors(cols); mesh.SetTriangles(tris, 0); mesh.RecalculateBounds();
+            var go = new GameObject("White beam"); go.transform.SetParent(transform, false);
+            go.AddComponent<MeshFilter>().sharedMesh = mesh; var mr = go.AddComponent<MeshRenderer>(); mr.sharedMaterial = beamM;
+            mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off; mr.receiveShadows = false;
+            beam = go.transform; beam.position = beamInto; beamAxis = beamFrom;
         }
 
         static Material Additive(string name)
@@ -134,6 +180,20 @@ namespace EverythingWorld.World
                 }
             }
 
+            // the white beam: on the land it swings round to come out of the eclipse; it always turns its face to you
+            if (beam != null && cam != null)
+            {
+                var want = beamFrom;
+                if (here)
+                {
+                    var sun = RenderSettings.sun != null ? -RenderSettings.sun.transform.forward : want;
+                    if (sun.y > .25f) want = sun;   // too low and it would cut through the hills
+                }
+                beamAxis = Vector3.Slerp(beamAxis, want, 1f - Mathf.Exp(-dt * 1.5f)).normalized;
+                var toCam = cam.transform.position - beamInto; var face = toCam - Vector3.Dot(toCam, beamAxis) * beamAxis;
+                if (face.sqrMagnitude > .01f) beam.rotation = Quaternion.LookRotation(beamAxis, face.normalized);
+                beamM.SetColor("_BaseColor", new Color(1.8f, 1.75f, 1.6f, 1f) * (1f + .15f * energy + .6f * blueSky));
+            }
             // the spectrum and the organ pipes
             for (var k = 0; k < spectrum.Count; k++)
             {
