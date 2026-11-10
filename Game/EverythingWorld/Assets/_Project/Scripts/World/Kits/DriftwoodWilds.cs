@@ -28,13 +28,13 @@ namespace EverythingWorld.World
                 var sea = SeaFrom(ctx.Data, p, out var dist, 160f);
                 if (dist > 1000f) sea = seaDir;
                 var roll = ctx.Range(0f, 1f);
-                if (roll < .36f) { Trees(ctx, mk, p, sea, bark, leaf, leafB); trees++; }
+                if (roll < .36f) { Trees(ctx, mk, solid, p, sea, bark, leaf, leafB); trees++; }
                 else if (roll < .5f && p.y < 7f) { SandFence(ctx, mk, solid, p, sea); fences++; }
                 else if (roll < .58f) { Cairn(ctx, mk, p); cairns++; }
                 else if (roll < .66f) { LoneBench(ctx, mk, solid, p, sea); benches++; }
                 else if (roll < .7f && sheds < 4 && Open(ctx, px, pz, 9f)) { BoatShed(ctx, mk, solid, p, sea); sheds++; }
                 else if (roll < .72f && ruins < 2 && Open(ctx, px, pz, 11f)) { Ruin(ctx, mk, solid, p, sea); ruins++; }
-                else if (roll < .78f) { Trees(ctx, mk, p, sea, bark, leaf, leafB); trees++; }
+                else if (roll < .78f) { Trees(ctx, mk, solid, p, sea, bark, leaf, leafB); trees++; }
                 else if (roll < .84f) { NetPoles(ctx, mk, solid, p, sea); nets++; }
                 else if (roll < .9f) { PotStack(ctx, mk, solid, p); pots++; }
             }
@@ -107,7 +107,7 @@ namespace EverythingWorld.World
 
         // ---------------------------------------------------------------- the wilds
         /// One to three small trees, crooked and bent hard away from the sea, their crowns combed flat.
-        void Trees(LandContext ctx, MeshKit mk, Vector3 at, Vector3 sea, Material bark, Material leaf, Material leafB)
+        void Trees(LandContext ctx, MeshKit mk, MeshKit solid, Vector3 at, Vector3 sea, Material bark, Material leaf, Material leafB)
         {
             var lee = -sea; var n = ctx.Rng.Next(1, 4);
             for (var t = 0; t < n; t++)
@@ -121,13 +121,14 @@ namespace EverythingWorld.World
                     var d = (Vector3.up * (1f - bend * .55f) + lee * (.2f + bend * .9f) + new Vector3(ctx.Range(-.15f, .15f), 0, ctx.Range(-.15f, .15f))).normalized;
                     var len = h / 4f + .15f;
                     mk.Prism(bark, prev, d, r * (1f - k * .18f), len, 6, .85f);
+                    solid.Box(bark, prev + d * len / 2f, new Vector3(r * 2f + .2f, len, r * 2f + .2f), Quaternion.FromToRotation(Vector3.up, d));   // the trunk, leaning
                     prev += d * len;
                 }
                 var crown = prev + lee * .6f;
                 for (var k = 0; k < 4; k++)
                 {
                     var c = crown + lee * (k * .7f - .5f) + new Vector3(ctx.Range(-.5f, .5f), ctx.Range(-.3f, .3f), ctx.Range(-.5f, .5f));
-                    mk.Blob(k % 2 == 0 ? leaf : leafB, c, new Vector3(ctx.Range(1f, 1.6f), ctx.Range(.45f, .7f), ctx.Range(1f, 1.6f)), ctx.Rng, .25f);
+                    soft.Blob(k % 2 == 0 ? leaf : leafB, c, new Vector3(ctx.Range(1f, 1.6f), ctx.Range(.45f, .7f), ctx.Range(1f, 1.6f)), ctx.Rng, .25f);
                 }
                 ArtistBits.PostCollider(ctx.Root, p, h * .7f, r + .1f);
                 noGrass.Add(new Vector3(p.x, .8f, p.z));

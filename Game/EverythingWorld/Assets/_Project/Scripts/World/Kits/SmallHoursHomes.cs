@@ -39,7 +39,7 @@ namespace EverythingWorld.World
                 case "Fionavair": life.tvWindow = TvGlow(root, inside + Vector3.up * (floorY + 1.4f) - front * 2.8f + side * 2f, front); break;
                 case "Hailey Picardi": Papers(ctx, mk, inside, floorY); break;
                 case "John Luther": Plants(ctx, mk, inside, home, front, side, floorY); break;
-                case "Carmen Silver": Dust(ctx, mk, inside, floorY); break;
+                case "Carmen Silver": Dust(ctx, root, inside, floorY); break;
                 case "Josie on the Rocks": Cat(mk, home + front * 4.3f - side * 2.4f + Vector3.up * 1.15f, front); break;
             }
             ArtistBits.Plaque(mk, solid, labels, a, G(c + front * 7f + side * 3.2f), front, darkWood, board, Ink, 1.4f);
@@ -278,8 +278,9 @@ namespace EverythingWorld.World
             }
         }
 
-        void Dust(LandContext ctx, MeshKit mk, Vector3 inside, float floorY)
+        void Dust(LandContext ctx, Transform root, Vector3 inside, float floorY)
         {
+            var mk = new MeshKit();             // floating dust you walk through (the land audit skips "Soft")
             var mote = WorldMaterials.Glow(new Color(1f, .9f, .7f), 2f);
             for (var i = 0; i < 60; i++)
             {
@@ -287,6 +288,7 @@ namespace EverythingWorld.World
                 var p = inside + new Vector3(ctx.Range(-.6f, .6f) * (1f + t * 2f), floorY + 3.4f - t * 3f, ctx.Range(-.6f, .6f) * (1f + t * 2f));
                 mk.Box(mote, p, Vector3.one * .025f, Quaternion.identity);
             }
+            mk.Build("Soft dust", root, false);
         }
 
         void Cat(MeshKit mk, Vector3 at, Vector3 front)

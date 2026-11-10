@@ -38,6 +38,7 @@ namespace EverythingWorld.World
         readonly List<(Vector3, Vector3)> innerSpurs = new List<(Vector3, Vector3)>();
         Material noahCap, seanCap;
         readonly List<Transform> sails = new List<Transform>();
+        MeshKit soft;                                                    // low leaves you walk under or through (the land audit skips "Soft")
 
         void MakeMaterials()
         {
@@ -75,6 +76,7 @@ namespace EverythingWorld.World
             halos = new GlowHalos(); flags = new WindMesh();
             noGrass.Clear(); pathCells.Clear(); noahPath.Clear(); seanPath.Clear(); arrival.Clear(); kiteAnchors.Clear();
             var mk = new MeshKit(); var solid = new MeshKit(); var pictures = new MeshKit();
+            soft = new MeshKit();
             var labels = new GameObject("Downs words").transform; labels.SetParent(ctx.Root, false);
             if (hasQuiet) { ctx.AddKeepout(quiet.x, quiet.z, QuietFlat + 4f); noGrass.Add(new Vector3(quiet.x, 16.5f, quiet.z)); }
             var otherGate = Gates(ctx);
@@ -91,7 +93,9 @@ namespace EverythingWorld.World
             HayBales(ctx, mk, solid);
             if (hasQuiet) QuietPlace(ctx, mk, solid);
             KiteSpots(ctx);
+            Fields(ctx, mk, solid);
             mk.Build("Downs scenery", ctx.Root, false);
+            soft.Build("Soft leaves", ctx.Root, false);
             solid.BuildCollider("Downs walls", ctx.Root);
             pictures.Build("Downs posters", ctx.Root, false);
             var life = new GameObject("Downs life").AddComponent<DownsLife>();
@@ -239,7 +243,7 @@ namespace EverythingWorld.World
                 mk.Box(cap, post + Vector3.up * 1.42f, new Vector3(.3f, .34f, .3f), Quaternion.identity);
                 mk.Box(darkWood, post + Vector3.up * 1.62f, new Vector3(.38f, .06f, .38f), Quaternion.identity);
                 halos.Add(post + Vector3.up * 1.42f, .9f, color.Value == SeanGreen ? SeanGlow : color.Value, .9f);
-                ArtistBits.PostCollider(ctx.Root, post, 1.25f, .12f);
+                ArtistBits.PostCollider(ctx.Root, post, 1.7f, .2f);
             }
             Flush();
         }
@@ -397,6 +401,9 @@ namespace EverythingWorld.World
             var top = at + Vector3.up * 13f;
             mk.Cone(slate, top, 2.6f, 3f, 12);
             mk.Box(darkWood, at + face * 3.3f + Vector3.up * 1.2f, new Vector3(1.4f, 2.4f, .2f), Quaternion.LookRotation(face));
+            mk.Box(WorldMaterials.Glow(Lamp, 1.6f), at + face * 3.45f + Vector3.up * 2.75f, new Vector3(.28f, .36f, .22f), Quaternion.LookRotation(face));
+            halos.Add(at + face * 3.6f + Vector3.up * 2.75f, 1.4f, Lamp, .8f);
+            ArtistBits.PointLight(ctx.Root, at + face * 4.4f + Vector3.up * 2.6f, Lamp, 12f, 1.3f);
             foreach (var y in new[] { 5f, 9f })
                 mk.Box(glassDark, at + face * (3.4f - y * .1f) + Vector3.up * y, new Vector3(.8f, 1f, .15f), Quaternion.LookRotation(face));
             // the sails, on their own so DownsLife can turn them
@@ -441,6 +448,10 @@ namespace EverythingWorld.World
             mk.Box(iron, tower + Vector3.up * 30f, new Vector3(.08f, 1.4f, .08f), Quaternion.identity);
             mk.Box(WorldMaterials.Solid(new Color(.8f, .62f, .3f), .5f), tower + Vector3.up * 30.4f, new Vector3(.9f, .35f, .08f), rot);   // weathervane
             mk.Box(darkWood, tower - along * 2.53f + Vector3.up * 1.6f, new Vector3(1.6f, 3.2f, .1f), rot);
+            mk.Box(WorldMaterials.Glow(Lamp, 1.6f), tower - along * 2.62f + Vector3.up * 3.6f, new Vector3(.3f, .4f, .2f), rot);
+            halos.Add(tower - along * 2.8f + Vector3.up * 3.6f, 1.4f, Lamp, .8f);
+            ArtistBits.PointLight(ctx.Root, tower - along * 3.6f + Vector3.up * 3.2f, Lamp, 13f, 1.3f);
+            ArtistBits.PointLight(ctx.Root, c + Vector3.up * 8f, new Color(1f, .82f, .6f), 18f, .8f);      // warm on the flint and the churchyard
             mk.Prism(cream, tower - along * 2.55f + Vector3.up * 12f, -along, .9f, .06f, 16);   // the clock
             // a few old headstones
             for (var i = 0; i < 9; i++)
@@ -448,6 +459,7 @@ namespace EverythingWorld.World
                 var p = c + side * ctx.Range(6f, 11f) * (i % 2 == 0 ? 1f : -1f) + along * ctx.Range(-8f, 8f);
                 p.y = ctx.Ground(p.x, p.z);
                 mk.Box(stone, p + Vector3.up * .45f, new Vector3(.6f, .9f, .14f), Quaternion.LookRotation(side) * Quaternion.Euler(ctx.Range(-6f, 6f), 0, ctx.Range(-5f, 5f)));
+                solid.Box(stone, p + Vector3.up * .45f, new Vector3(.7f, .95f, .35f), Quaternion.LookRotation(side));
             }
         }
 
@@ -502,6 +514,7 @@ namespace EverythingWorld.World
             mk.Prism(cream, pole, Vector3.up, .16f, 9f, 8, .7f);
             mk.Blob(WorldMaterials.Solid(new Color(.85f, .68f, .25f), .4f), pole + Vector3.up * 9.1f, Vector3.one * .3f, ctx.Rng, 0f);
             ArtistBits.PostCollider(ctx.Root, pole, 9f, .25f);
+            ArtistBits.PointLight(ctx.Root, pole + Vector3.up * 7f, new Color(1f, .84f, .62f), 26f, 1.2f);   // the green, glowing under its bunting
             var flagColors = new[] { NoahBlue, Pastels[1], SeanGreen, Pastels[4], new Color(.85f, .3f, .3f), Pastels[2] };
             for (var k = 0; k < 8; k++)
             {
@@ -523,7 +536,7 @@ namespace EverythingWorld.World
                 var w = ctx.Range(7f, 9.5f); var d = ctx.Range(6f, 7.5f);
                 House(ctx, mk, solid, ctx.OnGround(at.x, at.z), -dir, w, d, ctx.Range(4.4f, 5.6f), Pastels[(k * 5) % Pastels.Length], Doors[(k * 3) % Doors.Length], k % 3 == 0 ? terracotta : slate);
                 houses++;
-                if (k % 3 == 1) Bike(mk, ctx.OnGround(at.x - dir.x * (d / 2f + .7f), at.z - dir.z * (d / 2f + .7f)) + Vector3.Cross(Vector3.up, dir) * (w / 2f - 1f), Vector3.Cross(Vector3.up, dir), Pastels[k % Pastels.Length]);
+                if (k % 3 == 1) Bike(mk, solid, ctx.OnGround(at.x - dir.x * (d / 2f + .7f), at.z - dir.z * (d / 2f + .7f)) + Vector3.Cross(Vector3.up, dir) * (w / 2f - 1f), Vector3.Cross(Vector3.up, dir), Pastels[k % Pastels.Length]);
             }
             // a red phone box, a postbox, benches and lamp posts with gig posters for the land's own artists
             var free = new List<Vector3>();
@@ -566,6 +579,11 @@ namespace EverythingWorld.World
             var face = c + front * (d / 2f + .03f);
             mk.Box(WorldMaterials.Solid(door), face + Vector3.up * 1.15f, new Vector3(1.1f, 2.3f, .08f), rot);
             mk.Box(cream, face + Vector3.up * 2.4f, new Vector3(1.4f, .14f, .1f), rot);
+            // a porch lamp over the door, already on in the long afternoon
+            var porch = face + Vector3.up * 2.75f + front * .12f;
+            mk.Box(WorldMaterials.Glow(Lamp, 1.6f), porch, new Vector3(.22f, .3f, .2f), rot);
+            halos.Add(porch, 1f, Lamp, .7f);
+            ArtistBits.PointLight(ctx.Root, porch + front * .6f, Lamp, 9f, 1f);
             foreach (var s in new[] { -1f, 1f })
             foreach (var y in new[] { 1.5f, wallH - 1.2f })
             {
@@ -634,6 +652,7 @@ namespace EverythingWorld.World
             var glow = WorldMaterials.Glow(Lamp, 1.3f);
             mk.Box(glow, at + Vector3.up * 3.95f, new Vector3(.36f, .42f, .36f), Quaternion.identity);
             halos.Add(at + Vector3.up * 3.95f, 1.3f, Lamp, .7f);
+            ArtistBits.PointLight(ctx.Root, at + Vector3.up * 3.6f, Lamp, 12f, 1.2f);
             var pic = WorldMaterials.Picture(ctx.CoverAtlas);
             for (var i = 0; i < posters; i++)
             {
@@ -657,10 +676,11 @@ namespace EverythingWorld.World
             return -1;
         }
 
-        void Bike(MeshKit mk, Vector3 at, Vector3 along, Color frame)
+        void Bike(MeshKit mk, MeshKit solid, Vector3 at, Vector3 along, Color frame)
         {
             along = Vector3.ProjectOnPlane(along, Vector3.up).normalized;
             var side = Vector3.Cross(Vector3.up, along);
+            solid.Box(iron, at + Vector3.up * .55f, new Vector3(.45f, 1.1f, 1.8f), Quaternion.LookRotation(along));
             var paint = WorldMaterials.Solid(frame, .3f);
             var lean = Quaternion.AngleAxis(12f, along);
             Vector3 P(float a, float u) => at + lean * (along * a + Vector3.up * u);
@@ -821,7 +841,7 @@ namespace EverythingWorld.World
                     if (!Open(ctx, p.x, p.z, 2f)) continue;
                     var h = ctx.Range(3.5f, 6f); var cr = ctx.Range(3f, 4.5f);
                     mk.Prism(bark, p, Vector3.up, .3f, h + 1f, 7, .7f);
-                    mk.Blob(k % 3 == 0 ? hedge : (k % 2 == 0 ? leafA : leafB), p + Vector3.up * (h + cr * .5f), new Vector3(cr, cr * .9f, cr), ctx.Rng, .14f);
+                    soft.Blob(k % 3 == 0 ? hedge : (k % 2 == 0 ? leafA : leafB), p + Vector3.up * (h + cr * .5f), new Vector3(cr, cr * .9f, cr), ctx.Rng, .14f);
                     ArtistBits.PostCollider(ctx.Root, p, h, .35f);
                 }
             }
@@ -850,7 +870,7 @@ namespace EverythingWorld.World
                     mk.Box(face, head, new Vector3(.24f, .26f, .38f), Quaternion.LookRotation(dir + Vector3.down * (grazing ? .8f : 0f)));
                     foreach (var (fx, fz) in new[] { (-1f, -1f), (1f, -1f), (-1f, 1f), (1f, 1f) })
                         mk.Box(face, p + side * fx * .2f + dir * fz * .3f + Vector3.up * .22f, new Vector3(.08f, .45f, .08f), Quaternion.LookRotation(dir));
-                    solid.Box(wool, p + Vector3.up * .6f, new Vector3(.8f, 1.2f, 1.4f), Quaternion.LookRotation(dir));
+                    solid.Box(wool, p + Vector3.up * .6f + dir * .2f, new Vector3(.8f, 1.2f, 2f), Quaternion.LookRotation(dir));
                 }
             }
         }

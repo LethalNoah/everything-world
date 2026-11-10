@@ -128,6 +128,7 @@ namespace EverythingWorld.World
                 p.y = ctx.Ground(p.x, p.z);
                 mk.Prism(stone, p, Vector3.up, .14f, .45f, 6);
                 mk.Box(bollard, p + Vector3.up * .55f, new Vector3(.2f, .18f, .2f), Quaternion.identity);
+                ArtistBits.PostCollider(root, p, .7f, .2f);
                 halos.Add(p + Vector3.up * .55f, .7f, warm, .7f);
             }
             ArtistBits.PointLight(root, c + Vector3.up * 4f, warm, 24f, 1.1f);
@@ -144,6 +145,7 @@ namespace EverythingWorld.World
                 var a = k * Mathf.PI * 2f / 7f + .3f;
                 var dir = new Vector3(Mathf.Cos(a), -.18f, Mathf.Sin(a)).normalized;
                 mk.Prism(bark, c + Vector3.up * .9f + new Vector3(dir.x, 0, dir.z) * .9f, dir, .55f, 3.2f, 6, .3f);
+                ArtistBits.PostCollider(root, c + new Vector3(dir.x, 0, dir.z) * 2.6f, .9f, .55f);   // the roots
             }
             var crownLeaf = new[] { leafA, leafB, WorldMaterials.Solid(new Color(.6f, .62f, .36f)) };
             var lanterns = new List<Vector3>();

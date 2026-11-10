@@ -29,6 +29,7 @@ namespace EverythingWorld.World
         const float RingR = 22f, LagoonR = 14f, ArchR = 11f, WalkW = 2.4f, WalkLift = .28f;
 
         Material drift, driftDark, planks, plankGap, rope, iron, board, stone, water, seaweed, cloth, bulb;
+        MeshKit soft;                   // seaweed and low leaves you walk through (the land audit skips "Soft")
         GlowHalos halos;
         Vector3 center, seaDir = Vector3.forward, shore;
         bool hasShore;
@@ -184,6 +185,7 @@ namespace EverythingWorld.World
             hasShore = Shoreline(ctx, out shore);
             SeaLane(ctx);
             var mk = new MeshKit(); var solid = new MeshKit();
+            soft = new MeshKit();
             ArchAndLagoon(ctx, mk, solid);
             Boardwalk(ctx);
             foreach (var w in walks) Walk(mk, solid, w);
@@ -193,6 +195,7 @@ namespace EverythingWorld.World
             Wilds(ctx, mk, solid);
             Washed(ctx, mk, solid);
             mk.Build("Driftwood scenery", ctx.Root, false);
+            soft.Build("Soft seaweed and leaves", ctx.Root, false);
             solid.BuildCollider("Driftwood walls", ctx.Root);
         }
 
@@ -462,7 +465,7 @@ namespace EverythingWorld.World
                 var dirk = new Vector3(Mathf.Cos(a), 0, Mathf.Sin(a));
                 if (Mathf.Abs(Vector3.Dot(dirk, across)) < .2f) continue;            // clear where the bridge lands
                 var p = ctx.OnGround(c.x + dirk.x * r, c.z + dirk.z * r);
-                for (var j = 0; j < 4; j++) mk.Box(seaweed, p + new Vector3(ctx.Range(-.3f, .3f), .7f, ctx.Range(-.3f, .3f)), new Vector3(.04f, 1.4f, .04f), Quaternion.Euler(ctx.Range(-12, 12), 0, ctx.Range(-12, 12)));
+                for (var j = 0; j < 4; j++) soft.Box(seaweed, p + new Vector3(ctx.Range(-.3f, .3f), .7f, ctx.Range(-.3f, .3f)), new Vector3(.04f, 1.4f, .04f), Quaternion.Euler(ctx.Range(-12, 12), 0, ctx.Range(-12, 12)));
             }
             noGrass.Add(new Vector3(c.x, RingR + WalkW, c.z));
 

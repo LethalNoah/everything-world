@@ -153,6 +153,7 @@ namespace EverythingWorld.World
                         var p = c + side * s * Mathf.Sin(a) * width + Vector3.up * (1f - Mathf.Cos(a)) * 5.5f;
                         var d = p - prev;
                         mk.Box(hull, (prev + p) / 2f, new Vector3(.3f, .35f, d.magnitude + .1f), Quaternion.LookRotation(d, along));
+                        RibCollider(ctx, (prev + p) / 2f, .35f);
                         prev = p;
                     }
                     var foot = c + side * s * width * .9f; foot.y = ctx.Ground(foot.x, foot.z);
@@ -183,6 +184,14 @@ namespace EverythingWorld.World
         // ---------------------------------------------------------------- the whale
         /// The bones of a whale on the sand: a long curve of vertebrae, ribs arching up out of the beach, the great
         /// jaw lying open and the skull at the end, all bleached bone-white.
+        /// A post from the ground up to a piece of rib or bone, if that piece is at walking height.
+        static void RibCollider(LandContext ctx, Vector3 p, float radius)
+        {
+            var g = ctx.Ground(p.x, p.z);
+            if (p.y - g < .2f || p.y - g > 2.3f) return;
+            ArtistBits.PostCollider(ctx.Root, new Vector3(p.x, g, p.z), p.y - g + .2f, radius);
+        }
+
         void Whale(LandContext ctx, MeshKit mk, Vector3 at, Vector3 sea)
         {
             var along = Quaternion.Euler(0, ctx.Range(-25f, 25f), 0) * Vector3.Cross(Vector3.up, sea);
@@ -194,6 +203,7 @@ namespace EverythingWorld.World
             {
                 var t = i / 25f;
                 mk.Blob(boneMat, Spine(t), new Vector3(.32f, .28f, .3f) * Mathf.Lerp(1f, .45f, t), ctx.Rng, .15f);
+                if (i % 2 == 0) RibCollider(ctx, Spine(t), .4f);
             }
             for (var i = 0; i < 9; i++)
             {
@@ -209,6 +219,7 @@ namespace EverythingWorld.World
                         var p = c + side * s * Mathf.Sin(a) * w + Vector3.up * Mathf.Sin(a * .9f + .3f) * h - Vector3.up * (k > 4 ? (k - 4) * .6f : 0f);
                         var d = p - prev;
                         mk.Prism(boneMat, prev, d.normalized, .13f, d.magnitude + .05f, 6, .9f);
+                        RibCollider(ctx, (prev + p) / 2f, .22f);
                         prev = p;
                     }
                     var foot = c + side * s * w * .9f; foot.y = ctx.Ground(foot.x, foot.z);

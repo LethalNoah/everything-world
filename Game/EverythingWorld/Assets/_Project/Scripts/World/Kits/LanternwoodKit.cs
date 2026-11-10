@@ -147,6 +147,7 @@ namespace EverythingWorld.World
             solid.Box(stone, L(0, .6f, -len / 2 + 2f), new Vector3(3.2f, 1.2f, 1.3f), rot);
             var flame = WorldMaterials.Glow(new Color(1f, .72f, .35f), 6f);
             var flameColor = new Color(1f, .7f, .36f);
+            var candles = new MeshKit();               // ankle-high candles on the floor: stepped round, not walls (the land audit skips "Soft")
             for (var i = 0; i < 70; i++)
             {
                 Vector3 c;
@@ -154,10 +155,11 @@ namespace EverythingWorld.World
                 else if (i < 42) c = L(ctx.Range(-w / 2 + .5f, w / 2 - .5f), .07f, ctx.Range(-len / 2 + .5f, -len / 2 + 3.6f)); // on the floor round it
                 else c = L((ctx.Chance(.5f) ? -1 : 1) * (w / 2 - .5f), .07f, ctx.Range(-len / 2 + .6f, len / 2 - 1f));     // along the walls
                 var hgt = ctx.Range(.12f, .42f);
-                mk.Prism(candle, c, Vector3.up, ctx.Range(.03f, .07f), hgt, 5);
-                mk.Cone(flame, c + Vector3.up * (hgt + .01f), .025f, .09f, 4);
+                candles.Prism(candle, c, Vector3.up, ctx.Range(.03f, .07f), hgt, 5);
+                candles.Cone(flame, c + Vector3.up * (hgt + .01f), .025f, .09f, 4);
                 halos.Add(c + Vector3.up * (hgt + .06f), .3f, flameColor, .5f);
             }
+            candles.Build("Soft candles", root, false);
             ArtistBits.PointLight(root, L(0, 2f, -len / 2 + 2.6f), flameColor, 11f, 2.4f, true);
             ArtistBits.PointLight(root, L(-w / 4, 1.6f, 0), flameColor, 8f, 1.1f, true);
             ArtistBits.PointLight(root, L(w / 4, 1.6f, 0), flameColor, 8f, 1.1f, true);
@@ -272,15 +274,16 @@ namespace EverythingWorld.World
                     posts.Add(post);
                     post.y = ctx.Ground(post.x, post.z);
                     var arm = (pts[i] - post); arm.y = 0; arm.Normalize();      // the lantern hangs over the path
-                    mk.Prism(darkWood, post, Vector3.up, .07f, 2.3f, 5);
-                    ArtistBits.PostCollider(ctx.Root, post, 2.3f);
-                    mk.Box(darkWood, post + Vector3.up * 2.22f + arm * .3f, new Vector3(.06f, .06f, .6f), Quaternion.LookRotation(arm));
-                    mk.Box(glow, post + Vector3.up * 1.82f + arm * .52f, new Vector3(.18f, .26f, .18f), Quaternion.identity);
-                    var lamp = post + Vector3.up * 1.82f + arm * .52f;
+                    // tall enough that the lantern hangs over the path above head height
+                    mk.Prism(darkWood, post, Vector3.up, .07f, 2.65f, 5);
+                    ArtistBits.PostCollider(ctx.Root, post, 2.65f);
+                    mk.Box(darkWood, post + Vector3.up * 2.57f + arm * .3f, new Vector3(.06f, .06f, .6f), Quaternion.LookRotation(arm));
+                    mk.Box(glow, post + Vector3.up * 2.17f + arm * .52f, new Vector3(.18f, .26f, .18f), Quaternion.identity);
+                    var lamp = post + Vector3.up * 2.17f + arm * .52f;
                     halos.Add(lamp, 1.4f, LanternGlass);
                     SurpriseSpots.Add(ctx.Island.name, lamp);   // the wandering lantern can turn up here
                     ArtistBits.PointLight(ctx.Root, lamp - Vector3.up * .2f, new Color(1f, .7f, .4f), 9f, 1.4f);
-                    mk.Box(iron, post + Vector3.up * 1.98f + arm * .52f, new Vector3(.24f, .05f, .24f), Quaternion.identity);
+                    mk.Box(iron, post + Vector3.up * 2.33f + arm * .52f, new Vector3(.24f, .05f, .24f), Quaternion.identity);
                 }
             }
         }
@@ -310,6 +313,7 @@ namespace EverythingWorld.World
             var side = Vector3.Cross(Vector3.up, (chapelFront - ctx.Plaza).normalized);
             var stump = chapelFront + side * 5f; stump.y = ctx.Ground(stump.x, stump.z);
             mk.Prism(logs, stump, Vector3.up, .42f, .55f, 7);
+            ArtistBits.PostCollider(ctx.Root, stump, .9f, .55f);
             mk.Blob(leafGold, stump + Vector3.up * .66f, new Vector3(.28f, .1f, .36f), ctx.Rng, .02f);           // lute body
             var neck = Quaternion.LookRotation(side) * Quaternion.Euler(-12f, 0, 0);
             mk.Box(darkWood, stump + Vector3.up * .7f + neck * Vector3.forward * .45f, new Vector3(.06f, .04f, .6f), neck);
@@ -325,6 +329,7 @@ namespace EverythingWorld.World
                     var c = end - dir * 8f + across * (k == 0 ? 4f : -4.5f);
                     c.y = Mathf.Max(ctx.Ground(c.x, c.z), .2f) + .3f;
                     mk.Blob(k == 0 ? canoeRed : canoeGreen, c, new Vector3(.55f, .32f, 2.6f), ctx.Rng, .03f);
+                    solid.Box(logs, c, new Vector3(1.2f, .8f, 5.3f), Quaternion.LookRotation(Vector3.forward));
                 }
             }
         }
@@ -609,6 +614,7 @@ namespace EverythingWorld.World
             {
                 mk.Prism(darkWood, P(s * w / 2, 0, d / 2), Vector3.up, .1f, 2.2f, 5);
                 mk.Box(logs, P(s * w / 2, 1.2f, 0), new Vector3(.14f, 2.4f, d), rot);
+                solid.Box(logs, P(s * w / 2, 1.2f, .1f), new Vector3(.3f, 2.4f, d + .3f), rot);
             }
             var roofRot = rot * Quaternion.Euler(-14f, 0, 0);
             mk.Box(darkWood, P(0, 2.55f, 0), new Vector3(w + .6f, .14f, d + .9f), roofRot);
@@ -661,6 +667,8 @@ namespace EverythingWorld.World
                     glows.Add(win);
                 }
             }
+            foreach (var sx in new[] { -1f, 1f }) foreach (var sz in new[] { -1f, 1f })        // the log ends crossing at the corners
+                ArtistBits.PostCollider(labels.parent, P(sx * w / 2, 0, sz * d / 2), wallH, .65f);
             var roofBase = P(0, wallH, 0);
             mk.GableRoof(darkWood, roofBase, new Vector3(w + 1.6f, 0, d + 1.4f), 3.2f, rot, snowTop);
             foreach (var z in new[] { -d / 2, d / 2 })

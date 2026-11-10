@@ -82,7 +82,21 @@ namespace EverythingWorld.World
             Debug.Log($"The Small Hours: Noah Gallagher's place at {mine.x:0},{mine.z:0}, reaching {noahR:0} m");
 
             // spread the other homes out over the rest of the hollow: each in turn goes to the open spot farthest from
-            // every home already placed, your place and the way in, staying well inside the land
+            // every home already placed, your place and the way in, staying well inside the land and 48 m or more
+            // from any other land (so no home sits on the border, hearing the next land's music)
+            bool FarFromOtherLands(float x, float z)
+            {
+                for (var d = 5f; d <= 48f; d += 4f)
+                    for (var k = 0; k < 32; k++)
+                    {
+                        var ang = k * Mathf.PI / 16f;
+                        var cc = Mathf.RoundToInt((x + Mathf.Cos(ang) * d) / data.Step); var rr = Mathf.RoundToInt((data.layout.depth - z - Mathf.Sin(ang) * d) / data.Step);
+                        if (cc < 0 || rr < 0 || cc >= data.Nx || rr >= data.Nz) continue;
+                        var j = rr * data.Nx + cc;
+                        if (data.islandIds[j] != index && data.islandIds[j] != 255 && data.heights[j] > 1.5f) return false;
+                    }
+                return true;
+            }
             var cands = new List<Vector3>();
             for (var r = 0; r < data.Nz; r += 3)
             for (var c = 0; c < data.Nx; c += 3)
@@ -91,7 +105,7 @@ namespace EverythingWorld.World
                 float x = c * data.Step, z = data.layout.depth - r * data.Step;
                 var inland = true;
                 for (var k = 0; k < 12 && inland; k++) { var ang = k * Mathf.PI / 6f; inland = Here(x + Mathf.Cos(ang) * 26f, z + Mathf.Sin(ang) * 26f); }
-                if (inland) cands.Add(new Vector3(x, 0, z));
+                if (inland && FarFromOtherLands(x, z)) cands.Add(new Vector3(x, 0, z));
             }
             var taken = new List<Vector3> { new Vector3(noah.x, noahR + 18f, noah.z), new Vector3(isl.labelX, 45f, isl.labelZ) };   // x, radius, z
             var homes = new List<IslandWorldData.Artist>();
@@ -394,6 +408,7 @@ namespace EverythingWorld.World
             foreach (var s in new[] { -.8f, .8f })
             {
                 foreach (var k in new[] { -.25f, .25f }) mk.Box(iron, bar + side * (s + k) - Vector3.up * .95f, new Vector3(.02f, 1.9f, .02f), Quaternion.identity);
+                solid.Box(iron, bar + side * s - Vector3.up * 1.3f, new Vector3(.7f, 1.3f, .4f), Quaternion.LookRotation(F));
                 mk.Box(WorldMaterials.Solid(new Color(.3f, .32f, .38f)), bar + side * s - Vector3.up * 1.9f, new Vector3(.6f, .05f, .3f), Quaternion.LookRotation(F));
             }
             // the birdbath and the white goose ornaments
@@ -486,6 +501,7 @@ namespace EverythingWorld.World
                 if (NearPath(p.x, p.z, 2.5f + pad)) return false;
                 return ctx.IsLand(p.x, p.z, 2f);
             }
+            var shafts = new MeshKit();         // light falling between the trunks: walked through (the land audit skips "Soft")
             var trees = 0;
             var many = Mathf.RoundToInt(260f * (noahR / 74f) * (noahR / 74f));
             for (var i = 0; i < many; i++)
@@ -521,7 +537,7 @@ namespace EverythingWorld.World
                     var sp = p + new Vector3(ctx.Range(-2.5f, 2.5f), 0, ctx.Range(-2.5f, 2.5f));
                     sp.y = ctx.Ground(sp.x, sp.z);
                     var sh = ctx.Range(5f, 13f);
-                    mk.Box(ctx.Chance(.6f) ? shaft : shaftB, sp + Vector3.up * sh / 2f, new Vector3(ctx.Range(.08f, .2f), sh, ctx.Range(.08f, .2f)), Quaternion.Euler(0, ctx.Range(0, 90f), 0));
+                    shafts.Box(ctx.Chance(.6f) ? shaft : shaftB, sp + Vector3.up * sh / 2f, new Vector3(ctx.Range(.08f, .2f), sh, ctx.Range(.08f, .2f)), Quaternion.Euler(0, ctx.Range(0, 90f), 0));
                     halos.Add(sp + Vector3.up * sh * .3f, 1.4f, Teal, .4f);
                 }
                 // glowing orbs in the branches
@@ -545,6 +561,7 @@ namespace EverythingWorld.World
                 else ferns.Tuft(g, .3f + (float)rng.NextDouble() * .3f, new Color(.08f, .16f, .18f), new Color(.16f, .5f, .46f), rng, 3, .07f);
             }
             ferns.Build("Forest floor", root, WindMesh.Material(.1f, .5f, Moss));
+            shafts.Build("Soft light shafts", root, false);
             ArtistBits.PointLight(root, N + Vector3.up * (noah.y + 6f) - F * 30f, Teal, 45f, 1.1f);
             Debug.Log($"The Small Hours: Noah Gallagher's forest of {trees} trees");
         }
@@ -599,7 +616,9 @@ namespace EverythingWorld.World
             {
                 var a = k * Mathf.PI * 2f / 28f;
                 var p = g + new Vector3(Mathf.Cos(a), 0, Mathf.Sin(a)) * 10.4f;
+                p.y = Mathf.Max(p.y, ctx.Ground(p.x, p.z) - .1f);                                     // never sunk into a rise
                 mk.Blob(stone, p, new Vector3(.6f, .35f, .5f), ctx.Rng, .2f);
+                ArtistBits.PostCollider(root, new Vector3(p.x, Mathf.Min(p.y, ctx.Ground(p.x, p.z)), p.z), Mathf.Abs(p.y - ctx.Ground(p.x, p.z)) + .5f, .55f);
             }
             // the platform over the far side of the pool, and the wheel standing on it
             var deck = g + away * 7f;

@@ -6,7 +6,8 @@ build/geo_meta.json
 # Local test scripts and app settings
 build/bench.sh
 build/bench_gpu.sh
-.claude/
+.claude/*
+!.claude/skills/
 __pycache__/
 # API keys (never commit)
 build/lastfm_key.txt

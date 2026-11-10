@@ -41,6 +41,10 @@ namespace EverythingWorld.World
             else if (a.tier != "shrine") Moment(ctxA, Hash(a.name) % 6);
             else Small(ctxA, Hash(a.name) % 3);
 
+            // a warm light over every area (brighter for the radio stations), swelling while the artist plays
+            var big = a.stationId != 0;
+            var lamp = ArtistBits.PointLight(root, center + front * 1.5f + Vector3.up * (big ? 5f : 3f), Lamp, big ? 20f : 12f, big ? 1.3f : .9f);
+            if (area.glowLight == null) area.glowLight = lamp;
             foreach (var g in glows) if (g != null) halos.Add(g.transform.position, 1.1f, Lamp, .7f);
             area.glowRenderers = glows.ToArray();
             mk.Build("Area", root, false);
@@ -66,7 +70,11 @@ namespace EverythingWorld.World
             var side = Vector3.Cross(Vector3.up, facing);
             var n = Mathf.Max(1, Mathf.Min(count, z.a.songList?.Length ?? 1));
             var w = n * size * 1.25f + .3f;
-            foreach (var s in new[] { -1f, 1f }) z.mk.Prism(darkWood, ground + side * s * (w / 2f - .1f) - facing * .05f, Vector3.up, .06f, 2.1f, 5);
+            foreach (var s in new[] { -1f, 1f })
+            {
+                z.mk.Prism(darkWood, ground + side * s * (w / 2f - .1f) - facing * .05f, Vector3.up, .06f, 2.1f, 5);
+                ArtistBits.PostCollider(z.root, ground + side * s * (w / 2f - .1f) - facing * .05f, 2.1f, .1f);
+            }
             var c = ground + Vector3.up * 1.6f;
             z.mk.Box(board, c - Vector3.up * .1f, new Vector3(w, size + .55f, .06f), rot);
             z.solid.Box(board, c - Vector3.up * .1f, new Vector3(w, size + .55f, .15f), rot);
@@ -183,7 +191,7 @@ namespace EverythingWorld.World
                 if (ctx.IsLand(at.x, at.z, 4f))
                     House(ctx, z.mk, z.solid, ctx.OnGround(at.x, at.z), front, 8f, 7.5f, 5f, Pastels[s < 0 ? 1 : 2], Doors[s < 0 ? 0 : 3], s < 0 ? slate : terracotta);
             }
-            Bike(z.mk, z.At(d / 2f - 2f + .9f, -w / 2f + 1.2f), z.side, Pastels[3]);
+            Bike(z.mk, z.solid, z.At(d / 2f - 2f + .9f, -w / 2f + 1.2f), z.side, Pastels[3]);
             LampPost(ctx, z.mk, z.pictures, z.At(d / 2f - 2f + 2.6f, w / 2f - .8f), front, 2);
         }
 
@@ -365,7 +373,8 @@ namespace EverythingWorld.World
                     var c = z.At(-1f, 0);
                     var rot = Quaternion.LookRotation(front);
                     z.mk.Box(wood, c + Vector3.up * .9f, new Vector3(3.4f, .1f, 1.3f), rot);
-                    z.solid.Box(wood, c + Vector3.up * .5f, new Vector3(3.4f, 1f, 1.3f), rot);
+                    z.solid.Box(wood, c + Vector3.up * 1.2f, new Vector3(3.5f, 2.4f, 1.4f), rot);
+                    z.solid.Box(wood, c - front * 1.2f + Vector3.up * .3f, new Vector3(2.8f, .6f, .7f), rot);
                     foreach (var sx in new[] { -1f, 1f })
                     foreach (var sz in new[] { -1f, 1f })
                         z.mk.Prism(darkWood, c + side * sx * 1.6f + front * sz * .55f, Vector3.up, .05f, sz > 0 ? 2.3f : 2.6f, 5);
@@ -406,6 +415,7 @@ namespace EverythingWorld.World
                         var top = tri + Vector3.up * 1.3f; var d = top - foot;
                         z.mk.Box(darkWood, (foot + top) / 2f, new Vector3(.05f, d.magnitude, .05f), Quaternion.LookRotation(front, d.normalized));
                     }
+                    ArtistBits.PostCollider(z.root, tri, 1.5f, .55f);
                     z.mk.Prism(WorldMaterials.Solid(new Color(.75f, .6f, .3f), .5f), tri + Vector3.up * 1.4f - out_ * .5f, (out_ + Vector3.up * .25f).normalized, .1f, 1.2f, 8, .8f);
                     CoverBoard(z, z.At(1.2f, 3.2f), front, 2);
                     Plaque(z, 2.6f, -2.8f);
@@ -420,6 +430,7 @@ namespace EverythingWorld.World
                         z.mk.Prism(darkWood, p, Vector3.up, .04f, 1.6f, 5);
                     }
                     StripedPanel(z.mk, z.At(-2.6f, 0) + Vector3.up * .8f, side, Vector3.up, 4.2f, 1.4f, 6, accent, Cream, .03f);
+                    z.solid.Box(wood, z.At(-2.6f, 0) + Vector3.up * .8f, new Vector3(4.4f, 1.6f, .25f), Quaternion.LookRotation(front));
                     CoverBoard(z, z.At(1.4f, 3.4f), front, 2);
                     Plaque(z, 2.8f, -2.8f);
                     break;
@@ -433,8 +444,8 @@ namespace EverythingWorld.World
                         z.mk.Box(wood, (a + b) / 2f, new Vector3(.06f, .1f, Vector3.Distance(a, b)), Quaternion.LookRotation(b - a));
                     }
                     z.solid.Box(wood, z.At(-1.6f, 0) + Vector3.up * .55f, new Vector3(6f, 1.1f, .2f), Quaternion.LookRotation(front));
-                    Bike(z.mk, z.At(-1.1f, -1.3f), side, Color.Lerp(accent, Cream, .3f));
-                    Bike(z.mk, z.At(-1.1f, 1.5f), side, Pastels[4]);
+                    Bike(z.mk, z.solid, z.At(-1.1f, -1.3f), side, Color.Lerp(accent, Cream, .3f));
+                    Bike(z.mk, z.solid, z.At(-1.1f, 1.5f), side, Pastels[4]);
                     LampPost(ctx, z.mk, z.pictures, z.At(1.2f, 3.4f), front, 2);
                     CoverBoard(z, z.At(.5f, -3.6f), front, 2);
                     Plaque(z, 2.6f, 0f);
@@ -451,7 +462,7 @@ namespace EverythingWorld.World
             {
                 case 0:
                     LampPostCover(z, z.At(-.5f, 1.2f));
-                    Bike(z.mk, z.At(-.6f, -.4f), z.side, Color.Lerp(accent, Cream, .25f));
+                    Bike(z.mk, z.solid, z.At(-.6f, -.4f), z.side, Color.Lerp(accent, Cream, .25f));
                     break;
                 case 1:
                     CoverBoard(z, z.At(-1.2f, 0), z.front, 1);

@@ -8,11 +8,24 @@ Built (SurpriseDirector, SharedChance, all on the radio's shared clock, so frien
 
 The playlist is meant to be surprising and spontaneous, so the world shouldn't be the same every visit. Idea: drive surprises from the same shared clock as the radio, so friends see them together. Rare moments (a shooting star, the aurora on some nights, lanterns pulsing when a certain song starts), small things that shift by day or week (where snowmen stand, which fire is lit, heavier snow some days), and lights or weather reacting to the song playing (energy, mood).
 
+## Claude sees the world itself (2026-11-09, next up)
+
+- Run Unity from the command line (batch mode) to build the world, run the land audit and save screenshots from where you arrive, each artist area and above, so Claude can check a land without the owner testing every round. Unity has to be closed while it runs. The land audit and the `build-land` skill are already done.
+
 ## Social spaces and minigames (2026-11-09, later)
 
 - A big Christmas lodge (probably in or near Lanternwood) you can go inside, sit down in and talk with friends.
 - Pub songs and Christmas songs might get an area of their own one day. For now the sea shanties and pub songs (Drunken Sailor, Wellerman, Ratlin' Bog) and A Holly Jolly Christmas live on the Isle of Memes & Musicals.
 - Minigames somewhere in the world.
+
+## A quest across the lands (2026-11-09, wanted, not designed yet)
+
+- **One activity or minigame per land**, made for that land like everything else (its own idea, fitting its music), with something you have to do or finish in it.
+- **Pedestals in the hub:** an empty pedestal for every land. Finishing a land's activity fills its pedestal (with something from that land). Filling every pedestal does something big (to be decided).
+- **A passport (Sean's idea):** it gets stamped for each land you visit, each stamp designed for its land.
+- **Collectibles or a scavenger hunt** hidden across the lands.
+- Open questions: is progress per player or shared by friends playing together? Saved between sessions? What happens when every pedestal is full? Where does the passport show (a book you open, a page on the hub map)?
+- Fits with what's built: the daily "something moves" happenings (the Driftwood bottle, the Fens heron) could become hunt items; the build-land skill should get a step for each land's activity once the system exists.
 - Generally: buildings sized for groups (doorways 2.5 m+, rooms for 4-6 people), and places to sit and reflect in every land.
 
 ## Artist descriptions (2026-11-09, wanted, later)

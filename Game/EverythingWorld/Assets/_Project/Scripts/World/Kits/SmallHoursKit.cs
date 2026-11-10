@@ -56,7 +56,8 @@ namespace EverythingWorld.World
             life.transform.SetParent(ctx.Root, false);
             Lanes(ctx, mk);
             Laundrette(ctx, mk, solid, labels);
-            Hedges(ctx, mk);
+            Hedges(ctx, mk, solid);
+            Night(ctx, mk, solid);
             mk.Build("Small Hours scenery", ctx.Root, false);
             solid.BuildCollider("Small Hours walls", ctx.Root);
         }
@@ -229,13 +230,14 @@ namespace EverythingWorld.World
         }
 
         // ---------------------------------------------------------------- garden hedges and the ground
-        void Hedges(LandContext ctx, MeshKit mk)
+        void Hedges(LandContext ctx, MeshKit mk, MeshKit solid)
         {
             for (var i = 0; i < 40; i++)
             {
                 if (!ctx.TrySpot(out var p, 6f, 4f) || NearPath(p.x, p.z, 3f) || InNoah(p, 6f)) continue;
                 var r = ctx.Range(1.2f, 2.4f);
                 mk.Blob(i % 3 == 0 ? leaf : WorldMaterials.Solid(new Color(.14f, .2f, .2f)), p + Vector3.up * r * .6f, new Vector3(r, r * .8f, r), ctx.Rng, .2f);
+                solid.Box(leaf, p + Vector3.up * r * .6f, new Vector3(r * 1.9f, r * 1.6f, r * 1.9f), Quaternion.identity);
                 if (i % 4 == 0)
                 {
                     var h = ctx.Range(4f, 6f);

@@ -29,6 +29,8 @@ namespace EverythingWorld.World
         public bool zoneFields = true;
         [Tooltip("Frames per second to aim for. Without a cap the editor runs the GPU flat out (loud fans).")]
         public int targetFrameRate = 60;
+        [Tooltip("In the editor, check each hand-built land after it's built (missing colliders, crowded or misplaced artists, empty stretches, light) and write a report and a picture to Logs/LandAudit/.")]
+        public bool auditLands = true;
 
         public static IslandWorldBuilder Instance { get; private set; }
         public IslandWorldData Data { get; private set; }
@@ -334,6 +336,8 @@ namespace EverythingWorld.World
                     kits[i].Dress(ctx);
                     foreach (var a in ctx.Artists) kits[i].BuildArtist(ctx, a);
                     kits[i].Finish(ctx);
+                    if (auditLands && Application.isEditor)
+                        try { LandAudit.Run(Data, ctx, kits[i].Land); } catch (System.Exception e) { Debug.LogException(e); }
                     Debug.Log($"{kits[i].Land}: dressed in {(Time.realtimeSinceStartup - t0) * 1000:0} ms, {ctx.Artists.Count} artist areas");
                 }
                 catch (System.Exception e)

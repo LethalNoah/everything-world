@@ -24,6 +24,8 @@ namespace EverythingWorld.World
 
         public override void ShapeGround(IslandWorldData data, int index)
         {
+            // any artist too close to the next land moves inward first, beside the similar artists round it
+            ArtistPlacement.KeepFromBorders(data, index, heartClear: LandContext.PlazaRadius + 10f, land: Land);
             hasLake = false;
             var isl = data.layout.islands[index];
             IslandWorldData.Artist hall = null;
@@ -186,7 +188,10 @@ namespace EverythingWorld.World
                 mk.Box(darkWood, segC, new Vector3(2.8f, .18f, 3f), rot);
                 solid.Box(darkWood, segC, new Vector3(2.8f, .3f, 3f), rot);
                 foreach (var side in new[] { -1f, 1f })
+                {
                     mk.Prism(logs, segC + rot * Vector3.right * side * 1.25f - Vector3.up * 1.6f, Vector3.up, .12f, 1.6f, 5);
+                    ArtistBits.PostCollider(labels.parent, segC + rot * Vector3.right * side * 1.25f - Vector3.up * 1.6f, 1.6f, .18f);
+                }
             }
             // a ramp from the bank up onto the pier
             var bank = shore + toHall * 3f; bank.y = ctx.Ground(bank.x, bank.z);
@@ -319,6 +324,7 @@ namespace EverythingWorld.World
             halosOut.Add(at + Vector3.up * .9f, 3.6f, new Color(1f, .6f, .28f), 1.1f);
             var l = ArtistBits.PointLight(parent, at + Vector3.up * 1.4f, new Color(1f, .62f, .32f), 13f, 2.6f);
             l.gameObject.AddComponent<FireFlicker>();
+            ArtistBits.PostCollider(parent, at, 1.3f, 1.5f);                                  // the stone ring and the fire
             for (var k = 0; k < seats; k++)
             {
                 var a = k * Mathf.PI * 2f / seats + .4f;
@@ -361,7 +367,7 @@ namespace EverythingWorld.World
                 foreach (var s in new[] { -1f, 1f })
                     mk.Prism(darkWood, at + Vector3.up * 1.55f * big + facing * Vector3.right * s * .45f, facing * new Vector3(s, .6f, 0), .03f, .9f, 4, .5f);
                 mk.Box(WorldMaterials.Solid(scarves[rng.Next(scarves.Length)]), head - Vector3.up * .36f * big, new Vector3(.6f, .14f, .6f) * big, facing);
-                solid.Box(snowTop, at + Vector3.up * 1f, new Vector3(1.4f, 2f, 1.4f), facing);
+                solid.Box(snowTop, at + Vector3.up * 1f, new Vector3(2.6f, 2f, 1.4f), facing);     // wide enough for the stick arms
                 clear.Add(new Vector3(at.x, 2.5f, at.z));
                 placed++;
             }

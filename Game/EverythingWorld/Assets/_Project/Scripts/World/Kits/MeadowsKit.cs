@@ -29,6 +29,7 @@ namespace EverythingWorld.World
         readonly Dictionary<(int, int), List<Vector3>> pathCells = new Dictionary<(int, int), List<Vector3>>();
         readonly Dictionary<string, Vector3> facing = new Dictionary<string, Vector3>();
         readonly List<Vector3> treeSpots = new List<Vector3>();
+        MeshKit soft;       // leaves and the little fairy-light stakes you walk through (no collider; the land audit skips "Soft" meshes)
 
         void MakeMaterials()
         {
@@ -51,6 +52,11 @@ namespace EverythingWorld.World
             return true;
         }
 
+        /// The artists stay where the layout put them, except any too close to the next land: those move inward,
+        /// next to the similar artists round them (ArtistPlacement).
+        public override void ShapeGround(IslandWorldData data, int index) =>
+            ArtistPlacement.KeepFromBorders(data, index, heartClear: 30f, land: Land);
+
         public override void Dress(LandContext ctx)
         {
             MakeMaterials();
@@ -58,11 +64,13 @@ namespace EverythingWorld.World
             loop.Clear(); pathCells.Clear(); facing.Clear(); treeSpots.Clear();
             center = ctx.Plaza;
             var mk = new MeshKit(); var solid = new MeshKit(); var pictures = new MeshKit();
+            soft = new MeshKit();
             Loop(ctx, mk);
             Bed(ctx, mk, solid);
             Trees(ctx, mk);
             Daydreams(ctx, mk, solid, pictures);
             mk.Build("Meadows scenery", ctx.Root, false);
+            soft.Build("Soft leaves and fairy-light stakes", ctx.Root, false);
             solid.BuildCollider("Meadows walls", ctx.Root);
             pictures.Build("Meadows polaroids", ctx.Root, false);
             var life = new GameObject("Meadows life").AddComponent<MeadowsLife>();
@@ -127,14 +135,14 @@ namespace EverythingWorld.World
                     foreach (var s in new[] { -1f, 1f })
                     {
                         var q = p + side * s * 1.75f; q.y = ctx.Ground(q.x, q.z);
-                        mk.Prism(iron, q, Vector3.up, .03f, .55f, 4);
+                        soft.Prism(iron, q, Vector3.up, .03f, .55f, 4);
                         lights.Bulb(q + Vector3.up * .62f, .11f, ((int)(next / 4.5f)) % 3 == 0 ? Firefly : FairyWarm, u);
                     }
                     next += 4.5f;
                 }
                 along += seg;
             }
-            lights.Build("Track lights", ctx.Root);
+            lights.Build("Soft track lights", ctx.Root);
             foreach (var art in ctx.Artists) Spur(ctx, mk, art);
             // two short ways in from the bed to the loop
             foreach (var s in new[] { 0, N / 2 })
@@ -405,6 +413,7 @@ namespace EverythingWorld.World
                         for (var k = 0; k < 3; k++) mk.Blob(blob, p + Vector3.up * (h * (.35f + k * .15f)), Vector3.one * (.32f - k * .06f), ctx.Rng, .2f);
                         halos.Add(p + Vector3.up * h * .5f, 3.2f, color, .9f);
                         ArtistBits.PostCollider(ctx.Root, p, h, 1f);
+                        ArtistBits.PointLight(ctx.Root, p + Vector3.up * (h * .5f + 1.2f), color, 11f, 1.1f);
                         break;
                     }
                     case 1: // a giant polaroid standing in the grass, showing one of the Meadows' covers
@@ -439,7 +448,7 @@ namespace EverythingWorld.World
                             mk.Tri(paper, nose, tail, wing, L(0, -1f, 0));
                             mk.Tri(paper, nose, tail, L(s * .25f, -.9f, -2.4f), L(-s, 0, 0));
                         }
-                        solid.Box(paper, L(0, 0, 0), new Vector3(3f, 1.2f, 5f), dive);
+                        solid.Box(paper, L(0, 0, 0), new Vector3(4.6f, 1.4f, 5.4f), dive);
                         break;
                     }
                     case 3: // a puffy star cushion
@@ -458,7 +467,7 @@ namespace EverythingWorld.World
                             mk.Tri(mat, f0, a0, a1, c - rot * Vector3.forward);
                             mk.Tri(mat, b0, a0, a1, c + rot * Vector3.forward);
                         }
-                        solid.Box(mat, c, new Vector3(r * 1.6f, r * 1.6f, th), rot);
+                        solid.Box(mat, c, new Vector3(r * 1.95f, r * 1.9f, th + .1f), rot);
                         break;
                     }
                     default: // fairy lights strung between two tall poles
@@ -482,7 +491,7 @@ namespace EverythingWorld.World
                 if (!ctx.TrySpot(out var p, 8f, 6f) || NearPath(p.x, p.z, 5f)) continue;
                 var h = ctx.Range(3f, 5f); var r = ctx.Range(2.6f, 4f);
                 mk.Prism(bark, p, Vector3.up, .28f, h + 1f, 7, .7f);
-                mk.Blob(i % 2 == 0 ? leafA : leafB, p + Vector3.up * (h + r * .55f), new Vector3(r, r * .85f, r), ctx.Rng, .14f);
+                soft.Blob(i % 2 == 0 ? leafA : leafB, p + Vector3.up * (h + r * .55f), new Vector3(r, r * .85f, r), ctx.Rng, .14f);
                 ArtistBits.PostCollider(ctx.Root, p, h, .32f);
                 treeSpots.Add(p);
                 if (i % 4 == 0) FairyLights(mk, p + Vector3.up * (h + .3f) + Vector3.right * r * .6f, p + Vector3.up * (h + .3f) - Vector3.right * r * .6f, 1.2f, i % 8 == 0 ? Firefly : FairyWarm);
