@@ -9,6 +9,14 @@
  },
  "lands": [
   {
+   "land": "The Prog Marches",
+   "sunPitch": 16, "sunYaw": 250, "sunIntensity": 0.6, "sunColor": "#FFB060",
+   "skyLight": "#3C2C70", "horizonLight": "#E09A40", "groundLight": "#2C2440",
+   "fogColor": "#5E466E", "fogStart": 130, "fogEnd": 1250,
+   "stars": 0.7, "sunShadows": false, "dailyWeather": false, "bloom": 1.0,
+   "weather": "", "weatherAmount": 0
+  },
+  {
    "land": "The Bluegrass Hollows",
    "sunPitch": 46, "sunYaw": 215, "sunIntensity": 1.25, "sunColor": "#FFF2D6",
    "skyLight": "#8EB4E8", "horizonLight": "#D2E2F2", "groundLight": "#6A7A50",
