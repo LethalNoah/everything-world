@@ -9,6 +9,14 @@
  },
  "lands": [
   {
+   "land": "The Hair Metal Strip",
+   "sunPitch": -3, "sunYaw": 70, "sunIntensity": 0.5, "sunColor": "#FF6A4A",
+   "skyLight": "#7B4FB0", "horizonLight": "#FF8A5A", "groundLight": "#4A3040",
+   "fogColor": "#5A2E6E", "fogStart": 90, "fogEnd": 1100,
+   "stars": 0.25, "sunShadows": false, "dailyWeather": false, "bloom": 1.0,
+   "weather": "", "weatherAmount": 0
+  },
+  {
    "land": "The Southern Rock Bayou",
    "sunPitch": 16, "sunYaw": -120, "sunIntensity": 1.1, "sunColor": "#FFD27A",
    "skyLight": "#C8C489", "horizonLight": "#E6CF8A", "groundLight": "#55603A",

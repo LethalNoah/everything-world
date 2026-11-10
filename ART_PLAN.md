@@ -40,7 +40,7 @@ Classic, jam, prog, southern, glam and heavy metal: the old heartland of rock.
 
 ### 13. The Yacht Rock Riviera
 
-*classic rock, soft rock, yacht rock, rock, pop* · 36 songs · energy 0.64, acoustic 0.26, mood 0.65 · top artists: Elton John, Fleetwood Mac, Billy Joel, Eagles, TOTO
+*classic rock, soft rock, yacht rock, rock, singer songwriter* · 38 songs · energy 0.64, acoustic 0.27, mood 0.66 · top artists: Elton John, Fleetwood Mac, Billy Joel, Eagles, Jimmy Buffett
 
 - **Terrain:** Palm-lined coves, white-sand beaches and a calm marina.
 - **Colours:** `#8FD3C1 seafoam`, `#EED9A6 sand`, `#F08A6B coral`, `#23395B navy`
@@ -60,7 +60,7 @@ Classic, jam, prog, southern, glam and heavy metal: the old heartland of rock.
 
 ### 17. The Folk Woods
 
-*singer songwriter, folk, folk rock, classic rock, spoken word* · 39 songs · energy 0.49, acoustic 0.49, mood 0.56 · top artists: Fenne Lily, Yusuf / Cat Stevens, Gordon Lightfoot, Jimmy Buffett, John Denver
+*singer songwriter, folk, folk rock, classic rock, spoken word* · 37 songs · energy 0.48, acoustic 0.49, mood 0.55 · top artists: Fenne Lily, Yusuf / Cat Stevens, Gordon Lightfoot, John Denver, Liana Flores
 
 - **Terrain:** Old-growth forest around a mountain lake, with a railway along the shore.
 - **Colours:** `#3E6B48 pine`, `#E58A3A campfire`, `#5C8FB8 lake blue`, `#F2E8D5 cream`
