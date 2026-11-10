@@ -9,6 +9,14 @@
  },
  "lands": [
   {
+   "land": "The Iron Range",
+   "sunPitch": 14, "sunYaw": 120, "sunIntensity": 0.9, "sunColor": "#FF9A60",
+   "skyLight": "#5E5A6A", "horizonLight": "#8A5A40", "groundLight": "#4A3428",
+   "fogColor": "#4A4248", "fogStart": 100, "fogEnd": 1100,
+   "stars": 0, "sunShadows": false, "dailyWeather": false, "bloom": 1.0,
+   "weather": "", "weatherAmount": 0
+  },
+  {
    "land": "The Prog Marches",
    "sunPitch": 16, "sunYaw": 250, "sunIntensity": 0.6, "sunColor": "#FFB060",
    "skyLight": "#3C2C70", "horizonLight": "#E09A40", "groundLight": "#2C2440",
