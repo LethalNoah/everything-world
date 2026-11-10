@@ -179,7 +179,7 @@ namespace EverythingWorld.World
                 sb.AppendLine($"Graphics: {SystemInfo.graphicsDeviceName}, {SystemInfo.graphicsMemorySize} MB. Meshes: {meshCount} using {meshBytes / (1024 * 1024)} MB, {vertCount / 1000} thousand vertices. Materials: {mats}. Renderers: {renderers}. Allocated: {UnityEngine.Profiling.Profiler.GetTotalAllocatedMemoryLong() / (1024 * 1024)} MB");
             }
             var meshTris = new Dictionary<Mesh, int>();
-            foreach (var place in new[] { "The Everything Hub", "The Electric Fields", "Lanternwood", "Kingdom of Classic Rock", "The Southern Rock Bayou" })
+            foreach (var place in new[] { "The Everything Hub", "Kingdom of Classic Rock", "The Hair Metal Strip", "Arena Rock Ridge", "The Psychedelic Wilds" })
             {
                 var isl = Find(data, place); if (isl == null) continue;
                 var feet = Feet(new Vector3(isl.labelX, 0f, isl.labelZ));
