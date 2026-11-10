@@ -40,7 +40,8 @@ namespace EverythingWorld.World
             var hut = mt + up * 24.5f;
             mk.Box(wood, hut + up * 1f, new Vector3(2.4f, 2f, 2.4f), Quaternion.LookRotation(toHeart)); mk.Cone(WorldMaterials.Solid(new Color(.45f, .3f, .2f)), hut + up * 2f, 2f, 1.6f, 4, 45f);
             mk.Box(GlowM(Warm, 2.4f), hut + up * 1.1f + toHeart * 1.21f, new Vector3(.7f, .8f, .02f), Quaternion.LookRotation(toHeart));
-            halos.Add(hut + up * 1.2f + toHeart * 1.6f, 2f, Warm, .8f);
+            halos.Add(hut + up * 1.2f + toHeart * 1.6f, 2f, Warm, .8f); life.mountainTop = hut + up * 3f;
+            Sign(ctx, mk, lad + toHeart * 2f + side * 2f, toHeart, "ICCULUS'S MOUNTAIN");
             ArtistBits.PointLight(ctx.Root, hut + up * 1.5f + toHeart * 2f, Warm, 12f, 1.6f);
             // the Helping Friendly Book, open on a pedestal
             var bk = c + toHeart * 6f; bk.y = ctx.Ground(bk.x, bk.z); var brot = Quaternion.LookRotation(toHeart);
@@ -49,6 +50,7 @@ namespace EverythingWorld.World
             foreach (var s in new[] { -1f, 1f }) { mk.Box(WorldMaterials.Solid(new Color(.45f, .15f, .12f)), bk + up * 1.25f + side * s * .55f, new Vector3(1.1f, .08f, 1.4f), brot * Quaternion.Euler(0, 0, s * 12f)); mk.Box(book, bk + up * 1.31f + side * s * .52f, new Vector3(1f, .04f, 1.3f), brot * Quaternion.Euler(0, 0, s * 12f)); }
             halos.Add(bk + up * 1.6f, 2.2f, new Color(1f, .9f, .6f), .6f);
             life.book = book; life.bookAt = bk + up * 1.4f;
+            Sign(ctx, mk, bk + toHeart * 2f + side * 2.2f, toHeart, "THE HELPING FRIENDLY BOOK");
             // Wilson's tower, dark, one window lit, a mockingbird on top
             var wt = c - toHeart * 14f - side * 12f; wt.y = ctx.Ground(wt.x, wt.z);
             mk.Prism(darkStone, wt - up * .5f, up, 3f, 19f, 8, .85f); solid.Prism(darkStone, wt - up * .5f, up, 3f, 19f, 8);
@@ -56,9 +58,33 @@ namespace EverythingWorld.World
             var win = new Material(GlowM(new Color(1f, .4f, .2f), 1.6f)) { name = "Wilson's window" };
             mk.Box(win, wt + up * 14f + toHeart * 2.6f, new Vector3(.7f, 1.4f, .05f), Quaternion.LookRotation(toHeart));
             life.wilsonWindow = win;
-            var bird = WorldMaterials.Solid(new Color(.55f, .55f, .6f)); var bp = wt + up * 19.8f;
-            mk.Blob(bird, bp, new Vector3(.3f, .3f, .55f), ctx.Rng, 0f); mk.Blob(bird, bp + up * .3f + toHeart * .4f, Vector3.one * .18f, ctx.Rng, 0f);
-            foreach (var s in new[] { -1f, 1f }) { mk.Tri(bird, bp, bp + side * s * 1.4f + up * .6f, bp + side * s * .9f - toHeart * .4f, bp - up); mk.Tri(bird, bp, bp + side * s * .9f - toHeart * .4f, bp + side * s * 1.4f + up * .6f, bp + up); }
+            // his castle wall round the tower: a ring of dark crenellated wall with a gate facing the clearing and torches
+            for (var k = 0; k < 20; k++)
+            {
+                var a0 = k * 18f * Mathf.Deg2Rad; var a1 = (k + 1) * 18f * Mathf.Deg2Rad; var gateAng = Mathf.Atan2(Vector3.Dot(toHeart, Vector3.forward), Vector3.Dot(toHeart, Vector3.right));
+                var mid = (a0 + a1) / 2f; if (Mathf.Abs(Mathf.DeltaAngle(mid * Mathf.Rad2Deg, gateAng * Mathf.Rad2Deg)) < 12f) continue;
+                var p0 = wt + new Vector3(Mathf.Cos(a0), 0, Mathf.Sin(a0)) * 8f; var p1 = wt + new Vector3(Mathf.Cos(a1), 0, Mathf.Sin(a1)) * 8f; p0.y = ctx.Ground(p0.x, p0.z); p1.y = ctx.Ground(p1.x, p1.z);
+                var wm = (p0 + p1) / 2f; var wr = Quaternion.LookRotation(new Vector3(p1.x - p0.x, 0, p1.z - p0.z)); var wl = Vector3.Distance(new Vector3(p0.x, 0, p0.z), new Vector3(p1.x, 0, p1.z));
+                mk.Box(darkStone, wm + up * 2f, new Vector3(1f, 5f, wl + .1f), wr); mk.Box(darkStone, wm + up * 4.9f, new Vector3(1f, .9f, wl * .45f), wr); solid.Box(darkStone, wm + up * 2f, new Vector3(1f, 5f, wl), wr);
+            }
+            var gate = wt + toHeart * 8f; gate.y = ctx.Ground(gate.x, gate.z);
+            foreach (var s in new[] { -1f, 1f }) { var gp = gate + side * s * 2.4f; mk.Prism(darkStone, gp - up * .3f, up, 1f, 7f, 8); solid.Prism(darkStone, gp - up * .3f, up, 1f, 7f, 8); mk.Box(GlowM(new Color(1f, .5f, .15f), 2.6f), gp + up * 5f + toHeart * 1f, new Vector3(.3f, .5f, .3f), Quaternion.identity); halos.Add(gp + up * 5f + toHeart * 1.1f, 1.6f, new Color(1f, .5f, .15f), .8f); }
+            Sign(ctx, mk, gate + toHeart * 3f + side * 4f, toHeart, "WILSON'S CASTLE");
+            // the Lizards' village: round huts with pointed thatch, doorways lit, round a little square
+            var vil = c + side * 17f + toHeart * 4f; vil.y = ctx.Ground(vil.x, vil.z); var thatch = WorldMaterials.Solid(new Color(.6f, .5f, .3f)); var mud = WorldMaterials.Solid(new Color(.55f, .45f, .35f));
+            for (var k = 0; k < 5; k++)
+            {
+                var a = k * 72f * Mathf.Deg2Rad + .4f; var hp = vil + new Vector3(Mathf.Cos(a), 0, Mathf.Sin(a)) * 6f; hp.y = ctx.Ground(hp.x, hp.z); var hf = (vil - hp); hf.y = 0; hf.Normalize();
+                mk.Prism(mud, hp - up * .2f, up, 1.7f, 2.2f, 10); mk.Cone(thatch, hp + up * 2f, 2.2f, 2.4f, 10); solid.Prism(mud, hp - up * .2f, up, 1.7f, 2.4f, 8);
+                mk.Box(GlowM(Warm, 1.8f), hp + up * .9f + hf * 1.66f, new Vector3(.8f, 1.4f, .04f), Quaternion.LookRotation(hf)); halos.Add(hp + up * 1f + hf * 2f, 1.4f, Warm, .6f);
+            }
+            ArtistBits.PointLight(ctx.Root, vil + up * 3f, Warm, 14f, 1.4f);
+            Sign(ctx, mk, vil + toHeart * 8.5f, toHeart, "THE LIZARDS' VILLAGE");
+            // the Famous Mockingbird, flying between the mountain and the Book (JamLife)
+            var bird = WorldMaterials.Solid(new Color(.6f, .6f, .66f)); var bk2 = new MeshKit();
+            bk2.Blob(bird, Vector3.zero, new Vector3(.3f, .3f, .55f), ctx.Rng, 0f); bk2.Blob(bird, new Vector3(0, .3f, .4f), Vector3.one * .18f, ctx.Rng, 0f);
+            foreach (var s in new[] { -1f, 1f }) { bk2.Tri(bird, Vector3.zero, new Vector3(s * 1.4f, .6f, 0), new Vector3(s * .9f, 0, -.4f), Vector3.down); bk2.Tri(bird, Vector3.zero, new Vector3(s * .9f, 0, -.4f), new Vector3(s * 1.4f, .6f, 0), Vector3.up); }
+            life.mockingbird = bk2.BuildSingle("The Famous Mockingbird", life.transform, false).transform;
             // the Lizards round a fire
             var fire = c - toHeart * 2f + side * -2f; fire.y = ctx.Ground(fire.x, fire.z);
             for (var k = 0; k < 6; k++) mk.Blob(stone, fire + Quaternion.Euler(0, k * 60f, 0) * Vector3.forward * .9f + up * .15f, new Vector3(.25f, .18f, .22f), ctx.Rng, .3f);
@@ -74,10 +100,22 @@ namespace EverythingWorld.World
             var fl = ArtistBits.PointLight(ctx.Root, fire + up * 1f, new Color(1f, .55f, .2f), 12f, 1.8f); fl.gameObject.AddComponent<FireFlicker>().baseIntensity = 1.8f;
             ArtistBits.PostCollider(ctx.Root, fire, .5f, .9f); life.fires.Add(fire + up * .25f);
             ArtistBits.Label(ctx.Root, "GAMEHENDGE", rh + up * 10f, toHeart, .4f, new Color(.7f, .9f, 1f), TextAnchor.MiddleCenter);
+            Sign(ctx, mk, rh + toHeart * 1.5f + side * 5.5f, toHeart, "THE RHOMBUS");
+            Sign(ctx, mk, fire + toHeart * 3.6f + side * 1.5f, toHeart, "THE LIZARDS");
+            // lanterns on posts round the clearing
+            for (var k = 0; k < 10; k++) { var a = k * 36f * Mathf.Deg2Rad; var lp = c + new Vector3(Mathf.Cos(a), 0, Mathf.Sin(a)) * 27f; if (!ctx.IsLand(lp.x, lp.z, 2f)) continue; lp.y = ctx.Ground(lp.x, lp.z); mk.Prism(wood, lp - up * .3f, up, .08f, 2.8f, 6); mk.Box(GlowM(new Color(.6f, .85f, 1f), 2.4f), lp + up * 2.7f, new Vector3(.3f, .4f, .3f), Quaternion.identity); halos.Add(lp + up * 2.7f, 1.4f, new Color(.6f, .85f, 1f), .7f); ArtistBits.PostCollider(ctx.Root, lp, 2.8f, .12f); }
             noGrass.Add(new Vector3(c.x, 34f, c.z));
             var mark = new GameObject("Shot: Gamehendge").transform; mark.SetParent(ctx.Root, false);
             var feet = rh + toHeart * 14f; feet.y = ctx.Ground(feet.x, feet.z); mark.SetPositionAndRotation(feet, Quaternion.LookRotation(-toHeart));
             life.gamehendge = c;
+        }
+
+        /// A little wooden sign naming a place in Gamehendge (a longer story text can go on it later).
+        void Sign(LandContext ctx, MeshKit mk, Vector3 at, Vector3 face, string text)
+        {
+            at.y = ctx.Ground(at.x, at.z); var w = text.Length * .13f + .5f;
+            mk.Prism(wood, at - Vector3.up * .3f, Vector3.up, .07f, 1.7f, 6); mk.Box(wood, at + Vector3.up * 1.4f, new Vector3(w, .5f, .08f), Quaternion.LookRotation(face));
+            ArtistBits.Label(ctx.Root, text, at + Vector3.up * 1.4f + face * .05f, face, .15f, Ink, TextAnchor.MiddleCenter); ArtistBits.PostCollider(ctx.Root, at, 1.7f, .1f);
         }
 
         // ---------------------------------------------------------------- the album trail
@@ -146,7 +184,8 @@ namespace EverythingWorld.World
             var up = Vector3.up; var rot = Quaternion.LookRotation(f); var side = Vector3.Cross(up, f); var red = WorldMaterials.Solid(new Color(.7f, .15f, .12f));
             mk.Box(red, at + up * 2f, new Vector3(6f, 4f, 5f), rot); solid.Box(red, at + up * 2f, new Vector3(6f, 4f, 5f), rot);
             mk.GableRoof(WorldMaterials.Solid(new Color(.3f, .3f, .32f)), at + up * 4f, new Vector3(5.6f, 0, 6.6f), 2.2f, Quaternion.LookRotation(side));
-            foreach (var s in new[] { -1.6f, 1.6f }) { mk.Box(GlowM(Warm, 1.4f), at + up * 2.4f + f * 2.51f + side * s, new Vector3(1f, 1.1f, .02f), rot); mk.Box(white, at + up * 2.4f + f * 2.52f + side * s, new Vector3(1.2f, .1f, .03f), rot); }
+            var fw = new Material(GlowM(Warm, 1.4f)) { name = "Farmhouse windows" }; life.farmWindows = fw;
+            foreach (var s in new[] { -1.6f, 1.6f }) { mk.Box(fw, at + up * 2.4f + f * 2.51f + side * s, new Vector3(1f, 1.1f, .02f), rot); mk.Box(white, at + up * 2.4f + f * 2.52f + side * s, new Vector3(1.2f, .1f, .03f), rot); }
             var cow = at + f * 5f + side * 3f; var hide = white; var spot = dark;
             mk.Blob(hide, cow + up * 1.1f, new Vector3(.6f, .55f, 1.1f), ctx.Rng, 0f); mk.Blob(hide, cow + up * 1.3f + side * 1.1f, new Vector3(.3f, .32f, .4f), ctx.Rng, 0f);
             for (var k = 0; k < 4; k++) mk.Blob(spot, cow + up * (1.2f + Mathf.Sin(k) * .3f) + side * Mathf.Cos(k * 2f) * .5f + f * .55f, new Vector3(.2f, .18f, .05f), ctx.Rng, .2f);

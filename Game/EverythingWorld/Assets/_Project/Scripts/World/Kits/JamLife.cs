@@ -12,7 +12,7 @@ namespace EverythingWorld.World
     ///   white; "Free": big coloured balloons rise from the lawn; "The Divided Sky": Gamehendge wakes, the Rhombus
     ///   blazing, the Helping Friendly Book glowing, Wilson's window flickering, the light shifting between two
     ///   skies; "Run Like An Antelope": a herd of antelope runs across the meadow.
-    public class JamLife : MonoBehaviour
+    public partial class JamLife : MonoBehaviour
     {
         const string Land = "The Jam Band Commonwealth";
         public Vector3 center, gate, lot, stage, phish, bookAt, gamehendge, meadow;
@@ -59,7 +59,7 @@ namespace EverythingWorld.World
                 for (var k = 0; k <= seg; k++)
                 {
                     var a = k * Mathf.PI * 2f / seg; var d = new Vector3(Mathf.Cos(a), 0, Mathf.Sin(a));
-                    v.Add(d * .2f + Vector3.down * .3f); v.Add(d * 3.5f + Vector3.down * 34f);
+                    v.Add(d * .2f + Vector3.down * .3f); v.Add(d * 3f + Vector3.down * 27f);
                     col.Add(new Color(1, 1, 1, .5f)); col.Add(new Color(1, 1, 1, 0));
                     if (k < seg) { var b = k * 2; tri.AddRange(new[] { b, b + 1, b + 3, b, b + 3, b + 2 }); }
                 }
@@ -80,6 +80,7 @@ namespace EverythingWorld.World
                 foreach (var (x, z) in new[] { (-.18f, -.55f), (.18f, -.55f), (-.18f, .5f), (.18f, .5f) }) mk.Box(hide, new Vector3(x, .45f, z), new Vector3(.07f, .9f, .07f), Quaternion.Euler(z > 0 ? 25f : -25f, 0, 0));
                 var t = mk.BuildSingle("Antelope", transform, false).transform; t.gameObject.SetActive(false); antelopes.Add(t);
             }
+            ShowStart();
         }
 
         static Material Additive(string name)
@@ -128,30 +129,21 @@ namespace EverythingWorld.World
 
             hood = Mathf.MoveTowards(hood, here && id == JamKit.Hood ? 1f : 0f, dt / 2f);
             free = Mathf.MoveTowards(free, here && id == JamKit.Free ? 1f : 0f, dt / 2f);
-            sky = Mathf.MoveTowards(sky, here && (id == JamKit.DividedSky || id == JamKit.DividedSky2) ? 1f : 0f, dt / 3f);
+            sky = Mathf.MoveTowards(sky, here && (id == JamKit.DividedSky || id == JamKit.DividedSky2) ? 1f : 0f, dt / 3f);   // Gamehendge wakes (the split sky itself is in JamShow)
             antelope = Mathf.MoveTowards(antelope, here && id == JamKit.Antelope ? 1f : 0f, dt / 1.5f);
             show = Mathf.MoveTowards(show, here && isPhish ? 1f : 0f, dt / 2f);
 
+            ShowMoments(dt, t, now, id, here, progress);
             var tint = new Color(.55f, .65f, 1f); var amount = .12f;
-            if (sky > 0f) { tint = Color.Lerp(tint, Mathf.Repeat(t / 6f, 1f) < .5f ? new Color(.45f, .85f, 1f) : new Color(1f, .6f, .35f), sky); amount = Mathf.Lerp(amount, .5f, sky); }
-            if (hood > 0f) { tint = Color.Lerp(tint, new Color(.55f, 1f, .6f), hood * .6f); amount = Mathf.Max(amount, .35f * hood); }
+            void Mix(Color c, float k, float a) { if (k <= 0f) return; tint = Color.Lerp(tint, c, k); amount = Mathf.Lerp(amount, a, k); }
+            Mix(new Color(1f, .75f, .55f), split, .25f);
+            Mix(new Color(.55f, 1f, .6f), hood * .6f, .35f); Mix(new Color(.3f, .45f, 1f), RebaAmount, .4f); Mix(new Color(1f, .25f, .2f), MeltAmount, .5f);
+            Mix(new Color(.75f, .9f, 1f), IceAmount, .45f); Mix(new Color(.65f, .35f, .9f), VelvetAmount, .45f);
             SkyDirector.SetSongTint(Land, tint, amount);
             if (here) { var w = clouds != null ? clouds.Wind : new Vector2(1, 0); Shader.SetGlobalFloat("_EW_Wind", .25f + .25f * energy); Shader.SetGlobalVector("_EW_WindDir", new Vector4(w.x, 0, w.y, 0)); }
 
             // the light show
-            var speed = .4f + energy * .8f + show * 1.2f;
-            for (var i = 0; i < pods.Length; i++)
-            {
-                if (pods[i] == null) continue;
-                var swing = 20f + show * 25f;
-                var aim = hood > .3f ? Quaternion.Euler(Mathf.Sin(t * .3f + i) * 8f + 25f, Mathf.Sin(t * .2f + i * .5f) * 10f, 0) : Quaternion.Euler(Mathf.Sin(t * speed + i * .7f) * swing + 20f, Mathf.Sin(t * speed * .8f + i * 1.3f) * swing * 1.4f, 0);
-                pods[i].rotation = podHome[i] * aim;
-                Color c;
-                if (hood > .3f) c = Color.Lerp(new Color(.4f, 1f, .5f), Color.white, .5f + .5f * Mathf.Sin(t * .5f + i));
-                else c = Color.HSVToRGB(Mathf.Repeat(i * .11f + t * (.03f + show * .08f), 1f), .75f, 1f);
-                if (i < podLens.Length) podLens[i].SetColor("_EmissionColor", c * (1.5f + show * 1.5f + energy));
-                beamMats[i].SetColor("_BaseColor", new Color(c.r, c.g, c.b, here ? (.25f + show * .45f + energy * .2f) * (Mathf.Repeat(t * (1f + show * 3f) + i * .37f, 1f) < .85f ? 1f : .2f) : 0f));
-            }
+            ShowRig(t, id, isPhish, energy, here);
             if (wash != null) wash.color = Color.HSVToRGB(Mathf.Repeat(t * .04f, 1f), .6f, 1f);
             if (balloon != null) { balloon.position = balloonHome + new Vector3(Mathf.Sin(t * .2f) * 2f, Mathf.Sin(t * .3f) * .8f, Mathf.Cos(t * .17f) * 2f); balloon.rotation = Quaternion.Euler(Mathf.Sin(t * .25f) * 3f, t * 2f, Mathf.Cos(t * .2f) * 3f); }
             if (metronome != null) metronome.rotation = Quaternion.LookRotation(Vector3.ProjectOnPlane(metronome.forward, Vector3.up)) * Quaternion.Euler(0, 0, Mathf.Sin(t * (2f + energy * 3f)) * 30f);

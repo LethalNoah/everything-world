@@ -58,9 +58,9 @@
   },
   {
    "land": "The Jam Band Commonwealth",
-   "sunPitch": -3, "sunYaw": 250, "sunIntensity": 0.55, "sunColor": "#FFB47A",
-   "skyLight": "#4A68B0", "horizonLight": "#F0A070", "groundLight": "#26302E",
-   "fogColor": "#344C80", "fogStart": 110, "fogEnd": 1200,
+   "sunPitch": 4, "sunYaw": 250, "sunIntensity": 0.85, "sunColor": "#FFB880",
+   "skyLight": "#6884C8", "horizonLight": "#F6B080", "groundLight": "#3C4846",
+   "fogColor": "#4862A0", "fogStart": 120, "fogEnd": 1300,
    "stars": 0.5, "sunShadows": false, "dailyWeather": false, "bloom": 1.0,
    "weather": "", "weatherAmount": 0
   },

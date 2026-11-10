@@ -19,7 +19,9 @@ namespace EverythingWorld.World
         public const string Hood = "4y4qe0vmDdRv87O1jHN15l", DividedSky = "7FcShHdjNAE2ENmcZMzW6m", DividedSky2 = "6v9oZPFvhZH5lUFOWZw34a", Antelope = "7zJlSL4rNqr8dzI55XSp2t", Free = "4WQHQEwcGFiNPoEwo6U6bQ";
         public override (string song, string label, string artist)[] SpecialSongs => new[]
         {
-            (Hood, "Harry Hood", "Phish"), (DividedSky, "The Divided Sky", "@Gamehendge"), (Antelope, "Run Like An Antelope", "@the meadow"), (Free, "Free", "Phish"),
+            (DividedSky, "The Divided Sky", "@Gamehendge"), (Hood, "Harry Hood", "@the lawn"), (Antelope, "Run Like An Antelope", "@the meadow"), (JamLife.Reba, "Reba", "@the lawn"),
+            (JamLife.Coil, "The Squirming Coil", "@the lawn"), (JamLife.Melt, "Split Open and Melt", "@the lawn"), (JamLife.Ice, "It's Ice", "@the lawn"), (JamLife.Velvet, "Wading in the Velvet Sea", "@the lawn"),
+            (JamLife.Traffic, "Slave to the Traffic Light", "@the lawn"),
         };
 
         static readonly Color Warm = new Color(1f, .78f, .45f), Ink = new Color(1f, .96f, .88f);
@@ -94,6 +96,7 @@ namespace EverythingWorld.World
             life = new GameObject("Jam Band life").AddComponent<JamLife>();
             life.transform.SetParent(ctx.Root, false);
             life.center = center;
+            trailMats.Clear(); for (var k = 0; k < 6; k++) { var m = new Material(GlowM(Warm, 2.6f)) { name = "Trail lantern " + k }; trailMats.Add(m); life.trailLights.Add(m); }
             var mk = new MeshKit(); var solid = new MeshKit();
             Arrival(ctx, mk, solid);
             Trails(ctx, mk, solid);
@@ -174,16 +177,18 @@ namespace EverythingWorld.World
             for (var i = 0; i + 1 < n; i++) mk.Quad(m, L[i], R[i], R[i + 1], L[i + 1], (pts[i] + pts[i + 1]) / 2f - Vector3.up);
         }
 
-        /// A string of warm lantern bulbs sagging between two points.
-        void StringLights(MeshKit mk, Vector3 a, Vector3 b, Color c, int n = 10)
+        /// A string of warm lantern bulbs sagging between two points (trail strings use the show-driven materials).
+        void StringLights(MeshKit mk, Vector3 a, Vector3 b, Color c, int n = 10, bool trail = false)
         {
             for (var k = 1; k < n; k++)
             {
                 var t = k / (float)n; var p = Vector3.Lerp(a, b, t) - Vector3.up * Mathf.Sin(t * Mathf.PI) * .7f;
-                mk.Blob(GlowM(k % 3 == 0 ? Dye[k % Dye.Length] : c, 2.6f), p, Vector3.one * .1f, new System.Random(k), 0f);
-                if (k % 3 == 0) halos.Add(p, .5f, c, .6f);
+                var m = trail && trailMats.Count > 0 ? trailMats[trailCount++ % trailMats.Count] : GlowM(k % 3 == 0 ? Dye[k % Dye.Length] : c, 2.6f);
+                mk.Blob(m, p, Vector3.one * (trail ? .13f : .1f), new System.Random(k), 0f);
+                if (k % 3 == 0) halos.Add(p, trail ? .8f : .5f, c, .6f);
             }
         }
+        readonly List<Material> trailMats = new List<Material>(); int trailCount;
 
         void Tree(LandContext ctx, MeshKit mk, Vector3 at, float s)
         {
@@ -260,9 +265,10 @@ namespace EverythingWorld.World
                 {
                     var lp = pts[i] + side * ((i / 6) % 2 == 0 ? 1f : -1f) * (TrailW / 2f + .6f); var g = ctx.OnGround(lp.x, lp.z);
                     mk.Prism(wood, g - Vector3.up * .3f, Vector3.up, .1f, 3.6f, 6); ArtistBits.PostCollider(ctx.Root, g, 3.3f, .12f);
-                    if (prev.HasValue && Vector3.Distance(prev.Value, g) < 22f) StringLights(mk, prev.Value + Vector3.up * 3.2f, g + Vector3.up * 3.2f, Warm, 8);
+                    if (prev.HasValue && Vector3.Distance(prev.Value, g) < 22f) StringLights(mk, prev.Value + Vector3.up * 3.2f, g + Vector3.up * 3.2f, Warm, 8, true);
+                    mk.Box(trailMats[(i / 6) % trailMats.Count], g + Vector3.up * 3.45f, new Vector3(.3f, .38f, .3f), Quaternion.identity); halos.Add(g + Vector3.up * 3.45f, 1.3f, Warm, .7f);
                     prev = g;
-                    if ((i / 6) % 3 == 0) ArtistBits.PointLight(ctx.Root, g + Vector3.up * 3f, Warm, 10f, 1f);
+                    if ((i / 6) % 2 == 0) ArtistBits.PointLight(ctx.Root, g + Vector3.up * 3f, Warm, 12f, 1.2f);
                 }
                 walk++;
             }
@@ -354,7 +360,7 @@ namespace EverythingWorld.World
                 var p = ctx.OnGround(px, pz); var roll = ctx.Range(0f, 1f);
                 if (roll < .05f && camps < 6 && NearPath(px, pz, 16f)) { Campsite(ctx, mk, solid, p); camps++; }
                 else if (roll < .08f && hammocks < 4) { Hammock(ctx, mk, p); hammocks++; }
-                else if (roll < .6f) { Tree(ctx, mk, p, ctx.Range(.9f, 1.4f)); trees++; }
+                else if (roll < .6f) { var s = ctx.Range(.9f, 1.4f); Tree(ctx, mk, p, s); trees++; if (NearPath(px, pz, 14f) && ctx.Chance(.5f)) { var lp = p + Vector3.up * 3.4f * s + new Vector3(ctx.Range(-.8f, .8f), 0, ctx.Range(-.8f, .8f)); mk.Box(GlowM(Dye[ctx.Rng.Next(Dye.Length)], 2.4f), lp, new Vector3(.3f, .45f, .3f), Quaternion.Euler(0, ctx.Range(0, 90f), 0)); mk.Box(dark, lp + Vector3.up * .4f, new Vector3(.02f, .4f, .02f), Quaternion.identity); halos.Add(lp, 1.4f, Warm, .7f); } }
                 else if (roll < .9f) { Pine(ctx, mk, p, ctx.Range(.9f, 1.4f)); pines++; }
                 else continue;
             }
@@ -367,10 +373,11 @@ namespace EverythingWorld.World
             for (var k = 0; k < 2; k++)
             {
                 var tp = at + Quaternion.Euler(0, k * 140f + ctx.Range(0, 40f), 0) * Vector3.forward * 4f; var tr = Quaternion.Euler(0, ctx.Range(0, 360f), 0);
-                var col = WorldMaterials.Solid(Dye[ctx.Rng.Next(Dye.Length)], .3f);
-                mk.Tri(col, tp + tr * new Vector3(-1.2f, 0, -1.4f), tp + tr * new Vector3(1.2f, 0, -1.4f), tp + tr * new Vector3(0, 1.6f, -1.4f), tp + tr * Vector3.forward);
-                mk.Quad(col, tp + tr * new Vector3(-1.2f, 0, -1.4f), tp + tr * new Vector3(0, 1.6f, -1.4f), tp + tr * new Vector3(0, 1.6f, 1.4f), tp + tr * new Vector3(-1.2f, 0, 1.4f), tp + tr * new Vector3(1f, .5f, 0));
-                mk.Quad(col, tp + tr * new Vector3(1.2f, 0, -1.4f), tp + tr * new Vector3(1.2f, 0, 1.4f), tp + tr * new Vector3(0, 1.6f, 1.4f), tp + tr * new Vector3(0, 1.6f, -1.4f), tp + tr * new Vector3(-1f, .5f, 0));
+                var col = WorldMaterials.Solid(Dye[ctx.Rng.Next(Dye.Length)], .3f); var tc = tp + up * .8f; tp.y = ctx.Ground(tp.x, tp.z);
+                Vector3 T(float x, float y, float z) => tp + tr * new Vector3(x, y, z);
+                mk.Quad(col, T(-1.2f, 0, -1.4f), T(0, 1.6f, -1.4f), T(0, 1.6f, 1.4f), T(-1.2f, 0, 1.4f), tc); mk.Quad(col, T(1.2f, 0, 1.4f), T(0, 1.6f, 1.4f), T(0, 1.6f, -1.4f), T(1.2f, 0, -1.4f), tc);
+                mk.Tri(col, T(-1.2f, 0, -1.4f), T(1.2f, 0, -1.4f), T(0, 1.6f, -1.4f), tc); mk.Tri(dark, T(-1.2f, 0, 1.4f), T(0, 1.6f, 1.4f), T(1.2f, 0, 1.4f), tc);
+                mk.Box(GlowM(Warm, 1.2f), T(0, .5f, 1.38f), new Vector3(.5f, .6f, .02f), tr);
                 solid.Box(col, tp + up * .8f, new Vector3(2.4f, 1.6f, 2.8f), tr);
             }
             for (var k = 0; k < 8; k++) mk.Blob(WorldMaterials.Solid(new Color(.45f, .43f, .4f)), at + Quaternion.Euler(0, k * 45f, 0) * Vector3.forward * .9f + up * .15f, new Vector3(.25f, .18f, .22f), ctx.Rng, .3f);

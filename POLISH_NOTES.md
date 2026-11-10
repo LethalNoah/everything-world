@@ -36,12 +36,11 @@ Snapshot numbers refer to `Game/EverythingWorld/Logs/Live/` (not committed).
 - Fix: mushrooms everywhere at the same size flatten it; ground is one flat yellow; small artists are a sign
   and one shape.
 
-## Jam Band Commonwealth
-- Works: Phish's stage and light beams, the Lot's rainbow tents and bus, A Picture of Nectar, Oysterhead's
-  clam, Gamehendge tower and swing.
-- Fix: very dark between places; unexplained shapes (purple sheet, blue wedge, black bar, floating box);
-  hot-dog trailer and the black building beside it are crude; the cyan light beam cuts straight through
-  the view at eye height.
+## Jam Band Commonwealth (deep pass done, 2026-11-10)
+- Done: a rig look for every Phish song and events for the big ones (the split sky for The Divided Sky), a crowd,
+  a real mixing tent, a bigger Gamehendge, own designs for the small artists, a brighter blue hour with lanterns
+  and fireflies, proper campsite tents.
+- Still to check in play: frame rate with the crowd and the rig; how the split sky feels when you turn around.
 
 ## Yacht Rock Riviera
 - Works: lighthouse and promenade, the Marina, Hotel California, Chicago's clock, Starship's city, Jimmy

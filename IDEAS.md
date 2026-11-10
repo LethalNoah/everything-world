@@ -45,6 +45,7 @@ The playlist is meant to be surprising and spontaneous, so the world shouldn't b
 ## Artist descriptions (2026-11-09, wanted, later)
 
 Each artist area should have something to read about the artist, not just the plaque facts. Likely source: Last.fm's artist bio (`artist.getInfo`, already our tag source), trimmed to a few sentences. Last.fm bios are user-written wiki text under CC BY-SA, so show a small "from Last.fm" credit. Bigger artists (halls, temples) could get a longer text inside; shrines a line or two. Would need a fetch step in `build/` and a text field in the Unity export.
+- **Story plaques in Gamehendge (2026-11-10):** once artist descriptions exist, put a short readable story text in front of each Gamehendge place (the Rhombus, Icculus's mountain, the Helping Friendly Book, Wilson's castle, the Lizards' village and the Lizards, the Famous Mockingbird). Each place already has a little name sign to grow into one.
 
 ## Sky per land (2026-11-08, decided)
 
