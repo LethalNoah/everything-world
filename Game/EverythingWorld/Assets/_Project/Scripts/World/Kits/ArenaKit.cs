@@ -346,6 +346,17 @@ namespace EverythingWorld.World
                 var screen = new Material(GlowM(new Color(.5f, .6f, 1f), 1.2f)) { name = "Stage screen" };
                 mk.Box(screen, scr + gateDir * .26f, new Vector3(7f, 4.6f, .02f), srot);
                 life.screens.Add(screen);
+                // the live feed: a band member in silhouette against the lights (singer on one, guitarist on the
+                // other), a ticker bar along the bottom; they were blank white before
+                var fp = scr + gateDir * .29f; var ink = WorldMaterials.Solid(new Color(.03f, .03f, .05f));
+                var face = fp - up * .5f + sside * s * -.6f;
+                mk.Box(ink, face - up * .85f, new Vector3(1.5f, 1.1f, .02f), srot);
+                mk.Blob(ink, face + up * .35f, new Vector3(.45f, .5f, .02f), rng, 0f);
+                mk.Blob(ink, face + up * .55f - sside * s * .35f, new Vector3(.35f, .55f, .02f), rng, .2f);      // hair
+                if (s < 0) { mk.Box(ink, face + up * .2f + sside * .9f, new Vector3(.3f, 1.8f, .02f), srot * Quaternion.Euler(0, 0, -35f)); mk.Box(ink, face + up * .05f - sside * .55f, new Vector3(.08f, 1.4f, .02f), srot * Quaternion.Euler(0, 0, 20f)); }   // fist up, mic
+                else { mk.Box(ink, face - up * 1f + sside * .2f, new Vector3(2.4f, .5f, .02f), srot * Quaternion.Euler(0, 0, 25f)); mk.Blob(ink, face - up * 1.4f - sside * .5f, new Vector3(.6f, .5f, .02f), rng, 0f); }   // guitar
+                mk.Box(ink, fp - up * 1.95f, new Vector3(7f, .5f, .02f), srot);
+                ArtistBits.Label(ctx.Root, "LIVE  •  ARENA ROCK RIDGE", fp - up * 1.95f + gateDir * .02f + sside * 1.2f, gateDir, .2f, Spot, TextAnchor.MiddleCenter);
                 mk.Box(dark, scr - up * 4f, new Vector3(.4f, 8f, .4f), srot); ArtistBits.PostCollider(ctx.Root, scr - up * 8f, 8f, .3f);
             }
             for (var k = 0; k < 4; k++) foreach (var s in new[] { -1f, 1f }) { var amp = st + up * (2.2f + .9f + (k / 2) * 1.8f) + sside * s * (7f + (k % 2) * 2f) - gateDir * 2f; mk.Box(dark, amp, new Vector3(1.9f, 1.75f, 1f), srot); }

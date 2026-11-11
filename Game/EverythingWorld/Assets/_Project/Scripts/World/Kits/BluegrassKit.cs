@@ -419,7 +419,29 @@ namespace EverythingWorld.World
         void Creek(LandContext ctx, MeshKit mk, MeshKit solid)
         {
             var surf = new List<Vector3>(); foreach (var p in creek) surf.Add(p + Vector3.up * 1.05f);
-            Strip(mk, surf, water, CreekW + 2.4f, 0f);
+            // the water lies level: each 4 m reach is flat at its lower end's height, dropping to the next over a little
+            // fall, so where the creek climbs a hillside it steps down in pools instead of a tilted sheet of water
+            {
+                var n = surf.Count; var L = new Vector3[n]; var R = new Vector3[n]; var hw = (CreekW + 2.4f) / 2f;
+                Vector3 Flat(Vector3 v) { v.y = 0; return v.normalized; }
+                for (var i = 0; i < n; i++)
+                {
+                    var a = i > 0 ? Flat(surf[i] - surf[i - 1]) : Flat(surf[1] - surf[0]); var b = i < n - 1 ? Flat(surf[i + 1] - surf[i]) : Flat(surf[n - 1] - surf[n - 2]);
+                    var sd = Vector3.Cross(Vector3.up, (a + b).normalized); var miter = 1f / Mathf.Max(.6f, Vector3.Dot(sd, Vector3.Cross(Vector3.up, b)));
+                    L[i] = surf[i] - sd * hw * miter; R[i] = surf[i] + sd * hw * miter;
+                }
+                for (var i = 0; i + 1 < n; i++)
+                {
+                    var y = Mathf.Min(surf[i].y, surf[i + 1].y); Vector3 At(Vector3 v) { v.y = y; return v; }
+                    mk.Quad(water, At(L[i]), At(R[i]), At(R[i + 1]), At(L[i + 1]), (surf[i] + surf[i + 1]) / 2f - Vector3.up * 50f);
+                    if (i + 2 < n)
+                    {
+                        var y2 = Mathf.Min(surf[i + 1].y, surf[i + 2].y);
+                        if (Mathf.Abs(y - y2) > .05f) { var hi = Mathf.Max(y, y2); var lo = Mathf.Min(y, y2); var up2 = y > y2 ? surf[i] : surf[i + 2];   // the fall faces downstream
+                            mk.Quad(water, new Vector3(L[i + 1].x, hi, L[i + 1].z), new Vector3(R[i + 1].x, hi, R[i + 1].z), new Vector3(R[i + 1].x, lo, R[i + 1].z), new Vector3(L[i + 1].x, lo, L[i + 1].z), new Vector3(up2.x, (hi + lo) / 2f, up2.z)); }
+                    }
+                }
+            }
             foreach (var (c, r) in pools)
             {
                 const int n = 28; var wc = c + Vector3.up * 1.05f;
@@ -468,8 +490,10 @@ namespace EverythingWorld.World
                     mk.Box(trim, end + up * (h - .1f), new Vector3(w + .3f, .5f, .2f), rot);
                     foreach (var s in new[] { -1f, 1f }) mk.Box(trim, end + side * s * (w / 2f) + up * (h / 2f), new Vector3(.3f, h, .22f), rot);
                     mk.Tri(barnRed, end + up * h - side * (w / 2f + .3f), end + up * (h + 1.5f), end + up * h + side * (w / 2f + .3f), end - dir * e * 2f + up * h);
+                    mk.Tri(barnRed, end + up * h - side * (w / 2f + .3f), end + up * (h + 1.5f), end + up * h + side * (w / 2f + .3f), end + dir * e * 2f + up * h);   // and its inner face, so the gable shows from inside the bridge too
                 }
-                mk.GableRoof(roofM, mid + up * h, new Vector3(w + 1f, 0, len + 1.2f), 1.5f, Quaternion.LookRotation(flat));
+                // the roof slopes with the deck and walls (a level roof sank into the walls at the high end and hung off the low one)
+                mk.GableRoof(roofM, mid + up * h, new Vector3(w + 1f, 0, len + 1.2f), 1.5f, rot);
                 var lamp = mid + up * (h - .3f); mk.Prism(GlowM(Warm, 2.4f), lamp - up * .2f, up, .14f, .3f, 8); halos.Add(lamp - up * .05f, 1f, Warm, .7f);
                 ArtistBits.PointLight(ctx.Root, lamp - up * .5f, Warm, 9f, 1f);
             }

@@ -250,15 +250,25 @@ namespace EverythingWorld.World
         }
 
         // ---------------------------------------------------------------- Audioslave and Temple of the Dog
+        const int HighwaySteps = 24, HighwayClear = 17;
+        /// A point along Audioslave's empty highway: from the clearing, out the back and into the trees.
+        static Vector3 HighwayPoint(Vector3 c, Vector3 front, int k, LandContext ctx)
+        {
+            var side = Vector3.Cross(Vector3.up, front); var p = c + front * (-4f - k * 1.6f) + side * (-9f + Mathf.Sin(k * .25f) * 1.5f);
+            return ctx.OnGround(p.x, p.z);
+        }
+
         void Audioslave(Plot z)
         {
             var up = Vector3.up; var rot = z.Rot; var ctx = z.ctx;
             // I Am the Highway: a stretch of empty two-lane road running off into the trees, one tall lamp over it
             var asphalt = WorldMaterials.Solid(new Color(.12f, .13f, .14f), .7f); var yellow = SongGlow(Highway, new Color(1f, .8f, .2f), 1.4f);
-            var road = new List<Vector3>(); for (var k = 0; k <= 16; k++) road.Add(z.At(-4f - k * 1.6f, -9f + Mathf.Sin(k * .25f) * 1.5f));
+            // the forest leaves a lane for it (HighwayPoint, kept clear in Dress), and its far end runs on under the trees
+            // (it used to stop short in the woods, trees standing on it, and read as a stray piece of road)
+            var road = new List<Vector3>(); for (var k = 0; k <= HighwaySteps; k++) road.Add(HighwayPoint(z.c, z.front, k, ctx));
             Strip(z.mk, road, asphalt, 5f, .1f, ctx);
-            for (var k = 0; k < 16; k += 2) { var a = road[k]; var b = road[k + 1]; z.mk.Box(yellow, (a + b) / 2f + up * .13f, new Vector3(.15f, .02f, Vector3.Distance(a, b) * .8f), Quaternion.LookRotation(b - a)); }
-            foreach (var k in new[] { 0, 16 }) foreach (var s in new[] { -2.4f, 2.4f }) { var e = road[k] + z.side * s; z.mk.Box(WorldMaterials.Solid(new Color(.85f, .85f, .8f)), e + up * .13f, new Vector3(.12f, .02f, 1.4f), rot); }
+            for (var k = 0; k < HighwaySteps; k += 2) { var a = road[k]; var b = road[k + 1]; z.mk.Box(yellow, (a + b) / 2f + up * .13f, new Vector3(.15f, .02f, Vector3.Distance(a, b) * .8f), Quaternion.LookRotation(b - a)); }
+            foreach (var k in new[] { 0 }) foreach (var s in new[] { -2.4f, 2.4f }) { var e = road[k] + z.side * s; z.mk.Box(WorldMaterials.Solid(new Color(.85f, .85f, .8f)), e + up * .13f, new Vector3(.12f, .02f, 1.4f), rot); }
             var hl = road[9] + z.side * 3.4f; hl.y = ctx.Ground(hl.x, hl.z); z.mk.Prism(metal, hl - up * .3f, up, .14f, 8.3f, 8); ArtistBits.PostCollider(z.root, hl, 8f, .15f);
             z.mk.Box(metal, hl + up * 7.9f - z.side * 1.2f, new Vector3(2.6f, .1f, .1f), rot);
             var hlLamp = hl + up * 7.75f - z.side * 2.4f; z.mk.Box(SongGlow(Highway, new Color(1f, .75f, .35f), 3f), hlLamp, new Vector3(.8f, .12f, .4f), rot); halos.Add(hlLamp - up * .3f, 2.6f, new Color(1f, .75f, .35f), .8f);
@@ -386,7 +396,7 @@ namespace EverythingWorld.World
             var up = Vector3.up; var rot = z.Rot; var ctx = z.ctx;
             // the heart-shaped box on a plinth, its lid ajar, glowing inside
             var hb = z.At(-6f, -5f) + up * 1f; var red = WorldMaterials.Solid(new Color(.6f, .1f, .12f), .5f);
-            z.mk.Box(darkRock, hb - up * .5f, new Vector3(3.6f, 1f, 2.4f), rot);
+            z.mk.Box(darkRock, hb + up * .09f + z.front * .25f, new Vector3(3.8f, 2.18f, 3.4f), rot);   // the plinth reaches up to the box's floor (it stopped a metre short, so the box hung over it)
             var inner = SongGlow(HeartShapedBox, new Color(1f, .3f, .3f), 2.4f);
             Heart(z.mk, hb + up * 1.2f, up, 1.7f, inner, 0f, z.side);   // the floor glowing, a red heart wall round it
             for (var k = 0; k < 40; k++)
@@ -395,9 +405,10 @@ namespace EverythingWorld.World
                 Vector3 H(float t) { var x = 16f * Mathf.Pow(Mathf.Sin(t), 3); var y = 13f * Mathf.Cos(t) - 5f * Mathf.Cos(2 * t) - 2f * Mathf.Cos(3 * t) - Mathf.Cos(4 * t); return hb + up * 1.2f + (z.side * x - z.front * y) * (1.7f / 16f); }
                 var a = H(t0); var b = H(t1); z.mk.Box(red, (a + b) / 2f + up * .3f, new Vector3(.12f, .6f, Vector3.Distance(a, b) + .03f), Quaternion.LookRotation(b - a));
             }
-            // the lid, propped open
-            var lidRot = Quaternion.AngleAxis(-35f, z.side);
-            Heart(z.mk, hb + up * 2.05f - z.front * 1.5f, lidRot * up, 1.75f, red, 0f, z.side);
+            // the lid, swung open on a hinge along the back rim (the tops of the lobes) and standing up behind the box
+            const float lidS = 1.75f; var closed = hb + up * 1.85f; var hinge = closed - z.front * (12f * lidS / 16f);
+            var lidRot = Quaternion.AngleAxis(-105f, z.side);
+            Heart(z.mk, hinge + lidRot * (closed - hinge), lidRot * up, lidS, red, 0f, z.side);
             halos.Add(hb + up * 2f, 2.6f, new Color(1f, .3f, .3f), .5f); z.solid.Box(darkRock, hb + up * .6f - z.front * .4f, new Vector3(4.4f, 2.8f, 4.6f), rot);
             ArtistBits.PointLight(z.root, hb + up * 3f + z.front * 2f, new Color(1f, .35f, .35f), 10f, 1.4f);
             // Lithium: a rusted trailer at the edge of the clearing

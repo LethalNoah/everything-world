@@ -12,7 +12,7 @@ namespace EverythingWorld.World
     ///
     /// You enter the station (a brutalist block with a tower, slit windows glowing signal orange, song titles changing
     /// on the walls inside and a wall of televisions full of static). From there a ring of doorways leads through every
-    /// room and back; the station's back door opens onto the open courtyard of white cubes, and the mist room has a
+    /// room and back; the station's back door opens onto the roofed hall of white cubes, and the mist room has a
     /// door out onto the moor. MoorsLife moves everything (the tram, the rain, the fish, the ribbons, the pieces).
     public partial class MoorsKit
     {
@@ -55,7 +55,7 @@ namespace EverythingWorld.World
             var floors = new Dictionary<(int, int), Material>
             {
                 [(0, 1)] = slate, [(-1, 1)] = WorldMaterials.Solid(new Color(.05f, .12f, .26f), .9f), [(-1, 0)] = WorldMaterials.Solid(new Color(.66f, .66f, .64f)),
-                [(-1, -1)] = WorldMaterials.Solid(new Color(.03f, .03f, .04f), .95f), [(0, -1)] = WorldMaterials.Solid(new Color(.93f, .93f, .92f)), [(1, -1)] = WorldMaterials.Solid(new Color(.06f, .07f, .09f), .8f),
+                [(-1, -1)] = WorldMaterials.Solid(new Color(.03f, .03f, .04f), .95f), [(0, -1)] = WorldMaterials.Solid(new Color(.74f, .74f, .75f)), [(1, -1)] = WorldMaterials.Solid(new Color(.06f, .07f, .09f), .8f),
                 [(1, 0)] = WorldMaterials.Solid(new Color(.8f, .79f, .75f)), [(1, 1)] = WorldMaterials.Solid(new Color(.55f, .5f, .44f)), [(0, 0)] = WorldMaterials.Solid(new Color(.84f, .84f, .82f)),
             };
             foreach (var kv in floors)
@@ -75,14 +75,15 @@ namespace EverythingWorld.World
                     var ff = (l - 1.5f) * C; var x0 = (s - 1.5f) * C; var x1 = (s - .5f) * C;
                     WallSeg(D(x0, 0, ff), D(x1, 0, ff), frontKinds[l, s], l == 0 ? -dF : l == 3 ? dF : Vector3.zero);
                 }
-            // roofs over every room but the two open courts
+            // roofs over every room but the open jigsaw court (the cubes room is roofed: open to the sky it read as a
+            // dark ceiling with a hole in it). Each indoor box reaches over its walls so the doorways count as indoors.
             for (var i = -1; i <= 1; i++)
                 for (var j = -1; j <= 1; j++)
                 {
-                    if ((i == 0 && j == 0) || (i == 1 && j == 0)) continue;
+                    if (i == 1 && j == 0) continue;
                     var rp = D(i * C, RoomH + .2f, j * C); var size = new Vector3(C + WallT, .4f, C + WallT);
                     z.mk.Box(concrete, rp, size, dRot); z.solid.Box(concrete, rp, size, dRot);
-                    IndoorSpaces.Add(D(i * C, RoomH / 2f, j * C), dRot, new Vector3(C - WallT, RoomH, C - WallT));
+                    IndoorSpaces.Add(D(i * C, RoomH / 2f, j * C), dRot, new Vector3(C + WallT, RoomH, C + WallT));
                 }
             Station(); DeepWater(); Platform(); RainRoom(); MistRoom(); Aquarium(); JigsawCourt(); WindRoom(); CubesCourt();
             concrete = keep;
@@ -186,8 +187,12 @@ namespace EverythingWorld.World
             words.Add(ArtistBits.Label(dz.labels, Titles[6], D(0, 5.8f, C * 1.5f - h), -dF, .42f, wc, TextAnchor.MiddleCenter));
             words.Add(ArtistBits.Label(dz.labels, Titles[9], D(0, 4.6f, C / 2f + h), dF, .38f, new Color(.6f, .8f, 1f), TextAnchor.MiddleCenter));
             life.words = words;
-            var tv = new Material(WorldMaterials.Glow(new Color(.75f, .8f, .85f), .8f)) { name = "Television static" }; life.static_ = tv;
+            var tv = new Material(WorldMaterials.Glow(new Color(.5f, .56f, .64f), .5f)) { name = "Television static" }; life.static_ = tv;
             var cabinet = WorldMaterials.Solid(new Color(.18f, .16f, .14f));
+            // what the sets show: static with rolling dark bars, test-card colour bars, or a blue no-signal screen
+            Color[] cardCols = { new Color(.75f, .75f, .75f), new Color(.8f, .75f, .1f), new Color(.1f, .7f, .75f), new Color(.1f, .65f, .15f), new Color(.7f, .1f, .65f), new Color(.75f, .1f, .1f), new Color(.1f, .15f, .7f) };
+            var roll = WorldMaterials.Solid(new Color(.05f, .06f, .08f)); var noSignal = GlowM(new Color(.12f, .25f, .8f), .9f);
+            var set = 0;
             foreach (var side in new[] { -1f, 1f })
             {
                 for (var k = 0; k < 3; k++) for (var row = 0; row < 3; row++)
@@ -195,6 +200,13 @@ namespace EverythingWorld.World
                     var tp = D(side * (3.4f + k * 1.6f), .62f + row * 1.05f, C / 2f + WallT / 2f + .5f);
                     dz.mk.Box(cabinet, tp, new Vector3(1.5f, 1f, .9f), dRot);
                     dz.mk.Box(tv, tp + dF * .46f, new Vector3(1.15f, .74f, .02f), dRot);
+                    var face = tp + dF * .475f;
+                    switch (set++ % 4)
+                    {
+                        case 1: for (var b = 0; b < 7; b++) dz.mk.Box(GlowM(cardCols[b], .8f), face + dS * ((b - 3f) * 1.15f / 7f), new Vector3(1.15f / 7f, .74f, .01f), dRot); break;
+                        case 3: dz.mk.Box(noSignal, face, new Vector3(1.15f, .74f, .01f), dRot); dz.mk.Box(GlowM(new Color(.9f, .9f, .9f), .8f), face + dF * .006f + up * .2f - dS * .35f, new Vector3(.3f, .08f, .01f), dRot); break;
+                        default: foreach (var y in new[] { -.2f, .14f }) dz.mk.Box(roll, face + up * (y + (set % 3) * .04f), new Vector3(1.15f, .07f + (set % 2) * .05f, .01f), dRot); break;
+                    }
                 }
                 dz.solid.Box(cabinet, D(side * 5f, 1.7f, C / 2f + WallT / 2f + .5f), new Vector3(5f, 3.3f, 1f), dRot);
             }
@@ -239,13 +251,14 @@ namespace EverythingWorld.World
         {
             const float C = Cell; var up = Vector3.up; float cx = -C, cf = 0f;
             const float edge = -24f;
-            Floor(WorldMaterials.Solid(new Color(.22f, .21f, .2f)), (-C * 1.5f + edge) / 2f, cf, edge + C * 1.5f, C, -.38f, -.8f);
+            // the track bed sits just above the ground (the terrain can't be dug under a room, so a sunken bed showed grass)
+            Floor(WorldMaterials.Solid(new Color(.22f, .21f, .2f)), (-C * 1.5f + edge) / 2f, cf, edge + C * 1.5f, C, .04f, -.8f);
             Floor(WorldMaterials.Solid(new Color(.66f, .66f, .64f)), (edge - C / 2f) / 2f, cf, -C / 2f - edge, C, .12f);
             dz.mk.Box(WorldMaterials.Solid(new Color(1f, .82f, .1f)), D(edge + .25f, .13f, cf), new Vector3(.3f, .04f, C - WallT), dRot);
             // the track: rails and sleepers, tunnel mouths at both ends
             var track = -26.1f;
-            foreach (var s in new[] { -.72f, .72f }) dz.mk.Box(steel, D(track + s, -.3f, cf), new Vector3(.12f, .16f, C - WallT), dRot);
-            for (var f = -8.5f; f <= 8.5f; f += 1f) dz.mk.Box(wood, D(track, -.36f, f), new Vector3(2.4f, .06f, .3f), dRot);
+            foreach (var s in new[] { -.72f, .72f }) dz.mk.Box(steel, D(track + s, .18f, cf), new Vector3(.12f, .16f, C - WallT), dRot);
+            for (var f = -8.5f; f <= 8.5f; f += 1f) dz.mk.Box(wood, D(track, .07f, f), new Vector3(2.4f, .06f, .3f), dRot);
             var black = WorldMaterials.Solid(new Color(.01f, .01f, .012f));
             foreach (var s in new[] { -1f, 1f })
             {
@@ -254,7 +267,7 @@ namespace EverythingWorld.World
                 dz.mk.Box(concrete, D(track, 3.8f, wf - s * .1f), new Vector3(4.6f, .5f, .2f), dRot);
                 foreach (var e in new[] { -2.15f, 2.15f }) dz.mk.Box(concrete, D(track + e, 1.6f, wf - s * .1f), new Vector3(.35f, 4.4f, .2f), dRot);
             }
-            life.trackA = D(track, -.3f, C / 2f - WallT / 2f); life.trackB = D(track, -.3f, -C / 2f + WallT / 2f); life.trackRot = Quaternion.LookRotation(-dF);
+            life.trackA = D(track, .18f, C / 2f - WallT / 2f); life.trackB = D(track, .18f, -C / 2f + WallT / 2f); life.trackRot = Quaternion.LookRotation(-dF);
             // benches, the departure board and a clock, strip lights
             foreach (var f in new[] { -4.5f, 4.5f })
             {
@@ -262,9 +275,10 @@ namespace EverythingWorld.World
                 foreach (var e in new[] { -1f, 1f }) dz.mk.Box(steel, bp + up * .22f + dF * e, new Vector3(.5f, .44f, .08f), dRot);
                 dz.solid.Box(wood, bp + up * .5f, new Vector3(.7f, 1f, 2.4f), dRot);
             }
-            var board = D(-21f, 4.6f, 0f); dz.mk.Box(dark, board, new Vector3(.15f, .8f, 4.2f), dRot);
-            foreach (var e in new[] { -1.6f, 1.6f }) dz.mk.Box(steel, board + up * 1.2f + dF * e, new Vector3(.05f, 1.6f, .05f), dRot);
-            ArtistBits.Label(dz.labels, "NEXT:  LET DOWN", board + dS * .09f, dS, .26f, new Color(1f, .6f, .15f), TextAnchor.MiddleCenter);
+            // the departure board hangs across the platform, read from both ends as you walk along it
+            var board = D(-19f, 4.6f, 0f); dz.mk.Box(dark, board, new Vector3(4.2f, .8f, .15f), dRot);
+            foreach (var e in new[] { -1.6f, 1.6f }) dz.mk.Box(steel, board + up * 1.2f + dS * e, new Vector3(.05f, 1.6f, .05f), dRot);
+            foreach (var e in new[] { -1f, 1f }) ArtistBits.Label(dz.labels, "NEXT:  LET DOWN", board + dF * (e * .09f), dF * e, .26f, new Color(1f, .6f, .15f), TextAnchor.MiddleCenter);
             var clock = D(-21f, 4.6f, 4.4f); dz.mk.Prism(white, clock - dS * .05f, dS, .45f, .1f, 20); dz.mk.Box(dark, clock + dS * .06f + up * .15f, new Vector3(.02f, .3f, .04f), dRot); dz.mk.Box(dark, clock + dS * .06f + dF * .12f, new Vector3(.02f, .04f, .24f), dRot);
             for (var x = -22f; x <= -12f; x += 5f) dz.mk.Box(GlowM(new Color(.9f, .97f, 1f), 1.6f), D(x, RoomH - .1f, cf), new Vector3(.2f, .06f, 9f), dRot);
             RoomLight(-17f, 4f, cf, new Color(.85f, .95f, 1f), 16f, 1.2f);
@@ -295,20 +309,20 @@ namespace EverythingWorld.World
         void MistRoom()
         {
             const float C = Cell; var up = Vector3.up; float cx = 0f, cf = -C;
-            dz.mk.Box(GlowM(new Color(.95f, .96f, 1f), .5f), D(cx, RoomH - .08f, cf), new Vector3(C - WallT - .2f, .06f, C - WallT - .2f), dRot);
-            var whiteWall = WorldMaterials.Solid(new Color(.9f, .9f, .9f));
+            dz.mk.Box(GlowM(new Color(.95f, .96f, 1f), .22f), D(cx, RoomH - .08f, cf), new Vector3(C - WallT - .2f, .06f, C - WallT - .2f), dRot);
+            var whiteWall = WorldMaterials.Solid(new Color(.76f, .77f, .79f));   // soft white: brighter blew the room out
             foreach (var s in new[] { -1f, 1f })
             {   // panels on the inner faces, either side of each doorway (no panel crosses a door)
                 var x = s * (C / 2f - WallT / 2f - .03f); foreach (var e in new[] { -1f, 1f }) dz.mk.Box(whiteWall, D(x, 3.5f, cf + e * 5.3f), new Vector3(.04f, 6.8f, 7.6f), dRot);
                 var f = cf + s * (C / 2f - WallT / 2f - .03f); foreach (var e in new[] { -1f, 1f }) dz.mk.Box(whiteWall, D(cx + e * 5.3f, 3.5f, f), new Vector3(7.6f, 6.8f, .04f), dRot);
             }
-            for (var k = 0; k < 8; k++) { var a = k * 45f * Mathf.Deg2Rad; dz.mk.Box(GlowM(new Color(.9f, .95f, 1f), 2f), D(cx + Mathf.Cos(a) * 6f, .16f, cf + Mathf.Sin(a) * 6f), new Vector3(.5f, .08f, .5f), dRot); }
+            for (var k = 0; k < 8; k++) { var a = k * 45f * Mathf.Deg2Rad; dz.mk.Box(GlowM(new Color(.9f, .95f, 1f), 1.2f), D(cx + Mathf.Cos(a) * 6f, .16f, cf + Mathf.Sin(a) * 6f), new Vector3(.5f, .08f, .5f), dRot); }
             var fig = new MeshKit(); var pale = new Material(WorldMaterials.Glow(new Color(.85f, .9f, 1f), .9f)) { name = "The figure in the mist" };
             fig.Box(pale, new Vector3(0, .9f, 0), new Vector3(.45f, 1.1f, .25f), Quaternion.identity); fig.Blob(pale, new Vector3(0, 1.7f, 0), Vector3.one * .17f, dz.ctx.Rng, 0f);
             foreach (var s in new[] { -.13f, .13f }) fig.Box(pale, new Vector3(s, .2f, 0), new Vector3(.14f, .5f, .14f), Quaternion.identity);
             var ft = fig.BuildSingle("The figure in the mist", life.transform, false).transform; ft.SetPositionAndRotation(D(cx, .12f, cf), Quaternion.LookRotation(dF)); life.mistFigure = ft; life.mistFigureM = pale;
             life.mistAt = D(cx, .2f, cf);
-            RoomLight(cx, 4.5f, cf, new Color(.92f, .95f, 1f), 15f, 1.3f);
+            RoomLight(cx, 4.5f, cf, new Color(.92f, .95f, 1f), 15f, .75f);
             RoomSign("HOW TO DISAPPEAR COMPLETELY", D(-C / 2f + WallT / 2f + .03f, 2.3f, cf + 2.9f), dS);
             RoomMark("the mist room", -C / 2f + 2f, cf + 6.5f, cx, cf);
         }
@@ -413,7 +427,7 @@ namespace EverythingWorld.World
             RoomMark("the wind room", C / 2f + 2f, cf - 6.5f, cx + 3f, cf + 4f);
         }
 
-        // ---------------------------------------------------------------- the courtyard of cubes (middle, open): Everything In Its Right Place
+        // ---------------------------------------------------------------- the hall of cubes (middle): Everything In Its Right Place
         void CubesCourt()
         {
             var up = Vector3.up;
@@ -429,6 +443,7 @@ namespace EverythingWorld.World
                 }
                 dz.mk.Box(cubeM, p, Vector3.one * 1.2f, dRot); dz.solid.Box(white, p, Vector3.one * 1.2f, dRot);
             }
+            for (var x = -6f; x <= 6f; x += 6f) dz.mk.Box(GlowM(new Color(.95f, .97f, 1f), 1.4f), D(x, RoomH - .1f, 0), new Vector3(.2f, .06f, 14f), dRot);   // strip lights under the roof
             RoomLight(0, 6f, 0, new Color(1f, .95f, .9f), 18f, 1f);
             RoomSign("EVERYTHING IN ITS RIGHT PLACE", D(3.4f, 2.3f, Cell / 2f - WallT / 2f - .03f), -dF);
             var mark = new GameObject("Shot: the cubes").transform; mark.SetParent(dz.ctx.Root, false);

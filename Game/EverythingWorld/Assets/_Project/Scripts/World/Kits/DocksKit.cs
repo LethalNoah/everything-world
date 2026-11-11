@@ -257,8 +257,10 @@ namespace EverythingWorld.World
             mk.Box(dark, head + up * .12f, new Vector3(.45f, .18f, .9f), Quaternion.LookRotation(arm));
             mk.Box(sodium, head, new Vector3(.34f, .06f, .7f), Quaternion.LookRotation(arm));
             lampHalos.Add(head - up * .25f, 3f, Sodium, .75f);
+            // the pool of light: a halo centred a metre under the ground, so only a low dome of it shows round the lamp's foot
+            // and your eyes are never inside it (standing by a lamp, a halo at ground level filled the whole view with orange)
             var pool = new Vector3(head.x, ctx.Ground(head.x, head.z) + .03f, head.z);
-            lampHalos.Add(pool + up * .1f, 3f, Sodium, .26f);
+            lampHalos.Add(pool - up * 1f, 2.6f, Sodium, .45f);
             life.lamps.Add(head);
             if (light) ArtistBits.PointLight(ctx.Root, head - up * 1f, Sodium, 14f, 1.5f);
             ArtistBits.PostCollider(ctx.Root, g, 7f, .22f);
@@ -718,7 +720,7 @@ namespace EverythingWorld.World
                 else if (roll < .31f) { Drum(ctx, mk, p, true); drums++; }
                 else if (roll < .36f) { Car(ctx, mk, solid, p); cars++; }
                 else if (roll < .40f) { Grate(ctx, mk, p); grates++; }
-                else if (roll < .46f && Open(ctx, px, pz, 5f)) { FlyerWall(ctx, mk, solid, p); walls++; }
+                else if (roll < .46f && Open(ctx, px, pz, 5f) && NearPath(px, pz, 14f)) { FlyerWall(ctx, mk, solid, p); walls++; }
                 else if (roll < .58f && benches < 16 && NearPath(px, pz, 12f)) { Bench(ctx, mk, solid, p); benches++; }
             }
             Debug.Log($"The Post-Punk Docklands: harbour {(hasHarbour ? quayEdge.Count + " quay cells" : "none")}, {blocks} blocks, {rows} terraces, {fences} fences, {skips} skips, {drums} drums, {cars} cars, {grates} grates, {walls} flyer walls, {benches} benches, {quay} on the quay");

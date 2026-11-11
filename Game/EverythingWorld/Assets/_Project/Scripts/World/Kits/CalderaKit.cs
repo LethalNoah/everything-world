@@ -478,7 +478,13 @@ namespace EverythingWorld.World
                 else if (roll < .32f && !steep && amps < 14) { ToppledAmps(ctx, mk, solid, p); amps++; }
                 else if (roll < .36f && !steep && pens < 14) { Pen(ctx, mk, solid, p); pens++; }
                 else if (roll < .5f) { var dir = Quaternion.Euler(0, ctx.Range(0, 180f), 0) * Vector3.forward; var q = p; var m = ctx.Chance(.5f) ? crackM : lavaCyan; for (var k = 0; k < 5; k++) { var nd = Quaternion.Euler(0, ctx.Range(-35f, 35f), 0) * dir; var r = ctx.OnGround(q.x + nd.x * 2.4f, q.z + nd.z * 2.4f); mk.Box(m, (q + r) / 2f + Vector3.up * .04f, new Vector3(.16f, .05f, 2.5f), Quaternion.LookRotation(r - q)); q = r; } cracks++; }
-                else if (roll < .62f) { var s = ctx.Range(1f, 2.8f); mk.Blob(ctx.Chance(.5f) ? basalt : obsidian, p + Vector3.up * s * .35f, new Vector3(s, s * .7f, s * .9f), ctx.Rng, .3f); BoxCol(ctx.Root, p + Vector3.up * s * .35f, new Vector3(s * 1.9f, s * 1.3f, s * 1.7f), Quaternion.identity); rocks++; }
+                else if (roll < .62f)
+                {
+                    // seated on the lowest ground under it, so on a slope it sinks into the hill instead of overhanging
+                    // the downhill side (from above, those read as black shapes floating over the ash)
+                    var s = ctx.Range(1f, 2.8f); var lo = p.y;
+                    for (var k = 0; k < 6; k++) { var a = k * Mathf.PI / 3f; lo = Mathf.Min(lo, ctx.Ground(px + Mathf.Cos(a) * s * .9f, pz + Mathf.Sin(a) * s * .9f)); }
+                    p.y = lo; mk.Blob(ctx.Chance(.5f) ? basalt : obsidian, p + Vector3.up * s * .35f, new Vector3(s, s * .7f, s * .9f), ctx.Rng, .3f); BoxCol(ctx.Root, p + Vector3.up * s * .35f, new Vector3(s * 1.9f, s * 1.3f, s * 1.7f), Quaternion.identity); rocks++; }
                 else if (roll < .72f) { mk.Blob(ash, p - Vector3.up * .1f, new Vector3(ctx.Range(2f, 4f), ctx.Range(.25f, .5f), ctx.Range(2f, 4f)), ctx.Rng, .2f); drifts++; }
             }
             Debug.Log($"Metalcore Caldera: arena {(hasArena ? "yes" : "no")}, {volcanoes.Count} volcanoes, {spires} spires, {crystals} crystal clusters, {vents} vents, {amps} toppled amps, {pens} pens, {cracks} cracks, {rocks} rocks, {drifts} ash drifts");

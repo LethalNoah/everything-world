@@ -272,7 +272,11 @@ namespace EverythingWorld.World
             for (var k = 0; k < 6; k++)
             {
                 var a = k * Mathf.PI / 3f + .4f; var dx = Mathf.Cos(a); var dz = Mathf.Sin(a); var r = LakeEdge(lakeC.x + dx, lakeC.y + dz) + 1.5f;
-                var p = new Vector3(lakeC.x + dx * r, 0, lakeC.y + dz * r); if (!ctx.IsLand(p.x, p.z, 1f)) continue; p.y = Mathf.Max(ctx.Ground(p.x, p.z), lakeY);
+                var p = new Vector3(lakeC.x + dx * r, 0, lakeC.y + dz * r); if (!ctx.IsLand(p.x, p.z, 1f)) continue;
+                // afloat at the water's edge: find where the drawn ground first rises out of the lake along this line and
+                // sit the canoe just inside it, on the water, rather than up on the grass bank
+                var edge = r; for (var rr = r - 8f; rr < r + 8f; rr += .5f) if (ctx.Ground(lakeC.x + dx * rr, lakeC.y + dz * rr) > lakeY) { edge = rr; break; }
+                p = new Vector3(lakeC.x + dx * (edge - 1.3f), lakeY - .25f, lakeC.y + dz * (edge - 1.3f));
                 var rot = Quaternion.LookRotation(new Vector3(-dz, 0, dx)) * Quaternion.Euler(0, 20f, 0);
                 Canoe(mk, p + Vector3.up * .3f, rot * Vector3.forward, canoe[k % 3]);
                 mk.Box(wood, p + Vector3.up * .2f + rot * Vector3.right * 1f, new Vector3(.1f, .05f, 1.4f), rot * Quaternion.Euler(0, 25f, 0));
@@ -456,9 +460,33 @@ namespace EverythingWorld.World
             mk.Box(dark, mid + Vector3.up * .21f, new Vector3(.84f, .04f, 2.5f), rot);
         }
 
+        /// Sets a cabin (and its porch) on a slope: the floor goes at the highest ground under it, so no wall sinks into
+        /// the hill, and a fieldstone foundation and log stilts under the porch run down to the ground on the low side.
+        Vector3 SettleCabin(LandContext ctx, MeshKit mk, MeshKit solid, Vector3 at, Vector3 face)
+        {
+            var up = Vector3.up; face.y = 0; face.Normalize(); var side = Vector3.Cross(up, face); var rot = Quaternion.LookRotation(face);
+            float hi = float.MinValue, lo = float.MaxValue;
+            foreach (var f in new[] { -2.7f, 0f, 2.5f, 4.4f }) foreach (var s in new[] { -3.1f, 0f, 3.1f })
+            { var p = at + face * f + side * s; var g = ctx.Ground(p.x, p.z); hi = Mathf.Max(hi, g); lo = Mathf.Min(lo, g); }
+            at.y = hi;
+            var drop = hi - lo;
+            if (drop > .1f)
+            {
+                var fd = drop + .5f;   // foundation under the cabin's walls, a little into the ground
+                mk.Box(stone, at + up * (.05f - fd / 2f), new Vector3(6.2f, fd, 5f), rot); solid.Box(stone, at + up * (.05f - fd / 2f), new Vector3(6.2f, fd, 5f), rot);
+                foreach (var f in new[] { 2.6f, 4.2f }) foreach (var s in new[] { -2.9f, 0f, 2.9f })
+                {   // log stilts under the porch deck
+                    var p = at + face * f + side * s; var g = ctx.Ground(p.x, p.z);
+                    if (at.y - g > .05f) mk.Prism(logM, new Vector3(p.x, g - .3f, p.z), up, .13f, at.y - g + .45f, 6);
+                }
+            }
+            return at;
+        }
+
         void Cabin(LandContext ctx, MeshKit mk, MeshKit solid, Vector3 at)
         {
             var up = Vector3.up; var face = new Vector3(center.x - at.x, 0, center.z - at.z).normalized; var rot = Quaternion.LookRotation(face); var side = Vector3.Cross(up, face);
+            at = SettleCabin(ctx, mk, solid, at, face);
             for (var k = 0; k < 7; k++) { mk.Prism(logM, at + up * (.25f + k * .45f) - side * 3f + face * 2.2f, side, .24f, 6f, 8); mk.Prism(logM, at + up * (.25f + k * .45f) - side * 3f - face * 2.2f, side, .24f, 6f, 8); mk.Prism(logM, at + up * (.45f + k * .45f) - face * 2.4f + side * 2.8f, face, .24f, 4.8f, 8); mk.Prism(logM, at + up * (.45f + k * .45f) - face * 2.4f - side * 2.8f, face, .24f, 4.8f, 8); }
             solid.Box(logM, at + up * 1.6f, new Vector3(6f, 3.2f, 4.8f), rot);
             mk.GableRoof(WorldMaterials.Solid(new Color(.35f, .32f, .3f)), at + up * 3.2f, new Vector3(5.6f, 0, 6.8f), 1.8f, Quaternion.LookRotation(side));
@@ -502,7 +530,7 @@ namespace EverythingWorld.World
             var porchLamps = new List<Vector3>();
             for (var k = 0; k < 4; k++)
             {
-                var a = (k * 90f + 45f) * Mathf.Deg2Rad; var at = green + (toHeart * Mathf.Cos(a) + gside * Mathf.Sin(a)) * 15f; at = ctx.OnGround(at.x, at.z);
+                var a = (k * 90f + 45f) * Mathf.Deg2Rad; var at = green + (toHeart * Mathf.Cos(a) + gside * Mathf.Sin(a)) * 15f; at = ctx.OnGround(at.x, at.z); at = SettleCabin(ctx, mk, solid, at, green - at);
                 VillageCabin(ctx, mk, solid, at, (green - at).normalized); porchLamps.Add(at + (green - at).normalized * 4.4f + up * 2.6f);
             }
             for (var k = 0; k < porchLamps.Count; k++) { var a = porchLamps[k]; var b = porchLamps[(k + 1) % porchLamps.Count]; for (var j = 1; j < 12; j++) { var t = j / 12f; var p = Vector3.Lerp(a, b, t) - up * Mathf.Sin(t * Mathf.PI) * 1f; mk.Blob(GlowM(Warm, 2.4f), p, Vector3.one * .1f, ctx.Rng, 0f); } halos.Add((a + b) / 2f - up, 2f, Warm, .4f); }

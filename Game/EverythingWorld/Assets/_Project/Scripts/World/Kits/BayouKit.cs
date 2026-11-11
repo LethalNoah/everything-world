@@ -229,7 +229,15 @@ namespace EverythingWorld.World
                 for (var col = 0; col < data.Nx; col++)
                 {
                     var x = col * data.Step; if (x < minX - 80f || x > maxX + 80f) continue;
-                    var i = r * data.Nx + col; if (data.islandIds[i] != index) continue;
+                    var i = r * data.Nx + col;
+                    if (data.islandIds[i] != index)
+                    {
+                        // a stray vertex of a neighbouring land inside ours is carved with the river too: left at its
+                        // old height beside the channel it stood up as a steep brown pyramid through the canopy
+                        var mine = 0;
+                        for (var dr = -1; dr <= 1; dr++) for (var dc = -1; dc <= 1; dc++) if (data.IslandIndexAtVertex(col + dc, r + dr) == index) mine++;
+                        if (mine < 5) continue;
+                    }
                     var p = new Vector2(x, z);
                     float best = float.MaxValue, s = 0f, hw = 0f;
                     foreach (var c in channels)

@@ -133,7 +133,7 @@ namespace EverythingWorld.World
                 for (var k = 0; k < 8; k++)
                 {
                     var mk = new MeshKit();
-                    mk.Box(body, new Vector3(0, 1.55f, 0), new Vector3(2.6f, 2.5f, 1.12f), Quaternion.identity); mk.Box(band, new Vector3(0, .55f, 0), new Vector3(2.62f, .5f, 1.13f), Quaternion.identity);
+                    mk.Box(body, new Vector3(0, 1.8f, 0), new Vector3(2.6f, 2f, 1.12f), Quaternion.identity); mk.Box(band, new Vector3(0, .55f, 0), new Vector3(2.6f, .5f, 1.12f), Quaternion.identity);   // body sits on the band (overlapping faces flickered)
                     mk.Box(roof, new Vector3(0, 2.85f, 0), new Vector3(2.3f, .12f, 1.14f), Quaternion.identity);
                     if (k > 0 && k < 7) foreach (var s in new[] { -1.31f, 1.31f }) mk.Box(tramLights, new Vector3(s, 1.95f, 0), new Vector3(.02f, .8f, .78f), Quaternion.identity);
                     if (k == 0) foreach (var s in new[] { -.7f, .7f }) mk.Box(tramLights, new Vector3(s, 1f, .57f), new Vector3(.3f, .2f, .02f), Quaternion.identity);
@@ -227,7 +227,7 @@ namespace EverythingWorld.World
             var wi = Mathf.FloorToInt((float)(now / 4.0));
             if (wi != lastWord && words.Count > 0) { lastWord = wi; for (var k = 0; k < words.Count; k++) if (words[k] != null) words[k].text = Titles[(wi * 3 + k * 5) % Titles.Length]; }
             for (var k = 0; k < words.Count; k++) if (words[k] != null) { var c = words[k].color; c.a = .6f + .4f * Mathf.PerlinNoise(t * 3f, k); words[k].color = c; }
-            if (static_ != null) static_.SetColor("_EmissionColor", new Color(.75f, .8f, .85f) * (.5f + Random.value * .5f + video * 2.5f));
+            if (static_ != null) static_.SetColor("_EmissionColor", new Color(.5f, .56f, .64f) * (.35f + Random.value * .4f + video * 2.5f));   // soft grey-blue static, not a white blank
             // the cubes
             if (cubeGlow != null) cubeGlow.SetColor("_EmissionColor", Color.Lerp(new Color(.95f, .95f, .95f) * .08f, new Color(1f, .25f, .2f) * 1.6f, right));
             if (oddCube != null) oddCube.SetPositionAndRotation(Vector3.Lerp(oddAway, oddHome, Mathf.SmoothStep(0, 1, odd)), Quaternion.Slerp(oddRot * Quaternion.Euler(0, 23f, 0), oddRot, Mathf.SmoothStep(0, 1, odd)));

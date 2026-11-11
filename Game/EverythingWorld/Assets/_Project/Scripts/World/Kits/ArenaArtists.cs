@@ -247,7 +247,9 @@ namespace EverythingWorld.World
 
         void Tornado(Plot z)
         {
-            var up = Vector3.up; var c = z.At(-3f, 0); var k = new MeshKit(); var grey = WorldMaterials.Solid(new Color(.5f, .52f, .58f)); var pale = WorldMaterials.Solid(new Color(.68f, .7f, .76f));
+            // a warm dusty funnel ("Dust in the Wind"), its pale bands lit from within: in the same blue-grey as the
+            // stadium stands it merged into the wall behind it at night and looked like it cut into it
+            var up = Vector3.up; var c = z.At(-3f, 0); var k = new MeshKit(); var grey = WorldMaterials.Solid(new Color(.62f, .55f, .44f)); var pale = GlowM(new Color(1f, .85f, .6f), .9f);
             // a smooth funnel of many thin twisted bands, debris whirling round it
             for (var i = 0; i < 30; i++) { var y = i * .5f; var r = .4f + y * y * .028f; k.Prism(i % 3 == 0 ? pale : grey, new Vector3(Mathf.Sin(y * .45f) * .7f, y, Mathf.Cos(y * .45f) * .7f), Vector3.up, r, .52f, 18, 1.04f, i * 13f); }
             for (var i = 0; i < 14; i++) { var a = i * 2.4f; var y = 1f + i * .9f; var r = 1.4f + y * y * .03f; k.Box(i % 2 == 0 ? wood : dark, new Vector3(Mathf.Cos(a) * r, y, Mathf.Sin(a) * r), new Vector3(.6f, .12f, .25f), Quaternion.Euler(i * 40f, a * 57f, i * 25f)); }

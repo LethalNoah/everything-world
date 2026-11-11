@@ -18,7 +18,7 @@ namespace EverythingWorld.World
         {
             if (!FindSpot(ctx, 36f, 140f, 320f, out var c)) return;
             var up = Vector3.up; var toHeart = new Vector3(center.x - c.x, 0, center.z - c.z).normalized; var side = Vector3.Cross(up, toHeart);
-            var stone = WorldMaterials.Solid(new Color(.5f, .48f, .5f)); var darkStone = WorldMaterials.Solid(new Color(.18f, .17f, .2f));
+            var stone = WorldMaterials.Solid(new Color(.5f, .48f, .5f)); var darkStone = WorldMaterials.Solid(new Color(.3f, .28f, .34f));
             // the Rhombus, at the edge of the clearing nearest the heart, the trail running through it
             var rh = c + toHeart * 30f; rh.y = ctx.Ground(rh.x, rh.z);
             var rhM = new Material(GlowM(new Color(.55f, .85f, 1f), 1.4f)) { name = "Rhombus" };
@@ -70,6 +70,10 @@ namespace EverythingWorld.World
             var gate = wt + toHeart * 8f; gate.y = ctx.Ground(gate.x, gate.z);
             foreach (var s in new[] { -1f, 1f }) { var gp = gate + side * s * 2.4f; mk.Prism(darkStone, gp - up * .3f, up, 1f, 7f, 8); solid.Prism(darkStone, gp - up * .3f, up, 1f, 7f, 8); mk.Box(GlowM(new Color(1f, .5f, .15f), 2.6f), gp + up * 5f + toHeart * 1f, new Vector3(.3f, .5f, .3f), Quaternion.identity); halos.Add(gp + up * 5f + toHeart * 1.1f, 1.6f, new Color(1f, .5f, .15f), .8f); }
             Sign(ctx, mk, gate + toHeart * 3f + side * 4f, toHeart, "WILSON'S CASTLE", solid);
+            // light the castle so it reads as stone, not a black cut-out: torchlight on the gate and wall, a cold wash up the tower
+            foreach (var s in new[] { -1f, 1f }) ArtistBits.PointLight(ctx.Root, gate + side * s * 2.4f + up * 5f + toHeart * 1.6f, new Color(1f, .5f, .15f), 14f, 2.2f);
+            ArtistBits.PointLight(ctx.Root, wt + toHeart * 11f + up * 5f, new Color(.6f, .7f, 1f), 22f, 2f);
+            ArtistBits.PointLight(ctx.Root, wt + toHeart * 5f + up * 15f, new Color(1f, .45f, .2f), 12f, 1.6f);
             // the Lizards' village: round huts with pointed thatch, doorways lit, round a little square
             var vil = c + side * 17f + toHeart * 4f; vil.y = ctx.Ground(vil.x, vil.z); var thatch = WorldMaterials.Solid(new Color(.6f, .5f, .3f)); var mud = WorldMaterials.Solid(new Color(.55f, .45f, .35f));
             for (var k = 0; k < 5; k++)

@@ -55,7 +55,14 @@ namespace EverythingWorld.World
         {
             if (slope > 6f) { var b = Mathf.FloorToInt(height / 2.2f); color = Bands[((b % Bands.Length) + Bands.Length) % Bands.Length]; }
             else if (height < 2.5f) color = new Color(.95f, .85f, .7f);
-            else color = patch > .7f ? Color.Lerp(new Color(.92f, .62f, .62f), new Color(.75f, .55f, .8f), (patch - .7f) / .3f) : Color.Lerp(new Color(.95f, .8f, .5f), new Color(.92f, .7f, .48f), Mathf.SmoothStep(.1f, .7f, patch));
+            else
+            {
+                // the pink and lilac patches fade in from the sand rather than switching on at one value: a single
+                // patch peak was a sharp flat pink square that looked like it floated over the sand
+                var sandC = Color.Lerp(new Color(.95f, .8f, .5f), new Color(.92f, .7f, .48f), Mathf.SmoothStep(.1f, .7f, patch));
+                var pinkC = Color.Lerp(new Color(.92f, .62f, .62f), new Color(.75f, .55f, .8f), Mathf.Clamp01((patch - .78f) / .22f));
+                color = Color.Lerp(sandC, pinkC, Mathf.SmoothStep(.66f, .84f, patch));
+            }
             color.a = 1f;
             return true;
         }
@@ -373,7 +380,12 @@ namespace EverythingWorld.World
         {
             var up = Vector3.up; var dir = Quaternion.Euler(0, ctx.Range(0, 360f), 0) * Vector3.forward; var rot = Quaternion.LookRotation(dir); var side = Vector3.Cross(up, dir);
             var top = WorldMaterials.Solid(new Color(.96f, .94f, .88f), .5f);
+            foreach (var s in new[] { -1f, 1f }) foreach (var z in new[] { -1.4f, 1.4f }) { var w = at + side * s * .95f + dir * z; at.y = Mathf.Max(at.y, ctx.Ground(w.x, w.z)); }   // stand on the highest wheel, not sunk on a slope
             mk.Box(top, at + up * 2f, new Vector3(2f, 1.2f, 4.4f), rot);
+            // a pop-top roof in a bright colour with a painted flower, so seen from above it reads as a camper, not a white box
+            var pop = at + up * 2.75f - dir * .3f; mk.Box(WorldMaterials.Solid(Rainbow[(k + 3) % Rainbow.Length], .5f), pop, new Vector3(1.8f, .3f, 3.2f), rot);
+            for (var f = 0; f < 6; f++) mk.Blob(WorldMaterials.Solid(Color.Lerp(Rainbow[(k + 5) % Rainbow.Length], Color.white, .3f), .4f), pop + up * .16f + Quaternion.AngleAxis(f * 60f, up) * dir * .45f, new Vector3(.3f, .03f, .3f), ctx.Rng, 0f);
+            mk.Blob(WorldMaterials.Solid(new Color(1f, .85f, .2f), .4f), pop + up * .19f, new Vector3(.25f, .03f, .25f), ctx.Rng, 0f);
             for (var b = 0; b < 6; b++) mk.Box(WorldMaterials.Solid(Rainbow[(b + k) % Rainbow.Length], .6f), at + up * (.7f + b * .14f) - dir * .1f, new Vector3(2.03f, .15f, 4.3f), rot);
             mk.Box(WorldMaterials.Solid(new Color(.2f, .3f, .4f), .9f), at + up * 2.1f + dir * 1.9f, new Vector3(1.8f, .8f, .6f), rot * Quaternion.Euler(-12f, 0, 0));
             mk.Prism(WorldMaterials.Solid(Rainbow[k % Rainbow.Length], .6f), at + up * 1.5f + dir * 2.21f, dir, .45f, .04f, 16);

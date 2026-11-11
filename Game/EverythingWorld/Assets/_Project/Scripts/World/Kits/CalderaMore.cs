@@ -23,15 +23,19 @@ namespace EverythingWorld.World
             {
                 case "Hands Like Houses":
                 {
-                    var bone = WorldMaterials.Solid(new Color(.8f, .78f, .72f)); var spine = z.At(-4f, 0);
+                    var bone = WorldMaterials.Solid(new Color(.8f, .78f, .72f)); var spine = z.At(-4f, 0); var prevTop = Vector3.zero;
                     for (var k = 0; k < 8; k++)
                     {
                         var p = spine + z.side * ((k - 3.5f) * 1.6f); p.y = ctx.Ground(p.x, p.z);
                         var h = 5f - Mathf.Abs(k - 3.5f) * .45f;
+                        // the backbone runs along the row of ribs, joining their tops (it lay across them, cutting the arches)
+                        var top = p + up * (h + .1f);
+                        if (k > 0) z.mk.Box(bone, (prevTop + top) / 2f, new Vector3(.45f, .45f, Vector3.Distance(prevTop, top) + .45f), Quaternion.LookRotation(top - prevTop));
+                        else z.mk.Box(bone, top - z.side * 1.2f, new Vector3(.4f, .4f, 2.4f), Quaternion.LookRotation(z.side));     // the tail end
+                        prevTop = top;
                         foreach (var s in new[] { -1f, 1f }) for (var j = 0; j < 6; j++) { var a0 = j / 6f * Mathf.PI * .5f; var a1 = (j + 1) / 6f * Mathf.PI * .5f; var p0 = p + z.front * s * Mathf.Cos(a0) * 3f + up * Mathf.Sin(a0) * h; var p1 = p + z.front * s * Mathf.Cos(a1) * 3f + up * Mathf.Sin(a1) * h; z.mk.Box(bone, (p0 + p1) / 2f, new Vector3(.2f, .2f, Vector3.Distance(p0, p1) + .05f), Quaternion.LookRotation(p1 - p0)); }
                         foreach (var s in new[] { -1f, 1f }) ArtistBits.PostCollider(z.root, p + z.front * s * 2.9f, 1.5f, .25f);
                     }
-                    z.mk.Box(bone, spine + up * 4.9f, new Vector3(13f, .45f, .45f), Quaternion.LookRotation(z.front) * Quaternion.Euler(0, 90f, 0));
                     var belly = SongGlow(z, "Starving", Cyan, 1.2f); z.mk.Prism(belly, spine + up * .04f, up, 2.6f, .04f, 18); halos.Add(spine + up * 2f, 4f, Cyan, .25f);
                     var lion = z.At(5f, -7f); var st = WorldMaterials.Solid(new Color(.35f, .33f, .35f));
                     z.mk.Box(st, lion + up * .5f, new Vector3(1.6f, 1f, 2.6f), rot); z.mk.Blob(st, lion + up * 1.4f + z.front * .7f, new Vector3(.7f, .8f, .7f), ctx.Rng, .15f); z.mk.Blob(SongGlow(z, "Lion Skin", new Color(1f, .75f, .3f), 1.4f), lion + up * 1.5f + z.front * .9f, new Vector3(1f, 1f, .5f), ctx.Rng, .3f); z.solid.Box(st, lion + up * 1f, new Vector3(1.8f, 2f, 2.8f), rot);
@@ -158,7 +162,7 @@ namespace EverythingWorld.World
                 {
                     var bc = c + up * (2.6f + .2f * Mathf.Sin(hash)); z.mk.Blob(obsidian, bc, new Vector3(1.2f, .9f, 1.1f), ctx.Rng, .3f);
                     z.mk.Prism(glow, c + up * .03f, up, 1.5f, .05f, 16); z.mk.Blob(glow, bc - up * .85f, new Vector3(.5f, .12f, .5f), ctx.Rng, .1f);
-                    for (var k = 0; k < 3; k++) { var a = k * Mathf.PI * 2f / 3f; var g = c + new Vector3(Mathf.Cos(a), 0, Mathf.Sin(a)) * 2.2f; g.y = ctx.Ground(g.x, g.z); z.mk.Box(chain, (g + bc) / 2f, new Vector3(.06f, .06f, Vector3.Distance(g, bc)), Quaternion.LookRotation(bc - g)); z.mk.Prism(obsidian, g - up * .1f, up, .2f, .4f, 6); }
+                    for (var k = 0; k < 3; k++) { var a = k * Mathf.PI * 2f / 3f; var g = c + new Vector3(Mathf.Cos(a), 0, Mathf.Sin(a)) * 2.2f; g.y = ctx.Ground(g.x, g.z); z.mk.Box(glow, (g + bc) / 2f, new Vector3(.09f, .09f, Vector3.Distance(g, bc)), Quaternion.LookRotation(bc - g)); z.mk.Prism(obsidian, g - up * .1f, up, .2f, .4f, 6); }   // neon chains: in the dark, steel ones vanished and the boulder read as a stray shape in the air
                     ArtistBits.PostCollider(z.root, c, 1.2f, 1.6f); halos.Add(c + up * 1.3f, 2.6f, col, .5f);
                     break;
                 }

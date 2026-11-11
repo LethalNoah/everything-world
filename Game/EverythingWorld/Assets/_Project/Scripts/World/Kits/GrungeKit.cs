@@ -243,6 +243,14 @@ namespace EverythingWorld.World
             if (river2.Count > 1) River(ctx, mk, solid);
             Arrival(ctx, mk, solid);
             Roads(ctx, mk, solid);
+            // a lane through the trees for Audioslave's empty highway (built with the artist, after the forest)
+            foreach (var a in ctx.Artists)
+            {
+                if (a.name != "Audioslave") continue;
+                var front = facing.TryGetValue(a.name, out var f) ? f : new Vector3(center.x - a.x, 0, center.z - a.z).normalized;
+                if (front.sqrMagnitude < .01f) front = Vector3.forward;
+                for (var k = 0; k <= HighwayClear; k++) Remember(HighwayPoint(new Vector3(a.x, 0, a.z), front, k, ctx), 900);
+            }
             Forest(ctx, mk, solid);
             mk.Build("Grunge Rainwood", ctx.Root, false);
             soft.Build("Rainwood pines", ctx.Root, false);

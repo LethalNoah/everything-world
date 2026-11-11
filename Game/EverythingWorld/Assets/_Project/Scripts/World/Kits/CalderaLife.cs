@@ -46,6 +46,9 @@ namespace EverythingWorld.World
             var am = ash.main; am.startLifetime = new ParticleSystem.MinMaxCurve(8f, 12f); am.startSpeed = new ParticleSystem.MinMaxCurve(0f, .2f); am.gravityModifier = .02f;
             steam = Particles("Vent steam", 400, new Color(.7f, .68f, .75f, .3f), 1.5f, 3f, false);
             var sm = steam.main; sm.startLifetime = new ParticleSystem.MinMaxCurve(3f, 5f); sm.startSpeed = new ParticleSystem.MinMaxCurve(1f, 2f);
+            // rising: the default cone points sideways, so the puffs slid along the ground half sunk in it and read as a
+            // pale square glow beside each vent
+            var ssh = steam.shape; ssh.shapeType = ParticleSystemShapeType.Cone; ssh.angle = 12f; ssh.radius = .4f; ssh.rotation = new Vector3(-90f, 0, 0);
             sparksC = Particles("Eruption sparks cyan", 2500, new Color(.3f, .95f, 1f, 1f), .9f, 1.8f, true);
             sparksM = Particles("Eruption sparks magenta", 2500, new Color(1f, .3f, .8f, 1f), .9f, 1.8f, true);
             foreach (var s in new[] { sparksC, sparksM })

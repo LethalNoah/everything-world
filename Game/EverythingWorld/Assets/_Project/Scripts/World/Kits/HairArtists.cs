@@ -94,7 +94,8 @@ namespace EverythingWorld.World
                 foreach (var y in new[] { -.75f, .75f }) z.mk.Blob(m, mq + z.front * .62f + up * y + z.side * ((k - 7.5f) * (W - 2f) / 16f), Vector3.one * .1f, z.ctx.Rng, 0f);
             }
             life.marquees.Add(bulbs.ToArray());
-            ArtistBits.Label(z.labels, z.a.name.ToUpperInvariant(), mq + z.front * .63f, z.front, z.a.name.Length > 14 ? .3f : .42f, new Color(.12f, .04f, .1f), TextAnchor.MiddleCenter);
+            // the name is already in neon on the roof (and on the zone curtain), so the marquee just bills the night
+            ArtistBits.Label(z.labels, "LIVE TONIGHT  ★  SOLD OUT", mq + z.front * .63f, z.front, .36f, new Color(.12f, .04f, .1f), TextAnchor.MiddleCenter);
             // the awning in leopard print over the pavement
             var aw = b + z.front * (D / 2f + 2.6f) + up * 4.4f;
             z.mk.Box(AwningM(st), aw, new Vector3(W - 2f, .1f, 3.4f), rot * Quaternion.Euler(-14f, 0, 0));

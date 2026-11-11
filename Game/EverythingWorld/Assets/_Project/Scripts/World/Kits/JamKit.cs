@@ -221,6 +221,7 @@ namespace EverythingWorld.World
             mk.Box(wood, gate + up * 7.4f, new Vector3(11.5f, .7f, .7f), rot);
             mk.Box(wood, gate + up * 6.2f, new Vector3(8f, 1.4f, .2f), rot);
             ArtistBits.Label(ctx.Root, "THE JAM BAND COMMONWEALTH", gate + up * 6.2f - face * .12f, -face, .38f, Ink, TextAnchor.MiddleCenter);
+            ArtistBits.Label(ctx.Root, "THE JAM BAND COMMONWEALTH", gate + up * 6.2f + face * .12f, face, .38f, Ink, TextAnchor.MiddleCenter);   // lettered on the back too, so it isn't blank walking out
             StringLights(mk, gate + up * 7f - side * 5f, gate + up * 7f + side * 5f, Warm, 14);
             for (var k = 0; k < 3; k++) { var tp = gate + side * ((k - 1) * 3.2f) + up * 4.6f; for (var b = 0; b < 5; b++) mk.Box(WorldMaterials.Solid(Dye[(b + k * 2) % Dye.Length], .3f), tp - up * b * .4f, new Vector3(1.6f, .4f, .04f + (b % 2) * .01f), rot); }
             var hut = c + face * 4f + side * 9f;

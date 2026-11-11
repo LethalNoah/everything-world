@@ -283,7 +283,8 @@ namespace EverythingWorld.World
         void StringCheese(Plot z)
         {
             var up = Vector3.up; var c = z.At(-3f, 0); var ch = WorldMaterials.Solid(new Color(1f, .97f, .86f)); var strand = GlowM(new Color(1f, .95f, .75f), 1.2f);
-            z.mk.Prism(WorldMaterials.Solid(new Color(.2f, .45f, .85f), .6f), c, up, 1f, 2.2f, 16); z.mk.Prism(ch, c + up * 2.2f, up, .9f, 3.2f, 16);
+            // the wrapper starts well below the ground so the stick stands planted on any slope instead of floating
+            z.mk.Prism(WorldMaterials.Solid(new Color(.2f, .45f, .85f), .6f), c - up * 1.5f, up, 1f, 3.7f, 16); z.mk.Prism(ch, c + up * 2.2f, up, .9f, 3.2f, 16);
             for (var k = 0; k < 10; k++)
             {
                 var d = Quaternion.Euler(0, k * 36f, 0) * Vector3.forward; var p = c + up * 5.4f + d * .5f;

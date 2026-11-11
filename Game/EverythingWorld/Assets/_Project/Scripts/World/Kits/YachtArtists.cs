@@ -192,9 +192,11 @@ namespace EverythingWorld.World
         void Kilimanjaro(Plot z)
         {
             var up = Vector3.up; var c = z.At(-5f, 0);
-            z.mk.Tri(WorldMaterials.Solid(new Color(.45f, .4f, .38f)), c - z.side * 7f, c + z.side * 7f, c + up * 7f, c - z.front);
-            z.mk.Tri(white, c + up * 5f - z.side * 2f + z.front * .02f, c + up * 5f + z.side * 2f + z.front * .02f, c + up * 7f + z.front * .02f, c - z.front);
-            z.solid.Box(dark, c + up * 2f, new Vector3(13f, 4f, .5f), Quaternion.LookRotation(z.front));
+            // a solid snow-capped cone (it was one flat triangle, which read as a black spike seen edge-on)
+            var rock = WorldMaterials.Solid(new Color(.45f, .4f, .38f)); var cm = z.At(-7.5f, 0);
+            z.mk.Cone(rock, cm - up * .6f, 5.5f, 7.6f, 9, 20f);
+            z.mk.Cone(white, cm + up * 4.9f, 1.75f, 2.15f, 9, 20f);
+            z.solid.Prism(rock, cm - up * .6f, up, 4.5f, 4.6f, 9, .4f);
             var drum = new Material(GlowM(new Color(1f, .6f, .3f), .5f)) { name = "Drums" }; life.drums = drum;
             for (var k = 0; k < 5; k++) { var d = Quaternion.Euler(0, k * 72f, 0) * z.front; var p = z.At(2f, 0) + d * 2.4f; z.mk.Prism(WorldMaterials.Solid(new Color(.55f, .35f, .2f)), p, Vector3.up, .5f, 1f, 12, .8f); z.mk.Prism(drum, p + up * 1f, Vector3.up, .42f, .04f, 12); ArtistBits.PostCollider(z.root, p, 1f, .5f); }
         }
@@ -202,8 +204,12 @@ namespace EverythingWorld.World
         void Jet(Plot z)
         {
             var up = Vector3.up; var c = z.At(-3f, 0); var grey = WorldMaterials.Solid(new Color(.55f, .58f, .62f), .7f);
-            z.mk.Box(stone, c + up * 1.5f, new Vector3(1f, 3f, 1f), Quaternion.identity); z.solid.Box(stone, c + up * 1.5f, new Vector3(1f, 3f, 1f), Quaternion.identity);
-            var j = c + up * 4f; var dir = (z.side + up * .3f).normalized;
+            var j = c + up * 4f; var dir = (z.side + up * .3f).normalized; var wingOut = Vector3.Cross(up, dir).normalized;
+            // lift the jet until its tail, nose and wingtips all clear the hillside by a metre, so nothing cuts the slope
+            foreach (var p in new[] { j - dir * 4.6f, j - dir * 2.5f, j + dir * 3f, j - dir * 1f + wingOut * 4f, j - dir * 1f - wingOut * 4f })
+                j.y = Mathf.Max(j.y, z.ctx.Ground(p.x, p.z) + 1.7f + (j.y - p.y));
+            var ph = j.y - c.y - .6f;   // the pedestal rises to meet the jet's belly
+            z.mk.Box(stone, c + up * (ph / 2f - .2f), new Vector3(1f, ph + .4f, 1f), Quaternion.identity); z.solid.Box(stone, c + up * (ph / 2f), new Vector3(1f, ph, 1f), Quaternion.identity);
             z.mk.Prism(grey, j - dir * 4f, dir, .7f, 7f, 10, .4f); z.mk.Tri(grey, j - dir * 1f + Vector3.Cross(up, dir) * 4f, j + dir * 1.5f, j - dir * 2.5f, j + up);
             z.mk.Tri(grey, j - dir * 1f - Vector3.Cross(up, dir) * 4f, j - dir * 2.5f, j + dir * 1.5f, j + up);
             z.mk.Tri(grey, j - dir * 3.5f, j - dir * 4f + up * 2f, j - dir * 2.5f, j + Vector3.Cross(up, dir));

@@ -201,7 +201,7 @@ namespace EverythingWorld.World
                 {
                     var p = OnStreet(t + (s > 0 ? 0f : 8f), s * (StreetHalf + Walk + 1.2f));
                     if (Mathf.Repeat(t, 32f) < 16f) Palm(ctx, mk, p, ctx.Range(9f, 12f), Neon[Mathf.Abs((int)(t / 16f)) % 3]);
-                    else
+                    else if (!InFrontOfVenue(ctx, t + (s > 0 ? 0f : 8f), s))   // no lamp post standing across a venue's front
                     {
                         var lp = OnStreet(t + (s > 0 ? 0f : 8f), s * (StreetHalf + .6f));
                         mk.Prism(chrome, lp, up, .12f, 7f, 8);
@@ -224,6 +224,20 @@ namespace EverythingWorld.World
                     }
             life.streetA = streetA; life.streetDir = streetDir; life.streetLen = streetLen; life.profile = profile;
             noGrass.Add(new Vector3(streetA.x, 0, streetA.z));
+        }
+
+        /// Whether a spot at distance t along the Strip, on side s, is in front of a venue (within its width).
+        bool InFrontOfVenue(LandContext ctx, float t, float s)
+        {
+            var sideV = Vector3.Cross(Vector3.up, streetDir);
+            foreach (var a in ctx.Artists)
+            {
+                var rel = new Vector3(a.x - streetA.x, 0, a.z - streetA.z);
+                if (Vector3.Dot(rel, sideV) * s <= 0f) continue;
+                var half = a.name == "Guns N' Roses" ? 11f : HasStation(a) ? 9f : 6.5f;
+                if (Mathf.Abs(Vector3.Dot(rel, streetDir) - t) < half + 1.5f) return true;
+            }
+            return false;
         }
 
         void Palm(LandContext ctx, MeshKit mk, Vector3 at, float h, Color ring)

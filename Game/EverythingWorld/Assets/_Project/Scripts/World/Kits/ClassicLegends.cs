@@ -334,29 +334,32 @@ namespace EverythingWorld.World
             if (bestH == float.MinValue) { Debug.Log("Kingdom of Classic Rock: no room for the castle"); return; }
             var c = best; var face = new Vector3(center.x - c.x, 0, center.z - c.z).normalized; var rot = Quaternion.LookRotation(face); var side = Vector3.Cross(up, face);
             var stone = WorldMaterials.Solid(new Color(.74f, .7f, .62f)); var roof = WorldMaterials.Solid(new Color(.25f, .3f, .55f)); const float R = 13f, H = 7f;
+            // the walls and towers go down to the lowest ground under the castle, so the hilltop can't leave a gap under them
+            var lowG = c.y; for (var k = 0; k < 24; k++) foreach (var rr in new[] { 8f, 13f, 16f, 19f }) { var a = k * Mathf.PI / 12f; lowG = Mathf.Min(lowG, ctx.Ground(c.x + Mathf.Cos(a) * rr, c.z + Mathf.Sin(a) * rr)); }
+            var drop = c.y - lowG + .4f;
             // the curtain wall, with a gap for the gatehouse
             for (var k = 0; k < 4; k++)
             {
                 var d = Quaternion.Euler(0, k * 90f, 0) * face; var wc = c + d * R; var wr = Quaternion.LookRotation(d); var ws = Vector3.Cross(up, d);
-                if (k == 0) { foreach (var s in new[] { -1f, 1f }) { var p = wc + ws * s * 8f; mk.Box(stone, p + up * H / 2f, new Vector3(10f, H, 1.6f), wr); solid.Box(stone, p + up * H / 2f, new Vector3(10f, H, 1.6f), wr); } }
-                else { mk.Box(stone, wc + up * H / 2f, new Vector3(26f, H, 1.6f), wr); solid.Box(stone, wc + up * H / 2f, new Vector3(26f, H, 1.6f), wr); }
+                if (k == 0) { foreach (var s in new[] { -1f, 1f }) { var p = wc + ws * s * 8f; mk.Box(stone, p + up * (H - drop) / 2f, new Vector3(10f, H + drop, 1.6f), wr); solid.Box(stone, p + up * (H - drop) / 2f, new Vector3(10f, H + drop, 1.6f), wr); } }
+                else { mk.Box(stone, wc + up * (H - drop) / 2f, new Vector3(26f, H + drop, 1.6f), wr); solid.Box(stone, wc + up * (H - drop) / 2f, new Vector3(26f, H + drop, 1.6f), wr); }
                 for (var m = 0; m < 12; m++) { var x = -12f + m * 2.2f; if (k == 0 && Mathf.Abs(x) < 3f) continue; mk.Box(stone, wc + ws * x + up * (H + .45f), new Vector3(1.1f, .9f, 1.6f), wr); }
             }
             foreach (var (sx, sz) in new[] { (1f, 1f), (-1f, 1f), (1f, -1f), (-1f, -1f) })
             {
-                var t = c + face * sz * R + side * sx * R; mk.Prism(stone, t - up * .3f, up, 2.6f, H + 4.3f, 12); solid.Prism(stone, t - up * .3f, up, 2.6f, H + 4.3f, 12);
+                var t = c + face * sz * R + side * sx * R; mk.Prism(stone, t - up * drop, up, 2.6f, H + 4f + drop, 12); solid.Prism(stone, t - up * drop, up, 2.6f, H + 4f + drop, 12);
                 mk.Cone(roof, t + up * (H + 4f), 3.1f, 4.2f, 12); mk.Prism(dark, t + up * (H + 8.2f), up, .05f, 2.2f, 6);
                 mk.Box(WorldMaterials.Solid(sx * sz > 0 ? new Color(.75f, .12f, .15f) : new Color(.2f, .3f, .7f)), t + up * (H + 9.8f) + side * .6f, new Vector3(1.2f, .7f, .03f), rot);
                 for (var w = 0; w < 2; w++) mk.Box(GlowM(new Color(1f, .82f, .5f), 1.6f), t + up * (3.5f + w * 3.5f) + face * 2.62f, new Vector3(.5f, .9f, .04f), rot);
             }
             // the gatehouse: two towers flanking an arch with a portcullis, the castle's name over it
             var g = c + face * R;
-            foreach (var s in new[] { -1f, 1f }) { var t = g + side * s * 3.4f; mk.Box(stone, t + up * (H + 1.5f) / 2f, new Vector3(2.4f, H + 1.5f, 3f), rot); solid.Box(stone, t + up * (H + 1.5f) / 2f, new Vector3(2.4f, H + 1.5f, 3f), rot); }
+            foreach (var s in new[] { -1f, 1f }) { var t = g + side * s * 3.4f; mk.Box(stone, t + up * (H + 1.5f - drop) / 2f, new Vector3(2.4f, H + 1.5f + drop, 3f), rot); solid.Box(stone, t + up * (H + 1.5f - drop) / 2f, new Vector3(2.4f, H + 1.5f + drop, 3f), rot); }
             mk.Box(stone, g + up * (H - .8f), new Vector3(4.4f, 2.4f, 3f), rot);
             for (var k = 0; k < 5; k++) mk.Box(dark, g + up * (H - 2.3f) + side * ((k - 2f) * .8f) + face * 1.3f, new Vector3(.08f, .9f, .08f), rot);
             ArtistBits.Label(ctx.Root, "THE CASTLE OF CLASSIC ROCK", g + up * (H + .1f) + face * 1.55f, face, .28f, new Color(.3f, .25f, .2f), TextAnchor.MiddleCenter);
             // the keep
-            var keep = c - face * 2f; mk.Box(stone, keep + up * 6f, new Vector3(9f, 12f, 9f), rot); solid.Box(stone, keep + up * 6f, new Vector3(9f, 12f, 9f), rot);
+            var keep = c - face * 2f; mk.Box(stone, keep + up * (12f - drop) / 2f, new Vector3(9f, 12f + drop, 9f), rot); solid.Box(stone, keep + up * (12f - drop) / 2f, new Vector3(9f, 12f + drop, 9f), rot);
             for (var m = 0; m < 4; m++) foreach (var s in new[] { -1f, 1f }) { mk.Box(stone, keep + up * 12.45f + side * ((m - 1.5f) * 2.2f) + face * s * 4.2f, new Vector3(1.1f, .9f, .6f), rot); mk.Box(stone, keep + up * 12.45f + face * ((m - 1.5f) * 2.2f) + side * s * 4.2f, new Vector3(.6f, .9f, 1.1f), rot); }
             for (var w = 0; w < 3; w++) mk.Box(GlowM(new Color(1f, .82f, .5f), 1.8f), keep + up * (4f + w * 3f) + face * 4.52f + side * ((w - 1f) * 2.4f), new Vector3(.8f, 1.4f, .04f), rot);
             mk.Prism(dark, keep + up * 12.9f, up, .08f, 5f, 6); mk.Box(WorldMaterials.Solid(new Color(.85f, .7f, .2f)), keep + up * 17.2f + side * 1.1f, new Vector3(2.2f, 1.3f, .04f), rot);

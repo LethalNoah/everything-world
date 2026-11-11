@@ -125,7 +125,7 @@ namespace EverythingWorld.World
             // the crowd's lighters: glowing with the song, blazing in waves for Don't Stop Believin'
             if (crowd != null) crowd.SetColor("_EmissionColor", new Color(1f, .62f, .25f) * (.8f + energy * .8f + .2f * Mathf.Sin(t * 2f) + believe * (2f + 1.5f * Mathf.Sin(t * 3f))));
             for (var i = 0; i < rig.Length; i++) rig[i].SetColor("_EmissionColor", rig[i].GetColor("_BaseColor") * (((Mathf.FloorToInt(t * (3f + 6f * energy)) + i) % 3 == 0) ? 2.6f : .6f) * (1f - reap * .6f));
-            for (var i = 0; i < screens.Count; i++) screens[i].SetColor("_EmissionColor", Color.Lerp(new Color(.4f, .5f, 1f), new Color(1f, .6f, .3f), Mathf.PerlinNoise(t * .7f + i, 0f)) * (.9f + energy));
+            for (var i = 0; i < screens.Count; i++) screens[i].SetColor("_EmissionColor", Color.Lerp(new Color(.4f, .5f, 1f), new Color(1f, .6f, .3f), Mathf.PerlinNoise(t * .7f + i, 0f)) * (.5f + energy * .6f));   // dimmer, so the live feed on them reads
             if (reaperEyes != null) reaperEyes.SetColor("_EmissionColor", new Color(.5f, .8f, 1f) * (.3f + reap * 4f));
             if (tigerEye != null) tigerEye.SetColor("_EmissionColor", new Color(1f, .7f, .1f) * (.5f + tiger * 3.5f));
             if (ringSpot != null) ringSpot.intensity = here ? .4f + tiger * 8f : 0f;

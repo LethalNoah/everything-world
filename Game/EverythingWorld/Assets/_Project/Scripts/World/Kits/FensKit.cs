@@ -68,8 +68,10 @@ namespace EverythingWorld.World
         {
             if (!shaped) { color = default; return false; }
             // only the fen's own floor is mud (it sits exactly half a metre under the water); low ground elsewhere,
-            // like the coast, is ordinary hillside, or it showed up as a black band
-            if (height > waterY - FloorDrop - .05f && height < waterY - .1f) color = Color.Lerp(Mud, new Color(.33f, .27f, .34f), patch);
+            // like the coast, is ordinary hillside, or it showed up as a black band. The floor is dead flat, so a
+            // sloping coast facet that only passes through the floor's height stays hillside (it read as a black
+            // triangle or a dark crease in the hills)
+            if (height > waterY - FloorDrop - .05f && height < waterY - .1f && slope < .05f) color = Color.Lerp(Mud, new Color(.33f, .27f, .34f), patch);
             else if (height >= waterY - .1f && height < waterY + 1f) color = Color.Lerp(Moss, MossPink, Mathf.SmoothStep(0, 1, patch));
             else if (height < 4f) color = Color.Lerp(new Color(.7f, .64f, .62f), new Color(.62f, .58f, .6f), patch);
             else if (slope > 6f) color = Color.Lerp(new Color(.5f, .47f, .52f), new Color(.6f, .56f, .6f), patch);
@@ -497,7 +499,7 @@ namespace EverythingWorld.World
                 if (!ctx.IsLand(px, pz, 1f) || NearPath(px, pz, 1.8f) || InNoGrass(px, pz, 0f) || InArtist(ctx, px, pz, -5f)) continue;
                 var g = ctx.Ground(px, pz);
                 var key = (Mathf.FloorToInt(px / 70f), Mathf.FloorToInt(pz / 70f));
-                if (g < waterY - .1f)
+                if (g < waterY - .1f && InMarsh(px, pz, -6f))        // low hillside out of the fen (the coast) gets grass, not reeds
                 {
                     // reeds only in the shallows near an edge (an island or the bank)
                     if (!OnIsland(px, pz, -3.5f) && Vector2.Distance(new Vector2(px, pz), heart) < Edge(px, pz) - 4f) continue;

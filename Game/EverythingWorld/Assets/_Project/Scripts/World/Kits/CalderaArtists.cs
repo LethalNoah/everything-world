@@ -206,9 +206,34 @@ namespace EverythingWorld.World
             var fl = z.At(0f, -12f); z.mk.Prism(obsidian, fl, up, 1.4f, 1.2f, 8, .7f); z.mk.Blob(GlowM(new Color(1f, .9f, .6f), 3.2f), fl + up * 1.7f, new Vector3(.5f, .8f, .5f), ctx.Rng, .2f);
             halos.Add(fl + up * 2f, 3f, new Color(1f, .9f, .6f), .8f); life.fires.Add(fl + up * 1.6f); life.mothFlame = fl + up * 2.2f; z.solid.Prism(obsidian, fl, up, 1.4f, 1.6f, 8);
             ArtistBits.PointLight(z.root, fl + up * 3f, new Color(1f, .9f, .65f), 12f, 1.8f);
-            var moth = WorldMaterials.Solid(new Color(.55f, .5f, .45f)); var mb = fl + up * 6.5f - z.side * 1.5f;
-            z.mk.Box(moth, mb, new Vector3(.5f, .5f, 2f), Quaternion.LookRotation(z.side)); foreach (var s in new[] { -1f, 1f }) { z.mk.Box(moth, mb + z.front * s * 1.6f + up * .2f, new Vector3(1.8f, .06f, 2.6f), Quaternion.LookRotation(z.side) * Quaternion.Euler(0, 0, s * 15f) * Quaternion.Euler(0, 90f, 0)); z.mk.Blob(GlowM(Cyan, 2f), mb + z.front * s * 1.8f + up * .3f, new Vector3(.3f, .05f, .3f), ctx.Rng, 0f); }
-            z.mk.Box(dark, (mb + fl) / 2f - up * .6f, new Vector3(.08f, 4f, .08f), Quaternion.FromToRotation(Vector3.up, mb - fl));
+            // the great moth, on a black iron rod beside the flame, its head toward it: a furry body, four swept wings
+            // in a shallow V (pale, so the flame lights them), cyan eyespots on both faces, feathered antennae
+            // (two loose wing slabs on a rod that didn't reach read as brown boards hanging in the air)
+            var moth = WorldMaterials.Solid(new Color(.72f, .66f, .58f)); var mothDark = WorldMaterials.Solid(new Color(.42f, .37f, .33f));
+            var head = z.side; var span = z.front; var mb = fl + up * 6.2f - head * 2.6f;
+            var rodFoot = ctx.OnGround(mb.x, mb.z); z.mk.Prism(dark, rodFoot - up * .2f, up, .09f, mb.y - rodFoot.y - .1f, 6); ArtistBits.PostCollider(z.root, rodFoot, mb.y - rodFoot.y, .15f);
+            z.mk.Prism(mothDark, mb + head * .25f, -head, .36f, 1.9f, 6, .3f);                                   // the abdomen, tapering back
+            z.mk.Blob(mothDark, mb + head * .55f, new Vector3(.42f, .4f, .42f), ctx.Rng, .15f);                  // the thorax
+            z.mk.Blob(mothDark, mb + head * 1.05f, Vector3.one * .26f, ctx.Rng, .1f);                           // the head
+            foreach (var s in new[] { -1f, 1f })
+            {
+                var ad = (head + span * s * .7f + up * .45f).normalized; z.mk.Prism(mothDark, mb + head * 1.2f + up * .1f, ad, .035f, 1.3f, 4, .6f);
+                for (var k = 1; k < 5; k++) z.mk.Box(mothDark, mb + head * 1.2f + up * .1f + ad * (k * .25f), new Vector3(.3f - k * .04f, .02f, .05f), Quaternion.LookRotation(ad, up));
+                void Wing(Vector3 a, Vector3 b, Vector3 c, Vector3 d)
+                {
+                    var mid = (a + b + c + d) / 4f;
+                    z.mk.Quad(moth, a, b, c, d, mid - up); z.mk.Quad(mothDark, a, b, c, d, mid + up);           // pale on top, darker below
+                }
+                var lift = up * .9f;
+                // the forewing, swept forward, and the smaller hindwing behind it
+                Vector3 f0 = mb + head * .85f + span * s * .3f, f1 = mb + head * 1.5f + span * s * 3.4f + lift, f2 = mb - head * .3f + span * s * 3.1f + lift * .95f, f3 = mb + head * .1f + span * s * .3f;
+                Wing(f0, f1, f2, f3);
+                Wing(mb + head * .1f + span * s * .3f, mb - head * .2f + span * s * 2.4f + lift * .6f, mb - head * 1.5f + span * s * 1.6f + lift * .45f, mb - head * .6f + span * s * .25f);
+                var n = Vector3.Cross(f1 - f0, f2 - f0).normalized; if (n.y < 0f) n = -n;
+                var spot = Vector3.Lerp((f0 + f1 + f2 + f3) / 4f, (f1 + f2) / 2f, .2f);
+                foreach (var e in new[] { 1f, -1f }) z.mk.Prism(GlowM(Cyan, 2.4f), spot + n * e * .01f, n * e, .32f, .02f, 10);
+                halos.Add(spot, 1.2f, Cyan, .35f);
+            }
             for (var k = 0; k < 6; k++) { var mk2 = new MeshKit(); mk2.Box(moth, Vector3.zero, new Vector3(.08f, .08f, .3f), Quaternion.identity); foreach (var s in new[] { -1f, 1f }) mk2.Box(moth, new Vector3(s * .2f, 0, 0), new Vector3(.35f, .02f, .3f), Quaternion.Euler(0, 0, s * 20f)); var go = mk2.BuildSingle("Moth", life.transform, false); if (go != null) life.moths.Add(go.transform); }
             // God Complex: a crown on a plinth
             var cr = z.At(4f, 9f); z.mk.Box(obsidian, cr + up * .7f, new Vector3(1.2f, 1.4f, 1.2f), rot); z.solid.Box(obsidian, cr + up * .7f, new Vector3(1.2f, 1.4f, 1.2f), rot);

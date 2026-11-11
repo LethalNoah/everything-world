@@ -355,9 +355,15 @@ namespace EverythingWorld.World
                 case "Harmonia": // Watussi: three glowing spheres on rods in harmony
                     { for (var k = 0; k < 3; k++) { var p = c + z.side * ((k - 1f) * 2f); var h = 2.4f + k * 1.2f; z.mk.Prism(metal, p, up, .06f, h, 6); z.mk.Blob(GlowM(Rainbow[k * 2], 2f), p + up * (h + .6f), Vector3.one * .6f, ctx.Rng, 0f); halos.Add(p + up * (h + .6f), 1.8f, Rainbow[k * 2], .6f); ArtistBits.PostCollider(z.root, p, h, .15f); } break; }
                 case "Khruangbin": // the band's name means aeroplane: a little propeller plane parked on the sand
-                    { var body = S(.9f, .88f, .82f, .6f); var pr = Quaternion.LookRotation(z.side); z.mk.Prism(body, c + up * 1.2f - z.side * 2.6f, z.side, .55f, 5.2f, 12, .5f);
-                      z.mk.Box(body, c + up * 1.3f, new Vector3(7f, .12f, 1.2f), rot); z.mk.Box(body, c + up * 1.4f - z.side * 2.3f, new Vector3(2.2f, .1f, .7f), rot); z.mk.Box(S(.8f, .3f, .2f), c + up * 1.9f - z.side * 2.4f, new Vector3(.1f, 1f, .6f), pr);
-                      z.mk.Box(dark, c + up * 1.2f + z.side * 2.7f, new Vector3(.08f, 2f, .2f), pr); foreach (var s in new[] { -1f, 1f }) z.mk.Prism(dark, c + z.front * s * .8f + up * .35f, z.front * s, .3f, .15f, 10);
+                    { // stood on the highest ground under it (it was sunk on the slope), the wings across the fuselage
+                      // (they ran along it, so it read as a van), wheels on struts and a tail wheel
+                      foreach (var e in new[] { -3f, 0f, 3f }) foreach (var w in new[] { -3.4f, 0f, 3.4f }) { var q = c + z.side * e + z.front * w; c.y = Mathf.Max(c.y, ctx.Ground(q.x, q.z)); }
+                      var body = S(.9f, .88f, .82f, .6f); var pr = Quaternion.LookRotation(z.side); z.mk.Prism(body, c + up * 1.2f - z.side * 2.6f, z.side, .55f, 5.2f, 12, .5f);
+                      z.mk.Box(body, c + up * 1.3f + z.side * .6f, new Vector3(1.2f, .12f, 7f), rot); z.mk.Box(body, c + up * 1.4f - z.side * 2.3f, new Vector3(.7f, .1f, 2.2f), rot); z.mk.Box(S(.8f, .3f, .2f), c + up * 1.9f - z.side * 2.4f, new Vector3(.1f, 1f, .6f), pr);
+                      foreach (var s in new[] { -1f, 1f }) z.mk.Box(S(.8f, .3f, .2f), c + up * 1.37f + z.side * .6f + z.front * s * 3.2f, new Vector3(1.22f, .02f, .5f), rot);   // red wingtips
+                      z.mk.Box(dark, c + up * 1.2f + z.side * 2.7f, new Vector3(.08f, 2f, .2f), pr); z.mk.Blob(S(.8f, .3f, .2f), c + up * 1.2f + z.side * 2.68f, Vector3.one * .18f, ctx.Rng, 0f);
+                      foreach (var s in new[] { -1f, 1f }) { var wp = c + z.front * s * .8f + z.side * .9f; z.mk.Prism(dark, wp + up * .35f - z.front * s * .07f, z.front * s, .35f, .15f, 10); z.mk.Box(dark, wp + up * .7f, new Vector3(.08f, .7f, .08f), rot); }
+                      z.mk.Prism(dark, c - z.side * 2.3f + up * .15f - z.front * .05f, z.front, .15f, .1f, 8); z.mk.Box(dark, c - z.side * 2.3f + up * .55f, new Vector3(.06f, .6f, .06f), rot);
                       z.solid.Box(body, c + up * 1.2f, new Vector3(7f, 2f, 5f), pr); break; }
                 case "Klaus Johann Grobe": // Discogedanken: a mirror ball over a little lit floor
                     { z.mk.Prism(metal, c - z.front * 1.5f, up, .1f, 5f, 6); z.mk.Box(metal, c + up * 5f - z.front * .75f, new Vector3(.08f, .08f, 1.5f), rot); z.mk.Blob(S(.9f, .9f, .95f, .99f), c + up * 4.2f, Vector3.one * .9f, ctx.Rng, 0f);

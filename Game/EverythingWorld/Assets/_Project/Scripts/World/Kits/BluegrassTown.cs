@@ -467,7 +467,14 @@ namespace EverythingWorld.World
             foreach (var zz in new[] { -.5f, .5f }) foreach (var s in new[] { -.4f, .4f }) mk.Prism(dark, cart + side * s + face * zz + up * .25f, side * Mathf.Sign(s), .22f, .08f, 10);
             mk.Prism(rail, cart + up * .45f, up, .75f, .8f, 4, 1.25f, 45f); for (var l = 0; l < 4; l++) mk.Blob(coal, cart + up * 1.3f + side * (l % 2 - .5f) * .5f + face * (l / 2 - .5f) * .5f, new Vector3(.35f, .25f, .35f), ctx.Rng, .4f);
             ArtistBits.PostCollider(ctx.Root, cart, 1.4f, .8f);
-            var heap = ctx.OnGround(mouth.x + face.x * 7f + side.x * 4f, mouth.z + face.z * 7f + side.z * 4f); mk.Cone(coal, heap - up * .2f, 2.2f, 1.6f, 9); solid.Box(coal, heap + up * .5f, new Vector3(3f, 1f, 3f), rot);
+            var heap = ctx.OnGround(mouth.x + face.x * 7f + side.x * 4f, mouth.z + face.z * 7f + side.z * 4f);
+            // a proper heap: rooted at the lowest ground round it and peaked well above the highest, lumps of coal
+            // spilled round its foot, a touch lighter than the cart's coal, so it reads as a pile, not a flat black blot
+            float hlo = heap.y, hhi = heap.y; for (var k = 0; k < 8; k++) { var a = k * Mathf.PI / 4f; var g = ctx.Ground(heap.x + Mathf.Cos(a) * 2.4f, heap.z + Mathf.Sin(a) * 2.4f); hlo = Mathf.Min(hlo, g); hhi = Mathf.Max(hhi, g); }
+            var heapM = WorldMaterials.Solid(new Color(.15f, .145f, .16f), .85f); var lumps = new System.Random(9);   // own random, so nothing after the mine moves
+            mk.Cone(heapM, new Vector3(heap.x, hlo - .3f, heap.z), 2.4f, hhi - hlo + 2.3f, 9);
+            for (var k = 0; k < 7; k++) { var a = k * 51f * Mathf.Deg2Rad + .3f; var lp = new Vector3(heap.x + Mathf.Cos(a) * 2.6f, 0, heap.z + Mathf.Sin(a) * 2.6f); lp.y = ctx.Ground(lp.x, lp.z) + .1f; mk.Blob(heapM, lp, new Vector3(.35f, .22f, .3f), lumps, .4f); }
+            solid.Box(coal, heap + up * .5f, new Vector3(3f, 1f, 3f), rot);
             noGrass.Add(new Vector3(mouth.x + face.x * 6f, 9f, mouth.z + face.z * 6f));
             var mark = new GameObject("Shot: the coal mine").transform; mark.SetParent(ctx.Root, false);
             var cam = mouth + face * 14f + side * 5f; cam = ctx.OnGround(cam.x, cam.z) + up * 3.5f; mark.SetPositionAndRotation(cam, Quaternion.LookRotation((mouth + up * 1.5f - cam - up * 1.6f).normalized));

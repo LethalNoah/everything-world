@@ -453,6 +453,15 @@ namespace EverythingWorld.World
                 z.mk.Prism(yel, B(t0), (B(t1) - B(t0)).normalized, r, Vector3.Distance(B(t0), B(t1)) + .05f, 10);
             }
             z.mk.Prism(WorldMaterials.Solid(new Color(.3f, .25f, .1f)), B(0f) - (B(.05f) - B(0f)).normalized * .5f, (B(0f) - B(.05f)).normalized, .2f, .6f, 8);
+            // the white block is the album's white sleeve: a thin black edge, the peel-off line and the signature,
+            // and a lamp on it so it reads as the cover rather than a blank box
+            var rot = Quaternion.LookRotation(z.front); var fr = c + z.front * 1.72f; var ink = new Color(.08f, .08f, .08f);
+            foreach (var y in new[] { .04f, 3.16f }) z.mk.Box(dark, fr + up * y, new Vector3(8f, .08f, .03f), rot);
+            foreach (var s in new[] { -1f, 1f }) z.mk.Box(dark, fr + up * 1.6f + z.side * s * 3.96f, new Vector3(.08f, 3.2f, .03f), rot);
+            ArtistBits.Label(z.labels, "PEEL SLOWLY AND SEE", fr + up * 2.5f + z.side * 2.3f + z.front * .02f, z.front, .2f, ink, TextAnchor.MiddleCenter);
+            ArtistBits.Label(z.labels, "Andy Warhol", fr + up * .5f - z.side * 2.6f + z.front * .02f, z.front, .26f, ink, TextAnchor.MiddleCenter);
+            for (var k = 0; k < 10; k++) z.mk.Box(dark, fr + up * 2.15f + z.side * (1.2f + k * .22f) + z.front * .01f, new Vector3(.12f, .03f, .02f), rot);   // the dotted "peel" line
+            ArtistBits.PointLight(z.root, fr + z.front * 3f + up * 3f, new Color(1f, .95f, .8f), 10f, .8f);
         }
 
         void Opera(Spot z)

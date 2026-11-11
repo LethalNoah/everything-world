@@ -33,6 +33,9 @@ namespace EverythingWorld.World
             var sm = steam.main; sm.startLifetime = new ParticleSystem.MinMaxCurve(3f, 5f); sm.startSpeed = new ParticleSystem.MinMaxCurve(.8f, 1.6f);
             pink = Particles("Pink steam", 500, new Color(1f, .45f, .75f, .6f), 1.2f, 3f, true);
             var pm = pink.main; pm.startLifetime = new ParticleSystem.MinMaxCurve(3f, 5f); pm.startSpeed = new ParticleSystem.MinMaxCurve(.8f, 2f);
+            // steam rises: the default cone points sideways, so puffs drifted off level from the grates and hung over the
+            // falling ground like dark balls in mid-air
+            foreach (var ps in new[] { steam, pink }) { var sh = ps.shape; sh.shapeType = ParticleSystemShapeType.Cone; sh.angle = 10f; sh.radius = .4f; sh.rotation = new Vector3(-90f, 0, 0); }
             flame = Particles("Drum fire", 400, new Color(1f, .5f, .15f, .9f), .25f, .55f, true);
             var fm = flame.main; fm.startLifetime = new ParticleSystem.MinMaxCurve(.35f, .8f); fm.startSpeed = new ParticleSystem.MinMaxCurve(1.2f, 2.4f);
             mist = Particles("Harbour mist", 500, new Color(.45f, .45f, .5f, .18f), 10f, 20f, false);
@@ -57,8 +60,10 @@ namespace EverythingWorld.World
             var go = new GameObject(name); go.transform.SetParent(transform, false);
             var lr = go.AddComponent<LineRenderer>(); lr.useWorldSpace = true; lr.positionCount = 2;
             lr.widthCurve = new AnimationCurve(new Keyframe(0f, .6f), new Keyframe(1f, 9f));
-            var m = Additive(name); var tex = new Texture2D(2, 32, TextureFormat.RGBA32, false) { wrapMode = TextureWrapMode.Clamp };
-            for (var y = 0; y < 32; y++) for (var x = 0; x < 2; x++) tex.SetPixel(x, y, new Color(1, 1, 1, 1f - y / 31f));
+            // the texture runs along the beam (u) and across it (v): fading out toward the far end and soft at both edges
+            // (it used to fade across the width only, so the beam ended in a hard pale edge out over the water)
+            var m = Additive(name); var tex = new Texture2D(32, 8, TextureFormat.RGBA32, false) { wrapMode = TextureWrapMode.Clamp };
+            for (var y = 0; y < 8; y++) for (var x = 0; x < 32; x++) { var across = 1f - Mathf.Abs((y + .5f) / 4f - 1f); tex.SetPixel(x, y, new Color(1, 1, 1, Mathf.Pow(1f - x / 31f, 1.3f) * Mathf.SmoothStep(0f, 1f, across))); }
             tex.Apply(); m.SetTexture("_BaseMap", tex); m.SetColor("_BaseColor", new Color(1f, .95f, .8f, .22f));
             lr.sharedMaterial = m; lr.textureMode = LineTextureMode.Stretch; lr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             return lr;

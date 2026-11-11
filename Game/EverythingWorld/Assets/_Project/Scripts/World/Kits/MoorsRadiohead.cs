@@ -165,6 +165,7 @@ namespace EverythingWorld.World
                 var ci = (i * 3 + j * 5) % cols.Length; var ink = ci == 3 || ci == 5 ? new Color(.08f, .08f, .08f) : Color.white;
                 if (w < words.Length) { var wf = j < 2 ? -face : face; var sd = i < 2 ? -side : side; var wd = (i + j) % 2 == 0 ? wf : sd; var depth = wd == wf ? bd : bw; var text = words[w++]; ArtistBits.Label(ctx.Root, text, p + wd * (depth / 2f + .03f) + up * Mathf.Min(bh * .2f, 1f), wd, Mathf.Min(.42f, 3.4f / (text.Length * .62f + 1f)), ink, TextAnchor.MiddleCenter); }
             }
+            noGrass.Add(new Vector3(c.x, 20f, c.z));   // the whole square, corners too: no hawthorns through the blocks
             mk.Box(WorldMaterials.Solid(new Color(.85f, .84f, .8f)), c + up * .03f, new Vector3(25f, .1f, 25f), rot);
             mk.Box(WorldMaterials.Solid(new Color(.3f, .3f, .32f)), c + up * .1f, new Vector3(2.4f, .04f, 25f), rot); mk.Box(WorldMaterials.Solid(new Color(.3f, .3f, .32f)), c + up * .1f + side * 0f, new Vector3(25f, .04f, 2.4f), rot);
             ArtistBits.PointLight(ctx.Root, c + up * 7f, new Color(1f, .9f, .8f), 18f, 1f);
@@ -183,6 +184,7 @@ namespace EverythingWorld.World
                 mk.Cone(ice, p - up * .5f, rad, h, 4, ctx.Range(0, 90f)); mk.Cone(WorldMaterials.Solid(new Color(.95f, .97f, 1f)), p + up * h * .62f, rad * .38f, h * .38f + .05f, 4, ctx.Range(0, 90f));
                 solid.Prism(ice, p - up * .5f, up, rad * .6f, h * .5f, 4);
             }
+            noGrass.Add(new Vector3(c.x, 20f, c.z));   // the whole cluster: no hawthorns through the spires
             halos.Add(c + up * 10f, 10f, new Color(.75f, .88f, 1f), .2f);
             Mark(ctx, "the ice peaks", c + up * 10f, 45f, .2f);
         }

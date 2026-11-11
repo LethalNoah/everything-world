@@ -84,14 +84,17 @@ namespace EverythingWorld.World
             halos.Add(pc + up * 2.6f, 2.6f, new Color(.8f, .85f, 1f), .3f);
             // Elephant Talk: a stone elephant, trunk raised, a glowing ring of talk at its trunk
             var e = z.At(-3f, -8.5f); var face = Quaternion.Euler(0, 40f, 0) * z.front; var rot = Quaternion.LookRotation(face); var sd = Vector3.Cross(up, face); var grey = WorldMaterials.Solid(new Color(.55f, .53f, .56f));
+            // stand it on the highest of its four feet (it sat half sunk on the slope), a little taller in the leg
+            foreach (var s in new[] { -.5f, .5f }) foreach (var fw in new[] { -1.1f, 1.1f }) { var fp = e + sd * s * 1.4f + face * fw; e.y = Mathf.Max(e.y, ctx.Ground(fp.x, fp.z)); }
+            e += up * .5f;
             z.mk.Blob(grey, e + up * 2.2f, new Vector3(1.4f, 1.2f, 2f), ctx.Rng, .05f); var head = e + up * 2.8f + face * 2f; z.mk.Blob(grey, head, new Vector3(.9f, .95f, .8f), ctx.Rng, .05f);
             foreach (var s in new[] { -1f, 1f }) { z.mk.Box(grey, head + sd * s * 1f - face * .2f, new Vector3(.12f, 1.4f, 1.1f), rot * Quaternion.Euler(0, s * 25f, 0)); z.mk.Cone(WorldMaterials.Solid(new Color(.95f, .93f, .86f)), head + sd * s * .35f - up * .5f + face * .5f, .1f, .8f, 6); }
             var tp = head + face * .7f - up * .2f; var td = (face + up * .3f).normalized;
             for (var k = 0; k < 4; k++) { var nd = (td + up * k * .45f).normalized; z.mk.Prism(grey, tp, nd, .26f - k * .04f, .8f, 8, .85f); tp += nd * .75f; }
-            foreach (var s in new[] { -.5f, .5f }) foreach (var fw in new[] { -1.1f, 1.1f }) z.mk.Prism(grey, e + sd * s * 1.4f + face * fw - up * .2f, up, .38f, 1.6f, 8);
+            foreach (var s in new[] { -.5f, .5f }) foreach (var fw in new[] { -1.1f, 1.1f }) { var fp = e + sd * s * 1.4f + face * fw; var gy = ctx.Ground(fp.x, fp.z) - .2f; z.mk.Prism(grey, new Vector3(fp.x, gy, fp.z), up, .38f, e.y + 1.4f - gy, 8); }
             var talk = SongGlow(ElephantTalk, new Color(1f, .8f, .3f), 1.6f);
             for (var k = 0; k < 16; k++) { var a0 = k * Mathf.PI / 8f; var a1 = (k + 1) * Mathf.PI / 8f; var cc = tp + td * .8f; var p0 = cc + (sd * Mathf.Cos(a0) + up * Mathf.Sin(a0)) * .7f; var p1 = cc + (sd * Mathf.Cos(a1) + up * Mathf.Sin(a1)) * .7f; z.mk.Box(talk, (p0 + p1) / 2f, new Vector3(.08f, .08f, Vector3.Distance(p0, p1)), Quaternion.LookRotation(p1 - p0)); }
-            z.solid.Box(grey, e + up * 1.6f + face * .6f, new Vector3(3f, 3.2f, 4.6f), rot);
+            z.solid.Box(grey, e + up * 1.35f + face * .6f, new Vector3(3f, 3.7f, 4.6f), rot);
         }
 
         void RushMore(Plot z)

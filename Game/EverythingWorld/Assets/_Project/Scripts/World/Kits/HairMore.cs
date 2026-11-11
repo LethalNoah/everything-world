@@ -83,6 +83,30 @@ namespace EverythingWorld.World
             var arot = rot * Quaternion.Euler(-14f, 0, 0); var aup = arot * Vector3.up;
             if (st.awning == "zebra") for (var k = 0; k < 10; k++) z.mk.Box(black, aw + aup * .06f + z.side * ((k - 4.5f) * (W - 3f) / 10f), new Vector3(.35f, .02f, 3.3f), arot * Quaternion.Euler(0, 20f, 0));
             else if (st.awning == "stripes") for (var k = 0; k < 8; k++) z.mk.Box(WorldMaterials.Solid(new Color(.97f, .96f, .93f)), aw + aup * .06f + z.side * ((k - 3.5f) * (W - 2.5f) / 8f), new Vector3((W - 2f) / 16f, .02f, 3.38f), arot);
+            // the sides and back, seen down the Strip: a neon tube round the roofline, gig posters lit by little
+            // lamps along each side, a stage door under a glowing sign at the back (they read as plain boxes before)
+            var nc = Neon[Mathf.Abs(z.a.name.GetHashCode()) % Neon.Length]; var tube = GlowM(nc, 2.2f);
+            var backP = b - z.front * (D / 2f + .05f);
+            z.mk.Box(tube, backP + up * (H - .25f), new Vector3(W, .12f, .06f), rot);
+            var nPost = Mathf.Max(2, Mathf.FloorToInt((D - 2f) / 2.4f));
+            foreach (var s in new[] { -1f, 1f })
+            {
+                var sp = b + z.side * s * (W / 2f + .05f);
+                z.mk.Box(tube, sp + up * (H - .25f), new Vector3(.06f, .12f, D), rot);
+                for (var k = 0; k < nPost; k++)
+                {
+                    var p = sp + z.front * ((k - (nPost - 1) / 2f) * 2.4f) + up * 2.6f; var c = Neon[(k + (s > 0 ? 1 : 3)) % Neon.Length];
+                    z.mk.Box(GlowM(c, .9f), p, new Vector3(.03f, 2.2f, 1.6f), rot);
+                    z.mk.Box(black, p + z.side * s * .02f + up * .3f, new Vector3(.03f, .5f, 1.3f), rot);
+                    z.mk.Blob(GlowM(new Color(1f, .9f, .7f), 2.4f), p + up * 1.45f + z.side * s * .25f, new Vector3(.18f, .08f, .12f), ctx.Rng, 0f);
+                }
+                halos.Add(sp + z.side * s * 1.5f + up * 3f, D * .3f, nc, .25f);
+            }
+            var sd = backP + z.side * (W / 4f);
+            z.mk.Box(black, sd + up * 1.2f, new Vector3(1.4f, 2.4f, .08f), rot);
+            z.mk.Box(GlowM(Gold, 2.2f), sd + up * 2.8f - z.front * .04f, new Vector3(1.8f, .45f, .06f), rot);
+            ArtistBits.Label(z.labels, "STAGE DOOR", sd + up * 2.8f - z.front * .09f, -z.front, .16f, new Color(.12f, .04f, .1f), TextAnchor.MiddleCenter);
+            halos.Add(sd + up * 2.8f - z.front * 1f, 1.6f, Gold, .4f);
         }
 
         void GunsMore(Spot z)
