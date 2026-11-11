@@ -127,7 +127,7 @@ namespace EverythingWorld.World
             }
             var avoid = new List<Vector3>();
             if (hasHarbour) { foreach (var (q, k) in Indexed(quayEdge)) if (k % 2 == 0) avoid.Add(new Vector3(q.x, 16f, q.y)); }
-            ArtistPlacement.Spread(data, index, 52f, heart2, 44f, 62f, avoid, null, Land, 330f);
+            ArtistPlacement.Spread(data, index, 52f, heart2, 44f, CityR - 22f, avoid, null, Land, 360f);   // round the gridded centre, not on it
             foreach (var a in data.layout.artists)
             {
                 if (a.sceneId != isl.sceneId) continue;
