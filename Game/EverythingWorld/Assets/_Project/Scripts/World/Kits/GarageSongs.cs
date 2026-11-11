@@ -97,7 +97,7 @@ namespace EverythingWorld.World
             var placed = 0;
             void Place(float clear, string sign, string mark, Color col, System.Action<Vector3, Vector3> build)
             {
-                var c = PlaceSpot(ctx, clear); if (float.IsInfinity(c.x)) { Debug.Log("Garage Rock Row: no room for " + mark); return; }
+                var c = SuburbLot(ctx, clear); if (float.IsInfinity(c.x)) c = PlaceSpot(ctx, clear); if (float.IsInfinity(c.x)) { Debug.Log("Garage Rock Row: no room for " + mark); return; }
                 build(c, PlaceSign(ctx, mk, c, clear, sign, mark, col)); placed++;
             }
             Place(5f, "DO I WANNA KNOW?", "the phone booth", Red, (c, f) => PhoneBooth(ctx, mk, solid, c, f, DoIWannaKnow));

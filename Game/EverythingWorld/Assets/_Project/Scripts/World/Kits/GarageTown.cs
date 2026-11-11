@@ -216,7 +216,7 @@ namespace EverythingWorld.World
                 float px = x + ctx.Range(0f, cell), pz = z + ctx.Range(0f, cell);
                 if (!ctx.IsLand(px, pz, 6f) || OnTown(px, pz, 8f) || InNoGrass(px, pz, 4f)) continue;
                 var near = false; foreach (var a in ctx.Artists) if (Vector2.Distance(new Vector2(a.x, a.z), new Vector2(px, pz)) < a.r + 6f) near = true;
-                if (near) continue;
+                if (near || InSuburbs(px, pz, 10f)) continue;
                 var p = ctx.OnGround(px, pz);
                 var roll = ctx.Range(0f, 1f);
                 if (!tower && p.y > 25f && roll < .3f) { WaterTower(ctx, mk, p); tower = true; }
@@ -341,6 +341,7 @@ namespace EverythingWorld.World
                     var t = Vector3.Dot(rel, streetDir); var off = Mathf.Abs(Vector3.Dot(rel, Vector3.Cross(Vector3.up, streetDir)));
                     if (t > -25f && t < streetLen + 10f && off < StreetHalf + Walk + 1.5f) continue;
                 }
+                if (OnSubRoad(px, pz, .2f)) continue;
                 var near = false; foreach (var a in ctx.Artists) if (Vector2.Distance(new Vector2(a.x, a.z), new Vector2(px, pz)) < 8f) near = true;
                 if (near) continue;
                 var n = Mathf.PerlinNoise(px * .03f, pz * .03f + 4f);

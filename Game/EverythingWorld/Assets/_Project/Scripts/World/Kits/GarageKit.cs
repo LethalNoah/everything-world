@@ -153,6 +153,7 @@ namespace EverythingWorld.World
                 arts[i].x = p.x; arts[i].z = p.y;
                 arts[i].r = Mathf.Min(arts[i].r, 19f);
             }
+            SmoothSuburbs(data, index, heart, bestDir);
         }
 
         static int Rank(IslandWorldData.Artist a) => a.name == "Arctic Monkeys" ? 100 : a.name == "The Killers" ? 99 : a.songs * 10 + (HasStation(a) ? 5 : 0);
@@ -174,6 +175,7 @@ namespace EverythingWorld.World
                 Casino(ctx, mk, solid);
             }
             SongPlaces(ctx, mk, solid);
+            Suburbs(ctx, mk, solid);
             Outskirts(ctx, mk, solid);
             mk.Build("The Row", ctx.Root, false);
             solid.BuildCollider("The Row walls", ctx.Root);

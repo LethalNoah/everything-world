@@ -169,6 +169,7 @@ namespace EverythingWorld.World
             var valence = playing ? d.CurrentSlot.track.valence : .45f;
             var id = MusicDirector.ForcedTrackId ?? (playing ? d.CurrentSlot.track.id : null);
             SongPlacesUpdate(dt, here, id);
+            SuburbsUpdate(t);
 
             if (SharedChance.CurrentSong(out var song, out var start, out var length) && song != songKey)
             {
