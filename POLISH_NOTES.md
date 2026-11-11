@@ -175,3 +175,13 @@ Snapshot numbers refer to `Game/EverythingWorld/Logs/Live/` (not committed).
 - Photo fixes: the pretend mansion washed out to a cream glow (toned down, warm windows); the pines' "icy blue"
   read as white (now a deep, saturated blue).
 - Audit: 0 overlaps, 0 artists with problems.
+
+## Lanternwood (deep pass done, 2026-11-11)
+- The biggest pass so far: 24 hushed song places in the woods and on the frozen lake (Phoebe Bridgers, Big Thief,
+  Lizzy McAlpine, Mitski, Noah Kahan, Daughter), a song piece in every one-song artist's clearing, the boathouse and
+  treehouse furnished inside, and winter magic: drifting glinting snow, wisps among the birches and aurora over the
+  lake in hushed songs (LanternwoodSongs, LanternwoodLife).
+- Photo fixes: the road at "I Know The End" read as a black hole (now a snow-dusted grey); the red lanterns washed
+  white (now kept low so they stay red); the medicine cabinet washed out; the armchair sat in the rug's plane; two
+  canoes landed on one spot when the creek's last points repeated (their direction now falls back safely).
+- Audit: 0 overlaps, 0 artists with problems.

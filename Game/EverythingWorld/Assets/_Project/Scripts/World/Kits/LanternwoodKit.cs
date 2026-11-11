@@ -75,6 +75,10 @@ namespace EverythingWorld.World
             Lake(ctx, mk);
             var creek = Creek(ctx, mk);
             Paths(ctx, mk, chapelFront);
+            life = new GameObject("Lanternwood life").AddComponent<LanternwoodLife>();
+            life.transform.SetParent(ctx.Root, false);
+            life.hasLake = hasLake; life.lakeCenter = new Vector3(lakeC.x, lakeLevel, lakeC.z); life.lakeRadius = lakeR;
+            SongPlaces(ctx, mk, solid);
             Props(ctx, mk, solid, chapelFront, creek);
             Snowmen(ctx, mk, solid);
             FireCircle(ctx, mk, solid, chapelFront);
@@ -322,7 +326,8 @@ namespace EverythingWorld.World
             // two canoes pulled up where the creek meets the shore
             if (creek.Count > 3)
             {
-                var end = creek[creek.Count - 1]; var dir = (creek[creek.Count - 1] - creek[creek.Count - 3]).normalized;
+                var end = creek[creek.Count - 1]; var dir = creek[creek.Count - 1] - creek[creek.Count - 3]; dir.y = 0;
+                dir = dir.sqrMagnitude > .01f ? dir.normalized : (new Vector3(end.x - ctx.Plaza.x, 0, end.z - ctx.Plaza.z).sqrMagnitude > .01f ? new Vector3(end.x - ctx.Plaza.x, 0, end.z - ctx.Plaza.z).normalized : Vector3.forward);   // (if the creek's last points repeat, both canoes landed on one spot)
                 var across = Vector3.Cross(Vector3.up, dir);
                 for (var k = 0; k < 2; k++)
                 {
@@ -540,6 +545,7 @@ namespace EverythingWorld.World
                 Firewood(mk, solid, Ground(ctx, center + right * 5.6f - front * 1f), front);
                 area.glowLight = ArtistBits.PointLight(root, center + front * 9f + Vector3.up * 2.6f, new Color(1f, .68f, .38f), 12f, 1.2f);
             }
+            SongPiece(ctx, root, mk, solid, a, center, front, right);
             foreach (var g in glows) if (g != null) halos.Add(g.transform.position, g.transform.localScale.y > .6f ? 1.5f : 1.1f, LanternGlass, .8f);
             area.glowRenderers = glows.ToArray();
             mk.Build("Area", root, false);

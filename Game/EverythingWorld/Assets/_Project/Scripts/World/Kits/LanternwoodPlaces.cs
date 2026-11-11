@@ -200,6 +200,7 @@ namespace EverythingWorld.World
             // inside: the covers along one wall, a warm lantern
             ArtistBits.CoverWall(pictures, labels, ctx, a, P(-w / 2 + .2f, 2.3f, -.5f), rot * Vector3.right, 4, .66f, 15, true, Ink);
             ArtistBits.PointLight(labels.parent, P(0, 3.2f, 0), new Color(1f, .7f, .42f), 10f, 1.5f, true);
+            Furnish(ctx, labels.parent, mk, solid, P, rot, w, d, wallH, true);
             // the pier: out over the ice toward the middle of the lake, a bench at the end
             var pierLen = Mathf.Min(PierMax, shoreR * .75f);
             var deckY = lakeLevel + .75f;
@@ -317,6 +318,7 @@ namespace EverythingWorld.World
                 mk.Tri(warm, Hp(x, wallH, -house / 2), Hp(x, wallH, house / 2), Hp(x, wallH + 3f, 0), Hp(0, wallH, 0));
             ArtistBits.CoverWall(pictures, labels, ctx, a, Hp(0, 2.2f, -house / 2 + .2f), front, 5, .6f, 15, true, Ink);
             ArtistBits.PointLight(labels.parent, Hp(0, 3f, 0), new Color(1f, .72f, .45f), 9f, 1.6f, true);
+            Furnish(ctx, labels.parent, mk, solid, Hp, rot, house, house, wallH, false);
             // the fire pit beside the tree, with log seats round it
             var fire = Ground(ctx, center + right * (plat / 2 + 7f) + front * 2f);
             FirePit(ctx, mk, solid, labels.parent, fire, 5, halosOut);
