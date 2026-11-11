@@ -64,6 +64,7 @@ namespace EverythingWorld.World
             var d0 = MusicDirector.Instance;
             var id = MusicDirector.ForcedTrackId ?? (d0 != null && d0.CurrentSlot.IsValid ? d0.CurrentSlot.track.id : null);
             SongPlacesUpdate(dt, id);
+            ExhibitUpdate(dt);
             var energy = SurpriseDirector.Energy;
             if (moon != null) moon.SetColor("_EmissionColor", new Color(1f, .74f, .06f) * (1.5f + .9f * energy + .25f * Mathf.Sin(t * .8f)));
 

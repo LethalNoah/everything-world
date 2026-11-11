@@ -185,3 +185,14 @@ Snapshot numbers refer to `Game/EverythingWorld/Logs/Live/` (not committed).
   white (now kept low so they stay red); the medicine cabinet washed out; the armchair sat in the rug's plane; two
   canoes landed on one spot when the creek's last points repeated (their direction now falls back safely).
 - Audit: 0 overlaps, 0 artists with problems.
+
+## Noah Gallagher's exhibit (built 2026-11-12, overnight)
+- A piece for every song of both albums (SmallHoursExhibit, -Ring, -Trail, -Life): Akashic Sanctuary's in the forest,
+  The Twelfth House as a ring round the wheel (Whiteout, The Gauntlet and Doctrine Factorum moved into the exhibit),
+  and the Synchronous World's trail of twelve stations. Each follows its song section by section (from how far
+  through the song the station is); in the photo tour a forced song loops every 40 s so every section gets seen.
+- Photo fixes on the way: the forest pieces first overlapped each other and the ring (now each searches for the
+  clearest spot nearest its song's light); lines that only glow in their song (ley lines, lasers, strings, the
+  sustain ribbon, light shafts) showed as dark wires when idle (now they appear only in their stretch of the song);
+  the peak's mist read as flat slabs (now soft haze); side paths could start inside another piece; collisions added.
+- Audit: 0 overlaps, 0 artists with problems. The descriptions here and in the guide are images only.

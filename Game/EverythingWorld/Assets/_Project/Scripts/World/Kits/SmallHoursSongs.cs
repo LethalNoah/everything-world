@@ -106,12 +106,7 @@ namespace EverythingWorld.World
             Place("Steph.fm", 5f, "A SECOND GLANCE", "the garden mirror", Frost, (c, f) => GardenMirror(ctx, mk, solid, c, f, "2SRCYceHYyaRKXPgA8G6k0"));
             Place("Bell Thompson", 5f, "ALWAYS LIKE THIS", "the café table", JazzBlue, (c, f) => CafeTable(ctx, mk, solid, c, f, "6RBg9koGBHYWRjkbITDie4"));
             Place("Bell Thompson", 5f, "MOST PRIZED", "the trophy", new Color(1f, .8f, .3f), (c, f) => Trophy(ctx, mk, solid, c, f, "15Ku4wayJ8nruoPuutBTQQ"));
-            if (hasNoah)
-            {
-                Place(NoahName, 7f, "WHITEOUT", "the whiteout", Frost, (c, f) => Whiteout(ctx, mk, solid, c, f, "6R8nrIvhYbsXocAo0kZqch"));
-                Place(NoahName, 7f, "THE GAUNTLET", "the gauntlet", Moon, (c, f) => Gauntlet(ctx, mk, solid, c, f, "5bw73xSn4iNlqpSM6WP7pd"));
-                Place(NoahName, 5f, "DOCTRINE FACTORUM", "the lectern", Teal, (c, f) => Lectern(ctx, mk, solid, c, f, "2nT2BdTJS6G3IWed8KI9cd"));
-            }
+            // (Noah Gallagher's songs have their pieces in his exhibit: SmallHoursExhibit)
             Debug.Log($"The Small Hours: {placed} song places");
         }
 

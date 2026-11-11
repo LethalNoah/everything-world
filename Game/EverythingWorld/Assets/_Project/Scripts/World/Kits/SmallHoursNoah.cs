@@ -168,8 +168,10 @@ namespace EverythingWorld.World
             Yard(ctx, root, mk, solid, N, F, side);
             var clearing = N + away * (noahR * .55f);
             var path = SongPath(ctx, N, away, side, clearing);
+            ExhibitPlan(ctx, N, F, side, clearing, path);
             Forest(ctx, root, forest, N, F, clearing, path);
             SongLights(ctx, root, mk, labels, path);
+            ExhibitBuild(ctx, root, mk, solid, labels);
             AuroraRibbons(ctx, root, N, clearing);
             Clearing(ctx, root, mk, solid, labels, clearing, F, side);
             BuildMoon(ctx, root, mk, N + away * (noahR * .3f));
@@ -502,6 +504,7 @@ namespace EverythingWorld.World
                 if ((new Vector2(p.x, p.z) - new Vector2(N.x + F.x * 10f, N.z + F.z * 10f)).magnitude < 24f + pad) return false;   // the house and yard
                 if ((new Vector2(p.x, p.z) - new Vector2(clearing.x, clearing.z)).magnitude < 22f + pad) return false;
                 if (NearPath(p.x, p.z, 2.5f + pad)) return false;
+                if (InExhibit(p, pad + 1f)) return false;          // the exhibit's pieces
                 return ctx.IsLand(p.x, p.z, 2f);
             }
             var shafts = new MeshKit();         // light falling between the trunks: walked through (the land audit skips "Soft")
