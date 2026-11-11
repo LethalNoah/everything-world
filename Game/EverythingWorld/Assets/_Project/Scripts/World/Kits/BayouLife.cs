@@ -14,7 +14,7 @@ namespace EverythingWorld.World
     ///   gallop across the sky; "Proud Mary": the steamer casts off and rolls down the river and back;
     ///   "Fire on the Mountain": the bonfire on the hill roars up, sparks pouring into the sky; "Born on the
     ///   Bayou": the haze thickens and the fireflies come out in thousands.
-    public class BayouLife : MonoBehaviour
+    public partial class BayouLife : MonoBehaviour
     {
         const string Land = "The Southern Rock Bayou";
         public Vector3 center, mountainFire, rainbow, freeBirds, moonDir = new Vector3(.6f, 0, .8f);
@@ -208,6 +208,7 @@ namespace EverythingWorld.World
             var playing = d != null && d.CurrentSlot.IsValid;
             var energy = SurpriseDirector.Energy;
             var id = MusicDirector.ForcedTrackId ?? (playing ? d.CurrentSlot.track.id : null);
+            SongGlowUpdate(dt, t, id, here);
 
             if (SharedChance.CurrentSong(out var song, out var start, out var length) && song != songKey)
             {

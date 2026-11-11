@@ -50,6 +50,7 @@ namespace EverythingWorld.World
                 case "The Red Clay Strays": SmallPorch(z); RedClay(z); break;
                 default: SmallPorch(z); break;
             }
+            SmallSongs(z);
             var reach = Foot(a);
             Board(z, z.At(reach * .8f, -reach * .5f - 2.5f), front);
             ArtistBits.Plaque(z.mk, z.solid, labels, a, z.At(reach * .8f + 1.5f, reach * .5f + 2.5f), front, plank, dark, Ink, 1.6f);
@@ -102,6 +103,7 @@ namespace EverythingWorld.World
             z.mk.GableRoof(tin, floor + up * H + z.front * 1.2f, new Vector3(D + 4.2f, 0, W + 1f), 1.8f, Quaternion.LookRotation(z.side));
             foreach (var s in new[] { -1f, 1f }) { var post = floor + z.front * (D / 2f + 2.9f) + z.side * s * (W / 2f - .3f); z.mk.Prism(greyWood, post, up, .12f, H, 6); ArtistBits.PostCollider(z.root, post, H, .15f); }
             foreach (var s in new[] { -1f, 1f }) { var rp = floor + z.front * (D / 2f + 3f) + z.side * s * (W / 4f + .8f) + up * .9f; z.mk.Box(greyWood, rp, new Vector3(W / 2f - 1.6f, .1f, .1f), rot); z.solid.Box(greyWood, rp - up * .4f, new Vector3(W / 2f - 1.6f, 1f, .2f), rot); }
+            Interior(z, floor, W, D, rot);
             IndoorSpaces.Add(floor + up * H / 2f, rot, new Vector3(W, H, D));
             ArtistBits.PointLight(z.root, floor + up * 2.6f, new Color(1f, .7f, .4f), 9f, 1.4f, true);
             var lantern = floor + z.front * (D / 2f + 2.7f) + up * (H - .5f);
@@ -139,7 +141,7 @@ namespace EverythingWorld.World
             Color[] bands = { new Color(1f, .25f, .2f), new Color(1f, .6f, .15f), new Color(1f, .9f, .2f), new Color(.3f, .85f, .35f), new Color(.25f, .55f, 1f), new Color(.55f, .3f, .9f) };
             for (var b = 0; b < bands.Length; b++)
             {
-                var R = 13f - b * .6f; var m = GlowM(bands[b], 1.1f);
+                var R = 13f - b * .6f; var m = SongGlow(Rainbow, bands[b], 1.1f);
                 for (var k = 0; k < 20; k++)
                 {
                     float a0 = k * Mathf.PI / 20f, a1 = (k + 1) * Mathf.PI / 20f;
@@ -211,7 +213,7 @@ namespace EverythingWorld.World
             // a sunburst sign over the steps
             var pole = z.At(-2f, 0) - z.side * 7.4f + z.front * 4.5f; z.mk.Prism(greyWood, pole - up * .3f, up, .16f, 8.9f, 6); ArtistBits.PostCollider(z.root, pole, 8.6f, .2f);
             var sun = pole + up * 8.8f + z.front * .25f;
-            z.mk.Prism(GlowM(new Color(1f, .75f, .25f), 1.8f), sun, z.front, 1f, .1f, 16);
+            z.mk.Prism(SongGlow(Soulshine, new Color(1f, .75f, .25f), 1.8f), sun, z.front, 1f, .1f, 16);
             for (var k = 0; k < 12; k++) { var d = Quaternion.AngleAxis(k * 30f, z.front) * up; z.mk.Box(GlowM(new Color(1f, .6f, .2f), 1.6f), sun + d * 1.6f + z.front * .05f, new Vector3(.18f, .7f, .05f), Quaternion.LookRotation(z.front, d)); }
             halos.Add(sun + z.front * .6f, 2.2f, new Color(1f, .7f, .25f), .7f);
             // an old headstone with candles under a small oak
@@ -286,7 +288,7 @@ namespace EverythingWorld.World
             // a glowing crescent moon over the porch roof
             var mpole = z.At(-2f, 0) - z.side * 6.6f + z.front * 4f; z.mk.Prism(greyWood, mpole - up * .3f, up, .16f, 6.4f, 6); ArtistBits.PostCollider(z.root, mpole, 6f, .2f);
             var mc = mpole + up * 8.1f + z.front * .3f;
-            var moon = GlowM(new Color(1f, .85f, .5f), 2f);
+            var moon = SongGlow(SpanishMoon, new Color(1f, .85f, .5f), 2f);
             for (var k = 0; k < 12; k++)
             {
                 float a0 = Mathf.Lerp(50f, 310f, k / 12f) * Mathf.Deg2Rad, a1 = Mathf.Lerp(50f, 310f, (k + 1) / 12f) * Mathf.Deg2Rad;

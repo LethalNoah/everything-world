@@ -23,6 +23,7 @@ namespace EverythingWorld.World
             (GhostRiders, "(Ghost) Riders in the Sky", "The Outlaws"), (ProudMary, "Proud Mary", "Creedence Clearwater Revival"),
             (FireOnTheMountain, "Fire on the Mountain", "The Marshall Tucker Band"), (BornOnTheBayou, "Born on the Bayou", "Creedence Clearwater Revival"),
             (ElizabethReed, "In Memory of Elizabeth Reed", "@the old cypress"),
+            (Jessica, "Jessica", "@the open road"), (SimpleMan, "Simple Man", "@the farmhouse"), (CantYouSee, "Can't You See", "@the crossing"),
         };
 
         static readonly Color Cypress = new Color(.31f, .42f, .23f), Olive = new Color(.45f, .48f, .26f), Moss = new Color(.55f, .58f, .45f),
@@ -321,9 +322,9 @@ namespace EverythingWorld.World
             JukeJoint(ctx, mk, solid);
             Roads(ctx, mk, solid);
             Swamp(ctx, mk, solid);
+            SongPlaces(ctx, mk, solid);
             Wilds(ctx, mk, solid);
             mk.Build("Bayou", ctx.Root, false);
-            soft.Build("Soft bayou", ctx.Root, false);
             solid.BuildCollider("Bayou walls", ctx.Root);
         }
 
@@ -331,6 +332,7 @@ namespace EverythingWorld.World
         {
             GroundCover(ctx);
             halos.Build("Bayou glow", ctx.Root);
+            soft.Build("Soft bayou", ctx.Root, false);   // last, so the artists' leaves are in it
         }
 
         void Water(LandContext ctx, MeshKit mk)

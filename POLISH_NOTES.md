@@ -105,3 +105,7 @@ Snapshot numbers refer to `Game/EverythingWorld/Logs/Live/` (not committed).
 ## Kingdom of Classic Rock
 - Second deep pass (2026-11-10): seventeen song places for The Beatles, Led Zeppelin, David Bowie and Jimi
   Hendrix, a castle on the hill, a village pub; song glows on them all.
+
+## Southern Rock Bayou (deep pass done, 2026-11-10)
+- Seven song places for the Allman Brothers, Lynyrd Skynyrd and Marshall Tucker; a song piece on every smaller
+  porch; song glows throughout. Still to check in play: paths to the places that cross water.
