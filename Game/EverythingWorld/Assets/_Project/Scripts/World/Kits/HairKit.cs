@@ -152,6 +152,7 @@ namespace EverythingWorld.World
             var mk = new MeshKit(); var solid = new MeshKit();
             if (hasStreet) { Strip(ctx, mk, solid); Arrival(ctx, mk, solid); Club(ctx, mk, solid); }
             Desert(ctx, mk, solid);
+            DesertMore(ctx, mk, solid);
             mk.Build("The Strip", ctx.Root, false);
             soft.Build("Soft strip", ctx.Root, false);
             solid.BuildCollider("Strip walls", ctx.Root);
@@ -190,8 +191,8 @@ namespace EverythingWorld.World
                 foreach (var s in new[] { -1f, 1f })
                 {
                     var c0 = S(t, s * (StreetHalf + Walk / 2f)); var c1 = S(t + seg, s * (StreetHalf + Walk / 2f));
-                    mk.Box(pave, (c0 + c1) / 2f + up * .12f, new Vector3(Walk, .24f, Vector3.Distance(c0, c1) + .05f), Quaternion.LookRotation(c1 - c0));
-                    mk.Box(curb, S(t + seg / 2f, s * (StreetHalf + .1f)) + up * .13f, new Vector3(.25f, .26f, seg + .02f), Quaternion.LookRotation(c1 - c0));
+                    mk.Box(pave, (c0 + c1) / 2f + up * .13f, new Vector3(Walk, .22f, Vector3.Distance(c0, c1) + .05f), Quaternion.LookRotation(c1 - c0));
+                    mk.Box(curb, S(t + seg / 2f, s * (StreetHalf + .1f)) + up * .17f, new Vector3(.25f, .27f, seg + .02f), Quaternion.LookRotation(c1 - c0));
                 }
             }
             // palms ringed with neon and chrome lamps, alternating, both sides
@@ -357,18 +358,18 @@ namespace EverythingWorld.World
         void Desert(LandContext ctx, MeshKit mk, MeshKit solid)
         {
             int mesas = 0, cacti = 0, cans = 0, boards = 0, guitars = 0;
-            const float cell = 34f;
+            const float cell = 24f;
             for (var x = ctx.MinX; x < ctx.MaxX; x += cell)
             for (var z = ctx.MinZ; z < ctx.MaxZ; z += cell)
             {
                 float px = x + ctx.Range(0f, cell), pz = z + ctx.Range(0f, cell);
                 if (!ctx.IsLand(px, pz, 6f) || OnStrip(px, pz, 4f) || InNoGrass(px, pz, 4f) || !ctx.IsFree(px, pz, 8f)) continue;
                 var p = ctx.OnGround(px, pz); var roll = ctx.Range(0f, 1f);
-                if (roll < .12f && mesas < 9) { Mesa(ctx, mk, solid, p); mesas++; }
-                else if (roll < .26f && cans < 7) { life.cans.Add(HairsprayCan(ctx, mk, solid, p, ctx.Range(.9f, 1.4f), Neon[cans % Neon.Length])); cans++; }
+                if (roll < .1f && mesas < 14) { Mesa(ctx, mk, solid, p); mesas++; }
+                else if (roll < .22f && cans < 11) { life.cans.Add(HairsprayCan(ctx, mk, solid, p, ctx.Range(.9f, 1.4f), Neon[cans % Neon.Length])); cans++; }
                 else if (roll < .55f) { for (var k = 0; k < ctx.Rng.Next(1, 4); k++) Saguaro(ctx, mk, ctx.OnGround(px + ctx.Range(-6f, 6f), pz + ctx.Range(-6f, 6f))); cacti++; }
-                else if (roll < .62f && boards < 6) { Billboard(ctx, mk, solid, p, boards); boards++; }
-                else if (roll < .67f && guitars < 4) { ChromeGuitar(ctx, mk, solid, p); guitars++; }
+                else if (roll < .62f && boards < 9) { Billboard(ctx, mk, solid, p, boards); boards++; }
+                else if (roll < .68f && guitars < 7) { ChromeGuitar(ctx, mk, solid, p); guitars++; }
                 else continue;
                 noGrass.Add(new Vector3(px, 6f, pz));
             }
@@ -402,7 +403,7 @@ namespace EverythingWorld.World
         {
             var up = Vector3.up; var face = new Vector3(streetA.x - g.x, 0, streetA.z - g.z).normalized; var rot = Quaternion.LookRotation(face);
             foreach (var s in new[] { -3f, 3f }) { mk.Box(chrome, g + up * 4f + Vector3.Cross(up, face) * s, new Vector3(.4f, 8f, .4f), rot); ArtistBits.PostCollider(ctx.Root, g + Vector3.Cross(up, face) * s, 8f, .3f); }
-            mk.Box(black, g + up * 9.5f, new Vector3(10f, 4.4f, .4f), rot);
+            mk.Box(chrome, g + up * 9.5f, new Vector3(10f, 4.4f, .4f), rot);
             mk.Box(leopard, g + up * 9.5f + face * .21f, new Vector3(9.4f, 3.8f, .02f), rot);
             for (var i = 0; i < 14; i++) mk.Blob(black, g + up * (8f + (i % 4) * .9f) + Vector3.Cross(up, face) * ((i * 1.37f) % 8.6f - 4.3f) + face * .23f, new Vector3(.22f, .16f, .02f), ctx.Rng, .4f);
             string[] words = { "TEASE IT UP", "LOUDER", "ALL NIGHT", "SPANDEX SALE", "BIGGER HAIR", "ROCK ON" };

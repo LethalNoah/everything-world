@@ -13,7 +13,7 @@ namespace EverythingWorld.World
     ///   "November Rain": rain falls, the light goes blue, rose petals drift down over the Guns N' Roses stage;
     ///   "The Final Countdown": the red display counts down from ten, then fireworks burst over the Club;
     ///   "Livin' On A Prayer": every marquee blazes and pink and gold confetti falls along the Strip.
-    public class HairLife : MonoBehaviour
+    public partial class HairLife : MonoBehaviour
     {
         const string Land = "The Hair Metal Strip";
         public Vector3 center, streetA, streetDir = Vector3.forward, club, glitterBall, roseStage, asteroid;
@@ -258,6 +258,7 @@ namespace EverythingWorld.World
                 var cam = Camera.main != null ? Camera.main.transform.position : center;
                 confetti.transform.position = cam + new Vector3(Random.Range(-25f, 25f), Random.Range(10f, 18f), Random.Range(-25f, 25f)); confetti.Emit(3);
             }
+            SongGlowUpdate(dt, t, id, here);
         }
     }
 }

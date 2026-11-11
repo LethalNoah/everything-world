@@ -30,7 +30,7 @@ namespace EverythingWorld.World
             var area = root.gameObject.AddComponent<ArtistArea>();
             area.artistName = a.name; area.stationId = a.stationId; area.radius = a.r; area.glowColor = Pink;
             var big = HasStation(a);
-            var z = new Spot { ctx = ctx, root = root, labels = labels, mk = new MeshKit(), solid = new MeshKit(), pictures = new MeshKit(), a = a, front = front, side = Vector3.Cross(Vector3.up, front), glows = new List<Renderer>(), area = area, W = big ? 18f : 13f, H = big ? 11f : 8f };
+            var z = new Spot { ctx = ctx, root = root, labels = labels, mk = new MeshKit(), solid = new MeshKit(), pictures = new MeshKit(), a = a, front = front, side = Vector3.Cross(Vector3.up, front), glows = new List<Renderer>(), area = area, W = a.name == "Guns N' Roses" ? 22f : big ? 18f : 13f, H = a.name == "Guns N' Roses" ? 13f : big ? 11f : 8f };
             var g = ctx.OnGround(a.x, a.z); z.c = new Vector3(a.x, g.y, a.z);
             Venue(z);
             switch (a.name)
@@ -47,6 +47,11 @@ namespace EverythingWorld.World
                 case "Warrant": CherryPie(z); break;
                 default: Bolt(z); break;
             }
+            if (a.name == "Guns N' Roses") GunsMore(z);
+            SongBits(z);
+            var mark = new GameObject("Shot: the " + a.name + " front").transform; mark.SetParent(ctx.Root, false);   // the venue seen from across the Strip
+            var cam = z.c + front * (z.W * .5f + 16f) + z.side * 3f; cam = ctx.OnGround(cam.x, cam.z); var look = z.c + Vector3.up * (z.H * .55f) - cam - Vector3.up * 1.6f;
+            mark.SetPositionAndRotation(cam, Quaternion.LookRotation(look.normalized));
             area.glowRenderers = z.glows.ToArray();
             z.mk.Build("Venue", root, false);
             z.solid.BuildCollider("Walls", root);
@@ -59,7 +64,7 @@ namespace EverythingWorld.World
         void Venue(Spot z)
         {
             var up = Vector3.up; var rot = Quaternion.LookRotation(z.front); var W = z.W; var H = z.H; const float D = 11f, t = .4f;
-            var paint = WorldMaterials.Solid(new[] { new Color(.38f, .16f, .48f), new Color(.12f, .36f, .44f), new Color(.48f, .12f, .24f), new Color(.2f, .2f, .45f) }[Mathf.Abs(z.a.name.GetHashCode()) % 4]);
+            var st = StyleOf(z.a.name); var paint = WorldMaterials.Solid(st.wall);
             var b = z.c - z.front * 2f;
             void Wall(Vector3 p, Vector3 s) { z.mk.Box(paint, p, s, rot); z.solid.Box(paint, p, s, rot); }
             Wall(b + up * (H / 2f - .5f) - z.front * (D / 2f - t / 2f), new Vector3(W, H + 1f, t));
@@ -75,8 +80,8 @@ namespace EverythingWorld.World
             z.mk.Prism(chrome, z.stage + z.front * 1.2f, up, .03f, 1.6f, 6); z.mk.Blob(chrome, z.stage + z.front * 1.2f + up * 1.7f, new Vector3(.1f, .14f, .1f), z.ctx.Rng, 0f);
             var back = Neon[Mathf.Abs(z.a.name.GetHashCode()) % Neon.Length];
             z.mk.Box(GlowM(back, 1.1f), b - z.front * (D / 2f - t - .03f) + up * 3.2f, new Vector3(W - 2f, 4.4f, .04f), rot);          // a glowing backdrop behind the stage
-            for (var k = 0; k < 5; k++) z.mk.Box(GlowM(Color.Lerp(back, Color.white, .5f), 2f), b - z.front * (D / 2f - t - .05f) + up * (1.6f + k * .8f), new Vector3(W - 2.2f, .06f, .02f), rot);
-            z.mk.Box(WorldMaterials.Solid(new Color(.55f, .5f, .55f), .8f), b + up * .03f + z.front * 2f, new Vector3(W - 1f, .02f, 5f), rot);   // a shiny dance floor
+            for (var k = 0; k < 5; k++) z.mk.Box(GlowM(Color.Lerp(back, Color.white, .5f), 2f), b - z.front * (D / 2f - t - .09f) + up * (1.6f + k * .8f), new Vector3(W - 2.2f, .06f, .02f), rot);
+            z.mk.Box(WorldMaterials.Solid(new Color(.55f, .5f, .55f), .8f), b + up * .06f + z.front * 2f, new Vector3(W - 1f, .02f, 5f), rot);   // a shiny dance floor
             ArtistBits.PointLight(z.root, z.stage + up * 3.5f + z.front * 2f, back, 16f, 3f, true);
             IndoorSpaces.Add(b + up * H / 2f, rot, new Vector3(W, H, D));
             // the marquee: a box over the opening, chasing bulbs round it, the name across it
@@ -92,8 +97,9 @@ namespace EverythingWorld.World
             ArtistBits.Label(z.labels, z.a.name.ToUpperInvariant(), mq + z.front * .63f, z.front, z.a.name.Length > 14 ? .3f : .42f, new Color(.12f, .04f, .1f), TextAnchor.MiddleCenter);
             // the awning in leopard print over the pavement
             var aw = b + z.front * (D / 2f + 2.6f) + up * 4.4f;
-            z.mk.Box(leopard, aw, new Vector3(W - 2f, .1f, 3.4f), rot * Quaternion.Euler(-14f, 0, 0));
-            for (var k = 0; k < 18; k++) z.mk.Blob(black, aw + z.side * ((k * 1.618f) % (W - 3f) - (W - 3f) / 2f) + z.front * (((k * .73f) % 3f) - 1.5f) + up * (.06f + (((k * .73f) % 3f) - 1.5f) * .24f), new Vector3(.22f, .03f, .16f), z.ctx.Rng, .4f);
+            z.mk.Box(AwningM(st), aw, new Vector3(W - 2f, .1f, 3.4f), rot * Quaternion.Euler(-14f, 0, 0));
+            Facade(z, b, st, rot, W, H, D, lintel, aw);
+            if (st.awning == "leopard") for (var k = 0; k < 18; k++) z.mk.Blob(black, aw + z.side * ((k * 1.618f) % (W - 3f) - (W - 3f) / 2f) + z.front * (((k * .73f) % 3f) - 1.5f) + up * (.06f + (((k * .73f) % 3f) - 1.5f) * .24f), new Vector3(.22f, .03f, .16f), z.ctx.Rng, .4f);
             // the name again in big neon on the roof edge, and a glow round the door
             var sign = b + up * (H + 1.1f) + z.front * (D / 2f - .3f);
             z.mk.Box(black, sign, new Vector3(W - 2f, 1.8f, .3f), rot);
@@ -109,7 +115,7 @@ namespace EverythingWorld.World
             z.mk.Box(black, board, new Vector3(bw, size + .6f, .1f), rot);
             ArtistBits.CoverWall(z.pictures, z.labels, z.ctx, z.a, board + z.front * .06f + up * .08f, z.front, n, size, n, true, Ink);
             ArtistBits.Plaque(z.mk, z.solid, z.labels, z.a, z.ctx.OnGround(z.c.x + z.front.x * 9f - z.side.x * (W / 2f - 1f), z.c.z + z.front.z * 9f - z.side.z * (W / 2f - 1f)), z.front, chrome, black, Ink, 1.5f);
-            var door = ArtistBits.GlassBox(z.root, b + z.front * (D / 2f + .05f) + up * (lintel + .05f), new Vector3(W - 1f, .12f, .12f), Pink, rot);
+            var door = ArtistBits.GlassBox(z.root, b + z.front * (D / 2f + .1f) + up * (lintel + .05f), new Vector3(W - 1f, .12f, .12f), Pink, rot);
             z.glows.Add(door);
             z.area.glowLight = ArtistBits.PointLight(z.root, b + z.front * (D / 2f + 3f) + up * 3.5f, nc, 16f, 1.8f);
         }

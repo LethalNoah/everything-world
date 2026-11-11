@@ -24,8 +24,10 @@ Snapshot numbers refer to `Game/EverythingWorld/Logs/Live/` (not committed).
 
 ## Hair Metal Strip
 - Works: THE STRIP gate and boulevard at dusk, the hairspray can, "Spandex Sale" billboard.
-- Fix: every venue is the same dark box with an orange awning and a pink wall; doubled floors flicker; desert
-  either side of the road is empty; billboard undersides are black slabs.
+- Fixed in the deep pass (2026-11-10): every venue has its own style; the dance floor no longer doubles the
+  floor; the desert is filled (pools, motel signs, neon cacti, more of everything); billboards have chrome backs.
+- Deep pass (2026-11-10): Guns N' Roses the biggest venue (roses on brick, a neon guitar, heaven's door on the
+  roof); song glows for every venue.
 
 ## Arena Rock Ridge
 - Works: Journey's wheel against the stars, the neon heart, Blue Öyster Cult's view over the realm.
