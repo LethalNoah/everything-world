@@ -361,7 +361,7 @@ namespace EverythingWorld.World
             var cc = z.At(-2f, 0);
             var rug = Quaternion.LookRotation(look);
             z.mk.Box(WorldMaterials.Solid(new Color(.62f, .38f, .36f)), cc + up * .02f, new Vector3(4.6f, .02f, 3f), rug);
-            z.mk.Box(WorldMaterials.Solid(new Color(.86f, .7f, .5f)), cc + up * .03f, new Vector3(4f, .02f, 2.4f), rug);
+            z.mk.Box(WorldMaterials.Solid(new Color(.86f, .7f, .5f)), cc + up * .036f, new Vector3(4f, .02f, 2.4f), rug);   // 5 mm above the red rug's (grown) top
             z.mk.Box(WorldMaterials.Solid(new Color(.5f, .3f, .3f)), cc + up * .04f, new Vector3(3.4f, .02f, 1.8f), rug);
             foreach (var s in new[] { -1f, 1f }) Chair(z, ctx.OnGround(cc.x + ls.x * s * 1.6f, cc.z + ls.z * s * 1.6f), (look + ls * s * .08f).normalized);
             // the crate between them

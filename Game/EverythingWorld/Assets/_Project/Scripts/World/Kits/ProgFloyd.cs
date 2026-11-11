@@ -104,7 +104,7 @@ namespace EverythingWorld.World
             {
                 var pts = new List<Vector3>(); var from = new Vector3(join.x, 0, join.z); var dir = new Vector3(c.x - join.x, 0, c.z - join.z).normalized; var len = best - stop;
                 for (var d = TrailW / 2f + .1f; ; d += 1.5f) { var dd = Mathf.Min(d, len); var q = from + dir * dd; if (!ctx.IsLand(q.x, q.z, 0f)) break; pts.Add(ctx.OnGround(q.x, q.z)); if (dd >= len) break; }
-                if (pts.Count > 1) { Strip(mk, pts, WorldMaterials.Solid(new Color(.5f, .46f, .42f)), TrailW, .2f, ctx); foreach (var p in pts) Remember(p, 350); }
+                if (pts.Count > 1) { Strip(mk, pts, WorldMaterials.Solid(new Color(.5f, .46f, .42f)), TrailW, .192f, ctx); foreach (var p in pts) Remember(p, 350); }
             }
             var side = Vector3.Cross(Vector3.up, face); var sp = ctx.OnGround(c.x + face.x * stop + side.x * 2.6f, c.z + face.z * stop + side.z * 2.6f); var rot = Quaternion.LookRotation(face);
             mk.Box(darkStone, sp + Vector3.up * .7f, new Vector3(.25f, 1.4f, .25f), rot); mk.Box(darkStone, sp + Vector3.up * 1.6f, new Vector3(2.6f, .6f, .12f), rot);

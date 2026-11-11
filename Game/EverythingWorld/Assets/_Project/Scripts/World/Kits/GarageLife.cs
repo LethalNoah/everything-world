@@ -123,7 +123,7 @@ namespace EverythingWorld.World
             var mk = new MeshKit(); var body = WorldMaterials.Solid(paint, .85f);
             mk.Box(body, new Vector3(0, .65f, 0), new Vector3(2f, .6f, 4.8f), Quaternion.identity);
             mk.Box(body, new Vector3(0, 1.15f, -.3f), new Vector3(1.8f, .5f, 2.2f), Quaternion.identity);
-            mk.Box(WorldMaterials.Solid(new Color(.1f, .12f, .15f), .9f), new Vector3(0, 1.17f, -.3f), new Vector3(1.82f, .38f, 2.1f), Quaternion.identity);
+            mk.Box(WorldMaterials.Solid(new Color(.1f, .12f, .15f), .9f), new Vector3(0, 1.17f, -.3f), new Vector3(1.84f, .38f, 2.1f), Quaternion.identity);
             foreach (var s in new[] { -1f, 1f }) foreach (var z in new[] { -1.5f, 1.5f }) mk.Prism(WorldMaterials.Solid(new Color(.05f, .05f, .05f)), new Vector3(s * .88f, .4f, z), Vector3.right * s, .42f, .3f, 12);
             foreach (var s in new[] { -.65f, .65f }) mk.Box(WorldMaterials.Glow(new Color(1f, .95f, .8f), 2.6f), new Vector3(s, .7f, 2.41f), new Vector3(.3f, .2f, .04f), Quaternion.identity);
             foreach (var s in new[] { -.7f, .7f }) mk.Box(WorldMaterials.Glow(new Color(1f, .15f, .15f), 1.8f), new Vector3(s, .7f, -2.41f), new Vector3(.35f, .12f, .04f), Quaternion.identity);

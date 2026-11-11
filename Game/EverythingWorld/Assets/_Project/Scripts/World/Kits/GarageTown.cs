@@ -135,7 +135,14 @@ namespace EverythingWorld.World
             halos.Add(barrel + up * 1.3f, 1.4f, new Color(1f, .5f, .15f), 1f);
             ArtistBits.PostCollider(ctx.Root, barrel, 1f, .45f);
             life.barrels.Add(barrel + up * 1f);
-            for (var k = 0; k < 4; k++) mk.Box(WorldMaterials.Solid(new Color(.3f, .25f, .2f)), ctx.OnGround(at.x + ctx.Range(-2f, 2f), at.z + ctx.Range(-2f, 2f)) + up * .2f, new Vector3(.5f, .4f, .4f), Quaternion.Euler(0, ctx.Range(0, 90f), 0));
+            var across = Vector3.Cross(up, along);
+            for (var k = 0; k < 4; k++)
+            {
+                // crates round the dumpster, never inside it (their bottoms met its bottom in one plane and flickered)
+                var off = new Vector3(ctx.Range(-2f, 2f), 0, ctx.Range(-2f, 2f)); var ac = Vector3.Dot(off, across);
+                if (Mathf.Abs(Vector3.Dot(off, along)) < .95f && Mathf.Abs(ac) < 1.4f) off += across * ((ac >= 0f ? 1.4f : -1.4f) - ac);   // the dumpster is 2 m across, 1.2 m along
+                mk.Box(WorldMaterials.Solid(new Color(.3f, .25f, .2f)), ctx.OnGround(at.x + off.x, at.z + off.z) + up * .2f, new Vector3(.5f, .4f, .4f), Quaternion.Euler(0, ctx.Range(0, 90f), 0));
+            }
             life.steam.Add(at - along * 3f + up * .1f);
         }
 
@@ -146,7 +153,7 @@ namespace EverythingWorld.World
             var body = WorldMaterials.Solid(paint, .85f); var chrome = WorldMaterials.Solid(new Color(.8f, .8f, .82f), .9f);
             mk.Box(body, at + up * .65f, new Vector3(2f, .6f, 4.8f), rot);
             mk.Box(body, at + up * 1.15f - dir * .3f, new Vector3(1.8f, .5f, 2.2f), rot);
-            mk.Box(WorldMaterials.Solid(new Color(.1f, .12f, .15f), .9f), at + up * 1.17f - dir * .3f, new Vector3(1.82f, .38f, 2.1f), rot);
+            mk.Box(WorldMaterials.Solid(new Color(.1f, .12f, .15f), .9f), at + up * 1.17f - dir * .3f, new Vector3(1.84f, .38f, 2.1f), rot);
             mk.Box(WorldMaterials.Solid(new Color(.95f, .95f, .95f)), at + up * .96f + dir * .7f, new Vector3(.4f, .02f, 2.2f), rot);
             foreach (var z in new[] { -2.42f, 2.42f }) mk.Box(chrome, at + up * .45f + dir * z, new Vector3(2.05f, .15f, .1f), rot);
             foreach (var s in new[] { -1f, 1f }) foreach (var z in new[] { -1.5f, 1.5f })
@@ -194,7 +201,7 @@ namespace EverythingWorld.World
             life.casino = front + face * 2f;
             noGrass.Add(new Vector3(c.x, 30f, c.z));
             // cars parked in front, two with their lights on
-            for (var k = 0; k < 5; k++) Car(ctx, mk, solid, OnStreet(streetLen - 4f, (k - 2f) * 3.2f) + streetDir * 8f, side * (k % 2 == 0 ? 1f : -1f), Paint[(k + 2) % Paint.Length], k % 3 == 0);
+            for (var k = 0; k < 5; k++) Car(ctx, mk, solid, OnStreet(streetLen - 4f, (k - 2f) * 3.2f) + streetDir * 8f, face * (k % 2 == 0 ? 1f : -1f), Paint[(k + 2) % Paint.Length], k % 3 == 0);
         }
 
         // ---------------------------------------------------------------- the outskirts

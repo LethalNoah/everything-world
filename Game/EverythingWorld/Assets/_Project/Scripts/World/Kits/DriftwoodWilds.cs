@@ -69,8 +69,13 @@ namespace EverythingWorld.World
                 LoneBench(ctx, mk, solid, ctx.OnGround(at.x, at.z), side * s);
             }
             // a lifeguard tower where it reaches the beach
-            var end = path[path.Count - 1] + side * 7f;
-            if (ctx.IsLand(end.x, end.z, 0f) && !NearPath(end.x, end.z, 3f)) LifeguardTower(ctx, mk, solid, ctx.OnGround(end.x, end.z), seaDir);
+            // (beside the path, clear of the beach huts: it used to stand into one)
+            foreach (var off in new[] { 7f, -7f, 11f, -11f, 15f, -15f })
+            {
+                var end = path[path.Count - 1] + side * off;
+                if (!ctx.IsLand(end.x, end.z, 0f) || NearPath(end.x, end.z, 3f) || hutSpots.Exists(h => new Vector2(h.x - end.x, h.z - end.z).sqrMagnitude < 5f * 5f)) continue;
+                LifeguardTower(ctx, mk, solid, ctx.OnGround(end.x, end.z), seaDir); break;
+            }
         }
 
         void LifeguardTower(LandContext ctx, MeshKit mk, MeshKit solid, Vector3 at, Vector3 sea)
@@ -84,7 +89,7 @@ namespace EverythingWorld.World
                 foot.y = ctx.Ground(foot.x, foot.z) - .3f;
                 mk.Prism(white, foot, (top - foot).normalized, .1f, Vector3.Distance(foot, top), 6);
             }
-            mk.Box(planks, at + Vector3.up * H, new Vector3(2.8f, .14f, 2.8f), rot);
+            mk.Box(planks, at + Vector3.up * (H + .006f), new Vector3(2.8f, .14f, 2.8f), rot);   // 6 mm up: its deck met a beach hut's roof plane
             solid.Box(planks, at + Vector3.up * (H - .1f), new Vector3(2.8f, .34f, 2.8f), rot);
             var hut = at + Vector3.up * (H + 1f) - sea * .3f;
             mk.Box(red, hut, new Vector3(2.2f, 1.9f, 1.8f), rot);

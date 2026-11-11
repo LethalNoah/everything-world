@@ -306,7 +306,7 @@ namespace EverythingWorld.World
                     pts.Add(ctx.OnGround(q.x, q.z)); if (dd >= end) break;
                 }
                 if (pts.Count < 2) continue;
-                Strip(mk, pts, dirt, TrailW, .2f, ctx);
+                Strip(mk, pts, dirt, TrailW, .192f, ctx);   // just under the paved roads it starts from (they lie at .2)
                 foreach (var p in pts) Remember(p, walk);
                 for (var i = 7; i < pts.Count; i += 13)
                 {

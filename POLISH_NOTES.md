@@ -113,3 +113,24 @@ Snapshot numbers refer to `Game/EverythingWorld/Logs/Live/` (not committed).
 ## Indie Downs (deep pass done, 2026-11-10)
 - Ten song places (Florence Road, Death Cab, Rainbow Kitten Surprise) and a song piece for every smaller artist,
   all with song glows.
+
+## Flickering surfaces (fixed at the source, 2026-11-10)
+- Every box the kits build now grows by a few millimetres that depends on its material (glows the most), so two
+  different surfaces can no longer sit in exactly the same plane and flicker.
+- Labels and pictures (plaque text, covers) now sit 12 mm off their surface, so a grown box can never bury them
+  (the first version of the growth hid plaque text on some boards).
+- The land audit's overlap test now measures each pair up close (1.5 mm, both ways) instead of from the world
+  origin kilometres away, where float rounding flagged faces that were really apart and missed real ones.
+- Real leftovers fixed by hand: Kingdom roadside walls crossing at road joins and record grooves 1 mm off their
+  discs; Bowie's rocket base; Jam buses, awnings, banners and tapestry bands; Cbdb's rowboat seat; the Grateful
+  Dead's rainbow loop seam; Indie Downs' blue path on the record shop's floor and Rainbow Kitten Surprise's stripes;
+  Prog trails meeting the paved roads; once the audit was precise, the rest it found (Kingdom road banners and wall
+  coping on slopes, Garage car windows and parked cars, Shoegaze lily pads and willows, mushrooms in the Wilds, and
+  a few one-offs in eight more lands).
+- Result: all 21 lands audit at 0 overlapping surfaces and 0 artists with problems (2026-11-10). The audit now also
+  says which way the two faces point, to make the next one quick to find.
+
+## Bedroom Pop Meadows (deep pass done, 2026-11-10)
+- Six song places for Clairo and beabadoobee, a piece for every one-song artist, all with song glows.
+- The song places are dream-sized (half again as big as life), each with its own light and glow, so they read from
+  the path at dusk. The photo tour now arrives where players do when something (the giant bed) stands on the centre.

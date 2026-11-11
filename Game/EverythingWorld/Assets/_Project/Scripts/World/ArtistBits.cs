@@ -33,7 +33,8 @@ namespace EverythingWorld.World
         {
             var go = new GameObject("Text");
             go.transform.SetParent(parent, false);
-            go.transform.SetPositionAndRotation(pos, Quaternion.LookRotation(-facing, Vector3.up));
+            // lifted 12 mm off whatever it's written on, so a surface grown by MeshKit.Box can never hide it
+            go.transform.SetPositionAndRotation(pos + facing.normalized * .012f, Quaternion.LookRotation(-facing, Vector3.up));
             var t = go.AddComponent<TextMesh>();
             t.font = Font;
             t.fontSize = 96;

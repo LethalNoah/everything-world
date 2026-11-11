@@ -54,7 +54,8 @@ def sheets(folder):
     out = []
     TW, TH, COLS, PER = 640, 360, 3, 12
     for s0 in range(0, len(shots), PER):
-        part = shots[s0:s0 + PER]
+        part = [s for s in shots[s0:s0 + PER] if os.path.exists(os.path.join(folder, s['file']))]   # a shot cut short is skipped
+        if not part: continue
         rows = (len(part) + COLS - 1) // COLS
         sheet = Image.new('RGB', (COLS * TW, rows * (TH + 30)), (16, 16, 22))
         dr = ImageDraw.Draw(sheet)

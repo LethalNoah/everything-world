@@ -34,7 +34,9 @@ namespace EverythingWorld.World
                         var p = w + new Vector3(ctx.Range(-1.6f, 1.6f), 0, ctx.Range(-1.6f, 1.6f));
                         if (OnIsland(p.x, p.z, -1f)) continue;
                         var rr = ctx.Range(.35f, .8f);
-                        mk.Prism(k % 2 == 0 ? pad : padB, p - Vector3.up * (WaterDrop - .005f), Vector3.up, rr, .02f, 9, 1f, ctx.Range(0, 40f));
+                        // each pad in a cluster floats 5 mm above the one before, so overlapping pads of the
+                        // two greens never share a surface
+                        mk.Prism(k % 2 == 0 ? pad : padB, p - Vector3.up * (WaterDrop - .005f - k * .005f), Vector3.up, rr, .02f, 9, 1f, ctx.Range(0, 40f));
                         lilies++;
                         if (ctx.Chance(.22f))
                         {
@@ -205,9 +207,12 @@ namespace EverythingWorld.World
                     var len = Mathf.Min(top.y - ground - ctx.Range(.2f, 1.2f), ctx.Range(2.2f, 4.8f) * scale);
                     if (len < .6f) continue;
                     var w = ctx.Range(.12f, .2f) * scale;
-                    var across = Vector3.Cross(Vector3.up, outDir) * w;
+                    // each leaf colour hangs at its own slight turn (5 degrees apart), so two curtains of
+                    // different greens never lie in the same plane and flicker
+                    var shade = (k + j) % greens.Length;
+                    var across = Quaternion.Euler(0, shade * 5f - 7.5f, 0) * Vector3.Cross(Vector3.up, outDir) * w;
                     var tip = top - Vector3.up * len + outDir * ctx.Range(-.1f, .25f);
-                    var m = greens[(k + j) % greens.Length];
+                    var m = greens[shade];
                     foreach (var inside in new[] { top + outDir, top - outDir })
                     {
                         leaves.Tri(m, top - across, top + across, tip, inside);

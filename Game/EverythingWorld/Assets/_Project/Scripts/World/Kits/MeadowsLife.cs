@@ -11,7 +11,7 @@ namespace EverythingWorld.World
     /// - soap bubbles float up from the field, more for happy songs;
     /// - glow-in-the-dark star stickers fade in across the sky as a song goes quiet;
     /// - the light leans pinker for happy songs and deeper violet for sad ones.
-    public class MeadowsLife : MonoBehaviour
+    public partial class MeadowsLife : MonoBehaviour
     {
         const string Land = "The Bedroom Pop Meadows";
         public Vector3 center;
@@ -162,6 +162,7 @@ namespace EverythingWorld.World
             var playing = d != null && d.CurrentSlot.IsValid;
             var energy = SurpriseDirector.Energy;
             var valence = playing ? d.CurrentSlot.track.valence : .5f;
+            SongGlowUpdate(dt, here);
             if (playing && d.CurrentSlot.track.id != songId) { songId = d.CurrentSlot.track.id; glow = 1f; }
             glow = Mathf.MoveTowards(glow, 0f, dt / 5f);
             quiet = Mathf.MoveTowards(quiet, 1f - Mathf.InverseLerp(.25f, .8f, energy), dt / 4f);

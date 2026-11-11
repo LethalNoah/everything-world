@@ -37,16 +37,30 @@ namespace EverythingWorld.World
         /// A flat picture (for example an album cover) facing 'normal', with the given texture rectangle.
         public void Picture(Material m, Vector3 center, Vector3 right, Vector3 up, Vector3 normal, Rect uv)
         {
+            center += normal.normalized * .012f;   // lifted 12 mm off its wall, so a surface grown by Box can never hide it
             Vector3 a = center - right - up, b = center + right - up, c = center + right + up, d = center - right + up;
             var inside = center - normal;
             Tri(m, a, b, c, inside, new Vector2(uv.xMin, uv.yMin), new Vector2(uv.xMax, uv.yMin), new Vector2(uv.xMax, uv.yMax));
             Tri(m, a, c, d, inside, new Vector2(uv.xMin, uv.yMin), new Vector2(uv.xMax, uv.yMax), new Vector2(uv.xMin, uv.yMax));
         }
 
+        /// How much a box with this material is grown on every side (a few millimetres), so two boxes of different
+        /// materials never share a face exactly and flicker against each other: glowing panels sit proud of whatever
+        /// they're mounted on, and solid surfaces step apart from each other by material.
+        static float Grow(Material m)
+        {
+            if (m == null) return 0f;
+            if (m.IsKeywordEnabled("_EMISSION") || m.name.StartsWith("Glow") || m.name.StartsWith("Song glow")) return .014f;
+            if (!m.HasProperty("_BaseColor")) return 0f;
+            var c = m.GetColor("_BaseColor");
+            int r = Mathf.RoundToInt(c.r * 255f), g = Mathf.RoundToInt(c.g * 255f), b = Mathf.RoundToInt(c.b * 255f);
+            return .0018f * ((r + 3 * g + 5 * b) % 7);   // 0 to 11 mm in steps, chosen so the land audits' pairs separate
+        }
+
         /// A box of the given full size, rotated.
         public void Box(Material m, Vector3 center, Vector3 size, Quaternion rot)
         {
-            var h = size / 2f;
+            var h = size / 2f + Vector3.one * Grow(m);
             var p = new Vector3[8];
             for (var i = 0; i < 8; i++)
                 p[i] = center + rot * new Vector3((i & 1) == 0 ? -h.x : h.x, (i & 2) == 0 ? -h.y : h.y, (i & 4) == 0 ? -h.z : h.z);

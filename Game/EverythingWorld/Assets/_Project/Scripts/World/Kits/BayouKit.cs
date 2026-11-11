@@ -552,7 +552,7 @@ namespace EverythingWorld.World
             mk.Box(body, at + up * .85f, new Vector3(2f, .7f, 5f), rot);
             mk.Box(body, at + up * 1.5f + dir * .5f, new Vector3(1.9f, .7f, 1.6f), rot);
             mk.Box(WorldMaterials.Solid(new Color(.15f, .18f, .2f), .9f), at + up * 1.55f + dir * .5f, new Vector3(1.92f, .5f, 1.5f), rot);
-            mk.Box(rusty, at + up * 1.2f - dir * 1.5f + side * .99f, new Vector3(.03f, .3f, 1.6f), rot);
+            mk.Box(rusty, at + up * 1.2f - dir * 1.5f + side * .997f, new Vector3(.03f, .3f, 1.6f), rot);
             mk.Box(dark, at + up * .7f - dir * 1.5f, new Vector3(1.8f, .1f, 1.9f), rot);
             foreach (var s in new[] { -1f, 1f }) foreach (var z in new[] { -1.6f, 1.6f }) mk.Prism(dark, at + side * s * .9f + dir * z + up * .45f, side * s, .45f, .28f, 12);
             foreach (var s in new[] { -.7f, .7f }) mk.Prism(GlowM(new Color(1f, .95f, .8f), 1.4f), at + up * .95f + dir * 2.5f + side * s, dir, .15f, .05f, 10);

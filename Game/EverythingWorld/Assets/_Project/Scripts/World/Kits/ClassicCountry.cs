@@ -58,7 +58,7 @@ namespace EverythingWorld.World
                 var c = p + up * (r - .4f);
                 mk.Prism(vinyl, c - d * .12f, d, r, .24f, 24);
                 mk.Prism(vinyl, c + d * .12f, -d, r, .24f, 24);
-                foreach (var s in new[] { 1f, -1f }) { mk.Prism(groove, c + d * s * .121f, d * s, r * .75f, .01f, 24); mk.Prism(WorldMaterials.Solid(labels[k % labels.Length]), c + d * s * .125f, d * s, r * .32f, .01f, 16); mk.Prism(dark, c + d * s * .13f, d * s, .06f, .01f, 8); }
+                foreach (var s in new[] { 1f, -1f }) { mk.Prism(groove, c + d * s * .125f, d * s, r * .75f, .01f, 24); mk.Prism(WorldMaterials.Solid(labels[k % labels.Length]), c + d * s * .138f, d * s, r * .32f, .01f, 16); mk.Prism(dark, c + d * s * .151f, d * s, .06f, .01f, 8); }
                 solid.Box(vinyl, c, new Vector3(r * 1.6f, r * 2f, .4f), Quaternion.LookRotation(d));
             }
             mk.Prism(stoneM, at - up * .2f, up, 1.4f, .7f, 10);

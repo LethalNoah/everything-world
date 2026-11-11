@@ -222,7 +222,7 @@ namespace EverythingWorld.World
             mk.Box(wood, gate + up * 6.2f, new Vector3(8f, 1.4f, .2f), rot);
             ArtistBits.Label(ctx.Root, "THE JAM BAND COMMONWEALTH", gate + up * 6.2f - face * .12f, -face, .38f, Ink, TextAnchor.MiddleCenter);
             StringLights(mk, gate + up * 7f - side * 5f, gate + up * 7f + side * 5f, Warm, 14);
-            for (var k = 0; k < 3; k++) { var tp = gate + side * ((k - 1) * 3.2f) + up * 4.6f; for (var b = 0; b < 5; b++) mk.Box(WorldMaterials.Solid(Dye[(b + k * 2) % Dye.Length], .3f), tp - up * b * .4f, new Vector3(1.6f, .4f, .04f), rot); }
+            for (var k = 0; k < 3; k++) { var tp = gate + side * ((k - 1) * 3.2f) + up * 4.6f; for (var b = 0; b < 5; b++) mk.Box(WorldMaterials.Solid(Dye[(b + k * 2) % Dye.Length], .3f), tp - up * b * .4f, new Vector3(1.6f, .4f, .04f + (b % 2) * .01f), rot); }
             var hut = c + face * 4f + side * 9f;
             mk.Box(wood, hut + up * 1.4f, new Vector3(3f, 2.8f, 2.6f), rot); solid.Box(wood, hut + up * 1.4f, new Vector3(3f, 2.8f, 2.6f), rot);
             mk.GableRoof(WorldMaterials.Solid(new Color(.45f, .3f, .22f)), hut + up * 2.8f, new Vector3(3.6f, 0, 3.4f), 1f, rot);
@@ -291,7 +291,7 @@ namespace EverythingWorld.World
                 foreach (var a in new[] { -1f, 1f }) foreach (var b in new[] { -1f, 1f }) mk.Prism(metal, p + dir * a * 1.9f + side * s * b * 1.9f, up, .04f, 2.4f, 6);
                 mk.Box(WorldMaterials.Solid(col, .3f), p + up * 2.5f, new Vector3(4f, .12f, 4f), trot);
                 mk.Cone(WorldMaterials.Solid(col, .3f), p + up * 2.55f, 2.8f, .9f, 4, 45f);
-                for (var b = 0; b < 6; b++) mk.Box(WorldMaterials.Solid(Dye[(b + k) % Dye.Length], .3f), p + side * s * 2f + up * (.5f + b * .32f), new Vector3(3.6f, .32f, .03f), trot);
+                for (var b = 0; b < 6; b++) mk.Box(WorldMaterials.Solid(Dye[(b + k) % Dye.Length], .3f), p + side * s * 2f + up * (.5f + b * .32f), new Vector3(3.6f, .32f, .03f + (b % 2) * .01f), trot);
                 mk.Box(wood, p + up * .45f - side * s * .8f, new Vector3(3f, .9f, .8f), trot); solid.Box(wood, p + up * .45f - side * s * .8f, new Vector3(3f, .9f, .8f), trot);
                 if (k == 2 && s > 0) { mk.Box(GlowM(new Color(1f, .5f, .15f), 2f), p + up * .95f - side * s * .8f, new Vector3(1.4f, .05f, .6f), trot); ArtistBits.Label(ctx.Root, "GRILLED CHEESE $5", p + up * 2.1f - side * s * 2.05f, -side * s, .2f, Ink, TextAnchor.MiddleCenter); }
                 if (k == 4 && s < 0) for (var g = 0; g < 12; g++) mk.Box(GlowM(Dye[g % Dye.Length], 2.6f), p + up * (1f + (g % 3) * .1f) - side * s * .8f + dir * ((g - 6f) * .2f), new Vector3(.03f, .3f, .03f), Quaternion.Euler(0, 0, 20f));
@@ -302,9 +302,9 @@ namespace EverythingWorld.World
             foreach (var e in new[] { -1f, 1f })
             {
                 var bp = ctx.OnGround(c.x + dir.x * e * 25f, c.z + dir.z * e * 25f); var brot = Quaternion.LookRotation(side);
-                for (var b = 0; b < 5; b++) mk.Box(WorldMaterials.Solid(Dye[(b + (e > 0 ? 2 : 0)) % Dye.Length], .4f), bp + up * (.9f + b * .38f), new Vector3(2.4f, .39f, 6f), brot);
+                for (var b = 0; b < 5; b++) mk.Box(WorldMaterials.Solid(Dye[(b + (e > 0 ? 2 : 0)) % Dye.Length], .4f), bp + up * (.9f + b * .38f), new Vector3(2.4f + (b % 2) * .03f, .39f, 6f + (b % 2) * .03f), brot);   // alternate stripes step out 15 mm, more than Box's growth can take back
                 mk.Box(white, bp + up * 2.9f, new Vector3(2.4f, .5f, 6f), brot);
-                mk.Box(WorldMaterials.Solid(new Color(.15f, .2f, .3f), .9f), bp + up * 2.3f, new Vector3(2.42f, .7f, 5f), brot);
+                mk.Box(WorldMaterials.Solid(new Color(.15f, .2f, .3f), .9f), bp + up * 2.3f, new Vector3(2.48f, .7f, 5f), brot);
                 foreach (var s in new[] { -1f, 1f }) foreach (var z in new[] { -2f, 2f }) mk.Prism(dark, bp + dir * s * 1.1f + side * z + up * .45f, dir * s, .45f, .25f, 12);
                 solid.Box(white, bp + up * 1.6f, new Vector3(2.5f, 3.2f, 6.1f), brot);
             }

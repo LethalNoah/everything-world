@@ -309,7 +309,7 @@ namespace EverythingWorld.World
             for (var i = 0; i < rainbow.Length; i++)
             {
                 var y = (i + .5f) / rainbow.Length * H;
-                z.mk.Box(WorldMaterials.Solid(rainbow[i]), c - front * (D / 2f) + Vector3.up * y, new Vector3(W, H / rainbow.Length + .01f, .12f), rot);
+                z.mk.Box(WorldMaterials.Solid(rainbow[i]), c - front * (D / 2f) + Vector3.up * y, new Vector3(W, H / rainbow.Length + .01f, .12f + (i % 2) * .024f), rot);   // neighbouring stripes overlap a little, so alternate depths keep their faces apart (by 6 mm or more after Box's growth)
             }
             z.solid.Box(cream, c - front * (D / 2f) + Vector3.up * H / 2f, new Vector3(W, H, .2f), rot);
             foreach (var s in new[] { -1f, 1f })
@@ -319,7 +319,7 @@ namespace EverythingWorld.World
             }
             z.mk.Box(cream, c + Vector3.up * (H + .08f), new Vector3(W + .4f, .16f, D + .5f), rot);
             for (var i = 0; i < rainbow.Length; i++)
-                z.mk.Box(WorldMaterials.Solid(rainbow[i]), c + front * (D / 2f + .25f) + Vector3.up * (H + .08f) + side * ((i + .5f) / rainbow.Length * (W + .4f) - (W + .4f) / 2f), new Vector3((W + .4f) / rainbow.Length + .01f, .2f, .06f), rot);
+                z.mk.Box(WorldMaterials.Solid(rainbow[i]), c + front * (D / 2f + .25f) + Vector3.up * (H + .08f) + side * ((i + .5f) / rainbow.Length * (W + .4f) - (W + .4f) / 2f), new Vector3((W + .4f) / rainbow.Length + .01f, .2f + (i % 2) * .024f, .06f + (i % 2) * .024f), rot);
             ArtistBits.CoverWall(z.pictures, z.labels, ctx, z.a, c - front * (D / 2f - .08f) + Vector3.up * 1.75f, front, 3, .7f, 3, true, Cream);
             Bench(z.mk, z.solid, c - front * .35f, front);
             // the stop sign and a timetable

@@ -145,7 +145,7 @@ namespace EverythingWorld.World
                 if (s) sean.Add(a);
                 if (!n && !s) nobody.Add(a);
             }
-            Walk(ctx, mk, hubGate, noah, NoahBlue, .06f, noahPath);
+            Walk(ctx, mk, hubGate, noah, NoahBlue, .065f, noahPath);   // not .06: the record shop's stone foundation rim tops out at .06 (with its grown size)
             Walk(ctx, mk, otherGate, sean, SeanGreen, .1f, seanPath);
             // the village green, and anyone on neither path, join the nearest path with a plain spur
             foreach (var (from, to) in innerSpurs) { var r = new List<Vector3> { from }; Leg(r, from, to); Lay(ctx, mk, r, .08f, null, null); }

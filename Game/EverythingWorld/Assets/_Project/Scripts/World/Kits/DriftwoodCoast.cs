@@ -242,8 +242,11 @@ namespace EverythingWorld.World
         }
 
         // ---------------------------------------------------------------- beach huts
+        readonly List<Vector3> hutSpots = new List<Vector3>();   // so the lifeguard tower never stands into a hut
+
         void BeachHuts(LandContext ctx, MeshKit mk, MeshKit solid, Vector3 at, Vector3 sea)
         {
+            hutSpots.Clear();
             var along = Vector3.Cross(Vector3.up, sea);
             var start = at - sea * 10f;
             var built = 0;
@@ -269,6 +272,7 @@ namespace EverythingWorld.World
                     ArtistBits.GlassBox(ctx.Root, win, new Vector3(.6f, .6f, .05f), Ember, rot);
                     halos.Add(win + sea * .3f, 1.3f, Ember, .8f);
                 }
+                hutSpots.Add(p);
                 built++;
             }
             if (built > 0) { noGrass.Add(new Vector3(start.x, 20f, start.z)); life.landmarks.Add(start); }

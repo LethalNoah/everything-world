@@ -333,7 +333,7 @@ namespace EverythingWorld.World
                 var water = WorldMaterials.Solid(new Color(.15f, .3f, .45f), .95f); z.mk.Prism(water, c - up * .1f, up, 4.2f, .22f, 24); z.mk.Prism(WorldMaterials.Solid(new Color(.5f, .45f, .35f)), c - up * .15f, up, 4.5f, .16f, 24);
                 z.mk.Box(wood, c + z.front * 2.6f + up * .3f, new Vector3(1.4f, .15f, 4f), rot); foreach (var s in new[] { -.6f, .6f }) foreach (var f in new[] { 1f, 3.6f }) z.mk.Prism(wood, c + z.front * f + z.side * s - up * .3f, up, .08f, .8f, 6);
                 var boat = c + z.side * 1.6f + up * .08f; var hull = WorldMaterials.Solid(new Color(.75f, .2f, .15f), .5f);
-                z.mk.Box(hull, boat + up * .2f, new Vector3(1f, .35f, 2.6f), rot * Quaternion.Euler(0, 20f, 0)); z.mk.Box(wood, boat + up * .35f, new Vector3(.9f, .05f, .3f), rot * Quaternion.Euler(0, 20f, 0));
+                z.mk.Box(hull, boat + up * .2f, new Vector3(1f, .35f, 2.6f), rot * Quaternion.Euler(0, 20f, 0)); z.mk.Box(wood, boat + up * .37f, new Vector3(.9f, .05f, .3f), rot * Quaternion.Euler(0, 20f, 0));
                 var lp = c + z.front * 4.4f + z.side * .7f; z.mk.Prism(wood, lp, up, .06f, 2f, 6); z.mk.Box(GlowM(Warm, 2.6f), lp + up * 2.1f, new Vector3(.28f, .38f, .28f), Quaternion.identity); halos.Add(lp + up * 2.1f, 1.4f, Warm, .8f);
                 z.solid.Prism(water, c - up * .2f, up, 4.4f, .6f, 12);
             }
@@ -389,7 +389,7 @@ namespace EverythingWorld.World
                 var h = Mathf.Abs(n.GetHashCode());
                 z.mk.Box(wood, c + up * .3f, new Vector3(6f, .6f, 4f), rot); z.solid.Box(wood, c + up * .3f, new Vector3(6f, .6f, 4f), rot);
                 foreach (var s in new[] { -1f, 1f }) { z.mk.Prism(wood, c + z.side * s * 2.8f - z.front * 1.8f, up, .1f, 4.2f, 6); ArtistBits.PostCollider(z.root, c + z.side * s * 2.8f - z.front * 1.8f, 4.2f, .12f); }
-                for (var b = 0; b < 8; b++) z.mk.Box(WorldMaterials.Solid(Dye[(b + h) % Dye.Length], .3f), c - z.front * 1.8f + up * (.8f + b * .4f), new Vector3(5.5f, .4f, .04f), rot);
+                for (var b = 0; b < 8; b++) z.mk.Box(WorldMaterials.Solid(Dye[(b + h) % Dye.Length], .3f), c - z.front * 1.8f + up * (.8f + b * .4f), new Vector3(5.5f, .4f, .04f + (b % 2) * .01f), rot);
                 StringLights(z.mk, c + z.side * -2.8f + up * 4f - z.front * 1.8f, c + z.side * 2.8f + up * 4f - z.front * 1.8f, Warm, 8);
             }
         }

@@ -226,7 +226,7 @@ namespace EverythingWorld.World
             for (var k = 0; k < 5; k++)
             {
                 var p = z.At(-3f, (k - 2f) * 2.6f); var dir = z.front; var rot = Quaternion.LookRotation(dir); var body = WorldMaterials.Solid(new Color(.2f, .4f, .8f), .8f);
-                z.mk.Box(body, p + up * .55f, new Vector3(1.5f, .5f, 3.6f), rot); z.mk.Box(body, p + up * 1f - dir * .2f, new Vector3(1.3f, .45f, 1.8f), rot); z.mk.Box(WorldMaterials.Solid(new Color(.2f, .25f, .3f), .9f), p + up * 1f - dir * .2f, new Vector3(1.32f, .32f, 1.7f), rot);
+                z.mk.Box(body, p + up * .55f, new Vector3(1.5f, .5f, 3.6f), rot); z.mk.Box(body, p + up * 1f - dir * .2f, new Vector3(1.3f, .45f, 1.8f), rot); z.mk.Box(WorldMaterials.Solid(new Color(.2f, .25f, .3f), .9f), p + up * 1f - dir * .2f, new Vector3(1.34f, .32f, 1.7f), rot);
                 foreach (var s in new[] { -.75f, .75f }) foreach (var f in new[] { -1.1f, 1.1f }) z.mk.Prism(dark, p + Vector3.Cross(up, dir) * s + dir * f + up * .3f, Vector3.Cross(up, dir) * Mathf.Sign(s), .3f, .2f, 10);
                 z.solid.Box(body, p + up * .7f, new Vector3(1.6f, 1.4f, 3.8f), rot);
             }

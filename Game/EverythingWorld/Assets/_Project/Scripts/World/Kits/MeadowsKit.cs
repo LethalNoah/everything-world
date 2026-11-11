@@ -69,6 +69,7 @@ namespace EverythingWorld.World
             Bed(ctx, mk, solid);
             Trees(ctx, mk);
             Daydreams(ctx, mk, solid, pictures);
+            SongPlaces(ctx, mk, solid);
             mk.Build("Meadows scenery", ctx.Root, false);
             soft.Build("Soft leaves and fairy-light stakes", ctx.Root, false);
             solid.BuildCollider("Meadows walls", ctx.Root);
@@ -76,6 +77,7 @@ namespace EverythingWorld.World
             var life = new GameObject("Meadows life").AddComponent<MeadowsLife>();
             life.transform.SetParent(ctx.Root, false);
             life.center = center;
+            meadowsLife = life; life.songGlows.AddRange(pendingGlows); pendingGlows.Clear();
         }
 
         public override void Finish(LandContext ctx)
@@ -308,7 +310,7 @@ namespace EverythingWorld.World
                 var c2 = at - along * (footprint.z / 2f - run / 2f - .6f);
                 if (i == 0) farEdge = c2 - along * (footprint.z / 2f);
                 mk.Box(WorldMaterials.Solid(spines[i % spines.Length]), c2, footprint, spin);
-                mk.Box(pages, c2 + side * .05f + along * .08f, new Vector3(footprint.x + .1f, rise * .7f, footprint.z - .4f), spin);
+                mk.Box(pages, c2 + side * .06f + along * .08f, new Vector3(footprint.x + .1f, rise * .7f, footprint.z - .4f), spin);   // .06 sideways: at .05 the top book's pages met its cover's side
             }
             var bottom = farEdge; bottom.y = ctx.Ground(bottom.x, bottom.z) - .2f;          // the slope starts where the first book does
             var topStep = P(0, steps * rise + .05f, -L / 2f - .4f);

@@ -673,7 +673,7 @@ namespace EverythingWorld.World
             mk.Box(logs, at + up * 1.5f, new Vector3(6f, 3f, 5f), rot); solid.Box(logs, at + up * 1.5f, new Vector3(6f, 3f, 5f), rot);
             for (var k = 1; k < 6; k++) mk.Box(WorldMaterials.Solid(new Color(.4f, .3f, .22f)), at + up * (.25f + k * .5f) + face * 2.52f, new Vector3(6.05f, .08f, .04f), rot);
             mk.GableRoof(roofM, at + up * 3f, new Vector3(6.8f, 0, 6.6f), 1.8f, Quaternion.LookRotation(side));
-            mk.Box(plank, at + up * .3f + face * 3.7f, new Vector3(6f, .2f, 2.4f), rot); solid.Box(plank, at + up * .2f + face * 3.7f, new Vector3(6f, .4f, 2.4f), rot);
+            mk.Box(plank, at + up * .3f + face * 3.706f, new Vector3(6f, .2f, 2.4f), rot); solid.Box(plank, at + up * .2f + face * 3.7f, new Vector3(6f, .4f, 2.4f), rot);
             foreach (var s in new[] { -2.8f, 2.8f }) mk.Box(wood, at + up * 1.6f + face * 4.7f + side * s, new Vector3(.15f, 2.6f, .15f), rot);
             mk.Box(roofM, at + up * 2.85f + face * 3.8f, new Vector3(6.4f, .1f, 2.6f), rot * Quaternion.Euler(10f, 0, 0));
             mk.Box(dark, at + up * 1.2f + face * 2.53f, new Vector3(1f, 2f, .04f), rot);

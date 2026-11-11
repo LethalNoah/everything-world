@@ -620,7 +620,7 @@ namespace EverythingWorld.World
             mk.Box(darkWood, P(0, 2.55f, 0), new Vector3(w + .6f, .14f, d + .9f), roofRot);
             mk.Box(snowTop, P(0, 2.66f, 0), new Vector3(w + .5f, .1f, d + .8f), roofRot);
             ArtistBits.CoverWall(pictures, labels, ctx, a, P(0, 1.55f, -d / 2 + .09f), front, 5, .56f, 5, true, Ink);
-            Bench(ctx, mk, solid, P(0, 0, .2f) - Vector3.up * .1f, front);
+            Bench(ctx, mk, solid, P(0, 0, .2f), front, floor);   // on the deck, not grounded under it (its snow-dusted seat met the deck top)
         }
 
         /// A log cabin with lit windows, its covers on the back wall inside.

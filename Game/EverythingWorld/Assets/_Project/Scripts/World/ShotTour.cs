@@ -92,6 +92,14 @@ namespace EverythingWorld.World
                 }
                 var plaza = new Vector3(isl.labelX, 0f, isl.labelZ);
                 var feetAt = Feet(plaza);
+                // if something stands right on the centre (the Meadows' giant bed), stand where travelling players
+                // arrive instead (IslandExplorer: up to 70 m south of the centre)
+                if (Physics.Raycast(feetAt, Vector3.up, 10f, ~0, QueryTriggerInteraction.Ignore))   // (a mesh collider round you doesn't count as overlapping, so look for a roof)
+                    for (var d = 70f; d > 0f; d -= 10f)
+                    {
+                        var q = plaza + new Vector3(0, 0, -d);
+                        if (data.IslandAt(q.x, q.z) == isl) { feetAt = Feet(q); break; }
+                    }
                 // where you arrive, looking four ways (the first one waits for the land's sky to settle)
                 string[] compass = { "north", "east", "south", "west" };
                 for (var k = 0; k < 4; k++) yield return Shot("arrival, looking " + compass[k], feetAt, k * 90f, 4f, k == 0 ? 6f : .8f);

@@ -275,7 +275,7 @@ namespace EverythingWorld.World
             var pad = z.At(-4f, 9f);
             z.mk.Box(stoneM, pad + up * .2f, new Vector3(6f, .4f, 6f), Quaternion.identity);
             z.solid.Box(stoneM, pad + up * .2f, new Vector3(6f, .4f, 6f), Quaternion.identity);
-            for (var y = 0f; y < 16f; y += 2f) { z.mk.Box(WorldMaterials.Solid(new Color(.85f, .3f, .2f)), pad + z.side * 2.4f + up * (y + 1f), new Vector3(.8f, 2f, .8f), Quaternion.identity); }
+            for (var y = 0f; y < 16f; y += 2f) { z.mk.Box(WorldMaterials.Solid(new Color(.85f, .3f, .2f)), pad + z.side * 2.4f + up * (y + 1.01f), new Vector3(.8f, 2f, .8f), Quaternion.identity); }
             z.solid.Box(metal, pad + z.side * 2.4f + up * 8f, new Vector3(.9f, 16f, .9f), Quaternion.identity);
             var rocket = new GameObject("Rocket").transform; rocket.SetParent(z.root, false);
             var rk = new MeshKit();
@@ -528,8 +528,8 @@ namespace EverythingWorld.World
             z.mk.Prism(vinyl, rc + z.front * .15f, -z.front, 3f, .3f, 32);
             foreach (var s in new[] { 1f, -1f })
             {
-                z.mk.Prism(groove, rc + z.front * s * .151f, z.front * s, 2.3f, .01f, 32);
-                z.mk.Prism(WorldMaterials.Solid(Paint[Mathf.Abs(z.a.name.GetHashCode()) % 4], .5f), rc + z.front * s * .156f, z.front * s, 1f, .01f, 20);
+                z.mk.Prism(groove, rc + z.front * s * .156f, z.front * s, 2.3f, .01f, 32);
+                z.mk.Prism(WorldMaterials.Solid(Paint[Mathf.Abs(z.a.name.GetHashCode()) % 4], .5f), rc + z.front * s * .17f, z.front * s, 1f, .01f, 20);
                 z.mk.Prism(dark, rc + z.front * s * .16f, z.front * s, .1f, .01f, 8);
             }
             z.solid.Box(vinyl, rc, new Vector3(5f, 5.8f, .5f), rot);

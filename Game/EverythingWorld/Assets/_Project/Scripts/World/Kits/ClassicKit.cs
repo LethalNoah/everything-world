@@ -248,6 +248,7 @@ namespace EverythingWorld.World
         {
             Remember(center, 0);
             var todo = new List<IslandWorldData.Artist>(ctx.Artists);
+            var walls = new List<(Vector3 a, Vector3 b, int road, float side)>(); var road = 0;   // wall stretches so far, so two roads' walls never cross
             var walk = 1; var lamps = new List<Vector3>();
             var line = WorldMaterials.Solid(new Color(.95f, .94f, .9f));
             while (todo.Count > 0)
@@ -281,6 +282,7 @@ namespace EverythingWorld.World
                 for (var i = 1; i < pts.Count; i += 2) { var a = pts[i - 1]; var b = pts[i]; mk.Box(line, (a + b) / 2f + Vector3.up * .075f, new Vector3(.15f, .02f, Vector3.Distance(a, b) * .6f), Quaternion.LookRotation(b - a)); }
                 foreach (var p in pts) Remember(p, walk);
                 // dry-stone walls along the middle of longer roads, both sides, with gaps
+                road++;
                 if (pts.Count > 12)
                     foreach (var s in new[] { -1f, 1f })
                         for (var i = 3; i < pts.Count - 4; i++)
@@ -288,9 +290,15 @@ namespace EverythingWorld.World
                             if ((i / 6) % 3 == 2) continue;
                             var a = pts[i] + side * s * (RoadW / 2f + 1.6f); var b = pts[i + 1] + side * s * (RoadW / 2f + 1.6f);
                             a = ctx.OnGround(a.x, a.z); b = ctx.OnGround(b.x, b.z);
+                            var cross = false; foreach (var w in walls) if ((w.road != road || w.side != s) && WallGap(w.a, w.b, a, b) < 3f) cross = true;   // segment to segment, so two walls can't cross mid-stretch either (their tops met in one plane and flickered)
+                            if (cross) continue;
+                            walls.Add((a, b, road, s));
                             var mid = (a + b) / 2f + Vector3.up * .45f;
                             mk.Box(wallM, mid, new Vector3(.7f, .9f, Vector3.Distance(a, b) + .05f), Quaternion.LookRotation(b - a));
-                            mk.Box(stoneM, mid + Vector3.up * .5f, new Vector3(.8f, .12f, Vector3.Distance(a, b) + .05f), Quaternion.LookRotation(b - a));
+                            // the coping sits along the wall's own up (on a slope, world up slid it along the wall until its
+                            // ends met the wall's ends in one plane) and overhangs each end by 6 cm
+                            var wr = Quaternion.LookRotation(b - a);
+                            mk.Box(stoneM, mid + wr * Vector3.up * .5f, new Vector3(.8f, .12f, Vector3.Distance(a, b) + .17f), wr);
                             solid.Box(wallM, mid + Vector3.up * .1f, new Vector3(.7f, 1.1f, Vector3.Distance(a, b) + .05f), Quaternion.LookRotation(b - a));
                         }
                 for (var i = 4; i < pts.Count; i += 9)
@@ -308,6 +316,16 @@ namespace EverythingWorld.World
                 }
                 walk++;
             }
+        }
+
+        /// How close two wall stretches come on the ground (0 when they cross).
+        static float WallGap(Vector3 p1, Vector3 p2, Vector3 q1, Vector3 q2)
+        {
+            Vector2 a = new Vector2(p1.x, p1.z), b = new Vector2(p2.x, p2.z), c = new Vector2(q1.x, q1.z), d = new Vector2(q2.x, q2.z);
+            float Side(Vector2 o, Vector2 e, Vector2 p) => (e.x - o.x) * (p.y - o.y) - (e.y - o.y) * (p.x - o.x);
+            if (Side(a, b, c) * Side(a, b, d) < 0f && Side(c, d, a) * Side(c, d, b) < 0f) return 0f;
+            float ToSeg(Vector2 p, Vector2 o, Vector2 e) { var oe = e - o; var t = oe.sqrMagnitude < 1e-6f ? 0f : Mathf.Clamp01(Vector2.Dot(p - o, oe) / oe.sqrMagnitude); return Vector2.Distance(p, o + oe * t); }
+            return Mathf.Min(Mathf.Min(ToSeg(a, c, d), ToSeg(b, c, d)), Mathf.Min(ToSeg(c, a, b), ToSeg(d, a, b)));
         }
 
         void Strip(MeshKit mk, List<Vector3> pts, Material m, float w, float lift)
@@ -482,7 +500,7 @@ namespace EverythingWorld.World
             mk.Box(gilt, g + up * 4.85f + Vector3.Cross(up, face) * .45f, new Vector3(1.1f, .06f, .06f), rot);
             var c = g + up * 3.7f + Vector3.Cross(up, face) * .45f;
             mk.Box(cloth, c, new Vector3(.9f, 2.2f, .03f), rot);
-            mk.Box(gilt, c - up * .7f, new Vector3(.92f, .14f, .035f), rot);
+            mk.Box(gilt, c - up * .7f, new Vector3(.92f, .14f, .05f), rot);
             mk.Tri(cloth, c - up * 1.1f - Vector3.Cross(up, face) * .45f, c - up * 1.1f + Vector3.Cross(up, face) * .45f, c - up * 1.55f, face);
             mk.Tri(cloth, c - up * 1.1f + Vector3.Cross(up, face) * .45f, c - up * 1.1f - Vector3.Cross(up, face) * .45f, c - up * 1.55f, -face);
             ArtistBits.PostCollider(ctx.Root, g, 5f, .1f);

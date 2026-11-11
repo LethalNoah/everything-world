@@ -96,7 +96,7 @@ namespace EverythingWorld.World
                 for (var y = .5f; y < z.H - .5f; y += .6f) { var p = b + z.front * (D / 2f + .05f) + x + up * y + z.side * Mathf.Sin(y * 1.7f) * .4f; z.mk.Box(vine, p, new Vector3(.08f, .65f, .04f), rot * Quaternion.Euler(0, 0, Mathf.Sin(y) * 30f)); if (((int)(y * 10)) % 3 == 0) z.mk.Blob(rose, p + z.front * .08f, new Vector3(.2f, .2f, .1f), ctx.Rng, .1f); }
             }
             // a giant neon guitar across the front, between the marquee and the roof sign
-            var gc = b + z.front * (D / 2f + .1f) + up * (z.H - 2.3f); var neon = SongGlow(SweetChild, new Color(1f, .78f, .25f), 2f);
+            var gc = b + z.front * (D / 2f + .15f) + up * (z.H - 2.31f);  var neon = SongGlow(SweetChild, new Color(1f, .78f, .25f), 2f);   // clear of the brick courses behind it
             void Line(Vector3 a, Vector3 c) => z.mk.Box(neon, (a + c) / 2f, new Vector3(.14f, .14f, Vector3.Distance(a, c) + .05f), Quaternion.LookRotation(c - a, z.front));
             Vector3 G(float x, float y) => gc + z.side * x + up * y;
             var body = new List<Vector3>(); for (var k = 0; k <= 20; k++) { var a = k * Mathf.PI * 2f / 20f; var r = 1f + .25f * Mathf.Cos(2f * a); body.Add(G(-3f + Mathf.Cos(a) * 1.3f * r, Mathf.Sin(a) * .9f * r)); }
@@ -108,7 +108,7 @@ namespace EverythingWorld.World
             foreach (var s in new[] { -.75f, .75f }) z.mk.Box(white, dp + z.side * s + up * 1.4f, new Vector3(.18f, 2.8f, .25f), rot);
             z.mk.Box(white, dp + up * 2.85f, new Vector3(1.7f, .18f, .25f), rot); z.mk.Box(light, dp + up * 1.35f, new Vector3(1.3f, 2.6f, .04f), rot);
             var door = Quaternion.AngleAxis(-70f, up) * rot; z.mk.Box(white, dp - z.side * .65f + up * 1.35f + door * Vector3.right * .65f, new Vector3(1.3f, 2.6f, .08f), door);
-            for (var k = 0; k < 4; k++) z.mk.Box(white, dp + z.front * (.6f + k * .4f) + up * (-.15f - k * .2f) + up * .1f, new Vector3(1.6f, .12f, .4f), rot);
+            for (var k = 0; k < 4; k++) z.mk.Box(white, dp + z.front * (.6f + k * .4f) + up * (-.15f - k * .2f) + up * .107f, new Vector3(1.6f, .12f, .4f), rot);
             halos.Add(dp + up * 1.4f + z.front * .6f, 3f, new Color(1f, .97f, .85f), .45f);
             // Slash's song glows the stage's spotlight
             ArtistBits.PointLight(z.root, b + z.front * (D / 2f + 2f) + up * 4f, new Color(1f, .25f, .35f), 18f, 1.6f);

@@ -262,7 +262,7 @@ namespace EverythingWorld.World
 
         struct Face { public Vector3 a, b, c, n; public float d; public int owner; public string mat; }
 
-        /// Two triangles flicker against each other when they lie in the same plane (within 1.5 cm), face the same way,
+        /// Two triangles flicker against each other when they lie in the same plane (within 1.5 mm), face the same way,
         /// really overlap (not just share an edge), and are drawn with different materials. Each pair found goes into
         /// a 2 m cell; touching cells make one place in the report.
         static List<Overlap> Overlaps(LandContext ctx)
@@ -289,20 +289,32 @@ namespace EverythingWorld.World
                     }
                 }
             }
-            // bucket by plane: direction to about 2 degrees, distance to 3 cm (each bucket also takes in the next one up)
-            (int, int, int, int) Key(Vector3 n, float d) => (Mathf.RoundToInt(n.x * 30f), Mathf.RoundToInt(n.y * 30f), Mathf.RoundToInt(n.z * 30f), Mathf.FloorToInt(d / .03f));
-            var buckets = new Dictionary<(int, int, int, int), List<int>>();
+            // bucket by plane: direction to about 2 degrees, distance to 3 cm (each bucket also takes in the next one up).
+            // The distance is measured from the middle of each 16 m cell the face touches, not from the world origin:
+            // the lands lie kilometres out, where float rounding tilts a normal enough to throw a world-origin
+            // distance off by centimetres or more (which flagged faces that were really apart, and missed real ones).
+            const float Cell = 16f;
+            var buckets = new Dictionary<(int, int, int, int, int, int, int), List<int>>();
             for (var i = 0; i < faces.Count; i++)
             {
-                var k = Key(faces[i].n, faces[i].d);
-                if (!buckets.TryGetValue(k, out var l)) buckets[k] = l = new List<int>();
-                l.Add(i);
+                var f = faces[i]; var lo = Vector3.Min(f.a, Vector3.Min(f.b, f.c)); var hi = Vector3.Max(f.a, Vector3.Max(f.b, f.c));
+                int nx = Mathf.RoundToInt(f.n.x * 30f), ny = Mathf.RoundToInt(f.n.y * 30f), nz = Mathf.RoundToInt(f.n.z * 30f);
+                for (var cx = Mathf.FloorToInt(lo.x / Cell); cx <= Mathf.FloorToInt(hi.x / Cell); cx++)
+                    for (var cy = Mathf.FloorToInt(lo.y / Cell); cy <= Mathf.FloorToInt(hi.y / Cell); cy++)
+                        for (var cz = Mathf.FloorToInt(lo.z / Cell); cz <= Mathf.FloorToInt(hi.z / Cell); cz++)
+                        {
+                            var o = new Vector3((cx + .5f) * Cell, (cy + .5f) * Cell, (cz + .5f) * Cell);
+                            var k = (nx, ny, nz, cx, cy, cz, Mathf.FloorToInt(Vector3.Dot(f.n, f.a - o) / .03f));
+                            if (!buckets.TryGetValue(k, out var l)) buckets[k] = l = new List<int>();
+                            l.Add(i);
+                        }
             }
+            var tested = new HashSet<long>();
             var hits = new Dictionary<(int, int, int), Overlap>();
             foreach (var kv in buckets)
             {
                 var list = new List<int>(kv.Value);
-                var up = (kv.Key.Item1, kv.Key.Item2, kv.Key.Item3, kv.Key.Item4 + 1);
+                var up = (kv.Key.Item1, kv.Key.Item2, kv.Key.Item3, kv.Key.Item4, kv.Key.Item5, kv.Key.Item6, kv.Key.Item7 + 1);
                 if (buckets.TryGetValue(up, out var more)) list.AddRange(more);
                 if (list.Count < 2 || list.Count > 8000) continue;
                 var own = kv.Value.Count;
@@ -322,7 +334,6 @@ namespace EverythingWorld.World
                             g.Add(li);
                         }
                 }
-                var tested = new HashSet<long>();
                 foreach (var g in grid.Values)
                 {
                     if (g.Count > 400) continue;
@@ -331,13 +342,17 @@ namespace EverythingWorld.World
                         int li = g[p], lj = g[q];
                         if (li >= own && lj >= own) continue;                          // both from the next bucket: that one checks them
                         var A = faces[list[li]]; var B = faces[list[lj]];
-                        if (A.mat == B.mat || Vector3.Dot(A.n, B.n) < .999f || Mathf.Abs(A.d - B.d) > .015f) continue;
-                        if (!tested.Add(((long)Mathf.Min(li, lj) << 32) | (uint)Mathf.Max(li, lj))) continue;
+                        if (A.mat == B.mat || Vector3.Dot(A.n, B.n) < .999f) continue;
+                        // within 1.5 mm, measured locally both ways (each face's plane to the other's middle)
+                        var ca = (A.a + A.b + A.c) / 3f; var cb = (B.a + B.b + B.c) / 3f;
+                        if (Mathf.Abs(Vector3.Dot(A.n, cb - A.a)) > .0015f || Mathf.Abs(Vector3.Dot(B.n, ca - B.a)) > .0015f) continue;
+                        int gi = list[li], gj = list[lj];
+                        if (gi == gj || !tested.Add(((long)Mathf.Min(gi, gj) << 32) | (uint)Mathf.Max(gi, gj))) continue;
                         var area = OverlapArea(A, B, u, v);
                         if (area < .05f) continue;
                         var at = (A.a + A.b + A.c + B.a + B.b + B.c) / 6f;
                         var key = (Mathf.FloorToInt(at.x / 2f), Mathf.FloorToInt(at.y / 2f), Mathf.FloorToInt(at.z / 2f));
-                        if (!hits.TryGetValue(key, out var o)) hits[key] = o = new Overlap { what = owners[A.owner] + " (" + A.mat + ") on " + owners[B.owner] + " (" + B.mat + ")" };
+                        if (!hits.TryGetValue(key, out var o)) hits[key] = o = new Overlap { what = owners[A.owner] + " (" + A.mat + ") on " + owners[B.owner] + " (" + B.mat + "), facing " + Facing(A.n) };
                         o.sum += at; o.n++; o.area += area;
                     }
                 }
@@ -361,6 +376,14 @@ namespace EverythingWorld.World
             }
             result.Sort((a, b) => b.area.CompareTo(a.area));
             return result;
+        }
+
+        /// Which way a face points, in words (helps find the two pieces in the code).
+        static string Facing(Vector3 n)
+        {
+            if (n.y > .8f) return "up"; if (n.y < -.8f) return "down";
+            var a = Mathf.Repeat(Mathf.Atan2(n.x, n.z) * Mathf.Rad2Deg, 360f);
+            return new[] { "N", "NE", "E", "SE", "S", "SW", "W", "NW" }[Mathf.RoundToInt(a / 45f) % 8] + (Mathf.Abs(n.y) > .2f ? (n.y > 0 ? " and up" : " and down") : "");
         }
 
         /// The area two coplanar triangles share, found by clipping one by the other in the plane's own 2D axes.

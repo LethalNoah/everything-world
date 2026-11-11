@@ -38,7 +38,7 @@ namespace EverythingWorld.World
                 case "runfromobm": Stove(mk, solid, inside, front, side, floorY); break;
                 case "Sōra": StreetLamp(ctx, mk, G(home + front * 7.5f - side * 3.5f), side); break;
                 case "Fionavair": life.tvWindow = TvGlow(root, inside + Vector3.up * (floorY + 1.4f) - front * 2.8f + side * 2f, front); break;
-                case "Hailey Picardi": Papers(ctx, mk, inside, floorY); break;
+                case "Hailey Picardi": Papers(ctx, mk, inside, front, floorY); break;
                 case "John Luther": Plants(ctx, mk, inside, home, front, side, floorY); break;
                 case "Carmen Silver": Dust(ctx, root, inside, floorY); break;
                 case "Josie on the Rocks": Cat(mk, home + front * 4.3f - side * 2.4f + Vector3.up * 1.15f, front); break;
@@ -253,12 +253,17 @@ namespace EverythingWorld.World
             return mat;
         }
 
-        void Papers(LandContext ctx, MeshKit mk, Vector3 inside, float floorY)
+        void Papers(LandContext ctx, MeshKit mk, Vector3 inside, Vector3 front, float floorY)
         {
             var paper = WorldMaterials.Solid(new Color(.94f, .93f, .9f));
+            var side = Vector3.Cross(Vector3.up, front);
             for (var i = 0; i < 40; i++)
             {
                 var p = inside + new Vector3(ctx.Range(-3.6f, 3.6f), floorY + .02f + i * .0005f, ctx.Range(-3.4f, 3.4f));
+                // papers that land on the rug (Cottage: 3.6 x 2.6 m, .8 m in front of the middle) lie on top of it,
+                // not level with its surface, where they would flicker
+                var rel = p - (inside + front * .8f);
+                if (Mathf.Abs(Vector3.Dot(rel, side)) < 2.1f && Mathf.Abs(Vector3.Dot(rel, front)) < 1.6f) p.y += .03f;
                 mk.Box(paper, p, new Vector3(.3f, .005f, .42f), Quaternion.Euler(0, ctx.Range(0, 360f), 0));
             }
         }

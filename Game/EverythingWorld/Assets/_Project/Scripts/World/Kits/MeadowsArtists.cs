@@ -54,7 +54,7 @@ namespace EverythingWorld.World
                 case 4: Mobile(z); break;
                 default: Plush(z); break;
             }
-            if (!(a.name == "Clairo" || a.name == "beabadoobee")) { CoverBoard(z, z.At(-1.6f, -2.6f), front); Plaque(z, 2.4f, 2.4f); }
+            if (!(a.name == "Clairo" || a.name == "beabadoobee")) { CoverBoard(z, z.At(-1.6f, -2.6f), front); Plaque(z, 2.4f, 2.4f); SmallSongPiece(z); }
             glows.Add(ArtistBits.LanternPost(mk, root, z.At(1.4f, -3.6f), z.side, darkWood, iron, FairyWarm, 2.6f));
             // a warm light over every daydream (brighter for the radio stations), swelling while the artist plays
             var big = a.stationId != 0;

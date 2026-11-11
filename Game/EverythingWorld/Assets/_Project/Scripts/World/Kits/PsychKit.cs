@@ -34,6 +34,7 @@ namespace EverythingWorld.World
         readonly List<(Vector3 p, int w)> walkPoints = new List<(Vector3, int)>();
         readonly Dictionary<string, Vector3> facing = new Dictionary<string, Vector3>();
         readonly List<Vector3> noGrass = new List<Vector3>();
+        readonly List<(Vector3 c, float r, float[] ys)> plates = new List<(Vector3, float, float[])>();   // flat mushroom plates placed so far, to keep neighbours' faces apart
         Material[] capGlow;
 
         void MakeMaterials()
@@ -123,7 +124,7 @@ namespace EverythingWorld.World
         {
             MakeMaterials();
             halos = new GlowHalos(); soft = new MeshKit();
-            pathCells.Clear(); walkPoints.Clear(); facing.Clear(); noGrass.Clear();
+            pathCells.Clear(); walkPoints.Clear(); facing.Clear(); noGrass.Clear(); plates.Clear();
             center = ctx.Plaza;
             life = new GameObject("Psychedelic life").AddComponent<PsychLife>();
             life.transform.SetParent(ctx.Root, false);
@@ -190,10 +191,13 @@ namespace EverythingWorld.World
         {
             var n = pts.Count; var L = new Vector3[n]; var R = new Vector3[n];
             Vector3 Flat(Vector3 v) { v.y = 0; return v.normalized; }
+            // a closed loop (last point back on the first) is mitred across the seam too, so its two ends meet edge to
+            // edge instead of overlapping in a wedge (the Dead's loop trail flickered yellow on orange there)
+            var closed = n > 2 && (pts[0] - pts[n - 1]).sqrMagnitude < .0001f;
             for (var i = 0; i < n; i++)
             {
-                var a = i > 0 ? Flat(pts[i] - pts[i - 1]) : Flat(pts[1] - pts[0]);
-                var b = i < n - 1 ? Flat(pts[i + 1] - pts[i]) : Flat(pts[n - 1] - pts[n - 2]);
+                var a = i > 0 ? Flat(pts[i] - pts[i - 1]) : closed ? Flat(pts[n - 1] - pts[n - 2]) : Flat(pts[1] - pts[0]);
+                var b = i < n - 1 ? Flat(pts[i + 1] - pts[i]) : closed ? Flat(pts[1] - pts[0]) : Flat(pts[n - 1] - pts[n - 2]);
                 var t = (a + b).normalized; var side = Vector3.Cross(Vector3.up, t);
                 var miter = 1f / Mathf.Max(.6f, Vector3.Dot(side, Vector3.Cross(Vector3.up, b)));
                 L[i] = pts[i] + Vector3.up * lift - side * (w / 2f * miter); R[i] = pts[i] + Vector3.up * lift + side * (w / 2f * miter);
@@ -311,12 +315,19 @@ namespace EverythingWorld.World
         void Shroom(LandContext ctx, MeshKit mk, MeshKit solid, Vector3 at, float s, int colour, int kind)
         {
             var up = Vector3.up; var col = WorldMaterials.Solid(Rainbow[colour % Rainbow.Length], .5f);
+            // each one turned its own way (from where it stands, so nothing else moves): same-shaped neighbours'
+            // faces are then never parallel, so they can't line up in one plane and flicker
+            var turn = Mathf.Repeat(at.x * 7.31f + at.z * 3.17f, 36f);
             switch (kind)
             {
                 case 1: // tall and pointed
-                    { var h = 5f * s; mk.Prism(stalk, at - up * .3f, up, .25f * s, h, 8, .7f); soft.Cone(col, at + up * h, 1.1f * s, 2.4f * s, 10); mk.Prism(capGlow[colour % capGlow.Length], at + up * (h - .05f), up, 1f * s, .08f, 10); ArtistBits.PostCollider(ctx.Root, at, h, .3f * s); break; }
+                    { var h = 5f * s; mk.Prism(stalk, at - up * .3f, up, .25f * s, h, 8, .7f); soft.Cone(col, at + up * h, 1.1f * s, 2.4f * s, 10, turn); mk.Prism(capGlow[colour % capGlow.Length], at + up * (h - .05f), up, 1f * s, .08f, 10); ArtistBits.PostCollider(ctx.Root, at, h, .3f * s); break; }
                 case 2: // wide flat plate on a short thick stalk
-                    { var h = 2.2f * s; mk.Prism(stalk, at - up * .3f, up, .5f * s, h, 10, .85f); soft.Prism(col, at + up * h, up, 3f * s, .45f * s, 16, .7f); mk.Prism(capGlow[colour % capGlow.Length], at + up * (h - .04f), up, 2.8f * s, .06f, 16); ArtistBits.PostCollider(ctx.Root, at, h, .5f * s); noGrass.Add(new Vector3(at.x, 3f * s, at.z)); break; }
+                    { var h = 2.2f * s;
+                      // a plate whose flat faces land within a few mm of an overlapping neighbour's would flicker: lift it a little
+                      for (var tries = 0; tries < 20 && plates.Exists(o => Vector2.Distance(new Vector2(o.c.x, o.c.z), new Vector2(at.x, at.z)) < o.r + 3f * s && System.Array.Exists(o.ys, y => System.Array.Exists(new[] { at.y + h - .04f, at.y + h, at.y + h + .02f, at.y + h + .45f * s }, y2 => Mathf.Abs(y - y2) < .004f))); tries++) h += .006f;
+                      plates.Add((at, 3f * s, new[] { at.y + h - .04f, at.y + h, at.y + h + .02f, at.y + h + .45f * s }));
+                      mk.Prism(stalk, at - up * .3f, up, .5f * s, h, 10, .85f); soft.Prism(col, at + up * h, up, 3f * s, .45f * s, 16, .7f, turn); mk.Prism(capGlow[colour % capGlow.Length], at + up * (h - .04f), up, 2.8f * s, .06f, 16); ArtistBits.PostCollider(ctx.Root, at, h, .5f * s); noGrass.Add(new Vector3(at.x, 3f * s, at.z)); break; }
                 case 3: // a clump of little ones
                     { for (var k = 0; k < 7; k++) { var p = at + new Vector3(ctx.Range(-1.4f, 1.4f), 0, ctx.Range(-1.4f, 1.4f)) * s; p.y = ctx.Ground(p.x, p.z); var h = ctx.Range(.5f, 1.1f) * s; mk.Prism(stalk, p - up * .1f, up, .08f * s, h, 6); soft.Blob(col, p + up * h, new Vector3(.4f, .25f, .4f) * s, ctx.Rng, .1f); mk.Prism(capGlow[(colour + k) % capGlow.Length], p + up * (h - .03f), up, .32f * s, .04f, 8); } break; }
                 default: Mushroom(ctx, mk, solid, at, s, colour); break;
@@ -362,7 +373,7 @@ namespace EverythingWorld.World
             var up = Vector3.up; var dir = Quaternion.Euler(0, ctx.Range(0, 360f), 0) * Vector3.forward; var rot = Quaternion.LookRotation(dir); var side = Vector3.Cross(up, dir);
             var top = WorldMaterials.Solid(new Color(.96f, .94f, .88f), .5f);
             mk.Box(top, at + up * 2f, new Vector3(2f, 1.2f, 4.4f), rot);
-            for (var b = 0; b < 6; b++) mk.Box(WorldMaterials.Solid(Rainbow[(b + k) % Rainbow.Length], .6f), at + up * (.7f + b * .14f) - dir * .1f, new Vector3(2.02f, .15f, 4.3f), rot);
+            for (var b = 0; b < 6; b++) mk.Box(WorldMaterials.Solid(Rainbow[(b + k) % Rainbow.Length], .6f), at + up * (.7f + b * .14f) - dir * .1f, new Vector3(2.03f, .15f, 4.3f), rot);
             mk.Box(WorldMaterials.Solid(new Color(.2f, .3f, .4f), .9f), at + up * 2.1f + dir * 1.9f, new Vector3(1.8f, .8f, .6f), rot * Quaternion.Euler(-12f, 0, 0));
             mk.Prism(WorldMaterials.Solid(Rainbow[k % Rainbow.Length], .6f), at + up * 1.5f + dir * 2.21f, dir, .45f, .04f, 16);
             foreach (var s in new[] { -1f, 1f }) foreach (var z in new[] { -1.4f, 1.4f }) mk.Prism(dark, at + side * s * .95f + dir * z + up * .4f, side * s, .4f, .25f, 12);

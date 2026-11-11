@@ -686,6 +686,10 @@ namespace EverythingWorld.World
             for (var i = 0; i < 12; i++)
             {
                 var t = new GameObject("Gondola: " + Signs[i]).transform; t.SetParent(root, false);
+                // hang it at its place on the wheel from the start (SmallHoursLife moves it from there), so the
+                // twelve cabins are never stacked in one spot
+                var ga = i * Mathf.PI * 2f / 12f;
+                t.SetPositionAndRotation(wheel.TransformPoint(new Vector3(Mathf.Cos(ga) * R, Mathf.Sin(ga) * R, 0)), Quaternion.LookRotation(wheel.forward, Vector3.up));
                 var gk = new MeshKit();
                 var col = Element(i);
                 gk.Box(WorldMaterials.Solid(Color.Lerp(col, new Color(.9f, .88f, .85f), .5f)), Vector3.down * 1.5f, new Vector3(2f, 1.6f, 1.6f), Quaternion.identity);
