@@ -122,6 +122,7 @@ namespace EverythingWorld.World
             var d = MusicDirector.Instance; var playing = d != null && d.CurrentSlot.IsValid;
             var energy = SurpriseDirector.Energy;
             var id = MusicDirector.ForcedTrackId ?? (playing ? d.CurrentSlot.track.id : null);
+            AlbumGlowUpdate(dt, here, id);
             var isPhish = MusicDirector.ForcedTrackId != null || (playing && d.CurrentSlot.track.artist == "Phish");
             if (SharedChance.CurrentSong(out var song, out var start, out var length) && song != songKey) { songKey = song; songStart = start; songLength = System.Math.Max(1, length); }
             var progress = Mathf.Clamp01((float)((now - songStart) / songLength));

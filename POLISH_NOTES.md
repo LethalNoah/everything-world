@@ -196,3 +196,10 @@ Snapshot numbers refer to `Game/EverythingWorld/Logs/Live/` (not committed).
   sustain ribbon, light shafts) showed as dark wires when idle (now they appear only in their stretch of the song);
   the peak's mist read as flat slabs (now soft haze); side paths could start inside another piece; collisions added.
 - Audit: 0 overlaps, 0 artists with problems. The descriptions here and in the guide are images only.
+
+## Jam Band Commonwealth (second pass, 2026-11-12)
+- Gamehendge's story told on a slanted board in front of each of its places (the Rhombus, Icculus's mountain, the
+  Helping Friendly Book, Wilson's castle, the Lizards' village, the Lizards), in our own words.
+- A short description beside every artist's plaque (where the artist is less known, it names their songs here).
+- The album trail's pieces each have a lantern that wakes when any song from that album plays (JamSecond).
+- Audit: 0 overlaps, 0 artists with problems.

@@ -41,7 +41,7 @@ namespace EverythingWorld.World
             mk.Box(wood, hut + up * 1f, new Vector3(2.4f, 2f, 2.4f), Quaternion.LookRotation(toHeart)); mk.Cone(WorldMaterials.Solid(new Color(.45f, .3f, .2f)), hut + up * 2f, 2f, 1.6f, 4, 45f);
             mk.Box(GlowM(Warm, 2.4f), hut + up * 1.1f + toHeart * 1.21f, new Vector3(.7f, .8f, .02f), Quaternion.LookRotation(toHeart));
             halos.Add(hut + up * 1.2f + toHeart * 1.6f, 2f, Warm, .8f); life.mountainTop = hut + up * 3f;
-            Sign(ctx, mk, lad + toHeart * 2f + side * 2f, toHeart, "ICCULUS'S MOUNTAIN");
+            Sign(ctx, mk, lad + toHeart * 2f + side * 2f, toHeart, "ICCULUS'S MOUNTAIN", solid);
             ArtistBits.PointLight(ctx.Root, hut + up * 1.5f + toHeart * 2f, Warm, 12f, 1.6f);
             // the Helping Friendly Book, open on a pedestal
             var bk = c + toHeart * 6f; bk.y = ctx.Ground(bk.x, bk.z); var brot = Quaternion.LookRotation(toHeart);
@@ -50,7 +50,7 @@ namespace EverythingWorld.World
             foreach (var s in new[] { -1f, 1f }) { mk.Box(WorldMaterials.Solid(new Color(.45f, .15f, .12f)), bk + up * 1.25f + side * s * .55f, new Vector3(1.1f, .08f, 1.4f), brot * Quaternion.Euler(0, 0, s * 12f)); mk.Box(book, bk + up * 1.31f + side * s * .52f, new Vector3(1f, .04f, 1.3f), brot * Quaternion.Euler(0, 0, s * 12f)); }
             halos.Add(bk + up * 1.6f, 2.2f, new Color(1f, .9f, .6f), .6f);
             life.book = book; life.bookAt = bk + up * 1.4f;
-            Sign(ctx, mk, bk + toHeart * 2f + side * 2.2f, toHeart, "THE HELPING FRIENDLY BOOK");
+            Sign(ctx, mk, bk + toHeart * 2f + side * 2.2f, toHeart, "THE HELPING FRIENDLY BOOK", solid);
             // Wilson's tower, dark, one window lit, a mockingbird on top
             var wt = c - toHeart * 14f - side * 12f; wt.y = ctx.Ground(wt.x, wt.z);
             mk.Prism(darkStone, wt - up * .5f, up, 3f, 19f, 8, .85f); solid.Prism(darkStone, wt - up * .5f, up, 3f, 19f, 8);
@@ -69,7 +69,7 @@ namespace EverythingWorld.World
             }
             var gate = wt + toHeart * 8f; gate.y = ctx.Ground(gate.x, gate.z);
             foreach (var s in new[] { -1f, 1f }) { var gp = gate + side * s * 2.4f; mk.Prism(darkStone, gp - up * .3f, up, 1f, 7f, 8); solid.Prism(darkStone, gp - up * .3f, up, 1f, 7f, 8); mk.Box(GlowM(new Color(1f, .5f, .15f), 2.6f), gp + up * 5f + toHeart * 1f, new Vector3(.3f, .5f, .3f), Quaternion.identity); halos.Add(gp + up * 5f + toHeart * 1.1f, 1.6f, new Color(1f, .5f, .15f), .8f); }
-            Sign(ctx, mk, gate + toHeart * 3f + side * 4f, toHeart, "WILSON'S CASTLE");
+            Sign(ctx, mk, gate + toHeart * 3f + side * 4f, toHeart, "WILSON'S CASTLE", solid);
             // the Lizards' village: round huts with pointed thatch, doorways lit, round a little square
             var vil = c + side * 17f + toHeart * 4f; vil.y = ctx.Ground(vil.x, vil.z); var thatch = WorldMaterials.Solid(new Color(.6f, .5f, .3f)); var mud = WorldMaterials.Solid(new Color(.55f, .45f, .35f));
             for (var k = 0; k < 5; k++)
@@ -79,7 +79,7 @@ namespace EverythingWorld.World
                 mk.Box(GlowM(Warm, 1.8f), hp + up * .9f + hf * 1.66f, new Vector3(.8f, 1.4f, .04f), Quaternion.LookRotation(hf)); halos.Add(hp + up * 1f + hf * 2f, 1.4f, Warm, .6f);
             }
             ArtistBits.PointLight(ctx.Root, vil + up * 3f, Warm, 14f, 1.4f);
-            Sign(ctx, mk, vil + toHeart * 8.5f, toHeart, "THE LIZARDS' VILLAGE");
+            Sign(ctx, mk, vil + toHeart * 8.5f, toHeart, "THE LIZARDS' VILLAGE", solid);
             // the Famous Mockingbird, flying between the mountain and the Book (JamLife)
             var bird = WorldMaterials.Solid(new Color(.6f, .6f, .66f)); var bk2 = new MeshKit();
             bk2.Blob(bird, Vector3.zero, new Vector3(.3f, .3f, .55f), ctx.Rng, 0f); bk2.Blob(bird, new Vector3(0, .3f, .4f), Vector3.one * .18f, ctx.Rng, 0f);
@@ -100,8 +100,8 @@ namespace EverythingWorld.World
             var fl = ArtistBits.PointLight(ctx.Root, fire + up * 1f, new Color(1f, .55f, .2f), 12f, 1.8f); fl.gameObject.AddComponent<FireFlicker>().baseIntensity = 1.8f;
             ArtistBits.PostCollider(ctx.Root, fire, .5f, .9f); life.fires.Add(fire + up * .25f);
             ArtistBits.Label(ctx.Root, "GAMEHENDGE", rh + up * 10f, toHeart, .4f, new Color(.7f, .9f, 1f), TextAnchor.MiddleCenter);
-            Sign(ctx, mk, rh + toHeart * 1.5f + side * 5.5f, toHeart, "THE RHOMBUS");
-            Sign(ctx, mk, fire + toHeart * 3.6f + side * 1.5f, toHeart, "THE LIZARDS");
+            Sign(ctx, mk, rh + toHeart * 1.5f + side * 5.5f, toHeart, "THE RHOMBUS", solid);
+            Sign(ctx, mk, fire + toHeart * 3.6f + side * 1.5f, toHeart, "THE LIZARDS", solid);
             // lanterns on posts round the clearing
             for (var k = 0; k < 10; k++) { var a = k * 36f * Mathf.Deg2Rad; var lp = c + new Vector3(Mathf.Cos(a), 0, Mathf.Sin(a)) * 27f; if (!ctx.IsLand(lp.x, lp.z, 2f)) continue; lp.y = ctx.Ground(lp.x, lp.z); mk.Prism(wood, lp - up * .3f, up, .08f, 2.8f, 6); mk.Box(GlowM(new Color(.6f, .85f, 1f), 2.4f), lp + up * 2.7f, new Vector3(.3f, .4f, .3f), Quaternion.identity); halos.Add(lp + up * 2.7f, 1.4f, new Color(.6f, .85f, 1f), .7f); ArtistBits.PostCollider(ctx.Root, lp, 2.8f, .12f); }
             noGrass.Add(new Vector3(c.x, 34f, c.z));
@@ -111,11 +111,12 @@ namespace EverythingWorld.World
         }
 
         /// A little wooden sign naming a place in Gamehendge (a longer story text can go on it later).
-        void Sign(LandContext ctx, MeshKit mk, Vector3 at, Vector3 face, string text)
+        void Sign(LandContext ctx, MeshKit mk, Vector3 at, Vector3 face, string text, MeshKit solid = null)
         {
             at.y = ctx.Ground(at.x, at.z); var w = text.Length * .13f + .5f;
             mk.Prism(wood, at - Vector3.up * .3f, Vector3.up, .07f, 1.7f, 6); mk.Box(wood, at + Vector3.up * 1.4f, new Vector3(w, .5f, .08f), Quaternion.LookRotation(face));
             ArtistBits.Label(ctx.Root, text, at + Vector3.up * 1.4f + face * .05f, face, .15f, Ink, TextAnchor.MiddleCenter); ArtistBits.PostCollider(ctx.Root, at, 1.7f, .1f);
+            StoryBoard(ctx, mk, solid, at, face, text);   // the story, in front of it
         }
 
         // ---------------------------------------------------------------- the album trail
@@ -149,6 +150,7 @@ namespace EverythingWorld.World
                 mk.Prism(wood, sign - Vector3.up * .3f, Vector3.up, .07f, 1.6f, 6);
                 mk.Box(wood, sign + Vector3.up * 1.3f, new Vector3(2.6f, .5f, .08f), Quaternion.LookRotation(f));
                 ArtistBits.Label(ctx.Root, names[i], sign + Vector3.up * 1.3f + f * .05f, f, .14f, Ink, TextAnchor.MiddleCenter);
+                AlbumLantern(ctx, mk, sign, f, names[i]);
                 ArtistBits.PointLight(ctx.Root, best + Vector3.up * 5f + f * 4f, Warm, 12f, 1.2f);
                 noGrass.Add(new Vector3(best.x, 8f, best.z));
             }

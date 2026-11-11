@@ -53,7 +53,9 @@ namespace EverythingWorld.World
             }
             var reach = Foot(a);
             Board(z, z.At(reach * .85f, -reach * .5f - 2.5f), front);
-            ArtistBits.Plaque(z.mk, z.solid, labels, a, z.At(reach * .85f + 1.5f, reach * .5f + 2.5f), front, wood, dark, Ink, 1.6f);
+            var plaqueAt = z.At(reach * .85f + 1.5f, reach * .5f + 2.5f);
+            ArtistBits.Plaque(z.mk, z.solid, labels, a, plaqueAt, front, wood, dark, Ink, 1.6f);
+            ArtistDescription(z, a, plaqueAt, front, labels);
             var lp = z.At(reach * .85f, reach * .5f + 5f); z.mk.Prism(wood, lp - Vector3.up * .3f, Vector3.up, .1f, 3.4f, 6);
             var go = new GameObject("Lantern"); go.transform.SetParent(root, false);
             var lk = new MeshKit(); lk.Box(GlowM(Warm, 2.6f), Vector3.zero, new Vector3(.35f, .45f, .35f), Quaternion.identity);
