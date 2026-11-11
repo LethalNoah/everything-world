@@ -159,3 +159,11 @@ Snapshot numbers refer to `Game/EverythingWorld/Logs/Live/` (not committed).
 - Photo fixes: stepping planks crossed Agnes Obel's area (they now stop at artists' scenes); the birch's crown was
   one flat slab (now a cluster); the horizon bar was too thin to see.
 - Audit: 0 overlaps, 0 artists with problems.
+
+## Garage Rock Row (deep pass done, 2026-11-11)
+- Ten late-night song places in the back lots and hills round the town for Arctic Monkeys, Cage the Elephant,
+  Silversun Pickups, The Kooks, The Strokes and The Voidz, each under a tall neon sign with the song's name,
+  glowing and pulsing with their songs (GarageSongs, GarageSongLife). "505", "Sex on Fire" and "When You Were
+  Young" keep their existing street-wide events.
+- Photo fixes: the place cameras stand further back so the tall signs show; the ball field's stadium light lowered.
+- Audit: 0 overlaps, 0 artists with problems.

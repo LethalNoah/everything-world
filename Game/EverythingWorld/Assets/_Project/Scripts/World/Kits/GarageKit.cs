@@ -173,6 +173,7 @@ namespace EverythingWorld.World
                 Town(ctx, mk, solid);
                 Casino(ctx, mk, solid);
             }
+            SongPlaces(ctx, mk, solid);
             Outskirts(ctx, mk, solid);
             mk.Build("The Row", ctx.Root, false);
             solid.BuildCollider("The Row walls", ctx.Root);

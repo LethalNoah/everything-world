@@ -13,7 +13,7 @@ namespace EverythingWorld.World
     ///   light blinks;
     /// - "Sex on Fire": every burn barrel roars up in flames; "505": the street floods red and room 505's door
     ///   pulses; "When You Were Young": searchlights sweep the sky from the casino and the marquee goes wild.
-    public class GarageLife : MonoBehaviour
+    public partial class GarageLife : MonoBehaviour
     {
         const string Land = "Garage Rock Row";
         public Vector3 center, streetA, streetDir = Vector3.forward, room505, casino, wave;
@@ -168,6 +168,7 @@ namespace EverythingWorld.World
             var energy = SurpriseDirector.Energy;
             var valence = playing ? d.CurrentSlot.track.valence : .45f;
             var id = MusicDirector.ForcedTrackId ?? (playing ? d.CurrentSlot.track.id : null);
+            SongPlacesUpdate(dt, here, id);
 
             if (SharedChance.CurrentSong(out var song, out var start, out var length) && song != songKey)
             {
