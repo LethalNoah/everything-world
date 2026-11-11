@@ -159,7 +159,7 @@ namespace EverythingWorld.World
             dz.mk.Box(concrete, tc, tsize, dRot); dz.solid.Box(concrete, tc, tsize, dRot);
             var tf = C - 1f + tsize.z / 2f;
             ArtistBits.Label(dz.labels, "RADIOHEAD", D(0, 15.8f, tf + .05f), dF, 1.1f, Ink, TextAnchor.MiddleCenter);
-            dz.mk.Box(GlowM(new Color(1f, .12f, .08f), 2.6f), D(0, 14.3f, tf + .03f), new Vector3(12f, .35f, .04f), dRot);
+            dz.mk.Box(SongGlow(TwoPlusTwo, new Color(1f, .12f, .08f), 2.6f), D(0, 14.3f, tf + .03f), new Vector3(12f, .35f, .04f), dRot);   // the red ticker blazes for 2 + 2 = 5
             halos.Add(D(0, 14.3f, tf + .6f), 4f, new Color(1f, .15f, .1f), .4f);
             var glow = GlowM(Signal, 1.8f);
             for (var y = 9f; y < 13.6f; y += 1.5f)

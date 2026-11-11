@@ -217,3 +217,10 @@ Snapshot numbers refer to `Game/EverythingWorld/Logs/Live/` (not committed).
 - Mist on the lake and the sun shafts made stronger and warmer. Still faint against the pale morning sky in the photo
   tour: check in play. Audit: 0 overlaps, 0 artists with problems.
 
+## Alt Rock Moors (second pass, 2026-11-12, overnight)
+- A light for every song: 42 of the 63 songs had none (the first pass gave song moments mostly to Radiohead and the
+  Chili Peppers). Most use the scene's own lights (signs, windows, stars, headlights, bulbs); new small pieces where
+  there was nothing to light (Gorillaz' peak, cairn and flowers, Weezer's jukebox, Hootie's tear and lamp, Violet
+  Grohl's lamp and candles, Pulp's sign, a desk lamp, the elephant's saddle cloth, the blue cars' headlights).
+- Audit: 0 overlaps, 0 artists with problems. Not seen with the songs playing yet (the tour forces only the big moments).
+

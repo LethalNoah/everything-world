@@ -16,7 +16,7 @@ namespace EverythingWorld.World
     ///   drives; "How to Disappear Completely": white mist swallows the moor and the figure stands clear; "Videotape":
     ///   the sky darkens and the televisions blaze; "Feel Good Inc.": the windmill spins hard; "Champagne Supernova":
     ///   the supernova over the bottle bursts bright.
-    public class MoorsLife : MonoBehaviour
+    public partial class MoorsLife : MonoBehaviour
     {
         const string Land = "The Alt Rock Moors";
         static readonly string[] Titles = { "EVERYTHING IN ITS RIGHT PLACE", "KARMA POLICE", "LET DOWN", "PARANOID ANDROID", "PYRAMID SONG", "VIDEOTAPE", "OPTIMISTIC", "MAN OF WAR", "ILL WIND", "THE BENDS", "CREEP", "2 + 2 = 5", "WEIRD FISHES", "JIGSAW FALLING INTO PLACE", "HOW TO DISAPPEAR COMPLETELY" };
@@ -185,6 +185,7 @@ namespace EverythingWorld.World
             var d = MusicDirector.Instance; var playing = d != null && d.CurrentSlot.IsValid;
             var energy = SurpriseDirector.Energy;
             var id = MusicDirector.ForcedTrackId ?? (playing ? d.CurrentSlot.track.id : null);
+            SongGlowUpdate(dt, t, id, here);   // every song's own light (MoorsSongs)
             right = Mathf.MoveTowards(right, here && id == MoorsKit.RightPlace ? 1f : 0f, dt / 3f);
             pyramid = Mathf.MoveTowards(pyramid, here && id == MoorsKit.PyramidSong ? 1f : 0f, dt / 4f);
             fishes = Mathf.MoveTowards(fishes, here && id == MoorsKit.WeirdFishes ? 1f : 0f, dt / 2f);
