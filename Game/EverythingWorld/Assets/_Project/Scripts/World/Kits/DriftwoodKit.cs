@@ -146,6 +146,7 @@ namespace EverythingWorld.World
             foreach (var w in walks) Walk(mk, solid, w);
             Rails(mk, solid);
             Lamps(ctx, mk);
+            SongPlaces(ctx, mk, solid);
             Coast(ctx, mk, solid);
             Wilds(ctx, mk, solid);
             Washed(ctx, mk, solid);

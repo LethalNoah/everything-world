@@ -152,3 +152,10 @@ Snapshot numbers refer to `Game/EverythingWorld/Logs/Live/` (not committed).
 - Audit: 0 overlaps, 0 artists with problems.
 - Seen but not changed: the arrival photos are taken inside the laundrette (players arrive 70 m out), and
   Steph.fm's artist photo looks at the cottage's side wall.
+
+## Driftwood Shore (deep pass done, 2026-11-11)
+- Eleven calm song places on the dunes and heath for Jack Johnson, Agnes Obel and Angus & Julia Stone, reached by
+  stepping planks, glowing with their songs (DriftwoodSongs, DriftwoodSongLife). Places stay outside station rings.
+- Photo fixes: stepping planks crossed Agnes Obel's area (they now stop at artists' scenes); the birch's crown was
+  one flat slab (now a cluster); the horizon bar was too thin to see.
+- Audit: 0 overlaps, 0 artists with problems.

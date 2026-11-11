@@ -158,6 +158,7 @@ namespace EverythingWorld.World
             var energy = SurpriseDirector.Energy;
             var valence = playing ? d.CurrentSlot.track.valence : .4f;
             var id = MusicDirector.ForcedTrackId ?? (playing ? d.CurrentSlot.track.id : null);
+            SongPlacesUpdate(dt, here, id);
 
             // a passing drizzle for some sad songs, decided by the song itself
             if (SharedChance.CurrentSong(out var song, out _, out _) && song != songKey)
