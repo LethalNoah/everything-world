@@ -209,3 +209,11 @@ Snapshot numbers refer to `Game/EverythingWorld/Logs/Live/` (not committed).
   Grateful Dead loop's lamps stand further out with the front approach left open (one stood right in the view of the
   stage). Audit: 0 overlaps, 0 artists with problems.
 
+## Folk Woods (second pass, 2026-11-12, overnight)
+- Every song now has its own light (before, 15 of the multi-song artists' songs had none): Fenne Lily's rooms each a
+  song, bulbs through the rooms, doorstep flowers; a ring of lights round Yusuf's globe; a shack at sundown for Gordon
+  Lightfoot; a campfire under John Denver's peaks; a red roadster by Simon & Garfunkel's stream; and lights for the
+  small scenes that had none (the track, the swings, the lectern lamps, the hoop, the toy box's star, the treehouse).
+- Mist on the lake and the sun shafts made stronger and warmer. Still faint against the pale morning sky in the photo
+  tour: check in play. Audit: 0 overlaps, 0 artists with problems.
+

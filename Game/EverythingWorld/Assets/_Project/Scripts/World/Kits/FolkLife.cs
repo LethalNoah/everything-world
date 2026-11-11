@@ -36,7 +36,7 @@ namespace EverythingWorld.World
             clouds.color = new Color(.95f, .97f, 1f);
             steam = Particles("Steam", 500, new Color(.95f, .95f, .95f, .5f), .6f, 1.4f, false);
             var sm = steam.main; sm.startLifetime = new ParticleSystem.MinMaxCurve(2f, 3.5f); sm.startSpeed = new ParticleSystem.MinMaxCurve(1.5f, 3f);
-            mist = Particles("Lake mist", 400, new Color(.92f, .95f, 1f, .18f), 10f, 20f, false);
+            mist = Particles("Lake mist", 600, new Color(.92f, .95f, 1f, .26f), 12f, 24f, false);
             var mm = mist.main; mm.startLifetime = new ParticleSystem.MinMaxCurve(10f, 16f); mm.startSpeed = new ParticleSystem.MinMaxCurve(.2f, .6f);
             smoke = Particles("Chimney smoke", 400, new Color(.7f, .7f, .72f, .35f), .5f, 1.2f, false);
             var km = smoke.main; km.startLifetime = new ParticleSystem.MinMaxCurve(3f, 5f); km.startSpeed = new ParticleSystem.MinMaxCurve(.6f, 1.2f);
@@ -53,7 +53,7 @@ namespace EverythingWorld.World
             // slanting shafts of morning sun in the clearings: crossed sheets of soft light, leaning away from the east
             if (shafts.Count > 0)
             {
-                shaftM = Additive("Sun shafts"); shaftM.SetFloat("_Blend", 0f); shaftM.SetFloat("_DstBlend", (float)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha); shaftM.SetColor("_BaseColor", new Color(1f, .82f, .4f, .4f));
+                shaftM = Additive("Sun shafts"); shaftM.SetFloat("_Blend", 0f); shaftM.SetFloat("_DstBlend", (float)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha); shaftM.SetColor("_BaseColor", new Color(1f, .74f, .3f, .5f));
                 var tex = new Texture2D(8, 32, TextureFormat.RGBA32, false) { wrapMode = TextureWrapMode.Clamp };
                 for (var y = 0; y < 32; y++) for (var x = 0; x < 8; x++) { var e = Mathf.Sin((x + .5f) / 8f * Mathf.PI); var v = y / 31f; tex.SetPixel(x, y, new Color(1, 1, 1, e * Mathf.SmoothStep(0f, .08f, v) * Mathf.SmoothStep(1f, .55f, v))); }
                 tex.Apply(); shaftM.SetTexture("_BaseMap", tex);
@@ -193,12 +193,12 @@ namespace EverythingWorld.World
             nextSteam -= dt;
             if (here && nextSteam <= 0f && train.Count > 0) { nextSteam = .15f; steam.transform.position = train[0].position + train[0].forward * 1f + Vector3.up * 2.4f; steam.Emit(1); }
             nextMist -= dt;
-            if (here && nextMist <= 0f && lake != Vector3.zero) { nextMist = .4f; mist.transform.position = lake + new Vector3(Random.Range(-lakeR, lakeR) * .8f, 1f, Random.Range(-lakeR, lakeR) * .8f); mist.Emit(1); }
+            if (here && nextMist <= 0f && lake != Vector3.zero) { nextMist = .25f; mist.transform.position = lake + new Vector3(Random.Range(-lakeR, lakeR) * .8f, 1f, Random.Range(-lakeR, lakeR) * .8f); mist.Emit(1); }
             nextSmoke -= dt;
             if (here && nextSmoke <= 0f) { nextSmoke = .6f; foreach (var c in chimneys) { smoke.transform.position = c; smoke.Emit(1); } }
             nextFlame -= dt;
             if (here && nextFlame <= 0f) { nextFlame = .1f; foreach (var f in fires) { flame.transform.position = f; flame.Emit(2); } }
-            if (shaftM != null) shaftM.SetColor("_BaseColor", new Color(1f, .82f, .4f, (.4f + .06f * Mathf.Sin(t * .4f) + .15f * bridge + .1f * rocky) * (1f - storm)));
+            if (shaftM != null) shaftM.SetColor("_BaseColor", new Color(1f, .74f, .3f, (.52f + .06f * Mathf.Sin(t * .4f) + .15f * bridge + .1f * rocky) * (1f - storm)));
             nextSeed -= dt;
             var cam = Camera.main;
             if (here && cam != null && nextSeed <= 0f && storm < .6f) { nextSeed = .08f; seeds.transform.position = cam.transform.position + new Vector3(Random.Range(-28f, 28f), Random.Range(-1f, 9f), Random.Range(-28f, 28f)); seeds.Emit(1); }

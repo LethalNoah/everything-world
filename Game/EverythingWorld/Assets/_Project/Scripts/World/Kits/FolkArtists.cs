@@ -63,6 +63,7 @@ namespace EverythingWorld.World
                 case "Martin Luther King, Jr.": Lectern(z); break;
                 default: Small(z); break;
             }
+            SecondPass(z);   // a light for every song (FolkSecond)
             if (!HasStation(a)) StoryClearing(z);
             var reach = Foot(a);
             Board(z, z.At(reach * .85f, -reach * .5f - 2.5f), front);
@@ -137,7 +138,7 @@ namespace EverythingWorld.World
             Color[] tints = { new Color(1f, .78f, .5f), new Color(.7f, .82f, 1f), new Color(1f, .68f, .72f) };
             for (var k = 0; k < 3; k++)
             {
-                var x = (k - 1f) * W / 3f; var lamp = SongGlow(k == 1 ? RoomToRoom : "", tints[k], 2f);
+                var x = (k - 1f) * W / 3f; var lamp = SongGlow(new[] { Franz, ThankYouSorry, CupboardSong }[k], tints[k], 2f);   // each room its own song
                 z.mk.Prism(dark, P(x, H - .6f, 0), up, .02f, .6f, 4); z.mk.Blob(lamp, P(x, H - .7f, 0), Vector3.one * .22f, z.ctx.Rng, 0f); halos.Add(P(x, H - .8f, 0), 1.6f, tints[k], .6f);
                 ArtistBits.PointLight(z.root, P(x, 1.8f, .5f), tints[k], 6f, 1f, true);
             }
@@ -161,7 +162,7 @@ namespace EverythingWorld.World
             foreach (var s in new[] { -3.3f, 3.3f }) z.mk.Prism(logM, deck + z.side * s + z.front * 1.8f, up, .12f, 3f, 6);
             z.mk.Box(wood, deck + up * 3.1f, new Vector3(7.4f, .15f, 4.4f), rot);
             Chair(z, deck + up * .4f - z.side * 1.2f, rot, 1.15f, S(.45f, .32f, .22f)); Chair(z, deck + up * .4f + z.side * 1.2f, rot, .75f, S(.6f, .45f, .3f));
-            var lampM = SongGlow(FolkKit.PeaceTrain, Warm, 2.2f); z.mk.Box(lampM, deck + up * 2.6f, new Vector3(.3f, .4f, .3f), Quaternion.identity); halos.Add(deck + up * 2.6f, 1.6f, Warm, .7f);
+            var lampM = SongGlow(FatherAndSonSong, Warm, 2.2f); z.mk.Box(lampM, deck + up * 2.6f, new Vector3(.3f, .4f, .3f), Quaternion.identity); halos.Add(deck + up * 2.6f, 1.6f, Warm, .7f);
             var g = z.At(2f, 6f); z.mk.Prism(wood, g, up, .1f, 1f, 6); var blue = S(.25f, .45f, .8f); var land = S(.35f, .65f, .3f);
             z.mk.Blob(blue, g + up * 1.7f, Vector3.one * .7f, z.ctx.Rng, 0f);
             for (var k = 0; k < 5; k++) z.mk.Blob(land, g + up * 1.7f + Quaternion.Euler(k * 70f, k * 50f, 0) * Vector3.forward * .55f, new Vector3(.3f, .25f, .2f), z.ctx.Rng, .3f);
@@ -312,7 +313,7 @@ namespace EverythingWorld.World
             z.solid.Box(pale, c + up * .6f - z.front * .6f, new Vector3(7f, 1.2f, 4f), rot);
             z.mk.Box(pale, c + up * 1.9f - z.front * 1.6f, new Vector3(.9f, 1.3f, .6f), rot); z.mk.Box(pale, c + up * 2.6f - z.front * 1.5f, new Vector3(1.1f, .1f, .8f), rot * Quaternion.Euler(-15f, 0, 0));
             var pool = z.At(2.5f, 0); z.mk.Box(pale, pool + up * .1f, new Vector3(3.6f, .2f, 7f), rot); z.mk.Box(WorldMaterials.Solid(new Color(.3f, .45f, .6f), .97f), pool + up * .22f, new Vector3(3f, .06f, 6.4f), rot); z.solid.Box(pale, pool + up * .15f, new Vector3(3.6f, .3f, 7f), rot);
-            foreach (var s in new[] { -1f, 1f }) { var lp = c + z.side * s * 4f; z.mk.Prism(pale, lp, up, .25f, 3.4f, 10); z.mk.Blob(GlowM(Warm, 2.2f), lp + up * 3.6f, Vector3.one * .3f, z.ctx.Rng, 0f); halos.Add(lp + up * 3.6f, 1.6f, Warm, .6f); ArtistBits.PostCollider(z.root, lp, 3.4f, .3f); }
+            foreach (var s in new[] { -1f, 1f }) { var lp = c + z.side * s * 4f; z.mk.Prism(pale, lp, up, .25f, 3.4f, 10); z.mk.Blob(SongGlow("641U2WTuEdQ0XHSIWWHzIh", Warm, 2.2f), lp + up * 3.6f, Vector3.one * .3f, z.ctx.Rng, 0f); halos.Add(lp + up * 3.6f, 1.6f, Warm, .6f); ArtistBits.PostCollider(z.root, lp, 3.4f, .3f); }
             ArtistBits.Label(z.labels, "I HAVE A DREAM", c + up * .5f + z.front * 2.02f, z.front, .22f, new Color(.25f, .25f, .25f), TextAnchor.MiddleCenter);
         }
 
@@ -331,17 +332,19 @@ namespace EverythingWorld.World
                       VintageCarFolk(z, c - z.side * 1.5f - z.front * 1f, new Color(.45f, .5f, .45f)); foreach (var s in new[] { -.6f, .6f }) z.mk.Prism(SongGlow("2lUejG76ZEmgY7PvzwxxTj", new Color(1f, .95f, .8f), 2.4f), c - z.side * 4.1f - z.front * 1f + z.front * s + up * .75f, -z.side, .15f, .04f, 10); break; }
                 case "Fiona Apple": // Fast As You Can: a stretch of running track with lanes and a start line
                     { var tr = S(.75f, .3f, .25f); z.mk.Box(tr, c + up * .03f, new Vector3(6f, .06f, 10f), rot); for (var k = 0; k <= 4; k++) z.mk.Box(S(.95f, .95f, .93f), c + up * .07f + z.side * ((k - 2f) * 1.4f), new Vector3(.08f, .02f, 10f), rot); z.mk.Box(S(.95f, .95f, .93f), c + up * .07f + z.front * 3f, new Vector3(6f, .02f, .15f), rot);
-                      foreach (var s in new[] { -1f, 1f }) z.mk.Box(S(.3f, .3f, .32f), c + up * .2f + z.front * 3.4f + z.side * s * .7f, new Vector3(.4f, .2f, .4f), rot * Quaternion.Euler(-30f, 0, 0)); break; }
+                      foreach (var s in new[] { -1f, 1f }) z.mk.Box(S(.3f, .3f, .32f), c + up * .2f + z.front * 3.4f + z.side * s * .7f, new Vector3(.4f, .2f, .4f), rot * Quaternion.Euler(-30f, 0, 0));
+                      foreach (var s in new[] { -1f, 1f }) { var sl = c + z.front * 3f + z.side * s * 3.4f; z.mk.Prism(metal, sl, up, .06f, 1.6f, 6); z.mk.Blob(SongGlow("1UmmSKPdCtBuJsmbZG9G3u", new Color(.4f, 1f, .45f), 2.4f), sl + up * 1.7f, Vector3.one * .16f, z.ctx.Rng, 0f); halos.Add(sl + up * 1.7f, 1.2f, new Color(.4f, 1f, .45f), .5f); ArtistBits.PostCollider(z.root, sl, 1.6f, .1f); } break; }
                 case "Josie Edwards": // Chemical Light: a glowing flask on a lab table
                     { z.mk.Box(dark, c + up * .9f, new Vector3(2f, .08f, 1f), rot); foreach (var a in new[] { -.9f, .9f }) foreach (var b in new[] { -.4f, .4f }) z.mk.Box(metal, c + up * .45f + z.side * a + z.front * b, new Vector3(.06f, .9f, .06f), rot); z.solid.Box(dark, c + up * .5f, new Vector3(2f, 1f, 1f), rot);
                       var fl = SongGlow("3PpTiirc8IzcjqEwDyaBZK", new Color(.4f, 1f, .6f), 2f); z.mk.Blob(fl, c + up * 1.3f, new Vector3(.35f, .35f, .35f), z.ctx.Rng, 0f); z.mk.Prism(fl, c + up * 1.55f, up, .1f, .4f, 8); halos.Add(c + up * 1.3f, 2f, new Color(.4f, 1f, .6f), .7f);
                       z.mk.Prism(S(.7f, .8f, .9f, .9f), c + up * .94f + z.side * .6f, up, .1f, .3f, 8); z.mk.Prism(S(.7f, .8f, .9f, .9f), c + up * .94f - z.side * .6f, up, .08f, .45f, 8); break; }
                 case "Liana Flores": // Silvershoes, rises the moon: silver shoes on a stump under a big rising moon
-                    { z.mk.Prism(bark, c - up * .2f, up, .6f, .8f, 10); z.solid.Prism(bark, c - up * .2f, up, .6f, .8f, 10); foreach (var s in new[] { -.15f, .15f }) z.mk.Box(S(.85f, .87f, .92f, .95f), c + up * .7f + z.side * s, new Vector3(.12f, .12f, .3f), rot);
+                    { z.mk.Prism(bark, c - up * .2f, up, .6f, .8f, 10); z.solid.Prism(bark, c - up * .2f, up, .6f, .8f, 10); foreach (var s in new[] { -.15f, .15f }) z.mk.Box(SongGlow(Silvershoes, new Color(.8f, .88f, 1f), .9f), c + up * .7f + z.side * s, new Vector3(.12f, .12f, .3f), rot); halos.Add(c + up * .9f, 1f, new Color(.8f, .88f, 1f), .4f);
                       var moon = SongGlow("51Grh1RyUDcMBbpuyUIUHI", new Color(.95f, .95f, 1f), 1.6f); z.mk.Blob(moon, c + up * 5f - z.front * 3f, Vector3.one * 1.6f, z.ctx.Rng, 0f); halos.Add(c + up * 5f - z.front * 3f, 3.6f, new Color(.95f, .95f, 1f), .5f); break; }
                 case "Lily Meola": // You and I: two swings side by side on one frame
                     { foreach (var s in new[] { -2f, 2f }) { z.mk.Box(wood, c + z.side * s + up * 1.6f, new Vector3(.15f, 3.4f, .15f), rot * Quaternion.Euler(0, 0, s * -3f)); ArtistBits.PostCollider(z.root, c + z.side * s, 3.2f, .15f); } z.mk.Box(wood, c + up * 3.3f, new Vector3(4.4f, .15f, .15f), rot);
-                      foreach (var s in new[] { -.9f, .9f }) { foreach (var e in new[] { -.3f, .3f }) z.mk.Box(S(.8f, .75f, .6f), c + z.side * (s + e) + up * 2.1f, new Vector3(.03f, 2.4f, .03f), rot); z.mk.Box(wood, c + z.side * s + up * .9f, new Vector3(.8f, .06f, .3f), rot); } break; }
+                      foreach (var s in new[] { -.9f, .9f }) { foreach (var e in new[] { -.3f, .3f }) z.mk.Box(S(.8f, .75f, .6f), c + z.side * (s + e) + up * 2.1f, new Vector3(.03f, 2.4f, .03f), rot); z.mk.Box(wood, c + z.side * s + up * .9f, new Vector3(.8f, .06f, .3f), rot); }
+                      foreach (var s in new[] { -1.7f, 1.7f }) { var lp = c + z.side * s + up * 2.9f; z.mk.Prism(dark, lp + up * .1f, up, .01f, .3f, 4); z.mk.Box(SongGlow("3veAtMxHWM7SbZOXfJ142t", new Color(1f, .7f, .55f), 2.2f), lp, new Vector3(.18f, .24f, .18f), rot); halos.Add(lp, 1.2f, new Color(1f, .7f, .55f), .6f); } break; }
                 case "Alice Phoebe Lou": // Society: a busker's corner, an open guitar case, a mic stand, string lights
                     { z.mk.Box(dark, c + up * .1f + z.front * 1f, new Vector3(.4f, .15f, 1.1f), rot * Quaternion.Euler(0, 30f, 0)); for (var k = 0; k < 6; k++) z.mk.Prism(S(.9f, .75f, .3f, .9f), c + up * .19f + z.front * 1f + new Vector3(Mathf.Sin(k) * .12f, 0, Mathf.Cos(k * 2f) * .3f), up, .04f, .01f, 8);
                       z.mk.Prism(metal, c, up, .2f, .04f, 10); z.mk.Prism(metal, c, up, .025f, 1.5f, 6); z.mk.Blob(dark, c + up * 1.55f, new Vector3(.06f, .06f, .1f), z.ctx.Rng, 0f); ArtistBits.PostCollider(z.root, c, 1.5f, .2f);
@@ -359,15 +362,16 @@ namespace EverythingWorld.World
                       z.mk.Cone(S(.75f, .2f, .2f), c + up * 3.2f, 3.3f, 1.6f, 8, 22.5f); var bulbs = SongGlow(SweetCaroline, Warm, 2.2f); for (var k = 0; k < 24; k++) { var a = k * 15f * Mathf.Deg2Rad; z.mk.Blob(bulbs, c + up * 3.15f + (z.side * Mathf.Cos(a) + z.front * Mathf.Sin(a)) * 3.2f, Vector3.one * .09f, z.ctx.Rng, 0f); } halos.Add(c + up * 3f, 3.6f, Warm, .4f); break; }
                 case "Paul Simon": // Me and Julio Down by the Schoolyard: a schoolyard with a chain-link fence, a hoop and hopscotch
                     { for (var k = 0; k < 5; k++) { var fp = c - z.front * 2f + z.side * ((k - 2f) * 2f); z.mk.Prism(metal, fp, up, .05f, 2.2f, 6); ArtistBits.PostCollider(z.root, fp, 2.2f, .08f); } z.mk.Box(S(.6f, .62f, .65f, .7f), c - z.front * 2f + up * 1.1f, new Vector3(8f, 2f, .02f), rot);
-                      var hp = c + z.side * 3f; z.mk.Prism(metal, hp, up, .08f, 3f, 6); z.mk.Box(S(.95f, .95f, .95f), hp + up * 3.1f - z.front * .3f, new Vector3(1.2f, .8f, .05f), rot); z.mk.Prism(S(.95f, .4f, .1f), hp + up * 2.8f + z.front * .2f, up, .25f, .03f, 12); ArtistBits.PostCollider(z.root, hp, 3f, .12f);
+                      var hp = c + z.side * 3f; z.mk.Prism(metal, hp, up, .08f, 3f, 6); z.mk.Box(S(.95f, .95f, .95f), hp + up * 3.1f - z.front * .3f, new Vector3(1.2f, .8f, .05f), rot); z.mk.Prism(SongGlow("4W9b49P72RO0l7FyrLenAm", new Color(1f, .5f, .15f), 1.6f), hp + up * 2.8f + z.front * .2f, up, .25f, .03f, 12); halos.Add(hp + up * 2.8f + z.front * .2f, 1f, new Color(1f, .5f, .15f), .5f); ArtistBits.PostCollider(z.root, hp, 3f, .12f);
                       for (var k = 0; k < 7; k++) z.mk.Box(S(.95f, .95f, .9f), c + up * .03f + z.front * (k * .6f) + z.side * ((k % 3 == 1) ? .35f : 0f), new Vector3(.5f, .02f, .5f), rot); break; }
                 case "Randy Newman": // You've Got a Friend in Me: a wooden toy box with a cowboy hat on it and toy blocks round it
                     { z.mk.Box(S(.75f, .5f, .3f), c + up * .5f, new Vector3(1.6f, 1f, 1f), rot); z.solid.Box(S(.75f, .5f, .3f), c + up * .5f, new Vector3(1.6f, 1f, 1f), rot);
                       z.mk.Prism(S(.55f, .35f, .2f), c + up * 1f, up, .6f, .05f, 16); z.mk.Prism(S(.55f, .35f, .2f), c + up * 1.05f, up, .32f, .35f, 12, .85f);
+                      z.mk.Prism(SongGlow("5aaUXcrsXI477I93yBE8lu", new Color(1f, .82f, .25f), 2f), c + up * .55f + z.front * .51f, z.front, .28f, .03f, 5); halos.Add(c + up * .55f + z.front * .7f, 1f, new Color(1f, .82f, .25f), .5f);
                       for (var k = 0; k < 5; k++) z.mk.Box(WorldMaterials.Solid(new[] { new Color(1f, .3f, .3f), new Color(.3f, .6f, 1f), new Color(1f, .85f, .2f) }[k % 3], .4f), c + z.front * 1.1f + z.side * ((k - 2f) * .5f) + up * .15f, Vector3.one * .3f, rot * Quaternion.Euler(0, k * 17f, 0)); break; }
                 case "Shel Silverstein": // Crouchin' on the Outside: a treehouse in a big oak, a rope ladder down
                     { Oak(z.ctx, z.mk, c, 1.5f); var th = c + up * 4f + z.front * .4f; z.mk.Box(wood, th, new Vector3(2.6f, .15f, 2.4f), rot); z.mk.Box(wood, th + up * .9f - z.front * 1.1f, new Vector3(2.6f, 1.8f, .1f), rot); foreach (var s in new[] { -1.25f, 1.25f }) z.mk.Box(wood, th + up * .9f + z.side * s, new Vector3(.1f, 1.8f, 2.4f), rot);
-                      z.mk.GableRoof(S(.55f, .3f, .2f), th + up * 1.8f, new Vector3(2.8f, 0, 2.8f), .9f, Quaternion.LookRotation(z.side)); z.mk.Box(GlowM(Warm, 1.6f), th + up * 1f - z.front * 1.04f, new Vector3(.6f, .5f, .02f), rot);
+                      z.mk.GableRoof(S(.55f, .3f, .2f), th + up * 1.8f, new Vector3(2.8f, 0, 2.8f), .9f, Quaternion.LookRotation(z.side)); z.mk.Box(SongGlow("1H7TYyq7yATzT22VSiAFy4", Warm, 1.6f), th + up * 1f - z.front * 1.04f, new Vector3(.6f, .5f, .02f), rot); z.mk.Box(SongGlow("1H7TYyq7yATzT22VSiAFy4", Warm, 2f), th + up * 1.5f + z.front * 1.1f, new Vector3(.2f, .25f, .2f), rot); halos.Add(th + up * 1.5f + z.front * 1.1f, 1.2f, Warm, .6f);
                       for (var k = 0; k < 7; k++) z.mk.Box(wood, th + z.front * 1.1f - up * (k * .55f + .3f), new Vector3(.6f, .05f, .05f), rot); foreach (var s in new[] { -.3f, .3f }) z.mk.Box(S(.8f, .75f, .6f), th + z.front * 1.1f + z.side * s - up * 2f, new Vector3(.03f, 4f, .03f), rot); break; }
                 case "Van Morrison": // Brown Eyed Girl: a picnic blanket with a transistor radio and a basket
                     { z.mk.Box(S(.8f, .2f, .2f, .2f), c + up * .03f, new Vector3(3f, .04f, 2.4f), rot); for (var k = 0; k < 4; k++) z.mk.Box(S(.95f, .95f, .9f), c + up * .08f + z.side * ((k - 1.5f) * .7f), new Vector3(.15f, .01f, 2.4f), rot);
