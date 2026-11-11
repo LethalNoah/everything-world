@@ -223,6 +223,7 @@ namespace EverythingWorld.Spotify
                 var state = await StartedAfter(req.track, generation, used);
                 if (state != null)
                 {
+                    state = await FixVersion(req, state, generation, used);
                     await SyncPosition(req, state, generation);
                     return;
                 }
@@ -262,6 +263,29 @@ namespace EverythingWorld.Spotify
             {
                 Debug.LogWarning("[Spotify check] failed: " + e.Message);
             }
+        }
+
+        /// Starting a song from its album can land on a different version of it: Spotify swaps in the copy it offers
+        /// in your country, and that album may hold a shorter edit (How Soon Is Now? played as ~3:40 instead of the
+        /// station's 6:48). If Spotify's song is more than 15 s longer or shorter than the station's, ask for the exact
+        /// track instead. If that doesn't take, go back to the album version so something still plays.
+        async Task<PlayerState> FixVersion(PlayRequest req, PlayerState state, int generation, StartMethod used)
+        {
+            var want = req.track.duration_ms; var got = state.item?.duration_ms ?? 0;
+            if (want <= 0 || got <= 0 || Math.Abs(got - want) <= 15000 || used == StartMethod.PlainPlay) return state;
+            Debug.LogWarning($"[Spotify version] {req.track}: Spotify is playing a {FormatTime(got)} version, the station's is {FormatTime(want)}. Asking for the exact track.");
+            if (generation != playGeneration) return state;
+            await Send("PUT", PlayUrl(), BuildBody(StartMethod.PlainPlay, req.track, req.PositionNow));
+            var exact = await StartedAfter(req.track, generation, StartMethod.PlainPlay);
+            if (exact != null && Math.Abs((exact.item?.duration_ms ?? 0) - want) <= 15000)
+            {
+                Debug.Log($"[Spotify version] {req.track}: now playing the right version ({FormatTime(exact.item.duration_ms)})");
+                return exact;
+            }
+            if (generation != playGeneration) return state;
+            Debug.LogWarning($"[Spotify version] {req.track}: couldn't get the {FormatTime(want)} version; staying with the album's.");
+            await Send("PUT", PlayUrl(), BuildBody(used, req.track, req.PositionNow));
+            return await StartedAfter(req.track, generation, used) ?? state;
         }
 
         /// Compares Spotify's position with the station's and jumps if they're more than a second apart.

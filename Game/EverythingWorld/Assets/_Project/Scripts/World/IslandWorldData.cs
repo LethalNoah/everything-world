@@ -69,15 +69,20 @@ namespace EverythingWorld.World
         public Vector3 VertexPosition(int col, int row) =>
             new Vector3(col * Step, VertexHeight(col, row), layout.depth - row * Step);
 
-        /// Ground height at a world position (bilinear between grid vertices).
+        /// Ground height at a world position: exactly on the drawn terrain. Each grid cell is drawn as two flat
+        /// triangles, split along alternating diagonals (IslandWorldBuilder.BuildChunk), so this follows the same
+        /// triangles. (It used to blend the four corners smoothly, which on slopes put grass and props up to a metre
+        /// above or below the ground you see.)
         public float HeightAt(float x, float z)
         {
             var fc = x / Step; var fr = (layout.depth - z) / Step;
             int c = Mathf.FloorToInt(fc), r = Mathf.FloorToInt(fr);
             float tx = fc - c, tz = fr - r;
-            var top = Mathf.Lerp(VertexHeight(c, r), VertexHeight(c + 1, r), tx);
-            var bottom = Mathf.Lerp(VertexHeight(c, r + 1), VertexHeight(c + 1, r + 1), tx);
-            return Mathf.Lerp(top, bottom, tz);
+            float h0 = VertexHeight(c, r), h1 = VertexHeight(c + 1, r), h2 = VertexHeight(c + 1, r + 1), h3 = VertexHeight(c, r + 1);
+            if (((c + r) & 1) == 0)   // diagonal from corner 0 to corner 2
+                return tx >= tz ? h0 + (h1 - h0) * tx + (h2 - h1) * tz : h0 + (h3 - h0) * tz + (h2 - h3) * tx;
+            // diagonal from corner 1 to corner 3
+            return tx + tz <= 1f ? h0 + (h1 - h0) * tx + (h3 - h0) * tz : h2 + (h3 - h2) * (1f - tx) + (h1 - h2) * (1f - tz);
         }
 
         /// The island under a world position, or null over water.

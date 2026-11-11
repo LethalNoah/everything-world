@@ -17,6 +17,15 @@ The playlist is meant to be surprising and spontaneous, so the world shouldn't b
 - **A crumbling stadium standing like a castle** (battlement stands, floodlight towers, a stage on the pitch): first built for the Kingdom of Classic Rock, taken out at the owner's request to save it for the stadium/arena rock land (Arena Rock Ridge).
 - The Kingdom took a gentle "heavenly" touch (golden light through the Hall's dome, gold dust). If another land needs heaven as its main idea, keep the Kingdom's version understated.
 
+## Owner's notes from play, 2026-11-11 (to do)
+
+- **Garage Rock Row:** keep the main strip with the artist spots on it, but surround it with suburbia: lines of streets with small nondescript houses. Song artwork and song pieces can live out in the suburban streets.
+- **The Synchronous World (Small Hours exhibit):** handrails or something similar along the trail, so there's a clearer path to follow the progression.
+- **Akashic Sanctuary (Small Hours exhibit):** a sign with the song's name at each piece.
+- **Light points of interest:** Metalcore Caldera, Post-Punk Docklands and the Iron Range keep their darkness, but use light more strategically and more liberally on every point of interest (and the Caldera's smaller artist spots need to read better).
+- **Post-Punk Docklands:** a flat centre where the tall buildings stand, on something closer to a street grid, with slopes round it down to the docks.
+- **Grunge Rainwood:** more colour and more lighting (it can be higher energy, not only gloomy), without overdoing it; make Alice In Chains (the owner's favourite of the scene) easy to find.
+
 ## Social spaces and minigames (2026-11-09, later)
 
 - A big Christmas lodge (probably in or near Lanternwood) you can go inside, sit down in and talk with friends.

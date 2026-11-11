@@ -504,7 +504,10 @@ namespace EverythingWorld.World
                     if (rng.NextDouble() < .55) continue;
                     if (!reeds.TryGetValue(key, out var wr)) reeds[key] = wr = new WindMesh();
                     var col = Color.Lerp(new Color(.33f, .42f, .33f), new Color(.48f, .52f, .42f), (float)rng.NextDouble());
-                    wr.Tuft(new Vector3(px, waterY - .1f, pz), .9f + (float)rng.NextDouble() * .8f, col, Color.Lerp(col, DustyPink, .25f), rng, 3, .04f);
+                    // rooted in the bed and tall enough to stand out of the water (not floating at the water's height
+                    // where a hollow dips below it with no water in it)
+                    var depth = Mathf.Min(waterY - g, 1.5f);
+                    wr.Tuft(new Vector3(px, g - .04f, pz), depth + .9f + (float)rng.NextDouble() * .8f, col, Color.Lerp(col, DustyPink, .25f), rng, 3, .04f);
                     continue;
                 }
                 var n = Mathf.PerlinNoise(px * .025f + 2f, pz * .025f + 9f);
