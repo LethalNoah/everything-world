@@ -265,6 +265,7 @@ namespace EverythingWorld.World
                 {
                     var lp = pts[i] + side * ((i / 9) % 2 == 0 ? 1f : -1f) * (PathW / 2f + .9f);
                     var near = false; foreach (var o in lamps) if ((o - lp).sqrMagnitude < 22f * 22f) near = true;
+                    foreach (var ar in ctx.Artists) if (Vector2.Distance(new Vector2(lp.x, lp.z), new Vector2(ar.x, ar.z)) < Foot(ar) + 12f) near = true;   // not in the way into an artist's area
                     if (near) continue;
                     lamps.Add(lp); if ((i / 9 + walk) % 3 == 1) PathBear(ctx, mk, ctx.OnGround(lp.x, lp.z), -side * ((i / 9) % 2 == 0 ? 1f : -1f), i + walk); else LavaLamp(ctx, mk, ctx.OnGround(lp.x, lp.z), .5f, (i + walk) % Rainbow.Length);
                 }

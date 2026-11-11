@@ -203,3 +203,9 @@ Snapshot numbers refer to `Game/EverythingWorld/Logs/Live/` (not committed).
 - A short description beside every artist's plaque (where the artist is less known, it names their songs here).
 - The album trail's pieces each have a lantern that wakes when any song from that album plays (JamSecond).
 - Audit: 0 overlaps, 0 artists with problems.
+
+## Psychedelic Wilds (second pass, 2026-11-12, overnight)
+- Lava lamps no longer stand in the way into artist areas: path lamps keep 12 m clear of every artist's area, and the
+  Grateful Dead loop's lamps stand further out with the front approach left open (one stood right in the view of the
+  stage). Audit: 0 overlaps, 0 artists with problems.
+

@@ -46,7 +46,7 @@ namespace EverythingWorld.World
             var loop = new List<Vector3>();
             for (var k = 0; k <= 48; k++) { var a = k * Mathf.PI * 2f / 48f; loop.Add(P(Mathf.Cos(a) * 34f, Mathf.Sin(a) * 34f)); }
             Strip(z.mk, loop, PathW * .8f, .05f, 2);
-            for (var k = 0; k < 48; k += 4) { var lp = loop[k] + (loop[k] - z.c).normalized * 2.4f; lp = ctx.OnGround(lp.x, lp.z); LavaLamp(ctx, z.mk, lp, .38f, k / 4 % Rainbow.Length); }
+            for (var k = 4; k < 48; k += 4) { var lp = loop[k] + (loop[k] - z.c).normalized * 4.5f; lp = ctx.OnGround(lp.x, lp.z); LavaLamp(ctx, z.mk, lp, .38f, k / 4 % Rainbow.Length); }
             // Ship of Fools, aground on the sand
             {
                 var c = P(-40f, 8f); var hullM = WorldMaterials.Solid(new Color(.45f, .3f, .2f)); var rot = Quaternion.LookRotation(z.side) * Quaternion.Euler(0, 0, 8f);
