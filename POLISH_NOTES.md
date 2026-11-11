@@ -109,3 +109,7 @@ Snapshot numbers refer to `Game/EverythingWorld/Logs/Live/` (not committed).
 ## Southern Rock Bayou (deep pass done, 2026-11-10)
 - Seven song places for the Allman Brothers, Lynyrd Skynyrd and Marshall Tucker; a song piece on every smaller
   porch; song glows throughout. Still to check in play: paths to the places that cross water.
+
+## Indie Downs (deep pass done, 2026-11-10)
+- Ten song places (Florence Road, Death Cab, Rainbow Kitten Surprise) and a song piece for every smaller artist,
+  all with song glows.

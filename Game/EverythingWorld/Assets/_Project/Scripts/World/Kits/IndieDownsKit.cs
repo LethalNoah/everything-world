@@ -94,6 +94,7 @@ namespace EverythingWorld.World
             if (hasQuiet) QuietPlace(ctx, mk, solid);
             KiteSpots(ctx);
             Fields(ctx, mk, solid);
+            SongPlaces(ctx, mk, solid, pictures);
             mk.Build("Downs scenery", ctx.Root, false);
             soft.Build("Soft leaves", ctx.Root, false);
             solid.BuildCollider("Downs walls", ctx.Root);
@@ -102,6 +103,7 @@ namespace EverythingWorld.World
             life.transform.SetParent(ctx.Root, false);
             life.center = ctx.Plaza; life.kiteAnchors = kiteAnchors.ToArray();
             life.noahMarker = noahCap; life.seanMarker = seanCap; life.sails = sails.ToArray();
+            downsLife = life; life.songGlows.AddRange(pendingGlows); pendingGlows.Clear();
             var adders = ctx.Data.layout.hubAdders ?? new string[0];
             foreach (var t in ctx.Data.layout.hubTimeline ?? new IslandWorldData.TimelineSong[0])
                 if (t.a >= 0 && t.a < adders.Length) life.adderOf[t.id] = adders[t.a];

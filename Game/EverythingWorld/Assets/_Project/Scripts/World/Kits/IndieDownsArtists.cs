@@ -40,6 +40,7 @@ namespace EverythingWorld.World
             else if (a.name == "Pavement") Crossroads(ctxA);
             else if (a.tier != "shrine") Moment(ctxA, Hash(a.name) % 6);
             else Small(ctxA, Hash(a.name) % 3);
+            if (a.name != "Death Cab for Cutie" && a.name != "Florence Road" && a.name != "Rainbow Kitten Surprise") SmallSongPiece(ctxA);
 
             // a warm light over every area (brighter for the radio stations), swelling while the artist plays
             var big = a.stationId != 0;

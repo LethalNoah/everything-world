@@ -16,7 +16,7 @@ namespace EverythingWorld.World
     /// - a murmuration of starlings swirling over the hills;
     /// - a hot-air balloon drifting across the sky for the length of the song.
     /// The waymarkers on each person's path glow and pulse, and blaze brighter while a song that person added plays.
-    public class DownsLife : MonoBehaviour
+    public partial class DownsLife : MonoBehaviour
     {
         const string Land = "The Indie Downs";
         public Vector3 center;
@@ -241,6 +241,7 @@ namespace EverythingWorld.World
             var playing = d != null && d.CurrentSlot.IsValid;
             var energy = SurpriseDirector.Energy;
             var valence = playing ? d.CurrentSlot.track.valence : .5f;
+            SongGlowUpdate(dt, here);
 
             // a new song: a gust, and the song's surprises rolled from the song itself
             if (SharedChance.CurrentSong(out var song, out var start, out var length) && song != songKey)
