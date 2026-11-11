@@ -111,6 +111,7 @@ namespace EverythingWorld.World
             var mk = new MeshKit(); var solid = new MeshKit(); soft = new MeshKit();
             var gateFront = Gate(ctx, mk, solid);
             Walkways(ctx, mk, solid, gateFront);
+            SongPlaces(ctx, mk, solid);
             Festival(ctx, mk, solid);
             mk.Build("Festival", ctx.Root, false);
             soft.Build("Soft festival", ctx.Root, false);

@@ -167,3 +167,11 @@ Snapshot numbers refer to `Game/EverythingWorld/Logs/Live/` (not committed).
   Young" keep their existing street-wide events.
 - Photo fixes: the place cameras stand further back so the tall signs show; the ball field's stadium light lowered.
 - Audit: 0 overlaps, 0 artists with problems.
+
+## Electric Fields (deep pass done, 2026-11-11)
+- Six festival installations for MGMT and Santigold in the fields, down straw walkways, glowing with their songs
+  (ElectricSongs, ElectricSongLife). "Kids", "Electric Feel", "Congratulations" and "Disparate Youth" keep their
+  existing events and pieces.
+- Photo fixes: the pretend mansion washed out to a cream glow (toned down, warm windows); the pines' "icy blue"
+  read as white (now a deep, saturated blue).
+- Audit: 0 overlaps, 0 artists with problems.

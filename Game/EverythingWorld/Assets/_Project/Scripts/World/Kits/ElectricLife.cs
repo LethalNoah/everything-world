@@ -14,7 +14,7 @@ namespace EverythingWorld.World
     ///   "Disparate Youth": flame cannons on the main stage; LCD Soundsystem's dome sits dim until one of their
     ///   songs plays, then its mirror ball spins and every light in it comes on;
     /// - now and then (shared clock): a short fireworks show in a song, and a hot-air balloon drifting over.
-    public class ElectricLife : MonoBehaviour
+    public partial class ElectricLife : MonoBehaviour
     {
         const string Land = "The Electric Fields";
         public Vector3 center, gate, mainStage, mainStageFront = Vector3.forward, lcdAt;
@@ -173,6 +173,7 @@ namespace EverythingWorld.World
             var energy = SurpriseDirector.Energy;
             var valence = playing ? d.CurrentSlot.track.valence : .6f;
             var id = MusicDirector.ForcedTrackId ?? (playing ? d.CurrentSlot.track.id : null);
+            SongPlacesUpdate(dt, SkyDirector.Instance != null && SkyDirector.Instance.CurrentLand == "The Electric Fields", id);
 
             if (SharedChance.CurrentSong(out var song, out var start, out var length) && song != songKey)
             {
