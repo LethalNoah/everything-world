@@ -11,6 +11,7 @@ namespace EverythingWorld.World
     /// - fast travel: near a tower, press 1-9 to step out of another tower
     /// - inside the area of an artist with 3+ songs, you hear that artist's own station
     /// - tells the SkyDirector which land you're on, so the sky changes with the land
+    /// - while you fly (SimplePlayerController, F) it keeps you above the ground and the sea instead of turning you back
     [RequireComponent(typeof(CharacterController))]
     public class IslandExplorer : MonoBehaviour
     {
@@ -22,6 +23,7 @@ namespace EverythingWorld.World
         public string startLand = "The Everything Hub";
 
         CharacterController controller;
+        EverythingWorld.Player.SimplePlayerController walker;
         Vector3 lastSafe;
         float nextIslandCheck;
         int currentIsland = -2, currentArea = -2;
@@ -33,7 +35,7 @@ namespace EverythingWorld.World
 
         void Start()
         {
-            controller = GetComponent<CharacterController>();
+            controller = GetComponent<CharacterController>(); walker = GetComponent<EverythingWorld.Player.SimplePlayerController>();
             var world = IslandWorldBuilder.Instance;
             if (world != null)
             {
@@ -62,8 +64,15 @@ namespace EverythingWorld.World
             var p = transform.position;
             var feet = p.y + controller.center.y - controller.height / 2;
 
+            var flying = walker != null && walker.Flying;
+            if (flying)
+            {
+                // flying: never below the ground or the sea
+                var floor = Mathf.Max(world.Data.HeightAt(p.x, p.z), world.Data.layout.waterLevel) + .6f;
+                if (feet < floor) { p.y += floor - feet; transform.position = p; }
+            }
             // deep water: back to the last dry spot
-            if (feet < world.Data.layout.waterLevel - maxWadeDepth) PlaceAt(lastSafe, keepHeight: true);
+            else if (feet < world.Data.layout.waterLevel - maxWadeDepth) PlaceAt(lastSafe, keepHeight: true);
             else if (controller.isGrounded && feet > world.Data.layout.waterLevel - .3f) lastSafe = p;
 
             if (Time.time >= nextIslandCheck)
@@ -125,7 +134,7 @@ namespace EverythingWorld.World
             if (!keepHeight) p.y = Mathf.Max(world.Data.HeightAt(p.x, p.z), world.Data.layout.waterLevel) + 1.2f;
             controller.enabled = false;  // a CharacterController ignores direct moves while enabled
             transform.position = p;
-            controller.enabled = true;
+            controller.enabled = walker == null || !walker.Flying;
             lastSafe = p;
         }
 
