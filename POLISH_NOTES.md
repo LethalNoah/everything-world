@@ -4,6 +4,44 @@ What stood out in the owner's first walk through the main-landmass lands (158 sn
 the land audit's new overlap check. Each land's own session starts here: fix what's listed, keep what works.
 Snapshot numbers refer to `Game/EverythingWorld/Logs/Live/` (not committed).
 
+## Second walk-through (snapshots 159-408, 2026-11-11)
+
+Fixed already: floating Fens reeds (and ground height now matches the drawn terrain everywhere), the zone HUD for
+artist stations, and Spotify playing a shorter version of a song (How Soon Is Now?).
+
+- **Too dark to read points of interest:** Metalcore Caldera (the small shrines all look alike, a fence and one
+  glow on a black disc: Siamese 306, Until I Wake 307, Drive Like Jehu 323, Saosin 324, Broadway 320, Breathe
+  Carolina 325; plaques unlit), Post-Punk Docklands (ground pure black away from lamps: 326-330, 340; Nena 336,
+  Tears For Fears 343, The Go-Go's 344 plaques in shadow), Iron Range (209), Arena Rock Ridge (221-225: crowd,
+  Styx ship and U2 near black), Garage Rock Row (170), the Small Hours foreground (178, 181, 189). Light every
+  plaque and every point of interest.
+- **Metalcore Caldera:** a white cube floating at Rain City Drive (309, 310: the Frozen ice block reads as a flat
+  white box), slabs hanging by Like Moths To Flames (314, 315: the moth's wings), black polygons above Siamese
+  (306), a pale glow square at Drive Like Jehu (323), a beam cutting the whale ribs at Hands Like Houses (313),
+  a duplicate faded land label (309), white blown-out lava (302), Killswitch's subtitle too small (305).
+- **Post-Punk Docklands:** a lamp post leaning steeply (344), a lone wall slab in a field (327), dark smoke
+  balls in mid-air (331), a sliver of geometry (339). Wanted: a flat centre on a street grid (IDEAS.md).
+- **Grunge Rainwood:** waterfall a flat white ribbon with torn edges (386, 393, 394); the river from above a
+  white "ladder" (399, 400); "THE MILL" covered by the saw blade and a lamp (387, 395); Nirvana's heart lid
+  floating (408); a stray road piece ending in the forest by a leaning lamp (406); Stone Temple Pilots, Dinosaur
+  Jr. and Soundgarden plaques dark. Alice In Chains is there (390, x 8630 z 8212) but reads as a small brown
+  blob: make it a landmark.
+- **Alt Rock Moors:** the Radiohead train sits in the grass with no track bed and its front cut off (351-353),
+  the NEXT TRAIN sign seen edge-on; rain falls indoors (350); the white gallery blown out (349); a hole in the
+  white-cubes room ceiling (358); trees poking through the coloured blocks (346) and white spires (363); a
+  stray shape at Oasis (369); blank white video-wall screens (357, 359).
+- **Shoegaze Fens:** a black triangle in the ground (163), a dark crease with grass on it (165, 166), a black
+  placeholder cube with flowers (168), bare flat ground (161, 169).
+- **Others:** Prog Marches elephant half sunk (203); Hair Metal lamp post in front of the Guns N' Roses label and
+  the name stacked three times (211), plain box buildings (212); Kingdom castle with a gap under its walls (215),
+  a white box under the banana (213); Arena funnel cutting the castle wall (223), blank white screens (222);
+  Psychedelic Wilds pink square floating on the sand (228), a white box (229), a van clipping the ground (231);
+  Southern Rock Bayou pyramid through the canopy (235); Jam Band giant hand floating (242), Wilson's Castle
+  unlit (247), a blank sign under the gate (245); Folk Woods cabin porch floating (250) and a cabin sunk (252),
+  a white cube in a tree (249), the boat on the bank (256); Yacht Rock a wing shape clipping the hill (263), a
+  floating spike (265); Bluegrass water plane tilted up a hill (288), the covered bridge roof misaligned and its
+  back wall missing (280, 281), a black blob by the mine (293).
+
 ## Across every land
 
 - **Artist areas are mostly the same kit:** plaque, cover board, lantern and one small prop. Small artists

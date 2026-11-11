@@ -20,7 +20,7 @@ namespace EverythingWorld.Music
 
             var useSpotify = outputSwitch != null && outputSwitch.useSpotify;
             var here = director.CurrentScene;
-            var text = here != null ? $"Zone: {here.DisplayName} ({here.realmName}, scene {here.id})" : "Zone: none";
+            var text = here == null ? "Zone: none" : string.IsNullOrEmpty(here.realmName) ? $"Zone: {here.DisplayName} (artist station)" : $"Zone: {here.DisplayName} ({here.realmName}, scene {here.id})";
 
             var slot = director.CurrentSlot;
             if (director.PlayingScene != null && slot.IsValid)
