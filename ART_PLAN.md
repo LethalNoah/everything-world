@@ -70,7 +70,7 @@ Classic, jam, prog, southern, glam and heavy metal: the old heartland of rock.
 
 ### 27. The Iron Range
 
-*heavy metal, metal, thrash metal, hard rock, speed metal* · 30 songs · energy 0.82, acoustic 0.05, mood 0.39 · top artists: Metallica, Black Sabbath, Elena Siegman, Anthrax, Ozzy Osbourne
+*heavy metal, metal, thrash metal, hard rock, speed metal* · 33 songs · energy 0.81, acoustic 0.08, mood 0.39 · top artists: Metallica, Black Sabbath, Elena Siegman, Anthrax, Ozzy Osbourne
 
 - **Terrain:** The tallest peaks in the world, honeycombed with mines.
 - **Colours:** `#4B4F55 iron grey`, `#8E3B1E rust`, `#F07C1E molten orange`, `#111111 black`
@@ -174,7 +174,7 @@ Alternative, grunge, punk, emo, metalcore, prog metal and J-rock.
 
 ### 18. The Djent Spires
 
-*progressive metal, djent, progressive rock, math rock, death metal* · 29 songs · energy 0.79, acoustic 0.08, mood 0.30 · top artists: Leprous, Plini, Angel Vivaldi, Anima Tempo, Animals As Leaders
+*progressive metal, djent, progressive rock, math rock, instrumental* · 26 songs · energy 0.80, acoustic 0.06, mood 0.29 · top artists: Leprous, Plini, Angel Vivaldi, Anima Tempo, Animals As Leaders
 
 - **Terrain:** Precise crystal spires and terraced cliffs with clean, fractal edges.
 - **Colours:** `#3FD0E0 cyan`, `#4A5563 steel`, `#F2F5F7 white`, `#7C5CFF violet`
@@ -204,7 +204,7 @@ Alternative, grunge, punk, emo, metalcore, prog metal and J-rock.
 
 ### 32. The Nu Metal Quarry
 
-*post grunge, alternative rock, rock, hard rock, alternative metal* · 27 songs · energy 0.79, acoustic 0.03, mood 0.35 · top artists: Nickelback, 3 Doors Down, Breaking Benjamin, Creed, Disturbed
+*post grunge, alternative rock, rock, hard rock, alternative metal* · 26 songs · energy 0.79, acoustic 0.03, mood 0.36 · top artists: Nickelback, 3 Doors Down, Breaking Benjamin, Creed, Disturbed
 
 - **Terrain:** A huge open-pit quarry with rusted machinery on the terraces.
 - **Colours:** `#8A4B2A rust`, `#3E444A gunmetal`, `#6E7A5A toxic grey-green`, `#E8C22E warning yellow`
@@ -214,7 +214,7 @@ Alternative, grunge, punk, emo, metalcore, prog metal and J-rock.
 
 ### 35. The Oddball Backroads
 
-*alternative rock, indie rock, rock, experimental, neo psychedelic* · 28 songs · energy 0.64, acoustic 0.20, mood 0.64 · top artists: Pixies, Ween, Violent Femmes, Beck, R.E.M.
+*alternative rock, indie rock, rock, experimental, neo psychedelic* · 28 songs · energy 0.65, acoustic 0.20, mood 0.64 · top artists: Pixies, Ween, Violent Femmes, Beck, R.E.M.
 
 - **Terrain:** Winding rural back roads that feel slightly wrong, overgrown with kudzu.
 - **Colours:** `#D9B13B mustard`, `#4F8F8C faded teal`, `#7A5A3A barn brown`, `#6FA03A kudzu green`
@@ -278,7 +278,7 @@ Indie rock, shoegaze, bedroom pop and indie folk.
 
 ### 42. Garage Rock Row
 
-*indie rock, garage rock, alternative rock, region:bedroom, rock* · 17 songs · energy 0.73, acoustic 0.19, mood 0.50 · top artists: Arctic Monkeys, Cage The Elephant, Silversun Pickups, The Kooks, Kings of Leon
+*indie rock, garage rock, alternative rock, region:bedroom, rock* · 18 songs · energy 0.71, acoustic 0.18, mood 0.49 · top artists: Arctic Monkeys, Cage The Elephant, Silversun Pickups, The Kooks, Kings of Leon
 
 - **Terrain:** A gritty small-town main street with garages, pubs and back alleys.
 - **Colours:** `#1E1E1E leather black`, `#D9C26A nicotine yellow`, `#3C5A8A denim`, `#E0353A neon red`

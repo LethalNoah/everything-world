@@ -15,8 +15,8 @@
     "bluegrass",
     "jazz ballads"
    ],
-   "x": 91.24,
-   "y": 48.4,
+   "x": 94.38,
+   "y": 47.45,
    "r": 10.44,
    "energy": 0.709,
    "acousticness": 0.337,
@@ -929,8 +929,8 @@
     "djent",
     "hardcore punk"
    ],
-   "x": 115.99,
-   "y": 25.77,
+   "x": 125.58,
+   "y": 20.19,
    "r": 9.17,
    "energy": 0.912,
    "acousticness": 0.007,
@@ -1643,8 +1643,8 @@
     "blues rock",
     "acid rock"
    ],
-   "x": 146.41,
-   "y": 69.9,
+   "x": 147.25,
+   "y": 72.48,
    "r": 9.27,
    "energy": 0.596,
    "acousticness": 0.303,
@@ -2373,8 +2373,8 @@
     "red dirt",
     "traditional country"
    ],
-   "x": 133.73,
-   "y": 122.48,
+   "x": 128.32,
+   "y": 132.97,
    "r": 8.0,
    "energy": 0.602,
    "acousticness": 0.389,
@@ -2927,8 +2927,8 @@
     "madchester",
     "sufi"
    ],
-   "x": 111.14,
-   "y": 104.12,
+   "x": 126.45,
+   "y": 103.34,
    "r": 7.94,
    "energy": 0.702,
    "acousticness": 0.146,
@@ -3473,8 +3473,8 @@
     "krautrock",
     "classic rock"
    ],
-   "x": 149.39,
-   "y": 50.5,
+   "x": 114.77,
+   "y": 48.63,
    "r": 7.62,
    "energy": 0.662,
    "acousticness": 0.209,
@@ -3979,8 +3979,8 @@
     "ska punk",
     "skate punk"
    ],
-   "x": 128.86,
-   "y": 94.52,
+   "x": 99.42,
+   "y": 102.28,
    "r": 7.0,
    "energy": 0.828,
    "acousticness": 0.081,
@@ -4413,8 +4413,8 @@
     "ambient",
     "j rock"
    ],
-   "x": 77.61,
-   "y": 20.66,
+   "x": 71.61,
+   "y": 26.29,
    "r": 6.56,
    "energy": 0.702,
    "acousticness": 0.173,
@@ -4799,8 +4799,8 @@
     "region:bedroom",
     "indie pop"
    ],
-   "x": 48.33,
-   "y": 79.11,
+   "x": 49.63,
+   "y": 96.53,
    "r": 6.48,
    "energy": 0.581,
    "acousticness": 0.18,
@@ -5177,8 +5177,8 @@
     "post punk",
     "indie electronic"
    ],
-   "x": 58.27,
-   "y": 91.22,
+   "x": 63.55,
+   "y": 104.1,
    "r": 6.86,
    "energy": 0.653,
    "acousticness": 0.194,
@@ -5595,8 +5595,8 @@
     "singer songwriter",
     "kpop"
    ],
-   "x": 105.29,
-   "y": 135.56,
+   "x": 107.59,
+   "y": 139.04,
    "r": 7.94,
    "energy": 0.701,
    "acousticness": 0.15,
@@ -6141,8 +6141,8 @@
     "uk drill",
     "the muppets"
    ],
-   "x": 118.18,
-   "y": 162.32,
+   "x": 114.49,
+   "y": 167.93,
    "r": 7.81,
    "energy": 0.666,
    "acousticness": 0.212,
@@ -6671,8 +6671,8 @@
     "alternative metal",
     "romanian"
    ],
-   "x": 101.01,
-   "y": 89.71,
+   "x": 121.86,
+   "y": 86.99,
    "r": 6.32,
    "energy": 0.757,
    "acousticness": 0.101,
@@ -7033,8 +7033,8 @@
     "piano",
     "80s"
    ],
-   "x": 128.85,
-   "y": 67.79,
+   "x": 130.51,
+   "y": 51.28,
    "r": 6.0,
    "energy": 0.626,
    "acousticness": 0.274,
@@ -7363,8 +7363,8 @@
     "chamber folk",
     "folk pop"
    ],
-   "x": 74.12,
-   "y": 90.84,
+   "x": 64.72,
+   "y": 88.13,
    "r": 6.4,
    "energy": 0.5,
    "acousticness": 0.476,
@@ -7733,8 +7733,8 @@
     "region:bedroom",
     "slowcore"
    ],
-   "x": 78.45,
-   "y": 76.38,
+   "x": 78.95,
+   "y": 85.2,
    "r": 5.74,
    "energy": 0.453,
    "acousticness": 0.515,
@@ -8039,8 +8039,8 @@
     "acid rock",
     "jazz fusion"
    ],
-   "x": 124.09,
-   "y": 53.5,
+   "x": 143.07,
+   "y": 42.98,
    "r": 6.08,
    "energy": 0.626,
    "acousticness": 0.24,
@@ -8377,8 +8377,8 @@
     "yacht rock",
     "piano"
    ],
-   "x": 109.03,
-   "y": 53.67,
+   "x": 108.59,
+   "y": 63.82,
    "r": 6.08,
    "energy": 0.484,
    "acousticness": 0.492,
@@ -8710,19 +8710,19 @@
     "djent",
     "progressive rock",
     "math rock",
-    "death metal",
     "instrumental",
-    "melodic death metal",
-    "metal"
+    "math metal",
+    "metal",
+    "metalcore"
    ],
-   "x": 96.88,
-   "y": 19.3,
-   "r": 5.39,
-   "energy": 0.787,
-   "acousticness": 0.082,
-   "valence": 0.296,
+   "x": 97.78,
+   "y": 18.36,
+   "r": 5.1,
+   "energy": 0.797,
+   "acousticness": 0.059,
+   "valence": 0.286,
    "danceability": 0.448,
-   "tempo": 126.942,
+   "tempo": 126.771,
    "neighbours": [
     28,
     7,
@@ -8771,14 +8771,6 @@
      "duration_ms": 361853,
      "energy": 0.978,
      "valence": 0.234
-    },
-    {
-     "name": "The Stargate [Tablet I]",
-     "artist": "Blood Incantation",
-     "id": "5oNdZWJIMiCbSQuaWc7G7E",
-     "duration_ms": 500088,
-     "energy": 0.866,
-     "valence": 0.201
     },
     {
      "name": "Marigold",
@@ -8837,14 +8829,6 @@
      "valence": 0.642
     },
     {
-     "name": "Prélude En Sol Dièse Mineur",
-     "artist": "First Fragment",
-     "id": "1hDX0uOnpEIfbjokq1tOkD",
-     "duration_ms": 159480,
-     "energy": 0.364,
-     "valence": 0.639
-    },
-    {
      "name": "D.O.S.E.",
      "artist": "Intervals",
      "id": "4Rkf1dl1EC2r4Me0ht2xDQ",
@@ -8883,14 +8867,6 @@
      "duration_ms": 461000,
      "energy": 0.869,
      "valence": 0.272
-    },
-    {
-     "name": "Thunderhorse",
-     "artist": "Metalocalypse: Dethklok",
-     "id": "7eZbzL7QD69KAbOygX39lr",
-     "duration_ms": 165893,
-     "energy": 0.866,
-     "valence": 0.292
     },
     {
      "name": "Windowpane",
@@ -8989,8 +8965,8 @@
     "melodic bass",
     "drum and bass"
    ],
-   "x": 23.83,
-   "y": 135.9,
+   "x": 24.01,
+   "y": 145.65,
    "r": 5.39,
    "energy": 0.713,
    "acousticness": 0.088,
@@ -9263,8 +9239,8 @@
     "experimental",
     "region:idm"
    ],
-   "x": 32.24,
-   "y": 99.27,
+   "x": 27.0,
+   "y": 109.34,
    "r": 5.57,
    "energy": 0.476,
    "acousticness": 0.376,
@@ -9553,8 +9529,8 @@
     "ska",
     "crank wave"
    ],
-   "x": 87.75,
-   "y": 113.98,
+   "x": 111.93,
+   "y": 111.4,
    "r": 6.24,
    "energy": 0.694,
    "acousticness": 0.141,
@@ -9907,8 +9883,8 @@
     "future garage",
     "rock"
    ],
-   "x": 89.74,
-   "y": 139.12,
+   "x": 91.59,
+   "y": 140.42,
    "r": 5.57,
    "energy": 0.533,
    "acousticness": 0.394,
@@ -10197,8 +10173,8 @@
     "electro",
     "electro house"
    ],
-   "x": 37.77,
-   "y": 133.88,
+   "x": 37.55,
+   "y": 141.73,
    "r": 5.83,
    "energy": 0.79,
    "acousticness": 0.042,
@@ -10511,8 +10487,8 @@
     "melodic bass",
     "edm"
    ],
-   "x": 18.86,
-   "y": 123.01,
+   "x": 15.55,
+   "y": 134.69,
    "r": 5.48,
    "energy": 0.839,
    "acousticness": 0.032,
@@ -10793,8 +10769,8 @@
     "boom bap",
     "southern hip hop"
    ],
-   "x": 133.65,
-   "y": 165.71,
+   "x": 129.12,
+   "y": 174.04,
    "r": 5.1,
    "energy": 0.695,
    "acousticness": 0.157,
@@ -11043,8 +11019,8 @@
     "hard rock",
     "medieval"
    ],
-   "x": 60.39,
-   "y": 41.68,
+   "x": 53.09,
+   "y": 60.58,
    "r": 6.78,
    "energy": 0.677,
    "acousticness": 0.309,
@@ -11450,17 +11426,17 @@
     "hard rock",
     "speed metal",
     "game soundtrack",
-    "doom metal",
-    "groove metal"
+    "death metal",
+    "doom metal"
    ],
-   "x": 143.69,
-   "y": 35.4,
-   "r": 5.48,
-   "energy": 0.822,
-   "acousticness": 0.054,
-   "valence": 0.392,
-   "danceability": 0.401,
-   "tempo": 137.903,
+   "x": 155.59,
+   "y": 51.03,
+   "r": 5.74,
+   "energy": 0.81,
+   "acousticness": 0.076,
+   "valence": 0.39,
+   "danceability": 0.404,
+   "tempo": 137.041,
    "neighbours": [
     38,
     43,
@@ -11535,6 +11511,14 @@
      "valence": 0.413
     },
     {
+     "name": "The Stargate [Tablet I]",
+     "artist": "Blood Incantation",
+     "id": "5oNdZWJIMiCbSQuaWc7G7E",
+     "duration_ms": 500088,
+     "energy": 0.866,
+     "valence": 0.201
+    },
+    {
      "name": "Mother",
      "artist": "Danzig",
      "id": "7txxAtOMwLLnQTpKeBL6bp",
@@ -11581,6 +11565,14 @@
      "duration_ms": 291026,
      "energy": 0.807,
      "valence": 0.298
+    },
+    {
+     "name": "Prélude En Sol Dièse Mineur",
+     "artist": "First Fragment",
+     "id": "1hDX0uOnpEIfbjokq1tOkD",
+     "duration_ms": 159480,
+     "energy": 0.364,
+     "valence": 0.639
     },
     {
      "name": "The Trooper - 2015 Remaster",
@@ -11671,6 +11663,14 @@
      "valence": 0.532
     },
     {
+     "name": "Thunderhorse",
+     "artist": "Metalocalypse: Dethklok",
+     "id": "7eZbzL7QD69KAbOygX39lr",
+     "duration_ms": 165893,
+     "energy": 0.866,
+     "valence": 0.292
+    },
+    {
      "name": "Ace of Spades",
      "artist": "Motörhead",
      "id": "6EPRKhUOdiFSQwGBRBbvsZ",
@@ -11735,7 +11735,7 @@
     "artcore",
     "japanese indie"
    ],
-   "x": 107.35,
+   "x": 108.64,
    "y": 10.0,
    "r": 5.66,
    "energy": 0.88,
@@ -12033,8 +12033,8 @@
     "soul blues",
     "northern soul"
    ],
-   "x": 161.03,
-   "y": 128.17,
+   "x": 155.98,
+   "y": 130.43,
    "r": 5.66,
    "energy": 0.575,
    "acousticness": 0.32,
@@ -12331,8 +12331,8 @@
     "psychedelic soul",
     "city pop"
    ],
-   "x": 166.27,
-   "y": 140.84,
+   "x": 164.74,
+   "y": 143.39,
    "r": 5.0,
    "energy": 0.666,
    "acousticness": 0.254,
@@ -12573,8 +12573,8 @@
     "dance",
     "art pop"
    ],
-   "x": 76.57,
-   "y": 136.16,
+   "x": 78.8,
+   "y": 135.76,
    "r": 5.2,
    "energy": 0.707,
    "acousticness": 0.119,
@@ -12831,14 +12831,14 @@
     "grunge",
     "progressive rock"
    ],
-   "x": 115.14,
-   "y": 89.15,
-   "r": 5.2,
-   "energy": 0.786,
+   "x": 112.99,
+   "y": 97.39,
+   "r": 5.1,
+   "energy": 0.788,
    "acousticness": 0.033,
-   "valence": 0.35,
-   "danceability": 0.452,
-   "tempo": 127.365,
+   "valence": 0.362,
+   "danceability": 0.455,
+   "tempo": 127.945,
    "neighbours": [
     12,
     4,
@@ -12943,14 +12943,6 @@
      "duration_ms": 274800,
      "energy": 0.539,
      "valence": 0.141
-    },
-    {
-     "name": "It's A Lot",
-     "artist": "Dexter and The Moonrocks",
-     "id": "5AiKETKUAet8GFGOos5Suq",
-     "duration_ms": 265388,
-     "energy": 0.723,
-     "valence": 0.059
     },
     {
      "name": "Stricken",
@@ -13089,8 +13081,8 @@
     "experimental",
     "drumstep"
    ],
-   "x": 22.56,
-   "y": 109.51,
+   "x": 23.12,
+   "y": 122.85,
    "r": 5.48,
    "energy": 0.72,
    "acousticness": 0.107,
@@ -13371,8 +13363,8 @@
     "rock",
     "hard rock"
    ],
-   "x": 116.26,
-   "y": 65.13,
+   "x": 122.17,
+   "y": 61.97,
    "r": 5.0,
    "energy": 0.664,
    "acousticness": 0.208,
@@ -13613,19 +13605,19 @@
     "folk punk",
     "anti folk"
    ],
-   "x": 96.24,
-   "y": 102.23,
+   "x": 103.42,
+   "y": 88.66,
    "r": 5.29,
-   "energy": 0.639,
+   "energy": 0.649,
    "acousticness": 0.2,
-   "valence": 0.644,
-   "danceability": 0.587,
-   "tempo": 121.335,
+   "valence": 0.635,
+   "danceability": 0.573,
+   "tempo": 120.921,
    "neighbours": [
     4,
     9,
-    12,
-    42
+    42,
+    12
    ],
    "terrain": "Winding rural back roads that feel slightly wrong, overgrown with kudzu.",
    "palette": [
@@ -13677,6 +13669,14 @@
      "duration_ms": 180627,
      "energy": 0.752,
      "valence": 0.897
+    },
+    {
+     "name": "It's A Lot",
+     "artist": "Dexter and The Moonrocks",
+     "id": "5AiKETKUAet8GFGOos5Suq",
+     "duration_ms": 265388,
+     "energy": 0.723,
+     "valence": 0.059
     },
     {
      "name": "Novocaine For The Soul",
@@ -13775,14 +13775,6 @@
      "valence": 0.62
     },
     {
-     "name": "Seven Nation Army",
-     "artist": "The White Stripes",
-     "id": "3ctoHckjyd13eBi2IDw2Ip",
-     "duration_ms": 231800,
-     "energy": 0.462,
-     "valence": 0.309
-    },
-    {
      "name": "Hot Dog!",
      "artist": "They Might Be Giants (For Kids)",
      "id": "0grxFyenxR3OYMdIhxRzJ6",
@@ -13879,8 +13871,8 @@
     "comedy",
     "hindi pop"
    ],
-   "x": 62.36,
-   "y": 56.67,
+   "x": 68.49,
+   "y": 62.27,
    "r": 5.66,
    "energy": 0.6,
    "acousticness": 0.381,
@@ -14177,8 +14169,8 @@
     "hip hop",
     "region:idm"
    ],
-   "x": 99.54,
-   "y": 161.62,
+   "x": 96.88,
+   "y": 164.17,
    "r": 4.8,
    "energy": 0.458,
    "acousticness": 0.42,
@@ -14403,8 +14395,8 @@
     "hair metal",
     "80s"
    ],
-   "x": 135.2,
-   "y": 45.47,
+   "x": 143.48,
+   "y": 56.59,
    "r": 4.69,
    "energy": 0.839,
    "acousticness": 0.06,
@@ -14621,8 +14613,8 @@
     "orchestral",
     "japanese classical"
    ],
-   "x": 45.92,
-   "y": 43.17,
+   "x": 62.86,
+   "y": 50.03,
    "r": 4.8,
    "energy": 0.359,
    "acousticness": 0.668,
@@ -14847,8 +14839,8 @@
     "library music",
     "vocal jazz"
    ],
-   "x": 185.47,
-   "y": 119.45,
+   "x": 177.69,
+   "y": 120.33,
    "r": 4.9,
    "energy": 0.501,
    "acousticness": 0.569,
@@ -15081,8 +15073,8 @@
     "experimental jazz",
     "alternative hip hop"
    ],
-   "x": 179.69,
-   "y": 140.72,
+   "x": 178.12,
+   "y": 142.37,
    "r": 5.48,
    "energy": 0.601,
    "acousticness": 0.239,
@@ -15360,17 +15352,17 @@
     "region:bedroom",
     "rock",
     "shoegaze",
-    "experimental rock",
-    "britpop"
+    "blues rock",
+    "experimental rock"
    ],
-   "x": 66.56,
-   "y": 80.5,
-   "r": 4.12,
-   "energy": 0.726,
-   "acousticness": 0.193,
-   "valence": 0.502,
-   "danceability": 0.528,
-   "tempo": 120.44,
+   "x": 75.24,
+   "y": 97.29,
+   "r": 4.24,
+   "energy": 0.712,
+   "acousticness": 0.183,
+   "valence": 0.491,
+   "danceability": 0.54,
+   "tempo": 120.63,
    "neighbours": [
     9,
     50,
@@ -15517,6 +15509,14 @@
      "valence": 0.617
     },
     {
+     "name": "Seven Nation Army",
+     "artist": "The White Stripes",
+     "id": "3ctoHckjyd13eBi2IDw2Ip",
+     "duration_ms": 231800,
+     "energy": 0.462,
+     "valence": 0.309
+    },
+    {
      "name": "Gone Away",
      "artist": "Wyatt Waddell",
      "id": "7kVG1avM3wAm5nd19Mpamj",
@@ -15541,8 +15541,8 @@
     "folk metal",
     "metal"
    ],
-   "x": 125.66,
-   "y": 11.97,
+   "x": 109.52,
+   "y": 23.09,
    "r": 4.47,
    "energy": 0.957,
    "acousticness": 0.001,
@@ -15743,8 +15743,8 @@
     "retrowave",
     "nu disco"
    ],
-   "x": 61.84,
-   "y": 136.65,
+   "x": 65.28,
+   "y": 140.87,
    "r": 4.36,
    "energy": 0.759,
    "acousticness": 0.087,
@@ -15937,8 +15937,8 @@
     "rap",
     "east coast hip hop"
    ],
-   "x": 132.82,
-   "y": 150.35,
+   "x": 130.12,
+   "y": 160.64,
    "r": 5.29,
    "energy": 0.573,
    "acousticness": 0.24,
@@ -16203,8 +16203,8 @@
     "70s",
     "quiet storm"
    ],
-   "x": 154.4,
-   "y": 138.75,
+   "x": 152.77,
+   "y": 142.5,
    "r": 4.0,
    "energy": 0.749,
    "acousticness": 0.25,
@@ -16373,8 +16373,8 @@
     "lo fi",
     "japanese"
    ],
-   "x": 49.61,
-   "y": 54.46,
+   "x": 45.9,
+   "y": 72.34,
    "r": 4.12,
    "energy": 0.565,
    "acousticness": 0.34,
@@ -16551,8 +16551,8 @@
     "swing",
     "swing music"
    ],
-   "x": 175.07,
-   "y": 127.65,
+   "x": 170.01,
+   "y": 131.12,
    "r": 5.39,
    "energy": 0.406,
    "acousticness": 0.651,
@@ -16825,8 +16825,8 @@
     "dream pop",
     "indietronica"
    ],
-   "x": 62.95,
-   "y": 113.64,
+   "x": 75.33,
+   "y": 111.9,
    "r": 4.8,
    "energy": 0.659,
    "acousticness": 0.241,
@@ -17051,8 +17051,8 @@
     "indie pop",
     "alternative dance"
    ],
-   "x": 66.06,
-   "y": 102.36,
+   "x": 62.97,
+   "y": 118.24,
    "r": 4.24,
    "energy": 0.767,
    "acousticness": 0.144,
@@ -17060,10 +17060,10 @@
    "danceability": 0.644,
    "tempo": 124.904,
    "neighbours": [
-    42,
     9,
+    42,
     49,
-    35
+    51
    ],
    "terrain": "Open festival fields on rolling hills.",
    "palette": [
@@ -17237,8 +17237,8 @@
     "folktronica",
     "turntablism"
    ],
-   "x": 34.62,
-   "y": 113.12,
+   "x": 35.23,
+   "y": 126.1,
    "r": 4.24,
    "energy": 0.604,
    "acousticness": 0.491,
@@ -17423,8 +17423,8 @@
     "soft rock",
     "power pop"
    ],
-   "x": 136.74,
-   "y": 57.11,
+   "x": 134.2,
+   "y": 63.72,
    "r": 4.24,
    "energy": 0.715,
    "acousticness": 0.093,
@@ -17603,8 +17603,8 @@
     "region:bedroom",
     "region:ambient"
    ],
-   "x": 55.29,
-   "y": 104.53,
+   "x": 50.72,
+   "y": 110.01,
    "r": 4.12,
    "energy": 0.518,
    "acousticness": 0.511,
@@ -17781,8 +17781,8 @@
     "dub",
     "idm"
    ],
-   "x": 41.62,
-   "y": 121.88,
+   "x": 45.06,
+   "y": 131.4,
    "r": 4.0,
    "energy": 0.565,
    "acousticness": 0.185,
@@ -17951,8 +17951,8 @@
     "hard house",
     "swing music"
    ],
-   "x": 12.29,
-   "y": 133.03,
+   "x": 12.14,
+   "y": 146.2,
    "r": 3.61,
    "energy": 0.727,
    "acousticness": 0.032,
@@ -18097,8 +18097,8 @@
     "spanish",
     "dance"
    ],
-   "x": 119.76,
-   "y": 129.64,
+   "x": 93.16,
+   "y": 127.45,
    "r": 4.8,
    "energy": 0.577,
    "acousticness": 0.342,
@@ -18323,8 +18323,8 @@
     "contemporary classical",
     "celtic"
    ],
-   "x": 30.05,
-   "y": 63.4,
+   "x": 28.78,
+   "y": 59.28,
    "r": 3.46,
    "energy": 0.502,
    "acousticness": 0.476,
@@ -18461,8 +18461,8 @@
     "eurodance",
     "chillstep"
    ],
-   "x": 30.95,
-   "y": 123.5,
+   "x": 27.69,
+   "y": 134.15,
    "r": 3.74,
    "energy": 0.775,
    "acousticness": 0.031,
@@ -18615,8 +18615,8 @@
     "contemporary classical",
     "opera"
    ],
-   "x": 33.26,
-   "y": 41.19,
+   "x": 50.85,
+   "y": 45.86,
    "r": 5.0,
    "energy": 0.165,
    "acousticness": 0.89,
@@ -18857,8 +18857,8 @@
     "alternative rnb",
     "summer"
    ],
-   "x": 144.88,
-   "y": 159.33,
+   "x": 143.0,
+   "y": 162.97,
    "r": 4.8,
    "energy": 0.491,
    "acousticness": 0.28,
@@ -19084,7 +19084,7 @@
     "neurofunk"
    ],
    "x": 10.0,
-   "y": 113.29,
+   "y": 122.75,
    "r": 4.69,
    "energy": 0.867,
    "acousticness": 0.025,
@@ -19301,8 +19301,8 @@
     "dub",
     "lovers rock"
    ],
-   "x": 87.43,
-   "y": 163.17,
+   "x": 84.68,
+   "y": 163.59,
    "r": 4.47,
    "energy": 0.615,
    "acousticness": 0.196,
@@ -19503,8 +19503,8 @@
     "delta blues",
     "chicago blues"
    ],
-   "x": 161.72,
-   "y": 107.97,
+   "x": 157.98,
+   "y": 110.69,
    "r": 4.36,
    "energy": 0.53,
    "acousticness": 0.539,
@@ -19697,8 +19697,8 @@
     "traditional country",
     "alt country"
    ],
-   "x": 100.15,
-   "y": 64.57,
+   "x": 94.48,
+   "y": 65.89,
    "r": 5.29,
    "energy": 0.482,
    "acousticness": 0.59,
@@ -19963,8 +19963,8 @@
     "afroswing",
     "african"
    ],
-   "x": 186.61,
-   "y": 130.87,
+   "x": 181.99,
+   "y": 130.96,
    "r": 3.61,
    "energy": 0.666,
    "acousticness": 0.198,
