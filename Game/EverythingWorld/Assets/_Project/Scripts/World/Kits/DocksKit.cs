@@ -28,6 +28,11 @@ namespace EverythingWorld.World
         readonly List<Vector2> quayEdge = new List<Vector2>();     // land cells on the harbour coast
         readonly List<Vector2> quayNormal = new List<Vector2>();   // toward the sea
         Vector2 heart2, harbour2, seaDir2; bool hasHarbour;
+        // the city centre: flat ground round the arrival laid out on a street grid square to the harbour
+        const float CityR = 125f, GridStep = 48f, GridRoadW = 8f;
+        Vector3 GU => hasHarbour ? new Vector3(seaDir2.x, 0, seaDir2.y) : Vector3.right;
+        Vector3 GV => Vector3.Cross(Vector3.up, GU);
+        bool InCity(float x, float z, float pad = 0f) => Vector2.Distance(new Vector2(x, z), heart2) < CityR + pad;
         float step = 8f;
 
         void MakeMaterials()
@@ -105,6 +110,7 @@ namespace EverythingWorld.World
                 for (var k = 0; k < quayEdge.Count; k++) { var d = Vector2.Distance(quayEdge[k], heart2); if (d < best) { best = d; bi = k; } }
                 var sum = Vector2.zero; foreach (var (q, k) in Indexed(quayEdge)) if (Vector2.Distance(q, quayEdge[bi]) < 50f) sum += quayNormal[k];
                 harbour2 = quayEdge[bi]; seaDir2 = sum.normalized;
+                Level(data, index, heart2, CityR, CityR + 70f);   // the flat city centre, sloping away to the docks and the edges
                 // bring the ground down to the quay along the harbour coast, rising back to the plateau inland
                 for (var r = 0; r < data.Nz; r++)
                 {
@@ -121,7 +127,7 @@ namespace EverythingWorld.World
             }
             var avoid = new List<Vector3>();
             if (hasHarbour) { foreach (var (q, k) in Indexed(quayEdge)) if (k % 2 == 0) avoid.Add(new Vector3(q.x, 16f, q.y)); }
-            ArtistPlacement.Spread(data, index, 52f, heart2, 44f, 46f, avoid, null, Land, 320f);
+            ArtistPlacement.Spread(data, index, 52f, heart2, 44f, 62f, avoid, null, Land, 330f);
             foreach (var a in data.layout.artists)
             {
                 if (a.sceneId != isl.sceneId) continue;
@@ -166,6 +172,7 @@ namespace EverythingWorld.World
             Arrival(ctx, mk, solid);
             Towers(ctx, mk, solid);
             if (hasHarbour) Harbour(ctx, mk, solid);
+            if (hasHarbour) Grid(ctx, mk, solid);
             Streets(ctx, mk, solid);
             City(ctx, mk, solid);
             mk.Build("Post-Punk Docklands", ctx.Root, false);
@@ -314,11 +321,13 @@ namespace EverythingWorld.World
         {
             var up = Vector3.up; var c = ctx.OnGround(center.x, center.z);
             var toSea = hasHarbour ? new Vector3(harbour2.x - c.x, 0, harbour2.y - c.z).normalized : Vector3.left; var sd = Vector3.Cross(up, toSea);
-            var spots = new[] { (c - toSea * 34f + sd * 24f, 12, 14f, 12f, true), (c - toSea * 36f - sd * 28f, 7, 26f, 10f, false), (c + sd * 46f + toSea * 6f, 6, 22f, 10f, false) };
+            if (hasHarbour) { toSea = GU; sd = GV; }
+            var spots = new[] { (c - toSea * GridStep + sd * GridStep, 12, 16f, 14f, true), (c - toSea * GridStep - sd * GridStep, 7, 28f, 11f, false), (c + sd * GridStep, 6, 26f, 11f, false) };
             foreach (var (p0, floors, W, D, tall) in spots)
             {
                 var p = p0; p.y = ctx.Ground(p.x, p.z) - .5f; if (!ctx.IsLand(p.x, p.z, 10f) || InFootprint(ctx, p.x, p.z, W * .7f)) continue;
-                var face = new Vector3(c.x - p.x, 0, c.z - p.z).normalized; var rot = Quaternion.LookRotation(face); var s2 = Vector3.Cross(up, face);
+                var face = new Vector3(c.x - p.x, 0, c.z - p.z).normalized; if (hasHarbour) face = Mathf.Abs(Vector3.Dot(face, GU)) > Mathf.Abs(Vector3.Dot(face, GV)) ? GU * Mathf.Sign(Vector3.Dot(face, GU)) : GV * Mathf.Sign(Vector3.Dot(face, GV));
+                var rot = Quaternion.LookRotation(face); var s2 = Vector3.Cross(up, face);
                 const float FH = 3f; var H = floors * FH + 1f;
                 mk.Box(concrete, p + up * H / 2f, new Vector3(W, H, D), rot); solid.Box(concrete, p + up * H / 2f, new Vector3(W, H, D), rot);
                 mk.Box(darkConcrete, p + up * (H + .4f), new Vector3(W + .4f, .8f, D + .4f), rot);
@@ -534,23 +543,41 @@ namespace EverythingWorld.World
             void Lay(Vector3 join, Vector3 to, float stopShort, string artist)
             {
                 var from = new Vector3(join.x, 0, join.z); to.y = 0;
-                var dir = to - from; var total = dir.magnitude; if (total < 2f) return; dir /= total;
-                if (artist != null) facing[artist] = -dir;
-                var side = Vector3.Cross(Vector3.up, dir); var end = total - stopShort;
-                var pts = new List<Vector3>();
-                for (var d = walk == 1 ? 15f : RoadW / 2f + .1f; ; d += 1.5f)
+                var full = to - from; if (full.magnitude < 2f) return;
+                // inside the city: along the grid, then across it (an L), so streets never cut through the blocks
+                var legs = new List<Vector3> { from };
+                if (hasHarbour && InCity(from.x, from.z, 20f))
                 {
-                    var dd = Mathf.Min(d, end); var q = from + dir * dd;
-                    if (!ctx.IsLand(q.x, q.z, 0f)) break;
-                    pts.Add(ctx.OnGround(q.x, q.z)); if (dd >= end) break;
+                    var du = Vector3.Dot(full, GU); var dv = Vector3.Dot(full, GV);
+                    var corner = Mathf.Abs(du) > Mathf.Abs(dv) ? from + GV * dv : from + GU * du;
+                    if ((corner - from).magnitude > 4f && (to - corner).magnitude > 4f) legs.Add(corner);
+                }
+                legs.Add(to);
+                var lastDir = (to - legs[legs.Count - 2]).normalized;
+                if (artist != null) facing[artist] = -lastDir;
+                var side = Vector3.Cross(Vector3.up, lastDir);
+                var pts = new List<Vector3>(); var first = true;
+                for (var li = 0; li + 1 < legs.Count; li++)
+                {
+                    var a = legs[li]; var b = legs[li + 1]; var seg = b - a; var len = seg.magnitude; var dir = seg / len;
+                    var end = li + 2 == legs.Count ? len - stopShort : len;
+                    var stop = false;
+                    for (var d = first ? (walk == 1 ? 15f : RoadW / 2f + .1f) : 1.5f; ; d += 1.5f)
+                    {
+                        var dd = Mathf.Min(d, end); var q = a + dir * dd;
+                        if (!ctx.IsLand(q.x, q.z, 0f)) { stop = true; break; }
+                        pts.Add(ctx.OnGround(q.x, q.z)); if (dd >= end) break;
+                    }
+                    first = false; if (stop) break;
                 }
                 if (pts.Count < 2) return;
                 Strip(mk, pts, asphalt, RoadW, .2f, ctx);
-                for (var i = 4; i < pts.Count; i += 7) Puddle(mk, pts[i] + side * (i % 2 == 0 ? .9f : -1.1f) + Vector3.up * .27f, ctx.Range(.4f, .9f));
+                for (var i = 4; i < pts.Count; i += 7) Puddle(mk, pts[i] + Vector3.Cross(Vector3.up, (pts[Mathf.Min(i + 1, pts.Count - 1)] - pts[i - 1]).normalized) * (i % 2 == 0 ? .9f : -1.1f) + Vector3.up * .27f, ctx.Range(.4f, .9f));
                 foreach (var p in pts) Remember(p, walk);
                 for (var i = 8; i < pts.Count; i += 14)
                 {
-                    var lp = pts[i] + side * ((i / 14) % 2 == 0 ? 1f : -1f) * (RoadW / 2f + .8f);
+                    var sdi = Vector3.Cross(Vector3.up, (pts[Mathf.Min(i + 1, pts.Count - 1)] - pts[i - 1]).normalized);
+                    var lp = pts[i] + sdi * ((i / 14) % 2 == 0 ? 1f : -1f) * (RoadW / 2f + .8f);
                     var near = false; foreach (var o in lamps) if ((o - lp).sqrMagnitude < 19f * 19f) near = true;
                     if (near) continue;
                     lamps.Add(lp); SodiumLamp(ctx, mk, ctx.OnGround(lp.x, lp.z), pts[i] - lp, lamps.Count % 2 == 0);
@@ -567,6 +594,97 @@ namespace EverythingWorld.World
                 if (next == null) break;
                 todo.Remove(next);
                 Lay(join, new Vector3(next.x, 0, next.z), Foot(next) * .8f, next.name);
+            }
+        }
+
+        // ---------------------------------------------------------------- the gridded centre
+        /// The city centre: wide asphalt streets on a square grid, running down to the harbour and across it, kerbs and
+        /// sodium lamps at the corners; on each block a tall tower, a pair of slabs or a brick terrace, square to the
+        /// streets. Blocks holding the arrival or an artist stay open as squares.
+        void Grid(LandContext ctx, MeshKit mk, MeshKit solid)
+        {
+            var up = Vector3.up; var c = new Vector3(heart2.x, 0, heart2.y); var n = Mathf.CeilToInt(CityR / GridStep);
+            var kerb = WorldMaterials.Solid(new Color(.5f, .5f, .5f), .3f);
+            // streets: lines halfway between block centres, the cross streets broken at the junctions so nothing overlaps
+            for (var axis = 0; axis < 2; axis++)
+            {
+                var along = axis == 0 ? GV : GU; var across = axis == 0 ? GU : GV;
+                for (var k = -n; k < n; k++)
+                {
+                    var off = (k + .5f) * GridStep; if (Mathf.Abs(off) > CityR - 10f) continue;
+                    var half = Mathf.Sqrt(Mathf.Max(0f, CityR * CityR - off * off));
+                    var pts = new List<Vector3>();
+                    void Flush() { if (pts.Count > 1) { Strip(mk, pts, asphalt, GridRoadW, axis == 0 ? .21f : .22f, ctx); foreach (var p in pts) Remember(p, 400 + k); } pts.Clear(); }
+                    for (var t = -half; t <= half; t += 2f)
+                    {
+                        var q = c + across * off + along * t;
+                        if (!ctx.IsLand(q.x, q.z, 2f) || InFootprint(ctx, q.x, q.z, 2f)) { Flush(); continue; }
+                        var nearest = Mathf.Repeat(t - GridStep / 2f, GridStep); var junction = axis == 1 && Mathf.Min(nearest, GridStep - nearest) < GridRoadW / 2f + .5f;
+                        if (junction) { Flush(); continue; }
+                        pts.Add(ctx.OnGround(q.x, q.z));
+                    }
+                    Flush();
+                }
+            }
+            // blocks
+            int towers = 0, slabs = 0, terraces = 0, squares = 0;
+            for (var i = -n; i <= n; i++)
+            for (var j = -n; j <= n; j++)
+            {
+                var bc = c + GU * (i * GridStep) + GV * (j * GridStep);
+                if (Vector2.Distance(new Vector2(bc.x, bc.z), heart2) > CityR - 18f || !ctx.IsLand(bc.x, bc.z, 20f)) continue;
+                if (i == 0 && j == 0) continue;   // the arrival square
+                var taken = false; foreach (var a in ctx.Artists) if (Vector2.Distance(new Vector2(a.x, a.z), new Vector2(bc.x, bc.z)) < Foot(a) + 11f) taken = true;
+                if (taken || InNoGrass(bc.x, bc.z, 4f)) { squares++; continue; }
+                var g = ctx.OnGround(bc.x, bc.z); var face = (i + j) % 2 == 0 ? GU : -GV; var roll = ctx.Range(0f, 1f);
+                // kerbed pavement round the block
+                mk.Box(kerb, g + up * .12f, new Vector3(GridStep - GridRoadW - .2f, .24f, GridStep - GridRoadW - .2f), Quaternion.LookRotation(GU));
+                if (roll < .4f) { GridBuilding(ctx, mk, solid, g, face, 18f, 16f, ctx.Rng.Next(9, 15), concrete); towers++; }
+                else if (roll < .75f) { foreach (var s in new[] { -1f, 1f }) GridBuilding(ctx, mk, solid, g + face * s * 9.5f, face * s, 32f, 9f, ctx.Rng.Next(4, 8), s < 0 ? concrete : darkConcrete); slabs++; }
+                else { foreach (var s in new[] { -1f, 1f }) GridTerrace(ctx, mk, solid, g + face * s * 10f, face * s); terraces++; }
+                noGrass.Add(new Vector3(bc.x, (GridStep - GridRoadW) * .7f, bc.z));
+                // lamps at the block's corners
+                foreach (var a in new[] { -1f, 1f }) foreach (var b in new[] { -1f, 1f })
+                    if ((i + j + (a > 0 ? 1 : 0)) % 2 == 0) { var lp = bc + GU * a * (GridStep / 2f - GridRoadW / 2f - .8f) + GV * b * (GridStep / 2f - GridRoadW / 2f - .8f); SodiumLamp(ctx, mk, ctx.OnGround(lp.x, lp.z), -(GU * a + GV * b), (i + j) % 2 == 0); }
+            }
+            Debug.Log($"The Post-Punk Docklands: grid of {n * 2} streets each way, {towers} towers, {slabs} slab pairs, {terraces} terrace pairs, {squares} open squares");
+        }
+
+        /// A block of flats square to the grid: ribbed concrete, rows of windows (a few lit, the rest dark glass that
+        /// The Sprawl lights), balconies, a roof edge.
+        void GridBuilding(LandContext ctx, MeshKit mk, MeshKit solid, Vector3 at, Vector3 face, float W, float D, int floors, Material m)
+        {
+            var up = Vector3.up; var rot = Quaternion.LookRotation(face); var sd = Vector3.Cross(up, face); const float FH = 3f; var H = floors * FH; at.y -= .4f;
+            mk.Box(m, at + up * H / 2f, new Vector3(W, H, D), rot); solid.Box(m, at + up * H / 2f, new Vector3(W, H, D), rot);
+            mk.Box(darkConcrete, at + up * (H + .35f), new Vector3(W + .4f, .7f, D + .4f), rot);
+            var bays = Mathf.FloorToInt(W / 2.6f);
+            for (var f = 0; f < floors; f++) foreach (var s in new[] { 1f, -1f })
+            {
+                var y = 1.7f + f * FH;
+                mk.Box(darkConcrete, at + up * (y - 1.05f) + face * s * (D / 2f + .3f), new Vector3(W, .16f, .6f), rot);
+                for (var b = 0; b < bays; b++)
+                {
+                    var x = (b - (bays - 1) / 2f) * (W / bays);
+                    mk.Box(ctx.Chance(.08f) ? GlowM(Window, 1.3f) : windowsOff, at + up * y + face * s * (D / 2f + .02f) + sd * x, new Vector3(W / bays - .7f, 1.4f, .03f), Quaternion.LookRotation(face * s));
+                }
+            }
+            for (var b = 0; b <= bays; b++) { var x = (b - bays / 2f) * (W / bays); mk.Box(darkConcrete, at + sd * x + face * (D / 2f + .2f) + up * H / 2f, new Vector3(.3f, H, .4f), rot); }
+            var door = at + face * (D / 2f + .05f) + up * 1.2f; mk.Box(dark, door, new Vector3(2f, 2.4f, .05f), rot); mk.Box(GlowM(new Color(.8f, .9f, 1f), 2f), door + up * 1.4f + face * .1f, new Vector3(1.6f, .08f, .1f), rot);
+            halos.Add(door + up * 1.2f + face * .4f, 1.4f, new Color(.8f, .9f, 1f), .35f);
+        }
+
+        /// A brick terrace row along one side of a block, square to the grid, a lit window or two.
+        void GridTerrace(LandContext ctx, MeshKit mk, MeshKit solid, Vector3 at, Vector3 face)
+        {
+            var up = Vector3.up; var rot = Quaternion.LookRotation(face); var sd = Vector3.Cross(up, face); const float w = 5f, D = 8f, H = 6f; const int n = 6; var W = n * w; at.y -= .4f;
+            mk.Box(brick, at + up * H / 2f, new Vector3(W, H, D), rot); solid.Box(brick, at + up * H / 2f, new Vector3(W, H, D), rot);
+            mk.GableRoof(darkConcrete, at + up * H, new Vector3(D + .5f, 0, W + .3f), 2.4f, Quaternion.LookRotation(sd));
+            for (var k = 0; k < n; k++)
+            {
+                var x = (k - (n - 1) / 2f) * w; var f = at + face * (D / 2f + .02f) + sd * x;
+                mk.Box(dark, f + up * 1.1f - sd * 1.4f, new Vector3(1f, 2.1f, .03f), rot);
+                foreach (var y in new[] { 1.5f, 4.3f }) mk.Box(ctx.Chance(.2f) ? GlowM(Window, 1.3f) : windowsOff, f + up * y + sd * .9f, new Vector3(1.6f, 1.2f, .03f), rot);
+                mk.Box(darkBrick, at + sd * x + up * (H + 2.6f), new Vector3(.8f, 1.6f, .8f), rot);
             }
         }
 
@@ -587,19 +705,21 @@ namespace EverythingWorld.World
                 if (low)
                 {
                     if (roll < .35f && Open(ctx, px, pz, 8f)) { ContainerStack(ctx, mk, solid, p, Quaternion.Euler(0, ctx.Range(0, 180f), 0) * Vector3.forward); quay++; }
-                    else if (roll < .45f) { Drum(ctx, mk, p, true); drums++; }
+                    else if (roll < .39f) { Drum(ctx, mk, p, true); drums++; }
                     else if (roll < .55f) { Pallets(ctx, mk, solid, p); quay++; }
                     continue;
                 }
+                var city = InCity(px, pz, 10f);
+                if (city && roll < .27f) continue;
                 if (roll < .12f && Open(ctx, px, pz, 12f)) { Block(ctx, mk, solid, p); blocks++; }
                 else if (roll < .19f && Open(ctx, px, pz, 10f)) { Terrace(ctx, mk, solid, p); rows++; }
                 else if (roll < .23f) { Fence(ctx, mk, solid, p); fences++; }
-                else if (roll < .43f) { Skip(ctx, mk, solid, p); skips++; }
-                else if (roll < .47f) { Drum(ctx, mk, p, true); drums++; }
-                else if (roll < .52f) { Car(ctx, mk, solid, p); cars++; }
-                else if (roll < .56f) { Grate(ctx, mk, p); grates++; }
-                else if (roll < .61f && Open(ctx, px, pz, 5f)) { FlyerWall(ctx, mk, solid, p); walls++; }
-                else if (roll < .72f && benches < 16 && NearPath(px, pz, 12f)) { Bench(ctx, mk, solid, p); benches++; }
+                else if (roll < .27f) { Skip(ctx, mk, solid, p); skips++; }
+                else if (roll < .31f) { Drum(ctx, mk, p, true); drums++; }
+                else if (roll < .36f) { Car(ctx, mk, solid, p); cars++; }
+                else if (roll < .40f) { Grate(ctx, mk, p); grates++; }
+                else if (roll < .46f && Open(ctx, px, pz, 5f)) { FlyerWall(ctx, mk, solid, p); walls++; }
+                else if (roll < .58f && benches < 16 && NearPath(px, pz, 12f)) { Bench(ctx, mk, solid, p); benches++; }
             }
             Debug.Log($"The Post-Punk Docklands: harbour {(hasHarbour ? quayEdge.Count + " quay cells" : "none")}, {blocks} blocks, {rows} terraces, {fences} fences, {skips} skips, {drums} drums, {cars} cars, {grates} grates, {walls} flyer walls, {benches} benches, {quay} on the quay");
         }
