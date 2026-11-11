@@ -24,6 +24,13 @@
    "weather": "rain", "weatherAmount": 0.4
   },
   {
+   "land": "The Post-Punk Docklands",
+   "sunPitch": 30, "sunYaw": 250, "sunIntensity": 0.28, "sunColor": "#8C9CC8",
+   "skyLight": "#1C2030", "horizonLight": "#4A3424", "groundLight": "#2E2620",
+   "fogColor": "#2A2420", "fogStart": 40, "fogEnd": 650, "stars": 0.3, "sunShadows": false, "dailyWeather": false, "bloom": 1.0,
+   "weather": "", "weatherAmount": 0
+  },
+  {
    "land": "The Iron Range",
    "sunPitch": 14, "sunYaw": 120, "sunIntensity": 0.9, "sunColor": "#FF9A60",
    "skyLight": "#5E5A6A", "horizonLight": "#8A5A40", "groundLight": "#4A3428",

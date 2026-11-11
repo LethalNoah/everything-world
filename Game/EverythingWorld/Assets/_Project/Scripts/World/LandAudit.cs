@@ -84,7 +84,7 @@ namespace EverythingWorld.World
                         if (flat || h < BandLow || h > BandHigh || g < 1.2f) continue;
                         var key = (Mathf.FloorToInt(p.x / .5f), Mathf.FloorToInt(p.y / .5f), Mathf.FloorToInt(p.z / .5f));
                         if (!solidCells.Add(key)) continue;
-                        if (!Covered(p)) bare.Add((p, what));
+                        if (!Covered(p)) bare.Add((p, what + " (" + (s < mats.Length && mats[s] != null ? mats[s].name.Replace(" (Instance)", "") : "?") + ")"));
                     }
                 }
             }
