@@ -41,6 +41,7 @@ Every item below is something that went wrong before.
   round the cathedral) can pack tighter.
 - Keep artists 45 m or more from other lands, out of water, and outside every radio ring (a radio ring is
   the artist's `r`; space artists by `r1 + r2 + 6`). Keep a corridor clear for any long path or view.
+- Shaping ground: Unity's `Mathf.SmoothStep(a, b, t)` blends between a and b, it is not GLSL smoothstep (a hill shaped with it came out 6 m instead of 24 m): write your own ease (pattern: `GrungeKit.Ease`).
 - Level the ground where a centrepiece needs it (pattern: `ShapeGround` height blending, as in the Hub and
   Driftwood).
 - Nothing may cross the land's border: big buildings go where there's room (Small Hours lesson).

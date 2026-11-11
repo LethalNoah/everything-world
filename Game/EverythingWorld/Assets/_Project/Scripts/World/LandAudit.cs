@@ -421,7 +421,20 @@ namespace EverythingWorld.World
         {
             foreach (var c in Physics.OverlapSphere(p, Probe, ~0, QueryTriggerInteraction.Ignore))
                 if (!c.name.StartsWith("Terrain")) return true;
-            return false;
+            // inside a big mesh collider (a box round a lumpy rock): a ray out in every flat direction meets the inside of
+            // the same collider's wall (the sphere above only finds a collider's surface, not its inside)
+            var back = Physics.queriesHitBackfaces; Physics.queriesHitBackfaces = true;
+            try
+            {
+                Collider wall = null;
+                foreach (var d in new[] { Vector3.right, Vector3.left, Vector3.forward, Vector3.back, Vector3.up })
+                {
+                    if (!Physics.Raycast(p, d, out var hit, 6f, ~0, QueryTriggerInteraction.Ignore) || hit.collider.name.StartsWith("Terrain") || Vector3.Dot(hit.normal, d) <= 0f) return false;
+                    if (wall == null) wall = hit.collider; else if (wall != hit.collider) return false;
+                }
+                return true;
+            }
+            finally { Physics.queriesHitBackfaces = back; }
         }
 
         static float BorderDistance(IslandWorldData data, LandContext ctx, float x, float z)
