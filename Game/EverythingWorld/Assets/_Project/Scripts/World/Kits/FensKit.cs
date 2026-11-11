@@ -200,6 +200,7 @@ namespace EverythingWorld.World
             Cathedral(ctx, mk, solid);
             Causeways(ctx, mk, solid);
             Trails(ctx, mk, solid);
+            SongPlaces(ctx, mk, solid);
             Wilds(ctx, mk, solid);
             mk.Build("Fens scenery", ctx.Root, false);
             soft.Build("Soft foliage", ctx.Root, false);

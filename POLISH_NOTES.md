@@ -134,3 +134,12 @@ Snapshot numbers refer to `Game/EverythingWorld/Logs/Live/` (not committed).
 - Six song places for Clairo and beabadoobee, a piece for every one-song artist, all with song glows.
 - The song places are dream-sized (half again as big as life), each with its own light and glow, so they read from
   the path at dusk. The photo tour now arrives where players do when something (the giant bed) stands on the centre.
+
+## Shoegaze Fens (deep pass done, 2026-11-11)
+- Ten dreamy, floating song places in the open water for Deafheaven, Mazzy Star, Slowdive and my bloody valentine,
+  reached along lines of floating candles, glowing and moving more while their songs play (FensSongs, FensSongLife).
+- Photo fixes: the colour pillars washed out white under the bloom (now saturated, each its own colour); the moon
+  read as beads (now one crescent); snow, ice and petals you wade through moved to the walk-through mesh; the
+  stone circle's glowing slits placed in each stone's own frame (a tilted one met its stone's face).
+- Audit: 0 overlaps, 0 artists with problems. The "no collider" list left is the water surface and lily pads,
+  which you wade through on purpose.

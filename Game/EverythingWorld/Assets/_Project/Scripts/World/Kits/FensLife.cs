@@ -15,7 +15,7 @@ namespace EverythingWorld.World
     ///   cathedral bell ringing rings of light out over the fen as a song begins; a storm of petals in loud
     ///   songs; a little fleet of floating candles drifting across the water; and a heron standing somewhere
     ///   new in the shallows every day.
-    public class FensLife : MonoBehaviour
+    public partial class FensLife : MonoBehaviour
     {
         const string Land = "The Shoegaze Fens";
         public Vector3 center, cathedral, belfry, slowdiveSun, hillBell;
@@ -252,6 +252,7 @@ namespace EverythingWorld.World
             var energy = SurpriseDirector.Energy;
             var valence = playing ? d.CurrentSlot.track.valence : .45f;
             var id = MusicDirector.ForcedTrackId ?? (playing ? d.CurrentSlot.track.id : null);
+            SongPlacesUpdate(dt, here, id);
 
             // a new song: what happens during it
             if (SharedChance.CurrentSong(out var song, out var start, out var length) && song != songKey)

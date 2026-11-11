@@ -261,7 +261,7 @@ namespace EverythingWorld.World
                 mk.Box(stoneDark, p + up * (h / 2f - .4f), new Vector3(1.2f, h, .7f), rot);
                 solid.Box(stoneDark, p + up * (h / 2f - .4f), new Vector3(1.2f, h, .7f), rot);
                 var col = Glows[k % Glows.Length];
-                mk.Box(GlowM(col, 3f), p + up * (h * .55f) - d * .36f, new Vector3(.12f, h * .5f, .02f), rot);
+                mk.Box(GlowM(col, 3f), p + up * (h / 2f - .4f) + rot * new Vector3(0, h * .05f + .4f, -.4f), new Vector3(.12f, h * .5f, .02f), rot);   // in the stone's own frame (it leans), so the slit stays proud of its face
                 halos.Add(p + up * (h * .55f) - d * 1.5f, 1.2f, col, .8f);
             }
             mk.Box(stoneM, at + up * .4f, new Vector3(2.4f, .8f, 1.4f), Quaternion.identity);
