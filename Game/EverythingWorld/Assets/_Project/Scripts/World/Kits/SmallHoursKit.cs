@@ -57,6 +57,7 @@ namespace EverythingWorld.World
             Lanes(ctx, mk);
             Laundrette(ctx, mk, solid, labels);
             Hedges(ctx, mk, solid);
+            SongPlaces(ctx, mk, solid);
             Night(ctx, mk, solid);
             mk.Build("Small Hours scenery", ctx.Root, false);
             solid.BuildCollider("Small Hours walls", ctx.Root);

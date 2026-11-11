@@ -7,7 +7,7 @@ namespace EverythingWorld.World
     /// flickering in Fionavair's window. In Noah Gallagher's place: the Twelfth House wheel turning slowly with
     /// its gondolas hanging upright; whichever of his songs is playing, its gondola or its light in the forest
     /// glows bright and pulses; the moon breathes with the song's energy; the aurora band sways.
-    public class SmallHoursLife : MonoBehaviour
+    public partial class SmallHoursLife : MonoBehaviour
     {
         public Transform[] drums = new Transform[0];
         // the Moonhunter house (SmallHoursMoonhunter)
@@ -63,6 +63,7 @@ namespace EverythingWorld.World
 
             var d0 = MusicDirector.Instance;
             var id = MusicDirector.ForcedTrackId ?? (d0 != null && d0.CurrentSlot.IsValid ? d0.CurrentSlot.track.id : null);
+            SongPlacesUpdate(dt, id);
             var energy = SurpriseDirector.Energy;
             if (moon != null) moon.SetColor("_EmissionColor", new Color(1f, .74f, .06f) * (1.5f + .9f * energy + .25f * Mathf.Sin(t * .8f)));
 

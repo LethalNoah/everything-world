@@ -143,3 +143,12 @@ Snapshot numbers refer to `Game/EverythingWorld/Logs/Live/` (not committed).
   stone circle's glowing slits placed in each stone's own frame (a tilted one met its stone's face).
 - Audit: 0 overlaps, 0 artists with problems. The "no collider" list left is the water surface and lily pads,
   which you wade through on purpose.
+
+## Small Hours (deep pass done, 2026-11-11)
+- Eight song places in the sleeping neighbourhood (Steph.fm, Bell Thompson, and round Noah Gallagher's place) and a
+  song piece by every one-song artist's door, all glowing with their songs (SmallHoursSongs, SmallHoursSongLife).
+- Photo fixes: two places' views looked through Steph.fm's station ring (its gold curtain): places and their
+  cameras now stay outside every station's ring; the cameras also stay inside the land.
+- Audit: 0 overlaps, 0 artists with problems.
+- Seen but not changed: the arrival photos are taken inside the laundrette (players arrive 70 m out), and
+  Steph.fm's artist photo looks at the cottage's side wall.

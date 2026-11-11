@@ -43,6 +43,7 @@ namespace EverythingWorld.World
                 case "Carmen Silver": Dust(ctx, root, inside, floorY); break;
                 case "Josie on the Rocks": Cat(mk, home + front * 4.3f - side * 2.4f + Vector3.up * 1.15f, front); break;
             }
+            HomeSongPiece(ctx, root, mk, solid, a, home, front, side);
             ArtistBits.Plaque(mk, solid, labels, a, G(c + front * 7f + side * 3.2f), front, darkWood, board, Ink, 1.4f);
             foreach (var g in glows) if (g != null) halos.Add(g.transform.position, 1.1f, WindowGlow, .8f);
             area.glowRenderers = glows.ToArray();
