@@ -17,6 +17,9 @@ namespace EverythingWorld.World
         public float minCover = .25f;             // the clearest an hour can be
         public float cover = -1f;                 // set 0..1 to choose the cloudiness yourself (-1 = by the hour)
         public bool shadows;
+        public string shadowLand;                 // if set, the shadows only fall while you're in this land (the clouds drift over neighbours too, whose ground went black under them)
+        bool shadowsOn;
+        readonly List<MeshRenderer> renderers = new List<MeshRenderer>();
         public Color color = new Color(1f, .97f, .93f);
 
         class Cloud { public Transform t; public Vector2 home; public float height, scale; public int rank; }
@@ -43,7 +46,8 @@ namespace EverythingWorld.World
                 }
                 var go = mk.BuildSingle("Puffs", t, false);
                 go.isStatic = false;
-                go.GetComponent<MeshRenderer>().shadowCastingMode = shadows ? UnityEngine.Rendering.ShadowCastingMode.On : UnityEngine.Rendering.ShadowCastingMode.Off;
+                var mr = go.GetComponent<MeshRenderer>(); renderers.Add(mr);
+                mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
                 t.localRotation = Quaternion.Euler(0, (float)rng.NextDouble() * 40f - 20f, 0);
                 clouds.Add(new Cloud
                 {
@@ -67,6 +71,12 @@ namespace EverythingWorld.World
 
         void Update()
         {
+            var want = shadows && (string.IsNullOrEmpty(shadowLand) || (SkyDirector.Instance != null && SkyDirector.Instance.CurrentLand == shadowLand));
+            if (want != shadowsOn)
+            {
+                shadowsOn = want;
+                foreach (var r in renderers) if (r != null) r.shadowCastingMode = want ? UnityEngine.Rendering.ShadowCastingMode.On : UnityEngine.Rendering.ShadowCastingMode.Off;
+            }
             var now = SharedChance.Now;
             var wind = Wind;
             var c = cover >= 0f ? cover : minCover + (1f - minCover) * (float)SharedChance.Value(SharedChance.Key(key + "-clouds"), SharedChance.Hour);

@@ -141,12 +141,22 @@ namespace EverythingWorld.World
                 }
                 else if (roll < .72f)
                 {
-                    // a fallen speaker cabinet, overgrown with flowers
-                    var rot = Quaternion.Euler(ctx.Range(-10f, 10f), ctx.Range(0, 360f), 80f + ctx.Range(-8f, 8f));
-                    mk.Box(black, p + Vector3.up * .5f, new Vector3(1.4f, 1.9f, 1f), rot);
-                    mk.Prism(WorldMaterials.Solid(new Color(.2f, .2f, .22f)), p + Vector3.up * 1.01f, Vector3.up, .5f, .02f, 14);
-                    for (var j = 0; j < 9; j++) mk.Blob(j % 3 == 0 ? GlowM(DustyPink, 1.2f) : blossom, p + Vector3.up * 1.05f + new Vector3(ctx.Range(-.7f, .7f), ctx.Range(0, .2f), ctx.Range(-.6f, .6f)), Vector3.one * .12f, ctx.Rng, .2f);
-                    solid.Box(black, p + Vector3.up * .5f, new Vector3(1.9f, 1f, 1.4f), Quaternion.Euler(0, rot.eulerAngles.y, 0));
+                    // a speaker cabinet fallen on its back, its two cones to the sky, overgrown: ivy over its edges,
+                    // flowers in the cones, its little power light still on (a plain black box read as a stray cube)
+                    var yaw = Quaternion.Euler(0, ctx.Range(0, 360f), ctx.Range(-6f, 6f));
+                    var cab = WorldMaterials.Solid(new Color(.2f, .18f, .22f)); var grille = WorldMaterials.Solid(new Color(.55f, .55f, .6f), .6f);
+                    var cone = WorldMaterials.Solid(new Color(.1f, .1f, .11f));
+                    mk.Box(cab, p + Vector3.up * .45f, new Vector3(1.4f, .9f, 2f), yaw);
+                    mk.Box(grille, p + Vector3.up * .92f, new Vector3(1.46f, .05f, 2.06f), yaw);
+                    mk.Box(cab, p + Vector3.up * .935f, new Vector3(1.3f, .04f, 1.9f), yaw);
+                    var top = p + Vector3.up * .96f;
+                    mk.Prism(cone, top + yaw * new Vector3(0, 0, -.35f), Vector3.up, .5f, .02f, 16); mk.Prism(grille, top + yaw * new Vector3(0, .02f, -.35f), Vector3.up, .14f, .02f, 10);
+                    mk.Prism(cone, top + yaw * new Vector3(0, 0, .62f), Vector3.up, .2f, .02f, 12);
+                    mk.Box(GlowM(Glows[things % Glows.Length], 3f), top + yaw * new Vector3(.55f, .01f, .85f), new Vector3(.07f, .04f, .07f), yaw);
+                    for (var j = 0; j < 7; j++) mk.Blob(leafM, p + yaw * new Vector3(ctx.Range(-.8f, .8f), ctx.Range(.2f, .95f), j % 2 == 0 ? -1f : 1f), new Vector3(.35f, .3f, .25f), ctx.Rng, .3f);
+                    for (var j = 0; j < 10; j++) mk.Blob(j % 2 == 0 ? GlowM(HotPink, 1.4f) : blossom, top + yaw * new Vector3(ctx.Range(-.6f, .6f), ctx.Range(.03f, .2f), ctx.Range(-.85f, .85f)), Vector3.one * .17f, ctx.Rng, .2f);
+                    halos.Add(top + Vector3.up * .5f, 1.2f, HotPink, .4f);
+                    solid.Box(cab, p + Vector3.up * .5f, new Vector3(1.5f, 1f, 2.1f), yaw);
                 }
                 else if (roll < .78f) Lamp(ctx, mk, ctx.Root, p, Glows[things % Glows.Length], ctx.Range(2.4f, 3.2f));
                 else continue;
@@ -167,6 +177,62 @@ namespace EverythingWorld.World
                     default: LanternWillow(ctx, mk, s); break;
                 }
                 noGrass.Add(new Vector3(s.x, 8f, s.z));
+            }
+            // ---------------------------------------------------------------- a finer layer on the hills
+            // the hills read empty between the bigger things: foxglove clumps with softly glowing bells, drifts of
+            // feather grass, and now and then a little cairn with a candle on top
+            var stalk = WorldMaterials.Solid(new Color(.36f, .46f, .38f)); var feather = WorldMaterials.Solid(new Color(.86f, .8f, .74f));
+            Color[] bells = { HotPink, Lilac, new Color(1f, .92f, .95f) };
+            int foxgloves = 0, cairns = 0;
+            const float fine = 20f;
+            for (var x = ctx.MinX + fine / 2f; x < ctx.MaxX; x += fine)
+            for (var z = ctx.MinZ + fine / 2f; z < ctx.MaxZ; z += fine)
+            {
+                float px = x + ctx.Range(-8f, 8f), pz = z + ctx.Range(-8f, 8f);
+                if (InMarsh(px, pz, -4f) || !Open(ctx, px, pz, 2.5f) || !ctx.IsFree(px, pz, 2f)) continue;
+                var roll = ctx.Range(0f, 1f);
+                if (roll < .38f)
+                {
+                    var col = bells[(int)(ctx.Range(0f, 2.99f))]; var glow = GlowM(col, 1.3f);
+                    for (var k = 0; k < ctx.Rng.Next(3, 7); k++)
+                    {
+                        var q = ctx.OnGround(px + ctx.Range(-1.2f, 1.2f), pz + ctx.Range(-1.2f, 1.2f)); var h = ctx.Range(.7f, 1.4f);
+                        soft.Prism(stalk, q, Vector3.up, .025f, h, 4);
+                        for (var j = 0; j < 5; j++) soft.Blob(glow, q + Vector3.up * (h * .45f + j * h * .11f) + new Vector3(.05f, 0, .03f), new Vector3(.05f, .07f, .05f) * (1.15f - j * .12f), ctx.Rng, 0f);
+                    }
+                    foxgloves++;
+                }
+                else if (roll < .7f)
+                {
+                    for (var k = 0; k < ctx.Rng.Next(5, 10); k++)
+                    {
+                        var q = ctx.OnGround(px + ctx.Range(-1.8f, 1.8f), pz + ctx.Range(-1.8f, 1.8f)); var lean = new Vector3(ctx.Range(-.25f, .25f), 1f, ctx.Range(-.25f, .25f)).normalized;
+                        soft.Prism(feather, q, lean, .02f, ctx.Range(.6f, 1.1f), 3, .2f);
+                        soft.Blob(feather, q + lean * ctx.Range(.8f, 1.15f), new Vector3(.05f, .14f, .05f), ctx.Rng, .1f);
+                    }
+                }
+                else if (roll < .74f && cairns < 40)
+                {
+                    var q = ctx.OnGround(px, pz); var y = 0f;
+                    for (var k = 0; k < 4; k++) { var rr = .35f - k * .06f; mk.Blob(k % 2 == 0 ? stoneM : stoneDark, q + Vector3.up * (y + rr * .4f), new Vector3(rr, rr * .45f, rr * .9f), ctx.Rng, .15f); y += rr * .75f; }
+                    mk.Prism(WorldMaterials.Solid(new Color(.95f, .92f, .88f)), q + Vector3.up * y, Vector3.up, .04f, .14f, 6);
+                    mk.Blob(GlowM(new Color(1f, .7f, .45f), 3f), q + Vector3.up * (y + .2f), new Vector3(.03f, .06f, .03f), ctx.Rng, 0f);
+                    halos.Add(q + Vector3.up * (y + .3f), .7f, new Color(1f, .7f, .45f), .8f);
+                    ArtistBits.PostCollider(ctx.Root, q, y, .3f);
+                    cairns++;
+                }
+            }
+            Debug.Log($"The Shoegaze Fens: {foxgloves} foxglove clumps and {cairns} candle cairns on the hills");
+            // three photo spots out on the hills, looking back over the fen (the photo tour shoots every "Shot:" mark)
+            foreach (var k in new[] { 8, 30, 52 })
+            {
+                var a = k * Mathf.PI * 2f / 64f; var r = edge[k] + 30f;
+                float hx = heart.x + Mathf.Cos(a) * r, hz = heart.y + Mathf.Sin(a) * r;
+                if (!ctx.IsLand(hx, hz, 4f)) continue;
+                var cam = ctx.OnGround(hx, hz) + Vector3.up * 1.6f;
+                var look = new Vector3(heart.x, waterY + 2f, heart.y) - cam;
+                var m = new GameObject("Shot: the hills " + k).transform; m.SetParent(ctx.Root, false);
+                m.SetPositionAndRotation(cam, Quaternion.LookRotation(look.normalized));
             }
             Debug.Log($"The Shoegaze Fens: {lilies} lily pads, {pillars} pillars, {sunk} sunken amps, {willows} willows, {things} things on the hills");
         }

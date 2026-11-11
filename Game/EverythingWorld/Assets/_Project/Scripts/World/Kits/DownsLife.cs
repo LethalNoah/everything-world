@@ -46,7 +46,7 @@ namespace EverythingWorld.World
         {
             clouds = gameObject.AddComponent<CloudLayer>();
             clouds.center = center; clouds.count = 110; clouds.span = 2600f; clouds.key = "downs";
-            clouds.minHeight = 95f; clouds.maxHeight = 170f; clouds.size = 1.35f; clouds.speed = 7f; clouds.shadows = true;
+            clouds.minHeight = 95f; clouds.maxHeight = 170f; clouds.size = 1.35f; clouds.speed = 7f; clouds.shadows = true; clouds.shadowLand = Land;
             clouds.color = new Color(.97f, .96f, .94f);
             for (var i = 0; i < kiteAnchors.Length; i++) MakeKite(kiteAnchors[i], KiteColors[i % KiteColors.Length], i);
             MakeSeeds();

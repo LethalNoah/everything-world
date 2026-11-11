@@ -65,7 +65,10 @@ Shader "Everything World/Zone Field"
                     float ang = lerp(0.35, 1.22, frac(m * 0.618)) * (frac(m * 0.37) > 0.5 ? 1.0 : -1.0);
                     float freq = 0.22 + frac(m * 0.29) * 0.4;                     // stripes per metre
                     float coord = (i.uv.x * cos(ang) + h * 7.0 * sin(ang)) * freq - t * 0.25;
-                    pattern = 0.35 + 0.65 * step(0.5, frac(coord));
+                    // soft bands rather than hard-edged stripes (hard ones read as a garish striped wall up close);
+                    // each border keeps its own angle and spacing, so neighbours still differ
+                    float band = 0.5 + 0.5 * cos(coord * 6.2831853);
+                    pattern = 0.42 + 0.58 * band * band;
                 }
                 else if (kind > 0.5) pattern = 0.45 + 0.55 * step(0.5, frac(h * 7.0 - t * 0.6));            // gate: bold horizontal bands
                 else pattern = 0.3 + 0.7 * step(0.6, frac(i.uv.x * 0.9 + t * 0.15));                       // artist ring: narrow vertical stripes
