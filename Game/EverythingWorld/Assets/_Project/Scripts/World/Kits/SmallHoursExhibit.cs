@@ -113,6 +113,18 @@ namespace EverythingWorld.World
         }
         readonly List<List<Vector3>> exPaths = new List<List<Vector3>>();
 
+        /// A small stone sign where the side path reaches a piece, with the song's name and a light strip that glows
+        /// while it plays.
+        void ExhibitSign(LandContext ctx, MeshKit mk, MeshKit solid, Transform labels, Vector3 at, Vector3 face, float r, string title, string id)
+        {
+            var side = Vector3.Cross(Vector3.up, face); var mark = G(ctx, at + face * (r + .6f) + side * 1.8f); var rot = Quaternion.LookRotation(-face);
+            var stone = WorldMaterials.Solid(new Color(.2f, .22f, .26f));
+            mk.Box(stone, mark + Vector3.up * .6f, new Vector3(1.9f, 1.2f, .25f), rot); solid.Box(stone, mark + Vector3.up * .6f, new Vector3(1.9f, 1.2f, .25f), rot);
+            ArtistBits.Label(labels, title, mark + Vector3.up * .75f + face * .14f, face, .16f, Ink, TextAnchor.MiddleCenter);
+            mk.Box(Cue(id, Teal, .35f, 2.5f), mark + Vector3.up * 1.24f, new Vector3(1.1f, .05f, .05f), rot);
+            halos.Add(mark + Vector3.up * 1.2f + face * .3f, .8f, Teal, .35f);
+        }
+
         void ExhibitBuild(LandContext ctx, Transform root, MeshKit mk, MeshKit solid, Transform labels)
         {
             var trodden = WorldMaterials.Solid(new Color(.16f, .22f, .24f));
@@ -123,6 +135,7 @@ namespace EverythingWorld.World
                 var id = System.Array.Find(Akashic, s => s.title == title).id;
                 build(v.at, v.face, id);
                 var back = (exhibitRadius.TryGetValue(title, out var rr) ? rr : 7f) * 1.3f + 3f;   // closer for the small pieces
+                ExhibitSign(ctx, mk, solid, labels, v.at, v.face, exhibitRadius.TryGetValue(title, out var r0) ? r0 : 7f, title, id);
                 ExMark(ctx, root, "exhibit, " + title, v.at + Vector3.up * 1.8f, v.at + v.face * back + Vector3.Cross(Vector3.up, v.face) * (back * .35f));
             }
             A("Desolate Zenith", (c, f, id) => DesolateZenith(ctx, root, mk, solid, c, f, id));

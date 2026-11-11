@@ -68,8 +68,58 @@ namespace EverythingWorld.World
                 mk.Box(Cue(id, Ice, 0f, 1.5f, .96f, 1f), lamp + up * .16f, new Vector3(.18f, .04f, .18f), Quaternion.identity);
                 halos.Add(lamp, 1f, col, .55f);
             }
+            TrailRails(ctx, root, mk, solid, labels, id);
             for (var j = 0; j < 12; j++) { TrailStation(ctx, root, mk, solid, j, trailStation[j], trailFace[j], id); ExMark(ctx, root, "exhibit, trail station " + (j + 1), trailStation[j] + up * 1.3f, trailStation[j] + trailFace[j] * 7.5f + Vector3.Cross(up, trailFace[j]) * 2f); }
             ExMark(ctx, root, "exhibit, the Synchronous World's trail", trail[trail.Count / 2] + up * 1.5f, trail[trail.Count / 2 - 6] + up * 1f);
+        }
+
+        /// Handrails along both sides of the trail, so it reads as one path from start to end: wooden posts and a rail,
+        /// open where you step off to each station, the station's number on the post beside the gap. A thin strip of light
+        /// runs along the top of the rails in the trail's colours, gold to ice, and lights up stretch by stretch with the
+        /// song as it travels along.
+        void TrailRails(LandContext ctx, Transform root, MeshKit mk, MeshKit solid, Transform labels, string id)
+        {
+            var up = Vector3.up; const float Off = 1.15f, H = 1f;
+            var n = trail.Count; var stationK = new int[12];
+            for (var j = 0; j < 12; j++) stationK[j] = Mathf.Clamp(Mathf.RoundToInt((j + .5f) / 12f * (n - 1)), 1, n - 2);
+            for (var s = -1; s <= 1; s += 2)
+            {
+                Vector3 Edge(int i) { var a = trail[Mathf.Min(i + 1, n - 1)] - trail[Mathf.Max(i - 1, 0)]; a.y = 0; a.Normalize(); return G(ctx, trail[i] + Vector3.Cross(up, a) * s * Off); }
+                bool Gap(int i)
+                {
+                    if (i < 4 || i > n - 3) return true;   // open at the start and the end
+                    for (var j = 0; j < 12; j++)
+                    {
+                        var stationSide = j % 2 == 0 ? 1 : -1;   // TrailPlan puts even stations on one side, odd on the other
+                        if (stationSide == s && Mathf.Abs(i - stationK[j]) <= 2) return true;
+                    }
+                    return false;
+                }
+                const int every = 3;
+                for (var i = 0; i + every < n; i += every)
+                {
+                    var i2 = i + every; if (Gap(i) || Gap(i2)) continue;
+                    var a = Edge(i); var b = Edge(i2); var u = i / (float)(n - 1); var u2 = i2 / (float)(n - 1);
+                    mk.Prism(darkWood, a - up * .2f, up, .05f, H + .2f, 5); ArtistBits.PostCollider(root, a, H, .07f);
+                    var ra = a + up * H; var rb = b + up * H; var len = Vector3.Distance(ra, rb); var rot = Quaternion.LookRotation(rb - ra);
+                    mk.Box(darkWood, (ra + rb) / 2f, new Vector3(.09f, .07f, len + .05f), rot);
+                    mk.Box(darkWood, (ra + rb) / 2f - up * .5f, new Vector3(.05f, .05f, len), rot);
+                    mk.Box(Cue(id, TrailColour((u + u2) / 2f), .3f, 3f, u, u2 + .02f), (ra + rb) / 2f + up * .045f, new Vector3(.04f, .02f, len), rot);
+                    solid.Box(darkWood, (ra + rb) / 2f - up * .45f, new Vector3(.12f, .9f, len), rot);
+                    if (!Gap(i2 + every) && i2 + every >= n) mk.Prism(darkWood, b - up * .2f, up, .05f, H + .2f, 5);
+                }
+            }
+            // the station numbers, on a little post at the downstream side of each gap
+            for (var j = 0; j < 12; j++)
+            {
+                var k = Mathf.Min(stationK[j] + 3, n - 2); var a = trail[k + 1] - trail[k - 1]; a.y = 0; a.Normalize();
+                var s = j % 2 == 0 ? 1f : -1f; var sd = Vector3.Cross(up, a) * s; var p = G(ctx, trail[k] + sd * Off);
+                mk.Prism(darkWood, p - up * .2f, up, .09f, H + .55f, 6); ArtistBits.PostCollider(root, p, H + .3f, .1f);
+                var col = TrailColour((j + .5f) / 12f); var cap = p + up * (H + .42f);
+                mk.Box(Cue(id, col, .5f, 3f, j / 12f, (j + 1) / 12f + .01f), cap, new Vector3(.45f, .45f, .05f), Quaternion.LookRotation(-a));
+                ArtistBits.Label(labels, (j + 1).ToString(), cap - a * .04f, -a, .32f, new Color(.08f, .08f, .1f), TextAnchor.MiddleCenter);
+                halos.Add(cap - a * .2f, .7f, col, .5f);
+            }
         }
 
         void TrailStation(LandContext ctx, Transform root, MeshKit mk, MeshKit solid, int j, Vector3 c, Vector3 face, string id)
