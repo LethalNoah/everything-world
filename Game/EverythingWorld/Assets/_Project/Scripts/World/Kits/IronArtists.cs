@@ -57,7 +57,7 @@ namespace EverythingWorld.World
             ArtistBits.Plaque(z.mk, z.solid, labels, a, z.At(reach * .8f + 1.5f, reach * .5f + 2.5f), front, iron, dark, Ink, 1.6f);
             Brazier(ctx, z.mk, z.At(reach * .8f, reach * .5f + 5f));
             Beacon(z, z.At(reach * .8f, reach * .5f + 7.5f));
-            if (z.area.glowLight == null) z.area.glowLight = ArtistBits.PointLight(root, z.c + Vector3.up * 5f + front * 5f, Molten, HasStation(a) ? 20f : 13f, 1.4f);
+            if (z.area.glowLight == null) z.area.glowLight = ArtistBits.PointLight(root, z.c + Vector3.up * 5f + front * 5f, Molten, HasStation(a) ? 22f : 16f, 2.1f);
             area.glowRenderers = z.glows.ToArray();
             z.mk.Build("Area", root, false);
             z.solid.BuildCollider("Walls", root);

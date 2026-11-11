@@ -59,8 +59,8 @@ namespace EverythingWorld.World
         public override bool Ground(float height, float slope, float patch, out Color color)
         {
             if (slope > 24f) color = Color.Lerp(new Color(.08f, .08f, .1f), new Color(.15f, .14f, .17f), patch);
-            else if (slope > 12f) color = Color.Lerp(new Color(.14f, .14f, .16f), new Color(.3f, .3f, .33f), patch);
-            else color = Color.Lerp(new Color(.22f, .22f, .25f), new Color(.46f, .46f, .49f), Mathf.SmoothStep(0f, 1f, patch));   // pale ash on the flats
+            else if (slope > 12f) color = Color.Lerp(new Color(.2f, .2f, .23f), new Color(.38f, .37f, .41f), patch);
+            else color = Color.Lerp(new Color(.34f, .33f, .37f), new Color(.58f, .57f, .61f), Mathf.SmoothStep(0f, 1f, patch));   // pale ash on the flats
             color.a = 1f;
             return true;
         }

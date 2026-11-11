@@ -58,7 +58,7 @@ namespace EverythingWorld.World
             Board(z, z.At(reach * .85f, -reach * .5f - 2.5f), front);
             ArtistBits.Plaque(z.mk, z.solid, labels, a, z.At(reach * .85f + 1.5f, reach * .5f + 2.5f), front, metal, dark, Ink, 1.6f);
             z.glows.Add(Lamp(ctx, z.mk, root, z.At(reach * .85f, reach * .5f + 5f)));
-            if (z.area.glowLight == null) z.area.glowLight = ArtistBits.PointLight(root, z.c + Vector3.up * 6f + front * 5f, Spot, HasStation(a) ? 22f : 16f, 1.8f);
+            if (z.area.glowLight == null) z.area.glowLight = ArtistBits.PointLight(root, z.c + Vector3.up * 6f + front * 5f, Spot, HasStation(a) ? 26f : 19f, 2.6f);
             area.glowRenderers = z.glows.ToArray();
             z.mk.Build("Area", root, false);
             z.solid.BuildCollider("Walls", root);

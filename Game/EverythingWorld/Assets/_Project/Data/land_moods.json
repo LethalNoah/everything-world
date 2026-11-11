@@ -25,22 +25,22 @@
   },
   {
    "land": "The Post-Punk Docklands",
-   "sunPitch": 30, "sunYaw": 250, "sunIntensity": 0.28, "sunColor": "#8C9CC8",
-   "skyLight": "#1C2030", "horizonLight": "#4A3424", "groundLight": "#2E2620",
+   "sunPitch": 30, "sunYaw": 250, "sunIntensity": 0.4, "sunColor": "#8C9CC8",
+   "skyLight": "#2A3350", "horizonLight": "#6A4A30", "groundLight": "#4A3E32",
    "fogColor": "#2A2420", "fogStart": 40, "fogEnd": 650, "stars": 0.3, "sunShadows": false, "dailyWeather": false, "bloom": 1.0,
    "weather": "", "weatherAmount": 0
   },
   {
    "land": "Metalcore Caldera",
-   "sunPitch": 20, "sunYaw": 300, "sunIntensity": 0.55, "sunColor": "#B8A8E0",
-   "skyLight": "#3A3448", "horizonLight": "#5A3A6A", "groundLight": "#3A2E48",
+   "sunPitch": 20, "sunYaw": 300, "sunIntensity": 0.7, "sunColor": "#B8A8E0",
+   "skyLight": "#4C4562", "horizonLight": "#5A3A6A", "groundLight": "#564870",
    "fogColor": "#3E3448", "fogStart": 60, "fogEnd": 900, "stars": 0, "sunShadows": false, "dailyWeather": false, "bloom": 1.0,
    "weather": "", "weatherAmount": 0
   },
   {
    "land": "The Iron Range",
    "sunPitch": 14, "sunYaw": 120, "sunIntensity": 0.9, "sunColor": "#FF9A60",
-   "skyLight": "#5E5A6A", "horizonLight": "#8A5A40", "groundLight": "#4A3428",
+   "skyLight": "#5E5A6A", "horizonLight": "#8A5A40", "groundLight": "#5A4232",
    "fogColor": "#4A4248", "fogStart": 100, "fogEnd": 1100,
    "stars": 0, "sunShadows": false, "dailyWeather": false, "bloom": 1.0,
    "weather": "", "weatherAmount": 0
@@ -95,8 +95,8 @@
   },
   {
    "land": "Arena Rock Ridge",
-   "sunPitch": -14, "sunYaw": 200, "sunIntensity": 0.35, "sunColor": "#9FB4FF",
-   "skyLight": "#2E3F78", "horizonLight": "#40558F", "groundLight": "#1E2233",
+   "sunPitch": -14, "sunYaw": 200, "sunIntensity": 0.5, "sunColor": "#9FB4FF",
+   "skyLight": "#3A4C8A", "horizonLight": "#40558F", "groundLight": "#363C55",
    "fogColor": "#141B33", "fogStart": 140, "fogEnd": 1500,
    "stars": 1.0, "sunShadows": false, "dailyWeather": false, "bloom": 1.0,
    "weather": "", "weatherAmount": 0

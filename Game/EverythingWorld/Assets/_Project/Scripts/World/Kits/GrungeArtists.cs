@@ -75,6 +75,7 @@ namespace EverythingWorld.World
                 default: Trailer(ctx, z.mk, z.solid, z.At(-3f, 0), null, z.front); break;
             }
             var reach = Foot(a);
+            Festoon(z, reach);
             Board(z, z.At(reach * .8f, -reach * .5f - 2.5f), front);
             ArtistBits.Plaque(z.mk, z.solid, labels, a, z.At(reach * .8f + 1.5f, reach * .5f + 2.5f), front, plank, oldPlank, Ink, 1.6f);
             RoadLamp(ctx, z.mk, z.At(reach * .8f, reach * .5f + 5f), -z.side);
@@ -88,6 +89,22 @@ namespace EverythingWorld.World
             {
                 var mark = new GameObject("Shot: " + a.name + " up close").transform; mark.SetParent(ctx.Root, false);
                 var cam = z.At(reach * .55f, reach * .35f) + Vector3.up * 1.7f; var look = z.At(-reach * .35f, 0) + Vector3.up * 2.5f - cam; mark.SetPositionAndRotation(cam, Quaternion.LookRotation(look.normalized));
+            }
+        }
+
+        /// Strings of coloured bulbs looping over the clearing between four poles: a backyard-show glow in the rain.
+        void Festoon(Plot z, float reach)
+        {
+            var up = Vector3.up; var r = Mathf.Max(5f, reach * .62f);
+            Color[] bulbs = { new Color(1f, .3f, .2f), new Color(1f, .75f, .2f), new Color(.3f, 1f, .45f), new Color(.35f, .6f, 1f), new Color(1f, .45f, .8f) };
+            var mats = new Material[bulbs.Length]; for (var k = 0; k < bulbs.Length; k++) mats[k] = GlowM(bulbs[k], 2.6f);
+            var poles = new Vector3[4];
+            for (var k = 0; k < 4; k++) { var a = k * Mathf.PI / 2f + Mathf.PI / 4f; var g = z.ctx.OnGround(z.c.x + Mathf.Cos(a) * r, z.c.z + Mathf.Sin(a) * r); z.mk.Prism(bark, g - up * .3f, up, .1f, 4.6f, 6); ArtistBits.PostCollider(z.root, g, 4.3f, .12f); poles[k] = g + up * 4.2f; }
+            for (var k = 0; k < 4; k++)
+            {
+                var a = poles[k]; var b = poles[(k + 1) % 4]; var n = Mathf.Max(6, Mathf.RoundToInt(Vector3.Distance(a, b) / .9f));
+                for (var j = 0; j <= n; j++) { var t = j / (float)n; var p = Vector3.Lerp(a, b, t) - up * Mathf.Sin(t * Mathf.PI) * 1.1f; z.mk.Blob(mats[(j + k) % mats.Length], p, Vector3.one * .1f, z.ctx.Rng, 0f); }
+                halos.Add(Vector3.Lerp(a, b, .5f) - up * 1.1f, 1.6f, bulbs[k], .35f);
             }
         }
 
@@ -380,7 +397,7 @@ namespace EverythingWorld.World
             }
             // the lid, propped open
             var lidRot = Quaternion.AngleAxis(-35f, z.side);
-            Heart(z.mk, hb + up * 2.5f - z.front * 1.4f, lidRot * up, 1.75f, red, 0f, z.side);
+            Heart(z.mk, hb + up * 2.05f - z.front * 1.5f, lidRot * up, 1.75f, red, 0f, z.side);
             halos.Add(hb + up * 2f, 2.6f, new Color(1f, .3f, .3f), .5f); z.solid.Box(darkRock, hb + up * .6f - z.front * .4f, new Vector3(4.4f, 2.8f, 4.6f), rot);
             ArtistBits.PointLight(z.root, hb + up * 3f + z.front * 2f, new Color(1f, .35f, .35f), 10f, 1.4f);
             // Lithium: a rusted trailer at the edge of the clearing
@@ -448,6 +465,23 @@ namespace EverythingWorld.World
             }
             z.mk.Box(dark, lampAt + up * .5f, new Vector3(.02f, .9f, .02f), Quaternion.identity); z.mk.Prism(deadWood, t + up * 4f, (lampAt + up * .95f - (t + up * 4f)).normalized, .08f, Vector3.Distance(lampAt + up * .95f, t + up * 4f), 5, .6f);
             z.mk.Box(SongGlow(Would, new Color(.65f, .8f, 1f), 2.6f), lampAt, new Vector3(.22f, .32f, .22f), rot); halos.Add(lampAt, 1.6f, new Color(.65f, .8f, 1f), .7f);
+            // the chained tree: a huge dead tree behind the clearing, seen from across the forest, its bare limbs hung
+            // with chains and pale lanterns, a cold light at its crown
+            var big = z.At(-11f, 0f); var bigWood = WorldMaterials.Solid(new Color(.26f, .24f, .24f));
+            z.mk.Prism(bigWood, big - up * .4f, up, 1.1f, 20f, 7, .25f); ArtistBits.PostCollider(z.root, big, 8f, 1.1f);
+            var lantern = SongGlow(Would, new Color(.65f, .82f, 1f), 2.4f);
+            for (var k = 0; k < 7; k++)
+            {
+                var d = Quaternion.Euler(0, k * 51f + 10f, 0) * Vector3.forward; var y = 8f + k * 1.6f; var len = 6f - k * .5f;
+                var from = big + up * y; var tip = from + (d + up * .35f).normalized * len;
+                z.mk.Prism(bigWood, from, (tip - from).normalized, .3f - k * .025f, len, 5, .3f);
+                for (var j = 0; j < 9; j++) z.mk.Box(chainM, tip - up * (j * .35f + .2f), new Vector3(j % 2 == 0 ? .14f : .04f, .32f, j % 2 == 0 ? .04f : .14f), Quaternion.identity);
+                var lp = tip - up * 3.4f; z.mk.Box(dark, lp + up * .25f, new Vector3(.3f, .08f, .3f), Quaternion.identity); z.mk.Box(lantern, lp, new Vector3(.26f, .38f, .26f), Quaternion.identity); halos.Add(lp, 1.6f, new Color(.65f, .82f, 1f), .7f);
+            }
+            var crown = big + up * 20.5f; z.mk.Blob(lantern, crown, Vector3.one * .6f, ctx.Rng, 0f); halos.Add(crown, 5f, new Color(.65f, .82f, 1f), .7f);
+            ArtistBits.PointLight(z.root, big + up * 12f + z.front * 4f, new Color(.6f, .78f, 1f), 26f, 2.4f);
+            ArtistBits.PointLight(z.root, n + up * 3f + z.front * 5f, new Color(1f, .7f, .4f), 14f, 2f);
+            noGrass.Add(new Vector3(big.x, 4f, big.z));
         }
 
         // ---------------------------------------------------------------- Pearl Jam

@@ -52,7 +52,8 @@ namespace EverythingWorld.World
                 case "Soundgarden": return 17f;
                 case "Audioslave": case "Stone Temple Pilots": return 15f;
                 case "Live": case "Nirvana": case "Foo Fighters": return 13f;
-                case "Alice In Chains": case "Pearl Jam": case "Temple Of The Dog": return 11f;
+                case "Alice In Chains": return 15f;
+                case "Pearl Jam": case "Temple Of The Dog": return 11f;
                 default: return 8f;
             }
         }
@@ -417,12 +418,12 @@ namespace EverythingWorld.World
             // a few old benches for the crowd
             for (var k = 0; k < 3; k++) foreach (var s in new[] { -1f, 1f }) { var b = P(s * 3.6f, .55f, 2.5f - k * 2.2f); mk.Box(plank, b, new Vector3(3.6f, .12f, .5f), rot); foreach (var e in new[] { -1.5f, 1.5f }) mk.Box(plank, b + side * e - up * .25f, new Vector3(.12f, .45f, .4f), rot); solid.Box(plank, b - up * .1f, new Vector3(3.6f, .6f, .5f), rot); }
             // the giant saw blade over the door
-            var blade = P(0, H + 1.4f, D / 2f + .3f); mk.Prism(metal, blade, front, 2.4f, .12f, 28); mk.Prism(dark, blade + front * .13f, front, .5f, .04f, 12);
+            var blade = P(0, H + 2f, D / 2f + .3f); mk.Prism(metal, blade, front, 2.4f, .12f, 28); mk.Prism(dark, blade + front * .13f, front, .5f, .04f, 12);
             for (var k = 0; k < 20; k++) { var a = k * 18f; var d = Quaternion.AngleAxis(a, front) * up; mk.Box(metal, blade + d * 2.5f + front * .06f, new Vector3(.3f, .3f, .1f), Quaternion.LookRotation(front, d) * Quaternion.Euler(0, 0, 45f)); }
             var bladeGlow = new Material(WorldMaterials.Glow(Lamp, 1.2f)) { name = "Saw blade ring" }; life.bladeRing = bladeGlow;
             for (var k = 0; k < 28; k++) { var a0 = k * Mathf.PI * 2f / 28f; var a1 = (k + 1) * Mathf.PI * 2f / 28f; var p0 = blade + front * .14f + (side * Mathf.Cos(a0) + up * Mathf.Sin(a0)) * 1.9f; var p1 = blade + front * .14f + (side * Mathf.Cos(a1) + up * Mathf.Sin(a1)) * 1.9f; mk.Box(bladeGlow, (p0 + p1) / 2f, new Vector3(.1f, .1f, Vector3.Distance(p0, p1)), Quaternion.LookRotation(p1 - p0, front)); }
             halos.Add(blade + front * .6f, 3.2f, Lamp, .45f);
-            ArtistBits.Label(ctx.Root, "THE MILL", P(0, DoorH + 1f, D / 2f + .1f), front, .5f, Lamp, TextAnchor.MiddleCenter);
+            ArtistBits.Label(ctx.Root, "THE MILL", P(0, DoorH + .55f, D / 2f + .1f), front, .55f, Lamp, TextAnchor.MiddleCenter);
             // the smokestack
             var st = P(W / 2f - 2.5f, 0, -D / 2f - 1.6f); mk.Prism(rust, st, up, 1f, 17f, 10, .8f); mk.Prism(dark, st + up * 17f, up, .9f, .8f, 10, 1.15f); solid.Prism(rust, st, up, 1f, 6f, 10);
             for (var k = 1; k < 6; k++) mk.Prism(dark, st + up * (k * 3f), up, 1.02f - k * .035f, .2f, 10);
@@ -471,7 +472,7 @@ namespace EverythingWorld.World
             for (var i = 0; i + 1 < pts.Count; i++)
             {
                 var a = pts[i]; var b = pts[i + 1]; var d = b - a; d.y = 0; var sd = Vector3.Cross(Vector3.up, d.normalized);
-                if (a.y - b.y > .5f) mk.Box(foam, (a + b) / 2f + Vector3.up * .06f, new Vector3(RiverW * .8f, .04f, d.magnitude * .8f), Quaternion.LookRotation(b - a));   // rapids
+                if (a.y - b.y > 1.2f && i % 2 == 0) mk.Box(foam, (a + b) / 2f + Vector3.up * .06f, new Vector3(RiverW * .55f, .04f, d.magnitude * .5f), Quaternion.LookRotation(b - a));   // rapids
                 if (i % 4 == 1) { var s = i % 8 == 1 ? 1f : -1f; var rp = a + sd * s * (RiverW / 2f + .6f); rp.y = ctx.Ground(rp.x, rp.z); mk.Blob(i % 3 == 0 ? moss : rock, rp + Vector3.up * .3f, new Vector3(1.1f, .6f, 1f), ctx.Rng, .2f); solid.Box(rock, rp + Vector3.up * .4f, new Vector3(2.6f, 1.4f, 2.4f), Quaternion.LookRotation(d)); }
             }
             life.river = pts.ToArray();
@@ -508,11 +509,35 @@ namespace EverythingWorld.World
             var tr = c + toFalls * 4f - sd * 15f; tr.y = ctx.Ground(tr.x, tr.z); LogTruck(ctx, mk, solid, tr, toFalls);
             // a clothesline of flannel shirts
             var cl = c - toFalls * 13f - sd * 9f; cl.y = ctx.Ground(cl.x, cl.z); Clothesline(ctx, mk, solid, cl, sd, 7f);
+            // a fingerpost pointing to the biggest artists, Alice In Chains first
+            Fingerpost(ctx, mk, c - toFalls * 6f - sd * 7f);
             // lamps round the crossroads
             for (var k = 0; k < 4; k++) { var a = k * Mathf.PI / 2f + Mathf.PI / 4f; var lp = ctx.OnGround(c.x + Mathf.Cos(a) * 12.5f, c.z + Mathf.Sin(a) * 12.5f); RoadLamp(ctx, mk, lp, new Vector3(c.x - lp.x, 0, c.z - lp.z)); }
             noGrass.Add(new Vector3(c.x, 12f, c.z));
             var mark = new GameObject("Shot: the crossroads").transform; mark.SetParent(ctx.Root, false);
             var cam = c - toFalls * 16f - sd * 4f + up * 1.7f; var look = c + toFalls * 20f + up * 4f - cam; mark.SetPositionAndRotation(cam, Quaternion.LookRotation(look.normalized));
+        }
+
+        /// A tall fingerpost with an arm pointing toward each of the land's best-known artists, lettered both sides and
+        /// lit by a lamp on top.
+        void Fingerpost(LandContext ctx, MeshKit mk, Vector3 g)
+        {
+            var up = Vector3.up; g.y = ctx.Ground(g.x, g.z);
+            mk.Prism(bark, g - up * .3f, up, .14f, 5f, 7); ArtistBits.PostCollider(ctx.Root, g, 4.6f, .2f);
+            var names = new[] { "Alice In Chains", "The Smashing Pumpkins", "Soundgarden", "Stone Temple Pilots", "Pearl Jam", "Audioslave", "Nirvana", "Live" };
+            var k = 0;
+            foreach (var name in names)
+            {
+                IslandWorldData.Artist a = null; foreach (var x in ctx.Artists) if (x.name == name) a = x;
+                if (a == null) continue;
+                var d = new Vector3(a.x - g.x, 0, a.z - g.z).normalized; var y = 4.3f - k * .42f; var arm = g + up * y + d * 1f; var rot = Quaternion.LookRotation(d);
+                mk.Box(k == 0 ? WorldMaterials.Solid(Flannel) : plank, arm, new Vector3(.06f, .32f, 1.9f), rot); mk.Cone(k == 0 ? WorldMaterials.Solid(Flannel) : plank, arm + d * .95f, .16f, .35f, 3, 0f);
+                var sd = Vector3.Cross(up, d);
+                foreach (var e in new[] { -1f, 1f }) ArtistBits.Label(ctx.Root, name.ToUpperInvariant(), arm + sd * e * .04f, sd * e, .13f, Ink, TextAnchor.MiddleCenter);
+                k++;
+            }
+            var lamp = g + up * 4.85f; mk.Box(dark, lamp + up * .2f, new Vector3(.4f, .08f, .4f), Quaternion.identity); mk.Box(GlowM(Lamp, 2.6f), lamp, new Vector3(.25f, .3f, .25f), Quaternion.identity);
+            halos.Add(lamp, 2f, Lamp, .7f); ArtistBits.PointLight(ctx.Root, lamp + up * .3f, Lamp, 10f, 1.6f);
         }
 
         void Puddle(MeshKit mk, Vector3 at, float r)

@@ -62,7 +62,9 @@ namespace EverythingWorld.World
             return string.Join("\n", lines);
         }
 
-        /// A plaque board on two short posts. 'front' is the direction it faces (toward visitors).
+        static readonly Color PlaqueLamp = new Color(1f, .93f, .8f);
+
+        /// A plaque board on two short posts, a little lamp along its top. 'front' is the direction it faces.
         public static void Plaque(MeshKit mk, MeshKit colliders, Transform labels, IslandWorldData.Artist a, Vector3 groundPos,
                                   Vector3 front, Material wood, Material board, Color ink, float width = 1.5f)
         {
@@ -75,6 +77,10 @@ namespace EverythingWorld.World
                 mk.Prism(wood, groundPos + right * (width / 2f - .08f) * s - front * .05f, Vector3.up, .06f, 1.85f, 5);
             mk.Box(board, center, new Vector3(width, h, .07f), rot);
             colliders.Box(board, center, new Vector3(width, h, .2f), rot);
+            // a hooded lamp along the top, like a gallery label, so the plaque can be found in the dark
+            var hood = center + Vector3.up * (h / 2f + .07f) + front * .1f;
+            mk.Box(WorldMaterials.Solid(new Color(.08f, .08f, .09f)), hood, new Vector3(width * .9f, .06f, .2f), rot);
+            mk.Box(WorldMaterials.Glow(PlaqueLamp, 1.5f), hood - Vector3.up * .035f + front * .02f, new Vector3(width * .82f, .015f, .08f), rot);
             var face = center + front * .045f;
             Label(labels, Clip(a.name, 26), face + Vector3.up * (h / 2f - .1f), front, .15f, ink);
             Label(labels, Details(a), face + Vector3.up * (h / 2f - .32f), front, .075f, ink);

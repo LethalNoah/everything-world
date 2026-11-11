@@ -79,6 +79,7 @@ namespace EverythingWorld.World
             area.artistName = a.name; area.stationId = a.stationId; area.radius = a.r; area.glowColor = Cyan;
             var z = new Plot { ctx = ctx, root = root, labels = labels, mk = new MeshKit(), solid = new MeshKit(), pictures = new MeshKit(), a = a, c = ctx.OnGround(a.x, a.z), front = front, side = Vector3.Cross(Vector3.up, front), area = area };
             z.mk.Prism(basalt, z.c - Vector3.up * .28f, Vector3.up, Foot(a) * .58f, .34f, 18);
+            { var rr = Foot(a) * .58f; var ring = GlowM(HasStation(a) ? Violet : Cyan, 1.4f); for (var k = 0; k < 28; k++) { float a0 = k * Mathf.PI / 14f, a1 = (k + .6f) * Mathf.PI / 14f; var p0 = z.c + new Vector3(Mathf.Cos(a0), 0, Mathf.Sin(a0)) * rr + Vector3.up * .08f; var p1 = z.c + new Vector3(Mathf.Cos(a1), 0, Mathf.Sin(a1)) * rr + Vector3.up * .08f; z.mk.Box(ring, (p0 + p1) / 2f, new Vector3(.18f, .05f, Vector3.Distance(p0, p1)), Quaternion.LookRotation(p1 - p0)); } }
             switch (a.name)
             {
                 case "blessthefall": Blessthefall(z); break;
@@ -93,7 +94,7 @@ namespace EverythingWorld.World
             Slab(z, z.At(reach * .8f, -reach * .5f - 2.5f), front);
             ArtistBits.Plaque(z.mk, z.solid, labels, a, z.At(reach * .8f + 1.5f, reach * .5f + 2.5f), front, obsidian, basalt, Ink, 1.6f);
             NeonPost(ctx, z.mk, z.At(reach * .8f, reach * .5f + 5f));
-            if (z.area.glowLight == null) z.area.glowLight = ArtistBits.PointLight(root, z.c + Vector3.up * 5f + front * 5f, Cyan, HasStation(a) ? 20f : 13f, 1.3f);
+            if (z.area.glowLight == null) z.area.glowLight = ArtistBits.PointLight(root, z.c + Vector3.up * 6f + front * 4f, Cyan, HasStation(a) ? 22f : 17f, 2.2f);
             area.glowRenderers = new Renderer[0];
             z.mk.Build("Area", root, false);
             z.solid.BuildCollider("Walls", root);

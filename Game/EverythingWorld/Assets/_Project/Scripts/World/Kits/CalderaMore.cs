@@ -58,7 +58,7 @@ namespace EverythingWorld.World
                     var md = z.At(-4f, -2f); z.mk.Blob(ashDark, md + up * .2f, new Vector3(1.4f, .5f, 2f), ctx.Rng, .2f);
                     z.mk.Box(steel, md + up * 1.2f + z.side * .4f, new Vector3(.06f, 1.6f, .06f), Quaternion.Euler(0, 0, -12f)); z.mk.Box(steel, md + up * .45f + z.side * .25f, new Vector3(.35f, .45f, .05f), Quaternion.Euler(0, 0, -12f));
                     z.mk.Prism(SongGlow(z, "Bury a Lie", Magenta, 1.4f), md + up * .02f, up, 1.8f, .03f, 14); z.solid.Box(ashDark, md + up * .4f, new Vector3(2.6f, .8f, 3.6f), rot);
-                    var ice = z.At(3f, -7f); z.mk.Box(SongGlow(z, "Frozen", new Color(.6f, .9f, 1f), 1.2f), ice + up * 1.1f, new Vector3(2f, 2.2f, 2f), rot * Quaternion.Euler(0, 20f, 6f)); halos.Add(ice + up * 1.2f, 2.2f, new Color(.6f, .9f, 1f), .4f); z.solid.Box(steel, ice + up * 1.1f, new Vector3(2.4f, 2.2f, 2.4f), rot);
+                    var ice = z.At(3f, -7f); z.mk.Box(SongGlow(z, "Frozen", new Color(.35f, .7f, 1f), .7f), ice + up * 1.1f, new Vector3(2f, 2.2f, 2f), rot * Quaternion.Euler(0, 20f, 6f)); z.mk.Box(WorldMaterials.Solid(new Color(.75f, .9f, 1f), .95f), ice + up * 2.25f, new Vector3(2.1f, .1f, 2.1f), rot * Quaternion.Euler(0, 20f, 6f)); halos.Add(ice + up * 1.2f, 2.2f, new Color(.6f, .9f, 1f), .4f); z.solid.Box(steel, ice + up * 1.1f, new Vector3(2.4f, 2.2f, 2.4f), rot);
                     var wt = z.At(3f, 7f); var iron = WorldMaterials.Solid(new Color(.12f, .12f, .14f), .6f); z.mk.Prism(iron, wt, up, 1.4f, 2.2f, 8, .55f); z.mk.Box(iron, wt + up * 2.6f, new Vector3(.9f, .6f, .3f), rot);
                     z.mk.Box(SongGlow(z, "Heavier", Cyan, 1.6f), wt + up * 1.2f + z.front * 1.02f, new Vector3(.8f, .2f, .02f), rot); z.solid.Prism(iron, wt, up, 1.4f, 2.8f, 8);
                     break;
@@ -119,16 +119,57 @@ namespace EverythingWorld.World
 
         /// An obsidian shrine in a chain-link pen: a faceted black monolith split by a glowing seam (the artist's first
         /// song), neon shards at its foot.
+        /// A shrine for a smaller artist, one of five kinds (picked by name, so neighbours differ), lit so it reads in
+        /// the dark: a black monolith split by a glowing seam; an obsidian ring standing on edge with a neon rim; a
+        /// throne of big neon crystals; a boulder floating over a pool of light, chained down; a totem of amps crowned
+        /// with neon. The glow is the artist's first song.
         void Shrine(Plot z, Vector3 c)
         {
             var up = Vector3.up; var rot = z.Rot; var ctx = z.ctx;
-            Color[] cols = { Cyan, Violet, Magenta }; var col = cols[Mathf.Abs(z.a.name.GetHashCode()) % 3];
+            var hash = Mathf.Abs(z.a.name.GetHashCode());
+            Color[] cols = { Cyan, Violet, Magenta }; var col = cols[hash % 3];
             string first = null; if (SongIds.TryGetValue(z.a.name, out var list) && list.Length > 0) { first = list[0].id; z.lit.Add(first); }
-            var h = ctx.Range(3.6f, 5.4f);
-            z.mk.Prism(obsidian, c - up * .2f, up, 1f, h, 5, .35f, ctx.Range(0, 70f)); z.mk.Box(SongGlow(first, col, 2.4f), c + up * h * .45f + z.front * .5f, new Vector3(.08f, h * .7f, .06f), rot * Quaternion.Euler(0, 0, ctx.Range(-6f, 6f)));
-            for (var k = 0; k < 4; k++) z.mk.Prism(GlowM(col, 1.4f), c + Quaternion.Euler(0, k * 90f + 45f, 0) * Vector3.forward * 1.5f, (up + Quaternion.Euler(0, k * 90f + 45f, 0) * Vector3.forward * .4f).normalized, .12f, .7f, 5, .05f);
-            halos.Add(c + up * h * .5f + z.front * .9f, 1.8f, col, .45f); z.solid.Prism(obsidian, c, up, 1f, h, 5);
-            Pen(ctx, z.mk, z.solid, c + z.front * .5f);
+            var glow = SongGlow(first, col, 2.4f);
+            switch ((hash / 3) % 5)
+            {
+                case 0:   // the monolith
+                {
+                    var h = ctx.Range(4.2f, 5.6f);
+                    z.mk.Prism(obsidian, c - up * .2f, up, 1f, h, 5, .35f, ctx.Range(0, 70f)); z.mk.Box(glow, c + up * h * .45f + z.front * .52f, new Vector3(.12f, h * .75f, .06f), rot * Quaternion.Euler(0, 0, ctx.Range(-6f, 6f)));
+                    z.solid.Prism(obsidian, c, up, 1f, h, 5); halos.Add(c + up * h * .5f + z.front * 1f, 2.4f, col, .55f);
+                    break;
+                }
+                case 1:   // the ring on edge
+                {
+                    var rc = c + up * 2.6f;
+                    for (var k = 0; k < 20; k++) { float a0 = k * Mathf.PI / 10f, a1 = (k + 1) * Mathf.PI / 10f; var p0 = rc + (z.side * Mathf.Cos(a0) + up * Mathf.Sin(a0)) * 2.4f; var p1 = rc + (z.side * Mathf.Cos(a1) + up * Mathf.Sin(a1)) * 2.4f; z.mk.Box(obsidian, (p0 + p1) / 2f, new Vector3(.5f, .5f, Vector3.Distance(p0, p1) + .05f), Quaternion.LookRotation(p1 - p0, z.front)); var q0 = rc + (z.side * Mathf.Cos(a0) + up * Mathf.Sin(a0)) * 2.05f + z.front * .2f; var q1 = rc + (z.side * Mathf.Cos(a1) + up * Mathf.Sin(a1)) * 2.05f + z.front * .2f; z.mk.Box(glow, (q0 + q1) / 2f, new Vector3(.1f, .1f, Vector3.Distance(q0, q1) + .02f), Quaternion.LookRotation(q1 - q0, z.front)); }
+                    foreach (var e in new[] { -1f, 1f }) ArtistBits.PostCollider(z.root, c + z.side * e * 2.3f, 2f, .4f);
+                    z.mk.Prism(glow, c + up * .03f, up, 1.2f, .04f, 16); halos.Add(rc + z.front * .6f, 3f, col, .4f);
+                    break;
+                }
+                case 2:   // the crystal throne
+                {
+                    z.mk.Box(obsidian, c + up * .5f, new Vector3(1.4f, 1f, 1.4f), rot); z.mk.Box(obsidian, c + up * 1.6f - z.front * .6f, new Vector3(1.4f, 2.2f, .3f), rot);
+                    for (var k = 0; k < 7; k++) { var a = k * Mathf.PI * 2f / 7f; var d = new Vector3(Mathf.Cos(a), 0, Mathf.Sin(a)); var len = ctx.Range(2.2f, 3.8f); z.mk.Prism(glow, c + d * 1.4f - up * .2f, (up + d * .35f).normalized, .3f, len, 6, .05f); }
+                    z.solid.Box(obsidian, c + up * 1f, new Vector3(3.6f, 2f, 3.6f), rot); halos.Add(c + up * 1.8f, 3f, col, .5f);
+                    break;
+                }
+                case 3:   // the floating boulder
+                {
+                    var bc = c + up * (2.6f + .2f * Mathf.Sin(hash)); z.mk.Blob(obsidian, bc, new Vector3(1.2f, .9f, 1.1f), ctx.Rng, .3f);
+                    z.mk.Prism(glow, c + up * .03f, up, 1.5f, .05f, 16); z.mk.Blob(glow, bc - up * .85f, new Vector3(.5f, .12f, .5f), ctx.Rng, .1f);
+                    for (var k = 0; k < 3; k++) { var a = k * Mathf.PI * 2f / 3f; var g = c + new Vector3(Mathf.Cos(a), 0, Mathf.Sin(a)) * 2.2f; g.y = ctx.Ground(g.x, g.z); z.mk.Box(chain, (g + bc) / 2f, new Vector3(.06f, .06f, Vector3.Distance(g, bc)), Quaternion.LookRotation(bc - g)); z.mk.Prism(obsidian, g - up * .1f, up, .2f, .4f, 6); }
+                    ArtistBits.PostCollider(z.root, c, 1.2f, 1.6f); halos.Add(c + up * 1.3f, 2.6f, col, .5f);
+                    break;
+                }
+                default:   // the amp totem
+                {
+                    for (var k = 0; k < 4; k++) { var p = c + up * (.7f + k * 1.35f); var r2 = rot * Quaternion.Euler(0, k * 17f, 0); z.mk.Box(dark, p, new Vector3(1.3f - k * .1f, 1.3f, .8f), r2); z.mk.Box(grille, p + r2 * Vector3.forward * .41f, new Vector3(1.1f - k * .1f, 1.1f, .02f), r2); z.mk.Box(glow, p + up * .66f, new Vector3(1.32f - k * .1f, .04f, .82f), r2); }
+                    for (var k = 0; k < 5; k++) z.mk.Cone(glow, c + up * 6.1f + Quaternion.Euler(0, k * 72f, 0) * Vector3.forward * .4f, .14f, .7f, 4);
+                    z.solid.Box(dark, c + up * 2.8f, new Vector3(1.4f, 5.6f, 1f), rot); halos.Add(c + up * 4f, 2.6f, col, .45f);
+                    break;
+                }
+            }
         }
     }
 }

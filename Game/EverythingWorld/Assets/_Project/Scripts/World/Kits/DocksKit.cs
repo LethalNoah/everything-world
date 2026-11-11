@@ -58,9 +58,9 @@ namespace EverythingWorld.World
 
         public override bool Ground(float height, float slope, float patch, out Color color)
         {
-            if (height < QuayY + .6f) color = Color.Lerp(new Color(.24f, .24f, .24f), new Color(.3f, .29f, .28f), patch);   // the quay's concrete
-            else if (slope > 20f) color = Color.Lerp(new Color(.2f, .19f, .18f), new Color(.28f, .26f, .24f), patch);
-            else color = Color.Lerp(new Color(.17f, .19f, .16f), new Color(.27f, .26f, .24f), Mathf.SmoothStep(0f, 1f, patch));
+            if (height < QuayY + .6f) color = Color.Lerp(new Color(.33f, .33f, .34f), new Color(.4f, .39f, .38f), patch);   // the quay's concrete
+            else if (slope > 20f) color = Color.Lerp(new Color(.27f, .26f, .25f), new Color(.36f, .34f, .32f), patch);
+            else color = Color.Lerp(new Color(.25f, .27f, .24f), new Color(.37f, .36f, .34f), Mathf.SmoothStep(0f, 1f, patch));
             color.a = 1f;
             return true;
         }
@@ -251,7 +251,7 @@ namespace EverythingWorld.World
             mk.Box(sodium, head, new Vector3(.34f, .06f, .7f), Quaternion.LookRotation(arm));
             lampHalos.Add(head - up * .25f, 3f, Sodium, .75f);
             var pool = new Vector3(head.x, ctx.Ground(head.x, head.z) + .03f, head.z);
-            lampHalos.Add(pool + up * .1f, 3.2f, Sodium, .18f);
+            lampHalos.Add(pool + up * .1f, 3f, Sodium, .26f);
             life.lamps.Add(head);
             if (light) ArtistBits.PointLight(ctx.Root, head - up * 1f, Sodium, 14f, 1.5f);
             ArtistBits.PostCollider(ctx.Root, g, 7f, .22f);
@@ -553,7 +553,7 @@ namespace EverythingWorld.World
                     var lp = pts[i] + side * ((i / 14) % 2 == 0 ? 1f : -1f) * (RoadW / 2f + .8f);
                     var near = false; foreach (var o in lamps) if ((o - lp).sqrMagnitude < 19f * 19f) near = true;
                     if (near) continue;
-                    lamps.Add(lp); SodiumLamp(ctx, mk, ctx.OnGround(lp.x, lp.z), pts[i] - lp, lamps.Count % 3 == 0);
+                    lamps.Add(lp); SodiumLamp(ctx, mk, ctx.OnGround(lp.x, lp.z), pts[i] - lp, lamps.Count % 2 == 0);
                 }
                 walk++;
             }

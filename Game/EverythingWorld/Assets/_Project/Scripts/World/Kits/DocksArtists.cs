@@ -63,7 +63,13 @@ namespace EverythingWorld.World
             Hoarding(z, z.At(reach * .8f, -reach * .5f - 2.5f), front);
             ArtistBits.Plaque(z.mk, z.solid, labels, a, z.At(reach * .8f + 1.5f, reach * .5f + 2.5f), front, darkConcrete, concrete, Ink, 1.6f);
             SodiumLamp(ctx, z.mk, z.At(reach * .8f, reach * .5f + 5f), -z.side);
-            if (z.area.glowLight == null) z.area.glowLight = ArtistBits.PointLight(root, z.c + Vector3.up * 5f + front * 5f, Sodium, HasStation(a) ? 20f : 13f, 1.4f);
+            if (z.area.glowLight == null) z.area.glowLight = ArtistBits.PointLight(root, z.c + Vector3.up * 6f + front * 4f, new Color(1f, .75f, .45f), HasStation(a) ? 24f : 17f, 2.4f);
+            // a floodlight on a pole washing the whole corner, so it reads from down the street
+            var fl = z.At(reach * .3f, -reach * .65f - 1f); z.mk.Prism(darkConcrete, fl - Vector3.up * .3f, Vector3.up, .15f, 6.3f, 8);
+            var head = fl + Vector3.up * 6.1f; z.mk.Box(dark, head, new Vector3(.9f, .5f, .5f), Quaternion.LookRotation((z.c - fl).normalized + Vector3.down * .6f));
+            z.mk.Box(GlowM(new Color(1f, .9f, .75f), 3f), head + (z.c - fl).normalized * .26f - Vector3.up * .1f, new Vector3(.75f, .35f, .02f), Quaternion.LookRotation((z.c - fl).normalized + Vector3.down * .6f));
+            halos.Add(head + (z.c - fl).normalized * .6f, 2f, new Color(1f, .9f, .75f), .7f);
+            ArtistBits.PostCollider(root, fl, 6f, .2f);
             area.glowRenderers = z.glows.ToArray();
             z.mk.Build("Area", root, false);
             z.solid.BuildCollider("Walls", root);

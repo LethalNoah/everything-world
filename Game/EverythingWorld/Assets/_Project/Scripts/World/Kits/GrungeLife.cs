@@ -197,7 +197,7 @@ namespace EverythingWorld.World
 
             // the water, the stage and the mill
             if (water != null) water.SetColor("_EmissionColor", new Color(.2f, .36f, .4f) * (.25f + .1f * Mathf.Sin(t * .8f) + evenFlow * 1.6f));
-            if (foam != null) foam.SetColor("_EmissionColor", GrungeKit.Falls * (.8f + .15f * Mathf.Sin(t * 6f) + evenFlow * 1.5f + p * .2f));
+            if (foam != null) foam.SetColor("_EmissionColor", GrungeKit.Falls * (.45f + .1f * Mathf.Sin(t * 6f) + evenFlow * 1.2f + p * .15f));
             if (stage != null) stage.SetColor("_EmissionColor", GrungeKit.Lamp * (1.1f + energy * 1.6f + Mathf.Sin(t * 3f) * .15f));
             if (bladeRing != null) bladeRing.SetColor("_EmissionColor", GrungeKit.Lamp * (.8f + energy * 1.4f));
             if (backdrop != null) backdrop.SetColor("_EmissionColor", new Color(.75f, .2f, .16f) * (.5f + energy * .9f + Mathf.Sin(t * 1.7f) * .08f));

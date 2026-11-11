@@ -84,6 +84,7 @@ namespace EverythingWorld.World
             // the crowd on the field: four swaying groups, lighters held up
             var groups = new MeshKit[4]; for (var g = 0; g < 4; g++) groups[g] = new MeshKit();
             var field = best; var count = 0;
+            foreach (var k in new[] { 12f, 24f, 36f }) ArtistBits.PointLight(ctx.Root, st + gateDir * k + Vector3.up * 14f, new Color(1f, .85f, .65f), 34f, 1.8f);   // a wash over the crowd so it isn't black
             for (var x = -26f; x <= 26f; x += 1.5f)
                 for (var z = -14f; z <= 24f; z += 1.6f)
                 {
