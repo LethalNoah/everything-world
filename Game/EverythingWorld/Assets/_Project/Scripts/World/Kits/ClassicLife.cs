@@ -13,7 +13,7 @@ namespace EverythingWorld.World
     ///   "Stairway to Heaven": the stair stones light one by one up to the glowing door as the song goes on;
     ///   "Space Oddity": the rocket counts down and lifts off, climbing out of sight by the end of the song;
     ///   "Purple Haze": purple mist rolls over the land; "Bohemian Rhapsody": the sky darkens and lightning flashes.
-    public class ClassicLife : MonoBehaviour
+    public partial class ClassicLife : MonoBehaviour
     {
         const string Land = "Kingdom of Classic Rock";
         public Vector3 center, pond, hall, hallEye, hallFlame, stairTop, rocketPad, guitarFire, rainCloud;
@@ -41,6 +41,7 @@ namespace EverythingWorld.World
             clouds.minHeight = 120f; clouds.maxHeight = 180f; clouds.size = 1.6f; clouds.speed = 5f; clouds.cover = .45f;
             clouds.color = new Color(1f, .9f, .75f);
             // gold dust drifting in the low sun
+            LegendsStart();
             motes = Particles("Gold dust", 1500, new Color(1f, .85f, .5f, .8f), .05f, .1f, true);
             var mm = motes.main; mm.startLifetime = new ParticleSystem.MinMaxCurve(5f, 9f); mm.startSpeed = new ParticleSystem.MinMaxCurve(.05f, .2f);
             var mn = motes.noise; mn.enabled = true; mn.strength = .3f; mn.frequency = .3f;
@@ -292,6 +293,7 @@ namespace EverythingWorld.World
             nextRain -= dt;
             if (here && nextRain <= 0f && rainCloud != Vector3.zero) { nextRain = .05f; rain.transform.position = rainCloud; rain.Emit(4); }
 
+            LegendsUpdate(dt, t, id, here);
             if (jukeLight != null)
             {
                 var cam = Camera.main != null ? Camera.main.transform.position : center; var best = jukeboxes[0]; var bd = float.MaxValue;

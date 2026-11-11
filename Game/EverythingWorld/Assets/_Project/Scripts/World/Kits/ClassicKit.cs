@@ -17,7 +17,8 @@ namespace EverythingWorld.World
         public override Vector3 ArtistFront(IslandWorldData data, IslandWorldData.Artist a) => facing.TryGetValue(a.name, out var f) ? f : base.ArtistFront(data, a);
 
         public const string Lucy = "25yQPHgC35WNnnOUqFhgVR", Stairway = "5CQ30WqJwcep0pYcV4AMNc", SpaceOddity = "72Z17vmmeQKAg8bptWvpVG", PurpleHaze = "0wJoRiX5K5BxlqZTolB2LD", Bohemian = "7tFiyTwD0nx5a1eklYtX2J";
-        public override (string song, string label, string artist)[] SpecialSongs => new[] { (Lucy, "Lucy in the Sky with Diamonds", "The Beatles"), (Stairway, "Stairway to Heaven", "Led Zeppelin"), (SpaceOddity, "Space Oddity", "David Bowie"), (PurpleHaze, "Purple Haze", "Jimi Hendrix"), (Bohemian, "Bohemian Rhapsody", "Queen") };
+        public override (string song, string label, string artist)[] SpecialSongs => new[] { (Lucy, "Lucy in the Sky with Diamonds", "The Beatles"), (Stairway, "Stairway to Heaven", "Led Zeppelin"), (SpaceOddity, "Space Oddity", "David Bowie"), (PurpleHaze, "Purple Haze", "Jimi Hendrix"), (Bohemian, "Bohemian Rhapsody", "Queen"),
+            (Walrus, "I Am The Walrus", "@the egg on the wall"), (Immigrant, "Immigrant Song", "@the longship"), (LifeOnMars, "Life on Mars?", "@the red planet"), (Watchtower, "All Along the Watchtower", "@the watchtower") };
 
         static readonly Color Grass = new Color(.42f, .62f, .3f), GrassB = new Color(.58f, .66f, .32f), Gold = new Color(.8f, .72f, .38f), Stone = new Color(.72f, .7f, .64f), Ink = new Color(.97f, .96f, .92f);
         static readonly Color[] Paint = { new Color(.85f, .2f, .2f), new Color(.2f, .45f, .8f), new Color(.95f, .8f, .2f), new Color(.2f, .6f, .4f), new Color(.95f, .95f, .9f), new Color(.15f, .15f, .18f) };
@@ -135,9 +136,11 @@ namespace EverythingWorld.World
             Roads(ctx, mk, solid);
             Pond(ctx, mk);
             Hall(ctx, mk, solid);
+            Pub(ctx, mk, solid);
+            Castle(ctx, mk, solid);
+            Legends(ctx, mk, solid);
             Country(ctx, mk, solid);
             mk.Build("Kingdom", ctx.Root, false);
-            soft.Build("Soft kingdom", ctx.Root, false);
             solid.BuildCollider("Kingdom walls", ctx.Root);
         }
 
@@ -145,6 +148,7 @@ namespace EverythingWorld.World
         {
             GroundCover(ctx);
             halos.Build("Kingdom glow", ctx.Root);
+            soft.Build("Soft kingdom", ctx.Root, false);   // last, so the oaks the legends' places plant keep their leaves
         }
 
         // ---------------------------------------------------------------- helpers

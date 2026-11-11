@@ -101,3 +101,7 @@ Snapshot numbers refer to `Game/EverythingWorld/Logs/Live/` (not committed).
 ## Other lands seen in passing
 - Southern Rock Bayou: the swamp and moss trees look good.
 - The Moors' TV static wall is visible from the Bluegrass Hollows across the sea: a good landmark.
+
+## Kingdom of Classic Rock
+- Second deep pass (2026-11-10): seventeen song places for The Beatles, Led Zeppelin, David Bowie and Jimi
+  Hendrix, a castle on the hill, a village pub; song glows on them all.
