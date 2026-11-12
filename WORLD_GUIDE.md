@@ -247,21 +247,15 @@ The heartland. Old hills, long roads and the tallest mountains in the world. Mos
 **Artist areas:** Nickelback gets a hall (a quarry rig, naturally). Others are machinery and truck beds on the terraces.
 
 ### The Power Metal Peaks
-*20 songs · 10 artists · 0.57 km²*
+*20 songs · 10 artists · 0.57 km² · built in Unity*
 
-**Arriving:** Fantasy mountains above a stormy pirate cove. A castle on a peak with a dragon coiled round it, a pirate ship moored beneath.
+**Arriving:** A round flagstone courtyard ringed with braziers and war banners, a standing stone carved with the land's name and a great sword driven into its top. Ahead, high on the tallest peak, a castle with a dragon coiled round its keep, wings spread, head out over the battlements.
 
-**The vibe:** An epic sunset. Banners, swords, treasure chests, and neon kawaii signs because half the artists here are Japanese idol-metal bands.
+**The vibe:** Over-the-top fun, epic and fierce all at once. Dark fantasy mountains sharpened into jagged snow-capped peaks under a blazing sunset (dark silhouettes against a fiery sky, where the Djent Spires next door is pale ice in daylight). Torch-lit flagstone paths; dark pines, banners, swords in stones, treasure chests, braziers, ruined watchtowers; and here and there a pop of kawaii neon (pink hearts, cyan stars), stone lanterns and cherry trees in blossom. On the coast, a stormy pirate cove: a lantern-lit pier, a pirate ship at anchor rolling in the swell, barrels, a chest, and a giant rubber duck bobbing in the water.
 
-**Artist areas:** Banners and shrines on the mountain path; BRIDEAR gets the biggest.
+**Artist areas:** Round flagstone courtyards ringed in gold with braziers, covers on a shield-topped board, a red paper lantern for every song without its own piece. DragonForce: a fire arena, a ring of flame jets bursting with the beat round a giant gold flying-V wreathed in flame, and a ship's bow rising from an iceberg ("My Heart Will Go On"). BRIDEAR: a mountain stage under a great red-lacquer gate hung with neon, a little stone labyrinth glowing violet ("In The Labyrinth"), two giant dice ("G・A・M・E"), a floating crystal beamed to four pillars ("NEXUS"), a heart lantern ("Reason For My Life"). HANABIE.: a fireworks rack and a little office desk with its lamp left on ("お先に失礼します。"). LADYBABY: a giant steamed bun ("Nippon Manju") and a taiko drum marked with lightning ("Haten ni raimei"). Mary's Blood: a red sports car on a launch ramp ("Driver's High"), a signpost at the edge ("World's End"). NEMOPHILA: a field of baby-blue flowers under a string of orange lantern-plant lanterns ("鬼灯"). BABYMETAL: a fox shrine and a giant heart-shaped box of chocolates ("Gimme Chocolate!!"). Alestorm: a tavern by the cove with a giant tankard on the roof ("Drink"), a sombrero on a barrel ("Mexico"), the rubber duck. Wind Rose: a dwarf mine with a cart of glowing ore ("Mine Mine Mine!") and ale barrels round a table ("Drunken Dwarves"). Sabaton: a parachute snagged on a pole over supply crates ("82nd All the Way").
 
----
-
-## The Indie Isles (east landmass)
-
-*Indie rock, shoegaze, bedroom pop and indie folk · tower: The Lo-Fi Lighthouse*
-
-Softer and greener than the continent. Overcast skies, fairy lights, dusk. Close to the hub.
+**Happenings:** The dragon breathes fire in about half the songs (the same moment for everyone), and all through "Through the Fire and Flames", when the sky burns red. Fireworks burst over HANABIE.'s rack in their songs and sometimes for no reason. Some songs bring a storm in off the sea, rain and lightning; "Haten ni raimei" always does. "My Heart Will Go On" turns the sky cold, "Gimme Chocolate!!" pink, and "Drink" lights every lantern up.
 
 ### The Indie Downs
 *50 songs · 33 artists · 0.98 km² · built in Unity*

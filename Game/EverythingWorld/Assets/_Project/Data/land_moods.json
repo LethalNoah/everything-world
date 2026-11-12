@@ -38,6 +38,13 @@
    "weather": "", "weatherAmount": 0
   },
   {
+   "land": "The Power Metal Peaks",
+   "sunPitch": 7, "sunYaw": 255, "sunIntensity": 0.85, "sunColor": "#FF9A50",
+   "skyLight": "#8A5A78", "horizonLight": "#FF8A40", "groundLight": "#6A4A44",
+   "fogColor": "#7A4048", "fogStart": 260, "fogEnd": 2000, "stars": 0.3, "sunShadows": false, "dailyWeather": false, "bloom": 1.0,
+   "weather": "", "weatherAmount": 0
+  },
+  {
    "land": "The Djent Spires",
    "sunPitch": 36, "sunYaw": 210, "sunIntensity": 1.0, "sunColor": "#FFF0D2",
    "skyLight": "#A8C8EA", "horizonLight": "#DCEAF6", "groundLight": "#8C98AC",
