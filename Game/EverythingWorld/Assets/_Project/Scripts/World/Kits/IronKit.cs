@@ -51,7 +51,12 @@ namespace EverythingWorld.World
         public override bool Ground(float height, float slope, float patch, out Color color)
         {
             if (slope > 10f) color = Color.Lerp(new Color(.3f, .28f, .29f), new Color(.4f, .37f, .36f), patch);
-            else color = Color.Lerp(new Color(.27f, .24f, .23f), new Color(.45f, .31f, .22f), Mathf.SmoothStep(.3f, 1f, patch));
+            else
+            {   // read by height: black ash by the sea, rust on the slopes, paler rock up high
+                var t = Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(20f, 115f, height));
+                var low = Color.Lerp(new Color(.13f, .12f, .13f), new Color(.2f, .17f, .16f), patch); var mid = Color.Lerp(new Color(.3f, .2f, .15f), new Color(.5f, .3f, .18f), patch); var high = Color.Lerp(new Color(.5f, .42f, .38f), new Color(.62f, .5f, .42f), patch);
+                color = t < .5f ? Color.Lerp(low, mid, t * 2f) : Color.Lerp(mid, high, t * 2f - 1f);
+            }
             color.a = 1f;
             return true;
         }
@@ -108,6 +113,7 @@ namespace EverythingWorld.World
                 Level(data, index, new Vector2(a.x, a.z), Foot(a) + 1f, Foot(a) + 12f);
             }
             Level(data, index, heart2, 18f, 34f);
+            foreach (var (at, r) in PlaceRings) Level(data, index, at, r, r + 16f);
             if (hasPeak) Level(data, index, pool2, 13f, 22f, -1.6f);
         }
 
@@ -142,6 +148,7 @@ namespace EverythingWorld.World
             if (hasPeak) { Forge(ctx, mk, solid); River(ctx, mk, solid); }
             Arrival(ctx, mk, solid);
             Trails(ctx, mk, solid);
+            RangePlaces(ctx, mk, solid);
             Range(ctx, mk, solid);
             mk.Build("Iron Range", ctx.Root, false);
             soft.Build("Iron dead pines", ctx.Root, false);
