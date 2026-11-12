@@ -11,6 +11,7 @@ Shader "Everything World/Interact Glow"
         _Fill ("Fill", Range(0, 1)) = 0.15
         _Rim ("Rim", Range(0, 3)) = 1
         [Enum(UnityEngine.Rendering.BlendMode)] _DstBlend ("Blend onto the scene (One = added light, OneMinusSrcAlpha = its true colour)", Float) = 1
+        [Enum(UnityEngine.Rendering.CullMode)] _Cull ("Cull (Front = an outline drawn from a slightly bigger copy)", Float) = 0
     }
     SubShader
     {
@@ -21,7 +22,7 @@ Shader "Everything World/Interact Glow"
             Tags { "LightMode" = "UniversalForward" }
             Blend One [_DstBlend]
             ZWrite Off
-            Cull Off
+            Cull [_Cull]
             Offset -1, -1
 
             HLSLPROGRAM
@@ -31,7 +32,7 @@ Shader "Everything World/Interact Glow"
 
             CBUFFER_START(UnityPerMaterial)
                 float4 _Color;
-                float _Fill, _Rim, _DstBlend;
+                float _Fill, _Rim, _DstBlend, _Cull;
             CBUFFER_END
 
             struct Attributes { float4 positionOS : POSITION; float3 normalOS : NORMAL; };
