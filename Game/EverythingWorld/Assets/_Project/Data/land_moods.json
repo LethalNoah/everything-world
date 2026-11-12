@@ -38,6 +38,13 @@
    "weather": "", "weatherAmount": 0
   },
   {
+   "land": "The Math Rock Escarpment",
+   "sunPitch": 22, "sunYaw": 230, "sunIntensity": 1.15, "sunColor": "#FFD9A0",
+   "skyLight": "#8FB4E0", "horizonLight": "#F2D2A8", "groundLight": "#6A5A40",
+   "fogColor": "#C8D6E4", "fogStart": 220, "fogEnd": 1800, "stars": 0, "sunShadows": true, "dailyWeather": false, "bloom": 1.0,
+   "weather": "", "weatherAmount": 0
+  },
+  {
    "land": "The Power Metal Peaks",
    "sunPitch": 7, "sunYaw": 255, "sunIntensity": 0.85, "sunColor": "#FF9A50",
    "skyLight": "#8A5A78", "horizonLight": "#FF8A40", "groundLight": "#6A4A44",
