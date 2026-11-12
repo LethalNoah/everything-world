@@ -191,6 +191,19 @@ namespace EverythingWorld.World
                 var c = clusters[i];
                 sb.AppendLine($"  {c.what}: {Where(c.At)}, {c.minY - data.HeightAt(c.At.x, c.At.z):0.0}-{c.maxY - data.HeightAt(c.At.x, c.At.z):0.0} m up, {c.points} samples");
             }
+            string collidersAll = null;
+            if (clusters.Count > 25)
+            {
+                // all of them, grouped by what they are (the object and its material), most first
+                var groups = new Dictionary<string, int>();
+                foreach (var c in clusters) { var k = c.what; var cut = k.IndexOf(" / "); if (cut >= 0) { var rest = k.Substring(cut + 3); var sp = rest.LastIndexOf(" ("); k = k.Substring(0, cut) + " / " + (sp >= 0 ? System.Text.RegularExpressions.Regex.Replace(rest.Substring(0, sp), @" \d+,\d+$", "") + rest.Substring(sp) : rest); } groups[k] = groups.TryGetValue(k, out var n) ? n + 1 : 1; }
+                var list = new List<KeyValuePair<string, int>>(groups); list.Sort((a, b) => b.Value.CompareTo(a.Value));
+                sb.AppendLine("  All of them by kind:");
+                for (var i = 0; i < list.Count && i < 30; i++) sb.AppendLine($"    {list[i].Value} x {list[i].Key}");
+                var all = new StringBuilder();
+                foreach (var c in clusters) all.AppendLine($"{c.what}: {Where(c.At)}, {c.minY - data.HeightAt(c.At.x, c.At.z):0.0}-{c.maxY - data.HeightAt(c.At.x, c.At.z):0.0} m up, {c.points} samples");
+                collidersAll = all.ToString();
+            }
             sb.AppendLine();
             sb.AppendLine($"OVERLAPPING SURFACES: {overlaps.Count} places where two different surfaces lie in the same spot and will flicker" + (overlaps.Count > 0 ? " (biggest first):" : "."));
             for (var i = 0; i < overlaps.Count && i < 30; i++)
@@ -211,6 +224,7 @@ namespace EverythingWorld.World
             Directory.CreateDirectory(dir);
             var file = land.Replace("The ", "").Replace(" ", "_").Replace("&", "and");
             File.WriteAllText(Path.Combine(dir, file + ".txt"), sb.ToString());
+            if (collidersAll != null) File.WriteAllText(Path.Combine(dir, file + "_colliders.txt"), collidersAll);
             Picture(data, ctx, scenery, empty, cell, lightAt, clusters, overlaps, problems, Path.Combine(dir, file + ".png"));
             try { Photo(ctx, dir, file); } catch (System.Exception e) { Debug.LogWarning("Land audit photo failed: " + e.Message); }
             var summary = $"Land audit, {land}: {clusters.Count} things without a collider, {overlaps.Count} overlapping surfaces, {problems.Count} artists with problems, {emptyPct:0}% empty, {lights} lights. Report: Logs/LandAudit/{file}.txt";

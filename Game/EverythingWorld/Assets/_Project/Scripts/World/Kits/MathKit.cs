@@ -123,7 +123,34 @@ namespace EverythingWorld.World
                 if (tries == null) continue;
                 foreach (var o in tries) { var p = heart2 + o; if (Inside(p, Foot(a) + 30f)) { a.x = p.x; a.z = p.y; keep.Add(a.name); break; } }
             }
-            ArtistPlacement.Spread(data, index, 48f, heart2, 46f, 38f, null, keep, Land, 400f);
+            // the rest of the post-rock bands below the escarpment too, gathered near MONO on the open low ground
+            var avoidBelow = new List<Vector3>();
+            if (hasScarp)
+            {
+                var mono = heart2 + sea2 * (scarpT + 60f);
+                foreach (var a in data.layout.artists) if (a.sceneId == isl.sceneId && a.name == "MONO") mono = new Vector2(a.x, a.z);
+                var cands = new List<Vector2>();
+                for (var t = scarpT + 34f; t < scarpT + 300f; t += 12f)
+                    for (var u = -420f; u <= 420f; u += 12f) cands.Add(heart2 + sea2 * t + across * u);
+                cands.Sort((p, q) => Vector2.Distance(p, mono).CompareTo(Vector2.Distance(q, mono)));
+                var placedBelow = new List<IslandWorldData.Artist>();
+                foreach (var a in data.layout.artists) if (a.sceneId == isl.sceneId && keep.Contains(a.name)) placedBelow.Add(a);
+                foreach (var a in data.layout.artists)
+                {
+                    if (a.sceneId != isl.sceneId || !PostRock.Contains(a.name) || keep.Contains(a.name)) continue;
+                    foreach (var p in cands)
+                    {
+                        if (!Inside(p, Foot(a) + 12f)) continue;
+                        var ok = true; foreach (var o in placedBelow) if (Vector2.Distance(p, new Vector2(o.x, o.z)) < Foot(a) + Foot(o) + 16f) { ok = false; break; }
+                        if (!ok) continue;
+                        a.x = p.x; a.z = p.y; keep.Add(a.name); placedBelow.Add(a); break;
+                    }
+                }
+                // keep everyone else above the escarpment
+                for (var t = scarpT + 20f; t < scarpT + 400f; t += 40f)
+                    for (var u = -440f; u <= 440f; u += 40f) { var p = heart2 + sea2 * t + across * u; if (data.IslandAt(p.x, p.y) == isl) avoidBelow.Add(new Vector3(p.x, 26f, p.y)); }
+            }
+            ArtistPlacement.Spread(data, index, 48f, heart2, 46f, 38f, avoidBelow, keep, Land, 400f);
             if (hasScarp)
             {
                 var arts = new List<IslandWorldData.Artist>(); foreach (var a in data.layout.artists) if (a.sceneId == isl.sceneId && !keep.Contains(a.name)) arts.Add(a);
@@ -241,7 +268,7 @@ namespace EverythingWorld.World
         }
 
         /// A lantern on a wooden post: a little glass box with a warm light.
-        void Lantern(LandContext ctx, MeshKit mk, Vector3 g, float h = 2.2f)
+        void Lantern(LandContext ctx, MeshKit mk, Vector3 g, float h = 2.7f)
         {
             var up = Vector3.up;
             mk.Box(woodDark, g + up * (h / 2f - .1f), new Vector3(.14f, h + .2f, .14f), Quaternion.identity);
@@ -249,21 +276,22 @@ namespace EverythingWorld.World
             mk.Box(lanternM, g + up * (h - .35f) + new Vector3(.45f, 0, 0), new Vector3(.24f, .32f, .24f), Quaternion.identity);
             halos.Add(g + up * (h - .35f) + new Vector3(.45f, 0, 0), 1.5f, Warm, .6f); life.lanternAt.Add(g + up * (h - .35f));
             ArtistBits.PostCollider(ctx.Root, g, h, .12f);
+            if (h < 2.5f) BoxCol(ctx.Root, g + up * (h - .35f) + new Vector3(.3f, 0, 0), new Vector3(.8f, .5f, .35f), Quaternion.identity);
         }
 
         /// A wind chime hanging from a little gallows post: five metal tubes and a paper tail (MathLife sways it).
         void WindChime(LandContext ctx, MeshKit mk, Vector3 g, Material glow = null)
         {
             var up = Vector3.up; var dir = Quaternion.Euler(0, ctx.Range(0, 360f), 0) * Vector3.forward;
-            mk.Box(woodDark, g + up * 1.3f, new Vector3(.12f, 2.6f, .12f), Quaternion.identity);
-            mk.Box(woodDark, g + up * 2.55f + dir * .4f, new Vector3(.08f, .08f, .9f), Quaternion.LookRotation(dir));
-            ArtistBits.PostCollider(ctx.Root, g, 2.4f, .12f);
+            mk.Box(woodDark, g + up * 1.7f, new Vector3(.12f, 3.4f, .12f), Quaternion.identity);
+            mk.Box(woodDark, g + up * 3.35f + dir * .4f, new Vector3(.08f, .08f, .9f), Quaternion.LookRotation(dir));
+            ArtistBits.PostCollider(ctx.Root, g, 3.2f, .12f);
             var ck = new MeshKit();
             ck.Prism(wood, -up * .05f, up, .16f, .05f, 10);
             for (var k = 0; k < 5; k++) { var a = k * Mathf.PI * 2f / 5f; ck.Prism(glow ?? metal, new Vector3(Mathf.Cos(a), 0, Mathf.Sin(a)) * .11f - up * (.15f + .45f - k * .06f), up, .025f, .45f - k * .06f + .1f, 6); }
             ck.Box(cloth, -up * .85f, new Vector3(.12f, .3f, .01f), Quaternion.identity);
             var go = ck.BuildSingle("Wind chime", life.transform, false);
-            if (go != null) { go.transform.position = g + up * 2.5f + dir * .8f; life.chimes.Add(go.transform); }
+            if (go != null) { go.transform.position = g + up * 3.3f + dir * .8f; life.chimes.Add(go.transform); }
         }
 
         /// A string of warm bulbs sagging between two points.
@@ -282,7 +310,8 @@ namespace EverythingWorld.World
             mk.Prism(bark, at - up * .3f, (up + new Vector3(ctx.Range(-.1f, .1f), 0, ctx.Range(-.1f, .1f))).normalized, h * .05f + .1f, h * .6f, 6, .7f);
             var m = WorldMaterials.Solid(col);
             for (var k = 0; k < 4; k++) mk.Blob(k == 3 ? WorldMaterials.Solid(LeafC[(ctx.Rng.Next(LeafC.Length))]) : m, at + up * h * (.74f + k * .06f) + new Vector3(ctx.Range(-1f, 1f), 0, ctx.Range(-1f, 1f)) * h * .12f, Vector3.one * h * ctx.Range(.16f, .21f), ctx.Rng, .3f);
-            mk.Prism(WorldMaterials.Solid(Color.Lerp(col, new Color(.5f, .3f, .15f), .3f)), at + up * .02f, up, h * .3f, .03f, 9, 1f, ctx.Range(0, 40f));
+            var fallen = WorldMaterials.Solid(Color.Lerp(col, new Color(.5f, .3f, .15f), .3f));
+            for (var k = 0; k < 6; k++) { var a = k * Mathf.PI / 3f + ctx.Range(0f, .8f); var r = ctx.Range(.5f, h * .3f); var q = ctx.OnGround(at.x + Mathf.Cos(a) * r, at.z + Mathf.Sin(a) * r); mk.Blob(fallen, q + up * .01f, new Vector3(ctx.Range(.4f, .8f), .03f, ctx.Range(.4f, .8f)), ctx.Rng, .3f); }
             ArtistBits.PostCollider(ctx.Root, at, h * .45f, h * .05f + .15f);
         }
 
@@ -531,7 +560,7 @@ namespace EverythingWorld.World
             mk.Box(woodDark, g + up * .6f - sd * .3f, new Vector3(.12f, 1.2f, .12f), Quaternion.identity); ArtistBits.PostCollider(ctx.Root, g - sd * .3f, 1.1f, .1f);
             var tilt = Quaternion.LookRotation(dir) * Quaternion.Euler(0, 0, 12f);
             foreach (var e in new[] { -.55f, .55f }) { var w = g + dir * e + up * .35f; for (var k = 0; k < 10; k++) { var a = k * Mathf.PI / 5f; mk.Box(WorldMaterials.Solid(new Color(.1f, .1f, .1f)), w + tilt * new Vector3(0, Mathf.Sin(a), Mathf.Cos(a)) * .33f, new Vector3(.04f, .12f, .12f), tilt * Quaternion.Euler(-a * Mathf.Rad2Deg, 0, 0)); } }
-            mk.Box(frame, g + up * .6f, new Vector3(.05f, .05f, 1f), tilt); mk.Box(frame, g + up * .7f - dir * .15f, new Vector3(.05f, .5f, .05f), tilt);
+            mk.Box(frame, g + up * .6f, new Vector3(.05f, .05f, 1f), tilt); BoxCol(ctx.Root, g + up * .5f, new Vector3(.3f, 1f, 1.5f), Quaternion.LookRotation(dir)); mk.Box(frame, g + up * .7f - dir * .15f, new Vector3(.05f, .5f, .05f), tilt);
         }
 
         void LoneTree(LandContext ctx, MeshKit mk, Vector3 g)

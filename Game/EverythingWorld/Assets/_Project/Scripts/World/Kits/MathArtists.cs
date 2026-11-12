@@ -129,7 +129,7 @@ namespace EverythingWorld.World
             {
                 if (z.lit.Contains(id) || !seen.Add(id)) continue;
                 var p = z.At(-Foot(z.a) * .2f - (k % 2) * 1.8f, Foot(z.a) * .5f + (k / 2) * 2f);
-                WindChime(z.ctx, z.mk, p, SongGlow(id, Warm, 1.8f)); halos.Add(p + Vector3.up * 2.1f, 1f, Warm, .45f);
+                WindChime(z.ctx, z.mk, p, SongGlow(id, Warm, 1.8f)); halos.Add(p + Vector3.up * 2.9f, 1f, Warm, .45f);
                 k++;
             }
         }
