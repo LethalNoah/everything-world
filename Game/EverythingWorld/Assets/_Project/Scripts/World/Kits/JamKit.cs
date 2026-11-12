@@ -67,7 +67,7 @@ namespace EverythingWorld.World
         public override void ShapeGround(IslandWorldData data, int index)
         {
             var isl = data.layout.islands[index]; var heart = new Vector2(isl.labelX, isl.labelZ);
-            ArtistPlacement.Spread(data, index, 75f, heart, 50f, 50f, null, null, Land, 300f);
+            ArtistPlacement.Spread(data, index, 75f, heart, 50f, 50f, PlaceAvoid(heart), null, Land, 300f);
             foreach (var a in data.layout.artists)
             {
                 if (a.sceneId != isl.sceneId) continue;
@@ -75,6 +75,7 @@ namespace EverythingWorld.World
                 Level(data, index, new Vector2(a.x, a.z), Foot(a) + 1f, Foot(a) + 16f);
             }
             Level(data, index, heart, 16f, 34f);
+            foreach (var (at, flat, blend) in new[] { (CampAt, 28f, 42f), (SwimAt, 24f, 36f), (WheelAt, 11f, 20f), (DomeAt, 8f, 15f), (GalleryAt, 8f, 14f) }) Level(data, index, at, flat, blend);
         }
 
         static void Level(IslandWorldData data, int index, Vector2 c, float flat, float blend)
@@ -106,11 +107,13 @@ namespace EverythingWorld.World
             trailMats.Clear(); for (var k = 0; k < 6; k++) { var m = new Material(GlowM(Warm, 2.6f)) { name = "Trail lantern " + k }; trailMats.Add(m); life.trailLights.Add(m); }
             var mk = new MeshKit(); var solid = new MeshKit();
             Arrival(ctx, mk, solid);
+            FestivalRoads(ctx, mk, solid);
             Trails(ctx, mk, solid);
             Lot(ctx, mk, solid);
             Gamehendge(ctx, mk, solid);
             AlbumTrail(ctx, mk, solid);
             Meadow(ctx, mk);
+            Places(ctx, mk, solid);
             Woods(ctx, mk, solid);
             mk.Build("Commonwealth", ctx.Root, false);
             soft.Build("Soft commonwealth", ctx.Root, false);
@@ -258,7 +261,7 @@ namespace EverythingWorld.World
                 facing[next.name] = -dir;
                 var side = Vector3.Cross(Vector3.up, dir); var end = total - Foot(next) * .8f;
                 var pts = new List<Vector3>();
-                for (var d = walk == 1 ? 12f : TrailW / 2f + .1f; ; d += 2.5f)
+                for (var d = (new Vector2(join.x - center.x, join.z - center.z)).sqrMagnitude < 4f ? 12f : RoadW / 2f + .1f; ; d += 2.5f)
                 {
                     var dd = Mathf.Min(d, end);
                     var q = from + dir * dd + side * Mathf.Sin(dd / 22f) * Mathf.Min(6f, end * .06f);
@@ -367,8 +370,8 @@ namespace EverythingWorld.World
                 if (!Open(ctx, px, pz, 3f)) continue;
                 if (meadowC != Vector3.zero && Vector2.Distance(new Vector2(px, pz), new Vector2(meadowC.x, meadowC.z)) < 34f) continue;
                 var p = ctx.OnGround(px, pz); var roll = ctx.Range(0f, 1f);
-                if (roll < .05f && camps < 6 && NearPath(px, pz, 16f)) { Campsite(ctx, mk, solid, p); camps++; }
-                else if (roll < .08f && hammocks < 4) { Hammock(ctx, mk, p); hammocks++; }
+                if (roll < .05f && camps < 0 && NearPath(px, pz, 16f)) { Campsite(ctx, mk, solid, p); camps++; }
+                else if (roll < .08f && hammocks < 0) { Hammock(ctx, mk, p); hammocks++; }
                 else if (roll < .6f) { var s = ctx.Range(.9f, 1.4f); Tree(ctx, mk, p, s); trees++; if (NearPath(px, pz, 14f) && ctx.Chance(.5f)) { var lp = p + Vector3.up * 3.4f * s + new Vector3(ctx.Range(-.8f, .8f), 0, ctx.Range(-.8f, .8f)); mk.Box(GlowM(Dye[ctx.Rng.Next(Dye.Length)], 2.4f), lp, new Vector3(.3f, .45f, .3f), Quaternion.Euler(0, ctx.Range(0, 90f), 0)); mk.Box(dark, lp + Vector3.up * .4f, new Vector3(.02f, .4f, .02f), Quaternion.identity); halos.Add(lp, 1.4f, Warm, .7f); } }
                 else if (roll < .9f) { Pine(ctx, mk, p, ctx.Range(.9f, 1.4f)); pines++; }
                 else continue;
@@ -425,10 +428,11 @@ namespace EverythingWorld.World
                 if (Mathf.PerlinNoise(px * .025f + 1f, pz * .025f + 4f) < .35f) continue;
                 var key = (Mathf.FloorToInt(px / 70f), Mathf.FloorToInt(pz / 70f));
                 if (!meshes.TryGetValue(key, out var wm)) meshes[key] = wm = new WindMesh();
-                var col = Color.Lerp(new Color(.24f, .44f, .28f), new Color(.38f, .5f, .3f), (float)rng.NextDouble());
+                var glade = InGlade(px, pz);   // round each place the grass is brighter and full of flowers
+                var col = glade ? Color.Lerp(new Color(.45f, .68f, .32f), new Color(.62f, .78f, .38f), (float)rng.NextDouble()) : Color.Lerp(new Color(.24f, .44f, .28f), new Color(.38f, .5f, .3f), (float)rng.NextDouble());
                 var at = new Vector3(px, ctx.Ground(px, pz) - .04f, pz);
                 wm.Tuft(at, .4f + (float)rng.NextDouble() * .4f, col, Color.Lerp(col, new Color(.8f, .85f, .6f), .3f), rng, 4, .07f);
-                if (rng.NextDouble() < .05) wm.Flower(at + new Vector3(.15f, 0, .1f), .4f, Dye[rng.Next(Dye.Length)], rng);
+                if (rng.NextDouble() < (glade ? .3 : .05)) wm.Flower(at + new Vector3(.15f, 0, .1f), .4f, Dye[rng.Next(Dye.Length)], rng);
             }
             foreach (var kv in meshes) kv.Value.Build("Commonwealth grass", ctx.Root, mat);
         }

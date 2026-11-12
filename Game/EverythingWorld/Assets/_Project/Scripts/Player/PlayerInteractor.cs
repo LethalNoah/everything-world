@@ -38,6 +38,7 @@ namespace EverythingWorld.Player
                     if (h.distance < best) { best = h.distance; looking = it; }
                 }
             }
+            if (seated != null && walker != null) walker.transform.position = seated.transform.position;   // a seat that moves (a gondola) carries you
             if (kb.eKey.wasPressedThisFrame)
             {
                 if (seated != null) StandUp();
