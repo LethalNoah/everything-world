@@ -6,6 +6,16 @@ Close the Unity editor first (Unity allows one copy of a project open at a time)
     python take_shots.py "Lanternwood" "The Driftwood Shore"
     python take_shots.py all                         # every built land (slow)
 
+Quick mode, for checking one change (about a minute instead of six): only the named lands are built, the land
+audit and the song moments are skipped, and with --only just the photos whose names contain one of the words:
+
+    python take_shots.py --quick "The Punk Badlands"                       # the usual photos, no audit, no songs
+    python take_shots.py --only "sal,legal wall" "The Punk Badlands"       # just those places
+    python take_shots.py --only "carousel,record player" "The Electric Fields" "The Bedroom Pop Meadows"
+
+In quick mode the other lands are bare ground, so don't judge far views from it, and the audit reports are
+not refreshed. Use the full tour when a land is first built or redesigned.
+
 Unity starts in the background (no window), loads the world with Spotify switched off, walks the player round
 each land and photographs through the game's own camera (ShotTour.cs): from where you arrive looking four
 ways, in front of every artist area, and one high view. It also runs the land audit (Logs/LandAudit/).
@@ -71,13 +81,29 @@ def sheets(folder):
 
 
 def main():
-    lands = sys.argv[1:] or ['all']
+    args = sys.argv[1:]
+    quick, only = False, None
+    while args and args[0].startswith('--'):
+        flag = args.pop(0)
+        if flag == '--quick':
+            quick = True
+        elif flag == '--only' and args:
+            quick, only = True, [w.strip() for w in args.pop(0).split(',') if w.strip()]
+        else:
+            sys.exit('Unknown option ' + flag + ' (use --quick or --only "word,word")')
+    if quick and (not args or 'all' in args or 'perf' in args):
+        sys.exit('Quick mode needs the names of the lands to photograph.')
+    lands = args or ['all']
     if unity_open():
         sys.exit('Unity is open on this project: close the Unity editor first, then run this again.')
     log = os.path.join(PROJECT, 'Logs', 'shots.log')
     os.makedirs(os.path.dirname(log), exist_ok=True)
     cmd = [unity_exe(), '-batchmode', '-projectPath', PROJECT, '-executeMethod', 'EverythingWorld.EditorTools.ShotRunner.Run',
            '-ewShots', ';'.join(lands), '-logFile', log]
+    if quick:
+        cmd += ['-ewQuick']
+    if only:
+        cmd += ['-ewOnly', ';'.join(only)]
     print('Unity is photographing', ', '.join(lands), '(no window; this takes a few minutes)...')
     t0 = time.time()
     try:

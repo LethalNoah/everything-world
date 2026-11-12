@@ -20,6 +20,8 @@ namespace EverythingWorld.World
     public class ShotTour : MonoBehaviour
     {
         string[] lands;
+        string[] only;   // quick mode: take only the photos whose name contains one of these (lower case); empty = the usual photos, no songs
+        bool quick;
         const int W = 1600, H = 900;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
@@ -31,7 +33,18 @@ namespace EverythingWorld.World
                 {
                     var go = new GameObject("Shot tour");
                     DontDestroyOnLoad(go);
-                    go.AddComponent<ShotTour>().lands = args[i + 1].Split(';');
+                    var tour = go.AddComponent<ShotTour>(); tour.lands = args[i + 1].Split(';');
+                    // quick mode ("-ewQuick", and "-ewOnly a;b" to name the photos): only these lands are built, no audit, no song moments
+                    for (var k = 0; k < args.Length; k++)
+                    {
+                        if (args[k] == "-ewQuick") tour.quick = true;
+                        if (args[k] == "-ewOnly" && k + 1 < args.Length) { tour.quick = true; tour.only = args[k + 1].ToLowerInvariant().Split(new[] { ';' }, System.StringSplitOptions.RemoveEmptyEntries); }
+                    }
+                    if (tour.quick)
+                    {
+                        IslandWorldBuilder.QuickLands = new HashSet<string>();
+                        foreach (var l in tour.lands) IslandWorldBuilder.QuickLands.Add(l.StartsWith("The ") ? l.Substring(4) : l);
+                    }
                     SceneManager.sceneLoaded += (_, __) => QuietSpotify();
                     return;
                 }
@@ -79,6 +92,12 @@ namespace EverythingWorld.World
                 var n = 0;
                 IEnumerator Shot(string name, Vector3 feet, float yaw, float pitch, float settle)
                 {
+                    if (only != null && only.Length > 0)
+                    {
+                        var low = name.ToLowerInvariant(); var hit = false; foreach (var o in only) if (low.Contains(o)) hit = true;
+                        if (!hit) yield break;
+                    }
+                    if (quick && n == 0 && settle < 4f) settle = 4f;   // the first photo waits for the land's sky to settle
                     player.transform.SetPositionAndRotation(feet, Quaternion.Euler(0f, yaw, 0f));
                     if (pivot != null) pivot.localEulerAngles = new Vector3(pitch, 0f, 0f);
                     var culler = FindAnyObjectByType<LandCuller>(); if (culler != null) culler.Refresh();
@@ -147,6 +166,11 @@ namespace EverythingWorld.World
                 if (kit != null)
                     foreach (var (song, label, artist) in kit.SpecialSongs)
                     {
+                        if (quick)   // song moments take over twenty seconds each: only the ones asked for by name
+                        {
+                            var asked = false; if (only != null) foreach (var o in only) if (label.ToLowerInvariant().Contains(o)) asked = true;
+                            if (!asked) continue;
+                        }
                         MusicDirector.ForcedTrackId = song;
                         IslandWorldData.Artist where = null;
                         foreach (var a in data.layout.artists) if (a.sceneId == isl.sceneId && a.name == artist) where = a;

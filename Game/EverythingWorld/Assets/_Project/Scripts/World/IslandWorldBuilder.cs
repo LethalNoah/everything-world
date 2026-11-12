@@ -45,6 +45,12 @@ namespace EverythingWorld.World
         /// so you don't hit an invisible circle in an empty field that changes the music.
         public bool IsDressed(int sceneId) => dressed.Contains(sceneId);
 
+        /// Set by the photo tour's quick mode (take_shots.py --quick): build only these lands (names without "The ")
+        /// and skip the land audit, so a quick look at one place takes about a minute instead of six. The other
+        /// lands stay bare ground, so far views are not to be trusted in a quick photo.
+        public static HashSet<string> QuickLands;
+        static bool Wanted(string land) => QuickLands == null || QuickLands.Contains(land.StartsWith("The ") ? land.Substring(4) : land);
+
         // shared terrain colours
         static readonly Color Seabed = new Color32(126, 136, 104, 255);
         static readonly Color Sand = new Color32(222, 205, 160, 255);
@@ -62,7 +68,7 @@ namespace EverythingWorld.World
             kits = new LandKit[Data.layout.islands.Length];
             for (var i = 0; i < kits.Length; i++)
             {
-                kits[i] = LandKit.For(Data.layout.islands[i].name);
+                kits[i] = Wanted(Data.layout.islands[i].name) ? LandKit.For(Data.layout.islands[i].name) : null;
                 if (kits[i] != null) dressed.Add(Data.layout.islands[i].sceneId);
             }
             for (var i = 0; i < kits.Length; i++)
@@ -348,7 +354,7 @@ namespace EverythingWorld.World
                     kits[i].Dress(ctx);
                     foreach (var a in ctx.Artists) kits[i].BuildArtist(ctx, a);
                     kits[i].Finish(ctx);
-                    if (auditLands && Application.isEditor)
+                    if (auditLands && Application.isEditor && QuickLands == null)
                         try { LandAudit.Run(Data, ctx, kits[i].Land); } catch (System.Exception e) { Debug.LogException(e); }
                     Debug.Log($"{kits[i].Land}: dressed in {(Time.realtimeSinceStartup - t0) * 1000:0} ms, {ctx.Artists.Count} artist areas");
                 }

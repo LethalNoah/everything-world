@@ -198,6 +198,12 @@ big change):
    inside every room the kit registered with `IndoorSpaces`, so register every interior; it also reruns the audit) and makes contact sheets in `Game/EverythingWorld/Logs/Shots/<Land>/sheet_*.png`. Read
    the sheets (and single photos for detail): fix anything that looks wrong, odd or unreadable (props built
    from boxes at angles, overlaps, floating things, blown-out glows), and shoot again.
+   To look yourself without the owner (Unity closed): `python build/take_shots.py "<Land>"` is the full photo
+   tour with the audit (about 6 minutes; use it when a land is first built or redesigned). For checking one
+   change, use quick mode, about half a minute: `python build/take_shots.py --only "sal,legal wall" "<Land>"`
+   takes only the photos whose names contain those words (place names from `Shot(...)`, artist names, "arrival",
+   "inside"), builds only that land and skips the audit and song moments; `--quick` alone takes the usual photos.
+   In quick mode the other lands are bare ground, so don't judge far views, and audit reports are not refreshed.
 5. Then the owner's quality check in play. They press **P** (or F12) at anything odd: the game view goes to
    `Game/EverythingWorld/Logs/Live/` with a line in `notes.txt` (land, position, facing, nearest artist, song,
    indoors). Read the newest ones when they say "look at my snapshots".
