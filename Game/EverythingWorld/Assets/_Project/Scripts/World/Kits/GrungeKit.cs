@@ -90,7 +90,7 @@ namespace EverythingWorld.World
         bool OnBluff(float x, float z, float pad) => hasBluff && Vector2.Distance(new Vector2(x, z), bluff2) < bluffR + pad;
 
         // ---------------------------------------------------------------- shaping the ground
-        public override void ShapeGround(IslandWorldData data, int index)
+        void ShapeRainwood(IslandWorldData data, int index)
         {
             var isl = data.layout.islands[index]; heart2 = new Vector2(isl.labelX, isl.labelZ);
             river2.Clear(); riverY.Clear();
@@ -251,6 +251,7 @@ namespace EverythingWorld.World
                 if (front.sqrMagnitude < .01f) front = Vector3.forward;
                 for (var k = 0; k <= HighwayClear; k++) Remember(HighwayPoint(new Vector3(a.x, 0, a.z), front, k, ctx), 900);
             }
+            RainwoodPlaces(ctx, mk, solid);
             Forest(ctx, mk, solid);
             mk.Build("Grunge Rainwood", ctx.Root, false);
             soft.Build("Rainwood pines", ctx.Root, false);
@@ -807,7 +808,7 @@ namespace EverythingWorld.World
             var up = Vector3.up; var d = Quaternion.Euler(0, ctx.Range(0, 360f), 0) * Vector3.forward; var rot = Quaternion.LookRotation(d); var sd = Vector3.Cross(up, d);
             mk.Box(oldPlank, at + up * .5f, new Vector3(1.8f, .1f, .5f), Quaternion.LookRotation(d)); mk.Box(oldPlank, at + up * .9f - d * .25f, new Vector3(1.8f, .4f, .08f), rot);
             foreach (var s in new[] { -.8f, .8f }) mk.Box(dark, at + up * .25f + sd * s, new Vector3(.1f, .5f, .45f), rot);
-            solid.Box(oldPlank, at + up * .5f, new Vector3(1.9f, 1f, .6f), rot);
+            solid.Box(oldPlank, at + up * .5f, new Vector3(1.9f, 1f, .6f), rot); if (plife != null) Interact.Bench(plife.transform, at + up * .58f - sd * .5f, at + up * .58f + sd * .5f, d);
             RoadLamp(ctx, mk, at + sd * 1.6f - d * .4f, -sd);
         }
 
