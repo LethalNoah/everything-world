@@ -38,6 +38,13 @@
    "weather": "", "weatherAmount": 0
   },
   {
+   "land": "The Nu Metal Quarry",
+   "sunPitch": 40, "sunYaw": 200, "sunIntensity": 0.7, "sunColor": "#E8E2D6",
+   "skyLight": "#8A8C90", "horizonLight": "#A8A49A", "groundLight": "#6A665C",
+   "fogColor": "#9A968E", "fogStart": 180, "fogEnd": 1400, "stars": 0, "sunShadows": false, "dailyWeather": false, "bloom": 1.0,
+   "weather": "", "weatherAmount": 0
+  },
+  {
    "land": "The Punk Badlands",
    "sunPitch": 72, "sunYaw": 160, "sunIntensity": 1.25, "sunColor": "#FFF6E0",
    "skyLight": "#9CC8F0", "horizonLight": "#F4E6CC", "groundLight": "#9A8462",

@@ -244,13 +244,15 @@ The heartland. Old hills, long roads and the tallest mountains in the world. Mos
 **Artist areas:** Roadside attractions, one per artist: Pixies and Ween get the strangest ones.
 
 ### The Nu Metal Quarry
-*27 songs · 13 artists · 0.62 km²*
+*27 songs · 12 artists · 0.62 km² · built in Unity*
 
-**Arriving:** A huge open-pit quarry with rusted machinery on its terraces and a stage built on a mining rig at the bottom.
+**Arriving:** A gravel yard at the quarry gate: a site sign ("THE NU METAL QUARRY, HARD HATS MUST BE WORN"), a portable cabin with a lit window, oil drums burning, a floodlight tower; just ahead, the rim of a huge open pit and the haul road going down into it.
 
-**The vibe:** Overcast and gritty. Burning oil drums, chain-link, wrecked cars.
+**The vibe:** 2000s radio nostalgia, big earnest choruses on the car radio, under a flat grey overcast with dust in the air. The pit steps down in terraces, flat benches between steep cut rock faces, a haul road ramping down one side edged with a berm and marker posts, a giant haul truck crawling up and down it. On the benches: rusted haul trucks, excavators, rock piles, burning drums; a conveyor climbs out of the pit to a rust-red crusher on the rim; floodlight towers and chain-link round the edge. Round the rim, wrecked cars, spoil heaps, tyre stacks, cabins, dead trees, more drums.
 
-**Artist areas:** Nickelback gets a hall (a quarry rig, naturally). Others are machinery and truck beds on the terraces.
+**Artist areas:** Round the rim each band plays off a shipping container with a side swung open as a stage, amps inside, a lamp over it; covers on a sheet of steel; a work lamp for every song without its own piece. Nickelback (on the quarry floor): a stage built on a mining rig, a drill tower hung with lights and topped with a gold star ("Rockstar"), a huge picture frame ("Photograph"), crows on a wire ("Bones For The Crows"). Creed: a tall conveyor tower with a light at the top ("Higher"), two crane jibs swung wide ("With Arms Wide Open"), a chain-link cage ("My Own Prison"). 3 Doors Down: a mine cart heaped with glowing green crystal ("Kryptonite"), an empty chair on a flatbed under a lamp ("Here Without You"). Breaking Benjamin: a cracked heart of scrap ("Dear Agony"), a flickering sign ("Give Me A Sign"), scrap-metal wings ("Anthem Of The Angels"). Disturbed: candles round a silent speaker ("The Sound of Silence"), a lightning rod ("Stricken"). Linkin Park a road barrier marked END, Seether a broken mirror, Hoobastank a lone streetlight and bench, Puddle Of Mudd a frosted pane, NOTHING MORE scrap shields.
+
+**Happenings:** The haul truck runs the road (the same for everyone); rocks ride the conveyor; dust drifts in the pit; crows circle the rig. "Kryptonite" turns the light green; "The Sound of Silence" sinks the fires and darkens the sky; "Photograph" sets off camera flashes; "Higher" sends a beam up from Creed's tower; "Stricken" brings lightning down on the rod.
 
 ### The Power Metal Peaks
 *20 songs · 10 artists · 0.57 km² · built in Unity*
