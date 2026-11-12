@@ -45,6 +45,13 @@
    "weather": "", "weatherAmount": 0
   },
   {
+   "land": "The Soul Lowlands",
+   "sunPitch": 21, "sunYaw": 100, "sunIntensity": 1.05, "sunColor": "#FFC873",
+   "skyLight": "#8FB4E0", "horizonLight": "#F6D6A6", "groundLight": "#6E5438",
+   "fogColor": "#A9C6DE", "fogStart": 300, "fogEnd": 2200, "stars": 0, "sunShadows": true, "dailyWeather": false, "bloom": 1.05,
+   "weather": "", "weatherAmount": 0
+  },
+  {
    "land": "The Nu Metal Quarry",
    "sunPitch": 40, "sunYaw": 200, "sunIntensity": 0.7, "sunColor": "#E8E2D6",
    "skyLight": "#8A8C90", "horizonLight": "#A8A49A", "groundLight": "#6A665C",

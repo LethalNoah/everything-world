@@ -804,13 +804,25 @@ Bright, saturated, everyone-knows-these. Where the world feels most like a theme
 Warm, humid, rhythmic. River country, smoky towns and coastline.
 
 ### The Soul Lowlands
-*28 songs · 20 artists · 0.69 km²*
+*28 songs · 20 artists · 0.69 km² · built in Unity*
 
-**Arriving:** Warm river country with slow bends and wooden towns; a riverside theatre with a lit marquee next to a white chapel.
+**Arriving:** The town square of a wooden river town at golden hour: brick underfoot, a magnolia in a round planter with benches round it, globe lamps strung together with bulbs, the town clock. On one side stands The Royal, a theatre with a tall blade sign and a marquee of chasing bulbs; beside it a white chapel with its doors open and the choir inside. Main Street runs away east toward the river.
 
-**The vibe:** A warm, humid sunset. Porch swings, riverboats, choir risers. Gospel lives here too.
+**The vibe:** Warm and joyful. Long shadows and honey light under a blue sky, gold motes hanging in the low sun. Main Street runs down from the square between pastel shopfronts with striped awnings, under strings of bulbs that chase slowly: a record shop, a barbershop with a turning pole, a hotel, a hat shop, a bakery, a luncheonette, a radio station on the air, a pool hall, a tailor, an ice cream parlour. Beyond the shops River Road carries on under spreading oaks to the landing, where a white paddle steamer is moored with her red wheel turning. Out in the meadows: oaks and magnolias, pastel houses with porch swings and lit windows behind picket fences, brick-red lanes with globe lamps, tall grass going gold, wildflowers. Everyone is in their Sunday best, and somebody is always singing.
 
-**Artist areas:** Porches, marquees and chapel steps; Stevie Wonder gets the largest.
+**Artist areas:** Most artists have a porch of their own (a painted front, a lit window, a rocking chair) with something from their song out front; covers on a cream board under a row of bulbs; a glowing 45 on a stand for every song without its own piece. Stevie Wonder (south of the square, the largest): a round bandstand with a clavinet to play, a drum kit and a harmonica; brass horns on stands out front ("Sir Duke"); a ladder against a wall with the writing on it, a cracked mirror and a black cat ("Superstition"); steps winding up to a beacon ("Higher Ground"); a giant sealed letter on an easel ("Signed, Sealed, Delivered"). Otis Redding (on the shore): a long dock out over the water with a chair and a lantern at the end ("(Sittin' On) the Dock of the Bay"); a table for two with one rose ("Try a Little Tenderness"). Ray Charles: a grand piano on a low stage with a stool to sit at; a peach tree and a road sign ("Georgia on My Mind"); an electric piano between two horns, the call and the response ("What'd I Say"). Marvin Gaye: a little stone mountain to climb with a flag on top, and a river with a plank across ("Ain't No Mountain High Enough"). Sam Cooke: an outdoor schoolroom, a blackboard, desks, a glowing globe, books to carry ("Wonderful World"). Ben E. King: a moon on a tall curved post over a round stone with two pairs of footprints ("Stand By Me"). The gospel singers live round the chapel: the Staple Singers a pool to wade in and a sign pointing THERE, the Jubalaires a little ark under a rainbow, the Edwin Hawkins Singers a sunburst, Mahalia Jackson a footbridge, Kirk Franklin a smile of bulbs and dancing footprints. And the rest: Booker T. an organ and a crate of green onions, the Five Stairsteps five steps each brighter than the last, the Foundations giant buttercups and a telephone, and so on.
+
+**Happenings:** The bulbs chase with the music; the paddle wheel turns; the barber pole spins. "Sir Duke" sends the bulbs racing and notes rising from the brass. "Superstition" makes the lamps flicker and turns the light violet. "(Sittin' On) the Dock of the Bay" softens the light to rose and brings gulls over the dock. "Stand By Me" brings the night, and the moon is the only light. "Oh Happy Day" sets the whole land blazing gold. "Georgia on My Mind" sends peach blossom drifting from the tree.
+
+**The streets and places:** Laid out on purpose: the square, Main Street and River Road are the spine, and every lane to an artist branches from them. The people of the town will talk to you; each place has somewhere to sit, something to use and something to carry.
+- **The Royal:** a theatre to walk into: a stage with a velvet curtain, a microphone to step up to (the spotlight finds you), a pianist, rows of velvet seats. A ticket seller outside who won't take your money.
+- **The Chapel:** white, with a steeple and tall coloured windows; pews to sit in, the choir in robes on their risers, an organ to play (the windows blaze), paper fans to carry.
+- **Sweet Soul Records:** bins of records down every wall, a turntable to drop the needle on, records to carry off (and throw).
+- **The Luncheonette:** a counter with stools, two booths, a jukebox, a cook at the grill, pie and coffee to carry.
+- **The Deluxe Barbershop:** two chairs to sit in, a wall of mirrors, the barber, a turning pole outside.
+- **W-S-O-L Radio:** a mast with a red light, an ON AIR sign, and a horn speaker on the wall to listen at.
+- **The Corner:** three singers under a lamp on Main Street who need a fourth.
+- **The Landing and the Lowlands Belle:** a boardwalk over the water with lamps and benches, and the riverboat alongside: walk aboard, pull the whistle, sit in a deck chair at the bow.
 
 ### The Fusion Isthmus
 *30 songs · 18 artists · 0.78 km²*
