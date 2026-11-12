@@ -769,6 +769,23 @@ elev_sea = -.3 - np.minimum(ds_m * .2, 10)
 E = sample(np.where(land, elev_land, elev_sea))
 landv = sample(land, 0) > .5
 idv = np.where(landv, sample(L, 0), 255).astype(np.uint8)
+# No pockets: a piece of one land cut off from the rest of it and touching another land joins the land it
+# shares the longest border with. (Pieces that touch only the sea are that land's own islets and stay.)
+_k8 = np.ones((3, 3), bool); _moved = 0
+for _pass in range(6):
+    changed = False
+    for i in np.unique(idv[idv != 255]):
+        lab, n = ndi.label(idv == i, structure=_k8)
+        if n <= 1: continue
+        main = int(np.bincount(lab.ravel())[1:].argmax()) + 1
+        for k in range(1, n + 1):
+            if k == main: continue
+            m = lab == k; ring = ndi.binary_dilation(m, _k8) & ~m
+            nb = idv[ring]; nb = nb[(nb != 255) & (nb != i)]
+            if len(nb) == 0: continue
+            idv[m] = np.bincount(nb).argmax(); _moved += int(m.sum()); changed = True
+    if not changed: break
+print(f'pockets joined to their neighbours: {_moved * STEP * STEP / 1e4:.1f} ha')
 coastv = sample(dl_m)                                            # metres to the shore, on land
 
 # ---------- artist plots ----------
