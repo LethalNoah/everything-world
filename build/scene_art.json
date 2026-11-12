@@ -214,7 +214,7 @@
    "landmark": "A torii gate on a rooftop high above the city.",
    "props": "Vending machines, train crossings, paper lanterns, cherry trees, tangles of power lines.",
    "mood": "Dramatic dusk sky with big clouds."},
-  {"id": 29, "anchors": ["Stevie Wonder", "Commodores", "James Brown"],
+  {"id": 29, "anchors": ["Stevie Wonder", "Otis Redding", "Ray Charles"],
    "name": "The Soul Lowlands",
    "terrain": "Warm river country with slow bends and wooden towns.",
    "palette": ["#7B4A2D warm brown", "#E0A43B gold", "#4F7FA3 river blue", "#8E2B3A velvet red"],

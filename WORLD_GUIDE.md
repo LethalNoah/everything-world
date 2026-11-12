@@ -804,7 +804,7 @@ Bright, saturated, everyone-knows-these. Where the world feels most like a theme
 Warm, humid, rhythmic. River country, smoky towns and coastline.
 
 ### The Soul Lowlands
-*32 songs · 22 artists · 0.69 km²*
+*28 songs · 20 artists · 0.69 km²*
 
 **Arriving:** Warm river country with slow bends and wooden towns; a riverside theatre with a lit marquee next to a white chapel.
 
@@ -831,7 +831,7 @@ Warm, humid, rhythmic. River country, smoky towns and coastline.
 **Artist areas:** Club doorways, café tables and lamp posts with plaques.
 
 ### The Funk Tropics
-*25 songs · 16 artists · 0.65 km²*
+*30 songs · 19 artists · 0.65 km²*
 
 **Arriving:** Lush, sweaty jungle; a flying saucer landed in a clearing, its ramp turned into a stage.
 

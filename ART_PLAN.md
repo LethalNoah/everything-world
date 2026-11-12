@@ -500,7 +500,7 @@ Soul, funk, disco, world music and jazz.
 
 ### 29. The Soul Lowlands
 
-*soul, motown, classic soul, gospel, funk* · 33 songs · energy 0.58, acoustic 0.31, mood 0.65 · top artists: Stevie Wonder, Commodores, James Brown, Kirk Franklin, Otis Redding
+*soul, motown, classic soul, gospel, funk* · 28 songs · energy 0.56, acoustic 0.34, mood 0.65 · top artists: Stevie Wonder, Kirk Franklin, Otis Redding, Ray Charles, Syl Johnson
 
 - **Terrain:** Warm river country with slow bends and wooden towns.
 - **Colours:** `#7B4A2D warm brown`, `#E0A43B gold`, `#4F7FA3 river blue`, `#8E2B3A velvet red`
@@ -510,7 +510,7 @@ Soul, funk, disco, world music and jazz.
 
 ### 30. The Funk Tropics
 
-*funk, soul, funk rock, jazz funk, jazz* · 25 songs · energy 0.67, acoustic 0.25, mood 0.66 · top artists: The Meters, Prince, Thundercat, Funkadelic, Parliament
+*funk, soul, funk rock, jazz funk, motown* · 30 songs · energy 0.67, acoustic 0.24, mood 0.67 · top artists: The Meters, Prince, Thundercat, Commodores, Funkadelic
 
 - **Terrain:** Lush, sweaty jungle laid out entirely on the one.
 - **Colours:** `#6B2FA3 purple`, `#F2742B hot orange`, `#2F8F4A jungle green`, `#E3B341 gold`
