@@ -36,7 +36,9 @@ Lands must not feel generated. "You walk to the middle, see the artist areas, an
 - **Shot markers** ("Shot: ...") at every place, so the photo tour shows each one.
 - Plants you would walk into (corn, sunflowers) go in a mesh named "Soft ..." so the audit treats them as walk-through on purpose.
 
-### Redesigning a land that is already built (the recipe from the Alt Rock Moors, `MoorsPlaces.cs`)
+#- **Signs and photo spots on opposite sides.** Put a place's sign on the +x side of its lane and its `Shot` camera on the −x side, from the start: a sign in front of its own camera was the most repeated fix of the redesign run. Never use `Mathf.SmoothStep(a, b, height)` to blend ground by height (it is not an inverse lerp): use `Mathf.SmoothStep(0, 1, Mathf.InverseLerp(a, b, height))`.
+
+## Redesigning a land that is already built (the recipe from the Alt Rock Moors, `MoorsPlaces.cs`)
 
 1. `python build/land_sites.py "<Land>"` for the map; look at `Logs/LandAudit/<Land>_top.png` to see what is empty. Read the kit: what it places at fixed spots in ShapeGround, what it scatters at random, and its helpers (Strip, Remember, NearPath, InNoGrass, Open).
 2. Choose sites and road waypoints as world coordinates from the map (check points with extra `x,z` arguments; the artists' built positions are in `Logs/LandAudit/<Land>_places.json`). Keep everything the owner already has where it is (the simplest way: don't change `Spread`, lay the new roads after the kit's own things, and bend them round artists and `noGrass` circles at runtime, as in `ClassicPlaces.cs`): add your avoid circles for `ArtistPlacement.Spread` **after** the kit has picked its own fixed things (the Moors' pool and district), and bend roads round those things at runtime.

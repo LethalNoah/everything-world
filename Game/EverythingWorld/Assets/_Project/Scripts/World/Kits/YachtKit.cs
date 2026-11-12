@@ -97,6 +97,7 @@ namespace EverythingWorld.World
                 a.r = Mathf.Max(a.r, Foot(a) + 6f);
                 Level(data, index, new Vector2(a.x, a.z), Foot(a) + 1f, Foot(a) + 12f);
             }
+            foreach (var (at, r) in PlaceRings) Level(data, index, at, r, r + 14f);
         }
 
         void Level(IslandWorldData data, int index, Vector2 c, float flat, float blend)
@@ -128,6 +129,7 @@ namespace EverythingWorld.World
             var mk = new MeshKit(); var solid = new MeshKit();
             if (hasBay) { Bay(ctx, mk, solid); Promenade(ctx, mk, solid); Marina(ctx, mk, solid); YachtClub(ctx, mk, solid); Beach(ctx, mk, solid); Lighthouse(ctx, mk, solid); }
             Paths(ctx, mk, solid);
+            RivieraPlaces(ctx, mk, solid);
             Hills(ctx, mk, solid);
             mk.Build("Riviera", ctx.Root, false);
             solid.BuildCollider("Riviera walls", ctx.Root);
@@ -251,7 +253,7 @@ namespace EverythingWorld.World
                 var land = p + d * (PromW + .6f); land.y = Mathf.Max(ctx.Ground(land.x, land.z), bayY + .6f);
                 if (k % 4 == 0) Lamp(ctx, mk, p + d * .4f);
                 if (k % 6 == 2) Palm(ctx, mk, land + d * 1.2f, ctx.Range(9f, 12f));
-                if (k % 12 == 7) { var br = Quaternion.LookRotation(-d); mk.Box(teak, land + Vector3.up * .45f, new Vector3(1.8f, .08f, .5f), br); mk.Box(teak, land + Vector3.up * .8f + d * .25f, new Vector3(1.8f, .5f, .06f), br); solid.Box(teak, land + Vector3.up * .5f, new Vector3(1.9f, 1f, .6f), br); }
+                if (k % 12 == 7) { var br = Quaternion.LookRotation(-d); mk.Box(teak, land + Vector3.up * .45f, new Vector3(1.8f, .08f, .5f), br); mk.Box(teak, land + Vector3.up * .8f + d * .25f, new Vector3(1.8f, .5f, .06f), br); solid.Box(teak, land + Vector3.up * .5f, new Vector3(1.9f, 1f, .6f), br); Interact.Bench(life.transform, land + Vector3.up * .5f - Vector3.Cross(Vector3.up, d) * .5f, land + Vector3.up * .5f + Vector3.Cross(Vector3.up, d) * .5f, -d); }
             }
         }
 
@@ -366,7 +368,7 @@ namespace EverythingWorld.World
                 var p = ctx.OnGround(a.x + side.x * ((k - 2.5f) * 4f) - face.x * 5f, a.z + side.z * ((k - 2.5f) * 4f) - face.z * 5f); var r = Quaternion.LookRotation(face);
                 for (var s = 0; s < 4; s++) mk.Box(WorldMaterials.Solid(s % 2 == 0 ? stripes[k % 3] : new Color(.96f, .95f, .9f)), p + Vector3.up * .4f + face * ((s - 1.5f) * .3f), new Vector3(.7f, .04f, .3f), r * Quaternion.Euler(-20f, 0, 0));
                 mk.Prism(white, p + side * 1.4f, Vector3.up, .05f, 2.6f, 6); mk.Cone(WorldMaterials.Solid(stripes[(k + 1) % 3], .3f), p + side * 1.4f + Vector3.up * 2.4f, 1.6f, .7f, 8);
-                solid.Box(white, p + Vector3.up * .3f, new Vector3(.8f, .6f, 1.4f), r);
+                solid.Box(white, p + Vector3.up * .3f, new Vector3(.8f, .6f, 1.4f), r); Interact.Seat(life.transform, p + Vector3.up * .45f, face, "Sit in the deck chair");
             }
             noGrass.Add(new Vector3(a.x, 16f, a.z));
         }
