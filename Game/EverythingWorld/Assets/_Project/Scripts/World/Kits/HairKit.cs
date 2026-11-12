@@ -124,6 +124,7 @@ namespace EverythingWorld.World
                     data.heights[i] = d < 38f ? y : Mathf.Lerp(y, data.heights[i], Mathf.SmoothStep(0f, 1f, (d - 38f) / 26f));
                 }
             }
+            foreach (var (at, r) in PlaceRings) PlaceLevel(data, index, at, r, r + 16f);
             var arts = new List<IslandWorldData.Artist>();
             foreach (var a in data.layout.artists) if (a.sceneId == isl.sceneId) arts.Add(a);
             arts.Sort((p, q) => Rank(q).CompareTo(Rank(p)) != 0 ? Rank(q).CompareTo(Rank(p)) : string.CompareOrdinal(p.name, q.name));
@@ -151,6 +152,7 @@ namespace EverythingWorld.World
             life.center = center;
             var mk = new MeshKit(); var solid = new MeshKit();
             if (hasStreet) { Strip(ctx, mk, solid); Arrival(ctx, mk, solid); Club(ctx, mk, solid); }
+            StripPlaces(ctx, mk, solid);
             Desert(ctx, mk, solid);
             DesertMore(ctx, mk, solid);
             mk.Build("The Strip", ctx.Root, false);
@@ -268,6 +270,7 @@ namespace EverythingWorld.World
             mk.Box(chrome, at + lean * (up * .75f) + dir * .8f, new Vector3(.05f, .75f, .05f), rot * Quaternion.Euler(28f, 0, 0));
             mk.Box(chrome, at + lean * (up * .45f) - dir * .6f + side * .2f, new Vector3(.08f, .08f, .9f), rot);       // pipes
             solid.Box(black, at + up * .65f, new Vector3(1.1f, 1.3f, 2.1f), rot);   // wide enough for the leaning handlebars
+            Interact.Seat(life.transform, at + up * .92f - dir * .38f, dir, "Sit on the bike");
         }
 
         static void BoxCol(Transform parent, Vector3 center, Vector3 size, Quaternion rot)

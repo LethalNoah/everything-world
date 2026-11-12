@@ -421,6 +421,15 @@ The tailgate chairs can be sat in.
 
 **A quiet place:** Away from the paths, a great tree on level ground with a ring of stone walkway round it, four carved standing stones, benches facing the tree, lanterns in its branches and low lights along the walk. No sign.
 
+**Lanes and places:** Laid out on purpose, lightly: the two paths, the green and every artist are exactly where they were. Four plain chalk lanes with warm lanterns (in no one's colour) and a bench half-way reach the empty west, north-west, south-east and north-east. Along them, with a few people of the Downs to talk to:
+- **The Beach Huts** above the west shore: five huts in faded paint, striped deckchairs facing the sea, a windbreak, an ice cream van with a giant cone on its roof, flat pebbles to pocket.
+- **The Allotments:** six beds (cabbages, beans, leeks, sunflowers, pumpkins, cut flowers), two sheds, a greenhouse, a water butt and a wheelbarrow; a watering can and pumpkins to carry.
+- **The Car Boot Sale:** five cars with their boots open and trestle tables of half-remembered things, every one of which can be picked up (a chipped teapot, a little lamp, a globe, a record with no label, a mixtape); sellers in deckchairs, bunting, teas at 20p.
+- **The Caravan Site:** three old caravans with striped awnings round a patch of grass, deckchairs, a washing line, swingball to hit, a radio whose dial finds the shipping forecast.
+- **The Toposcope** on the north-east rise: a brass dial that tells you what lies each way, a trig pillar, a bench, a flask someone left.
+
+The Downs' own benches can be sat on.
+
 ### Lanternwood
 *~40 songs · 23 artists · 0.53 km² · built in Unity*
 
