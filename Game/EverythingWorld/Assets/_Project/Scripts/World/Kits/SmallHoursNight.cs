@@ -172,7 +172,7 @@ namespace EverythingWorld.World
             mk.Box(wood, p + up * .45f, new Vector3(1.8f, .08f, .5f), rot);
             mk.Box(wood, p + up * .8f - face * .22f, new Vector3(1.8f, .35f, .06f), rot);
             foreach (var s in new[] { -1f, 1f }) mk.Box(iron, p + side * s * .75f + up * .22f, new Vector3(.06f, .45f, .45f), rot);
-            solid.Box(wood, p + up * .5f, new Vector3(1.8f, 1f, .6f), rot);
+            solid.Box(wood, p + up * .5f, new Vector3(1.8f, 1f, .6f), rot); if (plife != null) Interact.Bench(plife.transform, p + up * .5f - side * .5f, p + up * .5f + side * .5f, face);
             var post = p + side * 1.6f - face * .2f; post = ctx.OnGround(post.x, post.z);
             StreetLamp(ctx, mk, post, face - side * .3f);
             // a puddle catching the lamp

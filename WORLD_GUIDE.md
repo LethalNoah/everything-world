@@ -474,6 +474,15 @@ Out on the lake there is a fishing hole with a stool and a lantern, and someone 
 
 **Song places:** Out on the dunes and the heath, small calm places for Jack Johnson's, Agnes Obel's and Angus & Julia Stone's songs, each reached by a line of stepping planks to a driftwood sign, the warmth in their small lights, each glowing while its song plays (songs already shown in the artists' own areas aren't repeated). Jack Johnson: a tall lookout chair with binoculars facing the sea ("If I Had Eyes"), a striped tide post with numbers in a pool, its waterline glowing ("High Tide Or Low Tide"), a ring of candle jars all lit together on a circle of logs ("All At Once"), two benches back to back facing opposite ways under a lamp ("They Do, They Don't"), a glowing rose bar on two driftwood posts framing the horizon, with a bench behind it ("The Horizon Has Been Defeated"). Agnes Obel: an ember brazier in a ring of stones beside a woodpile ("Fuel to Fire"), twin cairns side by side, each with a pale light on top ("Familiar"), a little stream of pale light with stepping stones and reeds ("Riverside"), a birch dropping amber leaves on a bench ("September Song"), a ring of tall poles hung with glowing chimes ("Tokka"). Angus & Julia Stone: a letter in a glowing green bottle on a rock beside a lantern ("Apologize").
 
+**More boardwalks and places:** Laid out on purpose, with the lagoon, the promenade and every artist left where they were. Five more boardwalks, the same grey deck and lanterns, run out to the empty north-east headland, the east heath, the south-west shore and the south. At their ends, with the people of the shore to talk to:
+- **The Lookout** on the north-east headland: a white coastguard hut with a lit window, a mast of signal flags, a brass telescope, the night's log to read, a bench to the sea.
+- **The Smokehouse:** three tall tarred net huts, the middle one glowing at its door; fish drying on racks, herring and kippers to carry, crates to sit on, someone mending a net the storm tore.
+- **The Boatyard:** a hull in frame on a slip, pale ribs and half its planking; a workbench of tools and shavings, a finished dinghy on the grass to sit in, a launching bell to ring.
+- **The Beachcomber's** by the south-west shore: a driftwood-and-tin shack hung with floats and glowing sea glass, a table of sea glass sorted by colour (every piece can be taken), a driftwood horse and heron.
+- **The Sauna:** a little cedar hut with light under its door and a steaming barrel tub on a deck, out of the wind; sit in the tub.
+
+Benches at the new places can be sat on.
+
 ### The Bedroom Pop Meadows
 *23 songs · 19 artists · 0.47 km² · built in Unity · Pyrosolstice's land*
 
@@ -533,6 +542,14 @@ Someone paces the west track with headphones on.
 
 
 **The Moonhunter house (Echoflesh):** an old pale two-storey villa behind an iron railing, as on the song's cover: a dark hipped roof with chimneys, warm orange light in some windows, a bare black tree beside it, stone gate pillars topped with glowing moon globes. The garden path from the gate to the door is a rhythm game's note highway, five coloured lanes ending in five fret buttons. Inside, a couch faces a TV showing the same highway, two guitar controllers lean on the couch, and a karaoke microphone waits on its stand. When "Moonhunter" plays, notes stream down the highway and the frets flash as they hit, every window lights up, and a spotlight comes on over the mic.
+**Also awake:** Laid out on purpose, quietly: the lanes and the homes are exactly as they were, and nothing new stands near the heart of the land. Four places for the other people who are up at 3 am, each joined to the nearest lane by a short wet-stone path under a street lamp:
+- **The Night Café:** one long lit window, the brightest thing in the hollow; booths, a counter with stools, tea in mugs you can carry, a pie under glass, a radio turned very low.
+- **The Corner Shop:** open-fronted and cold-lit under a striped awning; shelves of bright things, tomorrow's paper on the rack to read, milk, crisps and batteries to carry off.
+- **The Phone Box:** it rings, its light pulsing, until you answer; then it is quiet for a while.
+- **The Playground:** empty at this hour: two swings to push or sit on, a roundabout to spin and ride, a slide, a see-saw, a bench under the one lamp.
+
+A few people sit about them, each with a tune they can't finish. The lamp benches can be sat on.
+
 ### The Ambient Mists
 *31 songs · 16 artists · 0.51 km²*
 

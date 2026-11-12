@@ -64,6 +64,7 @@ namespace EverythingWorld.World
             life.transform.SetParent(ctx.Root, false);
             Lanes(ctx, mk);
             Laundrette(ctx, mk, solid, labels);
+            NightPlaces(ctx, mk, solid);
             Hedges(ctx, mk, solid);
             SongPlaces(ctx, mk, solid);
             Night(ctx, mk, solid);

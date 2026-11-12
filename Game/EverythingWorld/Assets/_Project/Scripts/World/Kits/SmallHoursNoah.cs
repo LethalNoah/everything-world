@@ -38,7 +38,7 @@ namespace EverythingWorld.World
 
         /// His area covers the whole forest (so his station plays throughout), and the ground there is evened out
         /// and dipped for the pool.
-        public override void ShapeGround(IslandWorldData data, int index)
+        void ShapeExhibit(IslandWorldData data, int index)
         {
             hasNoah = false;
             var isl = data.layout.islands[index]; var sid = isl.sceneId;
