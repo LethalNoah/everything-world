@@ -78,7 +78,7 @@ namespace EverythingWorld.World
         bool Below(float x, float z) => hasScarp && SeaT(x, z) > scarpT + ScarpW * .5f;
 
         // ---------------------------------------------------------------- shaping the ground
-        public override void ShapeGround(IslandWorldData data, int index)
+        void ShapeScarp(IslandWorldData data, int index)
         {
             var isl = data.layout.islands[index]; heart2 = new Vector2(isl.labelX, isl.labelZ);
             // the way to the nearest open sea
@@ -204,6 +204,7 @@ namespace EverythingWorld.World
             Arrival(ctx, mk, solid);
             Streams(ctx, mk, solid);
             Paths(ctx, mk, solid);
+            ScarpPlaces(ctx, mk, solid);
             Wilds(ctx, mk, solid);
             mk.Build("The Math Rock Escarpment", ctx.Root, false);
             solid.BuildCollider("The Math Rock Escarpment walls", ctx.Root);
@@ -536,7 +537,7 @@ namespace EverythingWorld.World
             var up = Vector3.up; var rot = Quaternion.LookRotation(face); var sd = Vector3.Cross(up, face);
             mk.Box(wood, g + up * .45f, new Vector3(1.8f, .08f, .45f), rot); mk.Box(wood, g + up * .8f - face * .22f, new Vector3(1.8f, .4f, .06f), rot);
             foreach (var e in new[] { -.8f, .8f }) mk.Box(woodDark, g + up * .22f + sd * e, new Vector3(.08f, .45f, .4f), rot);
-            BoxCol(ctx.Root, g + up * .45f, new Vector3(1.8f, .9f, .5f), rot);
+            BoxCol(ctx.Root, g + up * .45f, new Vector3(1.8f, .9f, .5f), rot); if (plife != null) Interact.Bench(plife.transform, g + up * .52f - sd * .5f, g + up * .52f + sd * .5f, face);
             if (lantern) Lantern(ctx, mk, g + sd * 1.4f, 1.6f);
         }
 
