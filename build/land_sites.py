@@ -3,6 +3,7 @@ coarse character map (40 m a character: ' .:-=+*#%@' = height in 5 m steps, ~ se
 its artists, and the land's width at each row. Run: python build/land_sites.py "The Alt Rock Moors"
 Optional extra arguments x,z print the height, slope and distances at those points."""
 import json, sys, os
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 import numpy as np
 from scipy import ndimage as ndi
 HERE = os.path.dirname(os.path.abspath(__file__))

@@ -68,7 +68,7 @@ namespace EverythingWorld.World
             MakeMaterials();
             clear.Clear();
             pathPoints.Clear();
-            treehouseBuilt = false;
+            treehouseBuilt = false; hasFireCircle = false;
             halos = new GlowHalos();
             var mk = new MeshKit(); var solid = new MeshKit();
             var chapelFront = Chapel(ctx, mk, solid);
@@ -83,6 +83,7 @@ namespace EverythingWorld.World
             Snowmen(ctx, mk, solid);
             FireCircle(ctx, mk, solid, chapelFront);
             Overlook(ctx, mk, solid);
+            Hushed(ctx, mk, solid, chapelFront);   // last, so nothing that was already here moves
             mk.Build("Lanternwood scenery", ctx.Root, false);
             solid.BuildCollider("Lanternwood walls", ctx.Root);
             Forest(ctx);
@@ -146,6 +147,7 @@ namespace EverythingWorld.World
                     // backrest on the door side, so you sit facing the altar
                     mk.Box(darkWood, L(s * pewX, .85f, z + .3f), new Vector3(pewW, .8f, .08f), rot);
                     solid.Box(darkWood, L(s * pewX, .55f, z + .1f), new Vector3(pewW, 1.1f, .8f), rot);
+                    Interact.Bench(root, L(s * pewX - pewW / 2f + .3f, HumanScale.SeatHeight + .1f, z - .05f), L(s * pewX + pewW / 2f - .3f, HumanScale.SeatHeight + .1f, z - .05f), rot * Vector3.back);   // sit facing the altar
                 }
             mk.Box(stone, L(0, .6f, -len / 2 + 2f), new Vector3(3.2f, 1.2f, 1.3f), rot);
             solid.Box(stone, L(0, .6f, -len / 2 + 2f), new Vector3(3.2f, 1.2f, 1.3f), rot);
@@ -603,6 +605,7 @@ namespace EverythingWorld.World
             foreach (var s in new[] { -1f, 1f })
                 mk.Box(darkWood, at + rot * new Vector3(s * .7f, .22f, 0), new Vector3(.08f, .45f, .4f), rot);
             solid.Box(darkWood, at + Vector3.up * .45f, new Vector3(1.7f, .9f, .5f), rot);
+            Interact.Bench(ctx.Root, at + Vector3.up * .55f + rot * new Vector3(-.55f, 0, .05f), at + Vector3.up * .55f + rot * new Vector3(.55f, 0, .05f), facing);
         }
 
         /// A small open shelter: back wall with the covers, a snowy roof, a bench inside.

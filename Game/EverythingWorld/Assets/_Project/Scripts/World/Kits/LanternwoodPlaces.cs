@@ -355,6 +355,7 @@ namespace EverythingWorld.World
                 var along = Vector3.Cross(Vector3.up, dir);
                 mk.Prism(logs, seat - along * 1f, along, .3f, 2f, 7);
                 solid.Box(logs, seat, new Vector3(2f, .6f, .6f), Quaternion.LookRotation(dir));
+                Interact.Bench(parent, seat + Vector3.up * .32f - along * .6f, seat + Vector3.up * .32f + along * .6f, -dir);
             }
         }
 
@@ -407,7 +408,7 @@ namespace EverythingWorld.World
                     var at = p + dir * 10f;
                     if (!ctx.IsLand(at.x, at.z, 8f) || !ctx.IsFree(at.x, at.z, 7f) || OnLake(at, 8f)) continue;
                     at.y = ctx.Ground(at.x, at.z);
-                    FirePit(ctx, mk, solid, ctx.Root, at, 6, halos, 4.2f);
+                    FirePit(ctx, mk, solid, ctx.Root, at, 6, halos, 4.2f); fireCircleAt = at; hasFireCircle = true;
                     clear.Add(new Vector3(at.x, 9f, at.z));
                     ctx.AddKeepout(at.x, at.z, 7f);
                     return;
