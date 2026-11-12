@@ -825,13 +825,23 @@ Warm, humid, rhythmic. River country, smoky towns and coastline.
 - **The Landing and the Lowlands Belle:** a boardwalk over the water with lamps and benches, and the riverboat alongside: walk aboard, pull the whistle, sit in a deck chair at the bow.
 
 ### The Fusion Isthmus
-*30 songs · 18 artists · 0.78 km²*
+*30 songs · 18 artists · 0.78 km² · built in Unity*
 
-**Arriving:** A narrow strip of land between two seas, packed with tiny streets; a rooftop jazz club at the narrowest point.
+**Arriving:** A small brick square at blue hour, just after sunset: the sky deep teal, brass lamps lit, a brass star set in the paving, a skate ledge with a brass edge, pots of plants. Brass Lane leads north to the canal. (The plan called this a strip of land between two seas; the map has no such seas, so the water here is a canal.)
 
-**The vibe:** A warm evening. Brass instruments, mismatched chairs, skateboards, a bridge with piano-key railings. The London jazz corner: Tom Misch, Ezra Collective, Yussef Dayes and Yussef Kamaal side by side.
+**The vibe:** Smooth and warm, and in no hurry. A teal canal runs straight through the town between two quays, strings of lights across the water, iron railings, brass lamps. Tall narrow brick houses line both quays, painted brick-red, teal, indigo and cream, their windows lit, a box of flowers under every one, a bicycle by a door. The Piano Bridge crosses in the middle, its deck laid out as keys that light up as you walk over. Beside it the Rooftop, the town's club, is up an outside stair on the flat roof of the tallest house. A houseboat is moored below; a little rowing boat with a lantern drifts the length of the canal and back. Out past the houses: plane trees with a few lights in their branches, brick planters, benches, buskers on the corners.
 
-**Artist areas:** Tom Misch gets a hall (a rooftop studio). Yussef Dayes and Yussef Kamaal should sit next to each other, maybe joined by a shared drum kit.
+**Artist areas:** Most artists have a doorstep of their own: a slice of brick house front with a lit window, a step to sit on, pots and a mismatched chair, and something from their song beside it; covers on a brick-framed board under a brass lamp; a little brass lantern for every song without its own piece. Tom Misch (the largest): a bedroom studio opened onto the street, with a guitar to play, a violin, a desk, a rug and an armchair; a small mirror ball over a YES in lights ("Disco Yes"); a bicycle with its lamps on ("Nightrider"); a fire escape up to a painted door ("Beautiful Escape"); a wave of teal light ("Tidal Wave"); a brass 100 on a milestone ("Last 100"); a question mark of bulbs ("What Kinda Music"). Yussef Dayes: a drum kit on a round rug under a canopy of lights, to play; bird-of-paradise flowers and paper birds ("Birds of Paradise"); a spiral of turquoise lights in the ground ("Turquoise Galaxy"); a rusted iron ring ("Rust"). Yussef Kamaal: an electric piano to sit at, a fan of taut glowing strings ("Strings of Light"), a door numbered 17 ("Joint 17"). Ezra Collective: a street party with bunting and three horns on stands, a ribbon arch ("Victory Dance"), a heart in lights ("Only Love"), a tidy chest of labelled drawers ("Well Organised"). North of the canal, the older fusion players: CASIOPEA a line of giant dominoes to topple ("Domino Line"); Pat Metheny Group a tree with glowing roots and a many-necked guitar ("The Roots of Coincidence"); Allan Holdsworth a staircase of notes climbing fast and a little devil on a weathervane ("Devil Take the Hindmost"); Victor Wooten a bass and a jet's tail fin ("Dc10"); Medeski, Martin & Wood a house of bubbles ("Bubblehouse"). And the rest: a confession booth, a dog by a barbecue, a lamplighter's ladder, a great moon on a post, a sitar on a rug, a comet, a box of lemons, a tiny island in a puddle, a bottle of medicine under a heart.
+
+**Happenings:** The strings of lights twinkle in turn and lift when anybody plays; the canal shimmers; the Piano Bridge lights under your feet; the rowing boat drifts. "Tidal Wave" brightens the canal and sets it rippling. "Nightrider" dims the town and turns the lamps up. "Turquoise Galaxy" turns the sky turquoise. "Victory Dance" throws confetti over Ezra Collective's party. "Strings of Light" makes every string of bulbs in the town blaze.
+
+**The streets and places:** Laid out on purpose: the square, Brass Lane, the two quays and the Piano Bridge are the spine, and every lane to an artist branches from them. The people here will talk to you, slowly.
+- **The Rooftop:** up the outside stair: a trio short of a drummer (so sit in), a bar with drinks to carry, three tables with chairs that don't match, strings of lights, the view down the canal.
+- **What Kinda Coffee:** a café to walk into: an espresso machine and a barista, a beat machine to tap, a crate of records, coffee and a croissant to carry, and Rhodes the cat on the windowsill.
+- **Potted:** a plant shop spilling onto the quay, with plants to carry off.
+- **The Root Note:** the houseboat. Walk aboard down the gangplank; there is a deck chair.
+- **The square:** the skate ledge, boards to carry, a skater who almost lands it.
+- **The buskers:** on corners out of town, each with an open case and something to say.
 
 ### The Old Jazz Quarter
 *29 songs · 25 artists · 0.75 km²*
