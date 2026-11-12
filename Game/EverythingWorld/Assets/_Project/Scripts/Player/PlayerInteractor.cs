@@ -20,6 +20,7 @@ namespace EverythingWorld.Player
         {
             walker = GetComponent<SimplePlayerController>();
             eye = walker != null && walker.cameraPivot != null ? walker.cameraPivot : transform;
+            if (GetComponent<InteractCues>() == null) gameObject.AddComponent<InteractCues>();   // the coloured glows that show what can be sat on, used, picked up or talked to
         }
 
         void Update()
@@ -94,6 +95,8 @@ namespace EverythingWorld.Player
             else if (looking != null) text = "E  " + looking.Prompt;
             if (text == null) return;
             style ??= new GUIStyle(GUI.skin.box) { fontSize = 18, alignment = TextAnchor.MiddleCenter };
+            // the prompt takes the colour of its cue (blue sit, yellow use, white pick up, pink talk)
+            style.normal.textColor = seated != null ? InteractCues.SitColor : held != null ? InteractCues.CarryColor : Color.Lerp(InteractCues.ColorOf(looking), Color.white, .25f);
             GUI.Box(new Rect(Screen.width / 2f - 160, Screen.height / 2f + 40, 320, 32), text, style);
         }
     }
