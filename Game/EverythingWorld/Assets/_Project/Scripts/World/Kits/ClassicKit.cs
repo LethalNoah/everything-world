@@ -103,6 +103,7 @@ namespace EverythingWorld.World
                 }
             }
             PickStadium(data, index, heart);
+            foreach (var (at, flat, blend) in new[] { (BalloonAt, 9f, 16f), (MazeAt, 15f, 24f), (FeteAt, 17f, 26f), (CricketAt, 28f, 40f) }) ElectricKitLevel(data, index, at, flat, blend);
         }
 
         static void ElectricKitLevel(IslandWorldData data, int index, Vector2 c, float flat, float blend)
@@ -126,7 +127,7 @@ namespace EverythingWorld.World
         {
             MakeMaterials();
             halos = new GlowHalos();
-            pathCells.Clear(); walkPoints.Clear(); facing.Clear(); noGrass.Clear();
+            pathCells.Clear(); walkPoints.Clear(); facing.Clear(); noGrass.Clear(); hasCastle = false;
             center = ctx.Plaza;
             life = new GameObject("Classic life").AddComponent<ClassicLife>();
             life.transform.SetParent(ctx.Root, false);
@@ -139,6 +140,7 @@ namespace EverythingWorld.World
             Pub(ctx, mk, solid);
             Castle(ctx, mk, solid);
             Legends(ctx, mk, solid);
+            KingdomPlaces(ctx, mk, solid);   // after everything that was here, before the scatter (which then keeps clear)
             Country(ctx, mk, solid);
             mk.Build("Kingdom", ctx.Root, false);
             solid.BuildCollider("Kingdom walls", ctx.Root);

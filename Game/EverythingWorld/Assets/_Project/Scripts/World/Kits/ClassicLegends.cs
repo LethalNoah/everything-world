@@ -333,6 +333,7 @@ namespace EverythingWorld.World
                 }
             if (bestH == float.MinValue) { Debug.Log("Kingdom of Classic Rock: no room for the castle"); return; }
             var c = best; var face = new Vector3(center.x - c.x, 0, center.z - c.z).normalized; var rot = Quaternion.LookRotation(face); var side = Vector3.Cross(up, face);
+            castleAt = c; castleFace = face; hasCastle = true;
             var stone = WorldMaterials.Solid(new Color(.74f, .7f, .62f)); var roof = WorldMaterials.Solid(new Color(.25f, .3f, .55f)); const float R = 13f, H = 7f;
             // the walls and towers go down to the lowest ground under the castle, so the hilltop can't leave a gap under them
             var lowG = c.y; for (var k = 0; k < 24; k++) foreach (var rr in new[] { 8f, 13f, 16f, 19f }) { var a = k * Mathf.PI / 12f; lowG = Mathf.Min(lowG, ctx.Ground(c.x + Mathf.Cos(a) * rr, c.z + Mathf.Sin(a) * rr)); }
@@ -389,7 +390,7 @@ namespace EverythingWorld.World
             mk.Box(timber, fr + side * 1.2f + up * 1.1f, new Vector3(1.1f, 2.2f, .03f), rot);
             var sp = fr + face * .9f + side * 4.4f; mk.Box(timber, sp + up * 3.2f + face * -.4f, new Vector3(.12f, .12f, 1f), rot); mk.Box(WorldMaterials.Solid(new Color(.7f, .12f, .12f)), sp + up * 2.6f, new Vector3(.06f, 1f, .8f), Quaternion.LookRotation(side));
             ArtistBits.Label(ctx.Root, "THE ROYAL ROCK", fr + up * 3.3f + face * .05f, face, .3f, new Color(.25f, .15f, .1f), TextAnchor.MiddleCenter);
-            foreach (var s in new[] { -2.5f, 2.5f }) { var b = fr + face * 2.4f + side * s; b = ctx.OnGround(b.x, b.z); mk.Box(wood, b + up * .75f, new Vector3(1.8f, .08f, .9f), rot); mk.Box(wood, b + up * .45f + face * .7f, new Vector3(1.8f, .06f, .3f), rot); mk.Box(wood, b + up * .45f - face * .7f, new Vector3(1.8f, .06f, .3f), rot); solid.Box(wood, b + up * .4f, new Vector3(1.9f, .8f, 1.9f), rot); }
+            foreach (var s in new[] { -2.5f, 2.5f }) { var b = fr + face * 2.4f + side * s; b = ctx.OnGround(b.x, b.z); mk.Box(wood, b + up * .75f, new Vector3(1.8f, .08f, .9f), rot); mk.Box(wood, b + up * .45f + face * .7f, new Vector3(1.8f, .06f, .3f), rot); mk.Box(wood, b + up * .45f - face * .7f, new Vector3(1.8f, .06f, .3f), rot); solid.Box(wood, b + up * .4f, new Vector3(1.9f, .8f, 1.9f), rot); foreach (var e in new[] { -1f, 1f }) Interact.Bench(ctx.Root, b + up * .5f + face * e * .7f - side * .6f, b + up * .5f + face * e * .7f + side * .6f, -face * e); }
             ArtistBits.PointLight(ctx.Root, fr + face * 3f + up * 2.5f, new Color(1f, .8f, .5f), 12f, 1.2f);
             noGrass.Add(new Vector3(at.x, 8f, at.z));
         }

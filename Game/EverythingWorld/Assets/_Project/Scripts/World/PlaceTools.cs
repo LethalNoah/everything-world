@@ -86,6 +86,21 @@ namespace EverythingWorld.World
         }
     }
 
+    /// Something that swings when nudged and settles again (a tyre swing, a bell, a porch swing): call Push().
+    public class Sway : MonoBehaviour
+    {
+        public Vector3 axis = Vector3.right; public float degrees = 30f, speed = 2.4f, decay = .3f, seconds = 14f;
+        float t = -1f; Quaternion rest;
+        void Start() { rest = transform.localRotation; }
+        public void Push() { t = 0f; }
+        void Update()
+        {
+            if (t < 0f) return; t += Time.deltaTime;
+            transform.localRotation = rest * Quaternion.AngleAxis(Mathf.Sin(t * speed) * degrees * Mathf.Exp(-t * decay), axis);
+            if (t > seconds) { t = -1f; transform.localRotation = rest; }
+        }
+    }
+
     /// Hides its object when its time runs out (PlaceTools.Say).
     public class FadingWords : MonoBehaviour
     {

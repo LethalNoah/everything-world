@@ -79,6 +79,10 @@ namespace EverythingWorld.World
             halos.Add(at + up * 1.2f + face * 1.2f, 1.6f, new Color(1f, .7f, .4f), .8f);
             solid.Box(dark, at + up * 1.1f, new Vector3(1.2f, 2.2f, .8f), rot);
             life.jukeboxes.Add(at + up * 1.2f);
+            // press it: it tells you what it's playing
+            var jgo = new GameObject("Jukebox buttons"); jgo.transform.SetParent(plife != null ? plife.transform : ctx.Root, false); jgo.transform.position = at + up * 1.1f + face * .55f; var jn = (int)(at.x + at.z);
+            var picks = new[] { "A7: the one everybody knows.", "B4: the one your dad air-guitars to.", "C2: seven minutes. Worth it.", "D9: you'll be humming it till Thursday.", "E1: it skips. People sing the skip." };
+            Interact.Toy(jgo, Toy.Kind.Custom, "Press the jukebox", new Vector3(1.2f, 1.8f, .5f)).onUse = _ => PlaceTools.Say(jgo.transform, at + up * 2.6f, picks[Mathf.Abs(jn++) % picks.Length]);
         }
 
         /// A fifties car: a long low body, a glassy cabin set back, tail fins, chrome bumpers, whitewall tyres.

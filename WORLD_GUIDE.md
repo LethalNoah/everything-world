@@ -74,6 +74,15 @@ The heartland. Old hills, long roads and the tallest mountains in the world. Mos
 
 **Artist areas:** Each legend is evoked through objects from its world, never a copied cover. The Beatles: a yellow submarine on the pond, a zebra crossing on their road with flashing beacons, Strawberry Fields (rows of strawberries behind a white fence and a red gate under a sign), a blackbird on a post, two guitars and a sitar on a rug. Led Zeppelin: a silver airship moored to a mast, a spiral stair you can climb round a stone column up to a cloud landing with a glowing doorway and a bench looking out over the Kingdom, a hermit with a lantern on a crag. David Bowie: a giant red-and-blue lightning bolt and a rocket on its launch tower. Jimi Hendrix: a festival stage with amp stacks and a guitar on fire. The Rolling Stones: giant red lips with the tongue out over a stage with a runway under spotlights. Elvis: a little white wedding chapel and a pink Cadillac. The Who: a mod target, a wall of amp stacks with one toppled, smashed guitars on the stage, and a scooter with too many mirrors. Cream: a white room in a burst of giant day-glo petals. Dire Straits: a giant steel resonator guitar and a stack of TVs. The Velvet Underground: a giant banana lying on a white plinth. Queen: an opera stage under a golden crown with candelabras. The Beach Boys: a surf shack. The Doors: a lone lit doorway under its own rain cloud. Everyone else: a giant record standing on edge behind a guitar, a piano or a microphone under a spotlight.
 
+**The coast roads and new places:** Laid out on purpose, with everything that was already here left where it was. Two new coast roads under the lamps and banners close a great loop round the Kingdom: east from the south shore up to the castle gate, and west from the south shore round to the western road. Along them, with the people of the Kingdom to talk to:
+- **The Pier:** a promenade with striped deckchairs, an ice-cream kiosk, a helter-skelter and a puppet booth, then a long pier out over the sea to a bandstand with benches.
+- **The Balloon:** a tethered balloon that goes up over the whole Kingdom and comes down again on the clock; hop into the basket when it lands.
+- **The Royal Maze:** a hedge maze by the castle with a golden guitar and a bench at its heart.
+- **The Fete:** bunting, a coconut shy with balls to throw (the coconuts put themselves back), a tombola to spin, a cake stall, a maypole, hay bales to sit on.
+- **The Cricket:** a match that has been going since Tuesday, a white pavilion with a veranda and a scoreboard, deckchairs on the boundary, a ball to pick up.
+
+Guards stand at the castle gate, a flower seller and a walker keep the village green company, you can sit on the benches outside the Royal Rock, and the jukeboxes in the lay-bys tell you what they're playing when you press them.
+
 ### The Psychedelic Wilds
 *58 songs · 30 artists · 0.56 km² · built in Unity*
 
