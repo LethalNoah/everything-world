@@ -25,7 +25,7 @@ namespace EverythingWorld.World
                 else if (roll < .3f) { for (var k = 0; k < ctx.Rng.Next(1, 3); k++) Oak(ctx, mk, ctx.OnGround(px + ctx.Range(-6f, 6f), pz + ctx.Range(-6f, 6f)), ctx.Range(.9f, 1.4f)); oaks++; }
                 else if (roll < .45f) { Hedgerow(ctx, mk, solid, p); hedges++; }
                 else if (roll < .5f && circles < 3) { RecordStones(ctx, mk, solid, p); circles++; }
-                else if (roll < .6f) { Sheep(ctx, mk, p); flocks++; }
+                else if (roll < .6f) { Sheep(ctx, mk, solid, p); flocks++; }
                 else if (roll < .68f) { Haystacks(ctx, mk, solid, p); stacks++; }
                 else if (roll < .72f && cottages < 5) { Cottage(ctx, mk, solid, p); cottages++; }
                 else continue;
@@ -59,7 +59,7 @@ namespace EverythingWorld.World
                 mk.Prism(vinyl, c - d * .12f, d, r, .24f, 24);
                 mk.Prism(vinyl, c + d * .12f, -d, r, .24f, 24);
                 foreach (var s in new[] { 1f, -1f }) { mk.Prism(groove, c + d * s * .125f, d * s, r * .75f, .01f, 24); mk.Prism(WorldMaterials.Solid(labels[k % labels.Length]), c + d * s * .138f, d * s, r * .32f, .01f, 16); mk.Prism(dark, c + d * s * .151f, d * s, .06f, .01f, 8); }
-                solid.Box(vinyl, c, new Vector3(r * 1.6f, r * 2f, .4f), Quaternion.LookRotation(d));
+                solid.Prism(vinyl, c - d * .2f, d, r, .4f, 12);   // the whole disc (a box r * 1.6 wide left its round edges open)
             }
             mk.Prism(stoneM, at - up * .2f, up, 1.4f, .7f, 10);
             solid.Prism(stoneM, at - up * .2f, up, 1.4f, .7f, 10);
@@ -113,13 +113,14 @@ namespace EverythingWorld.World
             solid.Box(body, at + up * .85f, new Vector3(2.1f, 1.7f, 5.2f), rot);
         }
 
-        void Sheep(LandContext ctx, MeshKit mk, Vector3 at)
+        void Sheep(LandContext ctx, MeshKit mk, MeshKit solid, Vector3 at)
         {
             var wool = WorldMaterials.Solid(new Color(.95f, .94f, .9f)); var face = WorldMaterials.Solid(new Color(.15f, .15f, .15f));
             for (var k = 0; k < ctx.Rng.Next(3, 8); k++)
             {
                 var p = ctx.OnGround(at.x + ctx.Range(-8f, 8f), at.z + ctx.Range(-8f, 8f)); var d = Quaternion.Euler(0, ctx.Range(0, 360f), 0) * Vector3.forward;
                 mk.Blob(wool, p + Vector3.up * .7f, new Vector3(.45f, .4f, .65f), ctx.Rng, .2f);
+                solid.Box(wool, p + Vector3.up * .65f, new Vector3(.9f, .9f, 1.3f), Quaternion.identity);   // a sheep you bump into, not walk through
                 mk.Blob(face, p + Vector3.up * .75f + d * .65f, new Vector3(.15f, .18f, .2f), ctx.Rng, 0f);
                 foreach (var (x, z) in new[] { (-.2f, -.3f), (.2f, -.3f), (-.2f, .3f), (.2f, .3f) }) mk.Box(face, p + Quaternion.LookRotation(d) * new Vector3(x, .2f, z), new Vector3(.08f, .4f, .08f), Quaternion.LookRotation(d));
             }

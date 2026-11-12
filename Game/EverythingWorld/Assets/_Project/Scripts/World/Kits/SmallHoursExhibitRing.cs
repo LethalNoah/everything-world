@@ -176,7 +176,8 @@ namespace EverythingWorld.World
             var up = Vector3.up; var side = Vector3.Cross(up, face); var rot = Quaternion.LookRotation(face);
             var shell = WorldMaterials.Solid(new Color(.75f, .7f, .65f));
             var sh = c - face * 1.5f;
-            for (var k = 0; k < 7; k++) { var a = k * .45f; mk.Blob(shell, sh + up * (1.4f - k * .12f) + side * Mathf.Sin(a) * (1.6f - k * .15f) - face * Mathf.Cos(a) * .4f, new Vector3(1.6f - k * .15f, 1.2f - k * .1f, 1.3f), ctx.Rng, .1f); }
+            for (var k = 0; k < 7; k++) { var a = k * .45f; mk.Blob(shell, sh + up * (1.4f - k * .12f) + side * Mathf.Sin(a) * (1.6f - k * .15f) - face * Mathf.Cos(a) * .4f, new Vector3(1.6f - k * .15f, 1.2f - k * .1f, 1.3f), ctx.Rng, .1f);
+                solid.Blob(shell, sh + up * (1.4f - k * .12f) + side * Mathf.Sin(a) * (1.6f - k * .15f) - face * Mathf.Cos(a) * .4f, new Vector3(1.6f - k * .15f, 1.2f - k * .1f, 1.3f) * 1.05f, Smooth, 0f); }   // collision only: the shell's own curl
             solid.Box(shell, sh + up * 1f - face * .6f, new Vector3(3f, 2f, 1.6f), rot);
             mk.Box(Cue(id, WindowGlow, .6f, 1.8f, .6f, 1f), sh + up * .9f + face * .3f, new Vector3(1.2f, .9f, .05f), rot);
             mk.Box(WorldMaterials.Solid(new Color(.6f, .45f, .5f)), sh + up * .12f + face * .9f, new Vector3(1.4f, .05f, .9f), rot);

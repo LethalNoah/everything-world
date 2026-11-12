@@ -30,6 +30,14 @@ namespace EverythingWorld.World
         GlowHalos halos;
         WindMesh flags;                                                  // bunting (the long grass is built in Finish)
         readonly List<Vector3> noGrass = new List<Vector3>();           // x, radius, z
+        static readonly System.Random ColRng = new System.Random(0);    // for collider blobs: no lumps, and the land's own random stays as it was
+
+        /// A plain box collider on its own object (a sign board, a small song piece: things the merged walls don't cover).
+        static void BoxCol(Transform parent, Vector3 center, Vector3 size, Quaternion rot)
+        {
+            var go = new GameObject("Box collider"); go.transform.SetParent(parent, false); go.transform.SetPositionAndRotation(center, rot);
+            go.AddComponent<BoxCollider>().size = size; go.isStatic = true;
+        }
         readonly Dictionary<(int, int), List<Vector3>> pathCells = new Dictionary<(int, int), List<Vector3>>();
         readonly List<Vector3> noahPath = new List<Vector3>(), seanPath = new List<Vector3>();
         readonly Dictionary<string, Vector3> arrival = new Dictionary<string, Vector3>();   // artist -> the way their area faces
@@ -790,7 +798,9 @@ namespace EverythingWorld.World
                         ArtistBits.PostCollider(ctx.Root, g, th, .3f);
                     }
                     var w = ctx.Range(.9f, 1.6f); var hh = ctx.Range(.8f, 1.5f);
-                    mk.Blob(shades[ctx.Rng.Next(shades.Length)], g + Vector3.up * hh * .75f, new Vector3(w, hh, w * ctx.Range(.85f, 1.15f)), ctx.Rng, .2f);
+                    var hm = shades[ctx.Rng.Next(shades.Length)]; var hr = new Vector3(w, hh, w * ctx.Range(.85f, 1.15f));
+                    mk.Blob(hm, g + Vector3.up * hh * .75f, hr, ctx.Rng, .2f);
+                    solid.Blob(hedge, g + Vector3.up * hh * .75f, hr * 1.1f, ColRng, 0f);   // the bush's own round shape (the box was narrower)
                     solid.Box(hedge, g + Vector3.up * hh * .8f, new Vector3(w * 1.6f, hh * 1.6f, w * 1.6f), Quaternion.LookRotation(dir));
                 }
             }

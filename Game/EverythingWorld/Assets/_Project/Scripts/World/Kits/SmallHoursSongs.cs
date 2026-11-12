@@ -76,6 +76,7 @@ namespace EverythingWorld.World
             }
             var side = Vector3.Cross(Vector3.up, face); var sp = ctx.OnGround(c.x + face.x * stop + side.x * 2.2f, c.z + face.z * stop + side.z * 2.2f); var rot = Quaternion.LookRotation(face);
             mk.Box(darkWood, sp + Vector3.up * .7f, new Vector3(.12f, 1.4f, .12f), rot); mk.Box(board, sp + Vector3.up * 1.5f, new Vector3(2.6f, .5f, .06f), rot);
+            BoxCol(ctx.Root, sp + Vector3.up * 1.5f, new Vector3(2.6f, .5f, .12f), rot);   // the board at head height
             ArtistBits.Label(ctx.Root, sign, sp + Vector3.up * 1.5f + face * .04f, face, .15f, Ink, TextAnchor.MiddleCenter);
             mk.Blob(WorldMaterials.Glow(col, 2.4f), sp + Vector3.up * 1.95f, Vector3.one * .1f, ctx.Rng, 0f);
             ArtistBits.PostCollider(ctx.Root, sp, 1.6f, .15f);
@@ -117,7 +118,7 @@ namespace EverythingWorld.World
             var glass = WorldMaterials.Solid(new Color(.5f, .58f, .66f), .9f); var roof = WorldMaterials.Solid(new Color(.2f, .21f, .25f));
             mk.Box(stone, c + up * .05f, new Vector3(5f, .1f, 2.6f), rot);
             mk.Box(glass, c - face * 1.1f + up * 1.3f, new Vector3(4f, 2.4f, .06f), rot); solid.Box(glass, c - face * 1.1f + up * 1.3f, new Vector3(4f, 2.4f, .2f), rot);
-            foreach (var s in new[] { -1f, 1f }) { mk.Box(iron, c + side * s * 2f - face * 1.1f + up * 1.3f, new Vector3(.08f, 2.6f, .08f), rot); mk.Box(glass, c + side * s * 2f - face * .5f + up * 1.3f, new Vector3(.06f, 2.4f, 1.1f), rot); }
+            foreach (var s in new[] { -1f, 1f }) { mk.Box(iron, c + side * s * 2f - face * 1.1f + up * 1.3f, new Vector3(.08f, 2.6f, .08f), rot); mk.Box(glass, c + side * s * 2f - face * .5f + up * 1.3f, new Vector3(.06f, 2.4f, 1.1f), rot); solid.Box(glass, c + side * s * 2f - face * .5f + up * 1.3f, new Vector3(.15f, 2.4f, 1.1f), rot); }
             mk.Box(roof, c + up * 2.66f - face * .4f, new Vector3(4.4f, .12f, 1.8f), rot);
             mk.Box(SongGlow(id, Sodium, 2.4f), c + up * 2.58f + face * .45f, new Vector3(4.2f, .06f, .1f), rot);
             mk.Box(darkWood, c - face * .7f + up * .48f, new Vector3(3f, .08f, .45f), rot); solid.Box(darkWood, c - face * .7f + up * .3f, new Vector3(3f, .6f, .5f), rot);
@@ -201,6 +202,7 @@ namespace EverythingWorld.World
                 var a2 = (k + 1) * Mathf.PI / 3f + .5f; var q = ctx.OnGround(c.x + Mathf.Cos(a2) * 2.2f, c.z + Mathf.Sin(a2) * 2.2f);
                 if (k == 0) continue;   // a gap to walk in
                 var mid = (p + q) / 2f + up * .6f; mk.Box(velvet, mid, new Vector3(.06f, .06f, Vector3.Distance(p, q)), Quaternion.LookRotation(q - p));
+                solid.Box(velvet, mid - up * .2f, new Vector3(.1f, .8f, Vector3.Distance(p, q)), Quaternion.LookRotation(q - p));   // the rope keeps you out
             }
             // the spotlight cone from above
             var lamp = c + up * 4.2f; mk.Prism(iron, lamp, up, .2f, .3f, 8);

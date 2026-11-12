@@ -276,6 +276,7 @@ namespace EverythingWorld.World
                 var g = b + side * (W / 2f + 2.7f) + face * .5f; var gw = 5f; var gd = 6f; var gh = 2.8f; var gb = g - face * .5f;
                 var gfh = floor - lo + .4f;
                 mk.Box(foundM, gb - up * (gfh / 2f), new Vector3(gw + .2f, gfh, gd + .2f), rot);
+                solid.Box(foundM, gb - up * (gfh / 2f), new Vector3(gw + .2f, gfh, gd + .2f), rot);   // the garage floor stands on its slab, not on the slope below
                 mk.Box(wallM, gb - face * (gd / 2f - .1f) + up * gh / 2f, new Vector3(gw, gh, .2f), rot);
                 foreach (var sx in new[] { -1f, 1f }) mk.Box(wallM, gb + side * sx * (gw / 2f - .1f) + up * gh / 2f, new Vector3(.2f, gh, gd - .4f), rot);
                 mk.Box(wallM, gb + up * (gh + .1f), new Vector3(gw, .2f, gd), rot);

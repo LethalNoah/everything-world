@@ -443,7 +443,12 @@ namespace EverythingWorld.World
                 Collider wall = null;
                 foreach (var d in new[] { Vector3.right, Vector3.left, Vector3.forward, Vector3.back, Vector3.up })
                 {
-                    if (!Physics.Raycast(p, d, out var hit, 6f, ~0, QueryTriggerInteraction.Ignore) || hit.collider.name.StartsWith("Terrain") || Vector3.Dot(hit.normal, d) <= 0f) return false;
+                    // the nearest hit that isn't the ground (a big box on a slope has ground rising inside it, and a ray
+                    // meeting that ground first used to make the point look uncovered)
+                    RaycastHit hit = default; var found = false;
+                    foreach (var h in Physics.RaycastAll(p, d, 30f, ~0, QueryTriggerInteraction.Ignore))
+                        if (!h.collider.name.StartsWith("Terrain") && (!found || h.distance < hit.distance)) { hit = h; found = true; }
+                    if (!found || Vector3.Dot(hit.normal, d) <= 0f) return false;
                     if (wall == null) wall = hit.collider; else if (wall != hit.collider) return false;
                 }
                 return true;

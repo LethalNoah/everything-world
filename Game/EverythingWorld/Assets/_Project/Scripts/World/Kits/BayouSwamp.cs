@@ -126,7 +126,7 @@ namespace EverythingWorld.World
                 solid.Box(plank, (a + b) / 2f - up * .25f, new Vector3(2.6f, .5f, d.magnitude + .1f), Quaternion.LookRotation(d));
                 // planks across, posts down into the water, a low rope rail on the outside of each bend
                 mk.Box(plank, (a + b) / 2f + up * .02f, new Vector3(2.7f, .05f, .3f), Quaternion.LookRotation(flat));
-                if (i % 2 == 0) foreach (var sd in new[] { -1.25f, 1.25f }) { var post = a + side * sd; var g = ctx.Ground(post.x, post.z); if (post.y - g > .4f) mk.Prism(greyWood, new Vector3(post.x, g - .4f, post.z), up, .1f, post.y - g + 1.3f, 6); }
+                if (i % 2 == 0) foreach (var sd in new[] { -1.25f, 1.25f }) { var post = a + side * sd; var g = ctx.Ground(post.x, post.z); if (post.y - g > .4f) { mk.Prism(greyWood, new Vector3(post.x, g - .4f, post.z), up, .1f, post.y - g + 1.3f, 6); ArtistBits.PostCollider(ctx.Root, new Vector3(post.x, g, post.z), post.y - g + .9f, .12f); } }
                 if (i % 2 == 0 && i > 2)
                 {
                     var rs = (i / 6) % 2 == 0 ? 1.25f : -1.25f;
@@ -145,7 +145,7 @@ namespace EverythingWorld.World
             {
                 var a = walk[i]; var b = walk[i + 1]; var side = Vector3.Cross(up, new Vector3(b.x - a.x, 0, b.z - a.z).normalized);
                 var lp = a + side * 1.5f * ((i / 12) % 2 == 0 ? 1f : -1f); var g = ctx.Ground(lp.x, lp.z);
-                mk.Prism(greyWood, new Vector3(lp.x, g - .4f, lp.z), up, .1f, a.y - g + 3f, 6);
+                mk.Prism(greyWood, new Vector3(lp.x, g - .4f, lp.z), up, .1f, a.y - g + 3f, 6); ArtistBits.PostCollider(ctx.Root, new Vector3(lp.x, g, lp.z), a.y - g + 2.6f, .12f);
                 var glass = new Vector3(lp.x, a.y + 2.3f, lp.z);
                 mk.Box(GlowM(new Color(.4f, 1f, .85f), 2.2f), glass, new Vector3(.25f, .35f, .25f), Quaternion.identity);
                 halos.Add(glass, 1.3f, new Color(.4f, 1f, .85f), .9f);

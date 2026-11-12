@@ -135,6 +135,7 @@ namespace EverythingWorld.World
                 for (var k = 0; k < bands; k++) { var r0 = (3.6f - p * .6f) * (1f - k / (float)bands); z.mk.Prism(WorldMaterials.Solid(candy[(k + p) % candy.Length], .7f), b + up * (h[p] * k / bands), up, r0, h[p] / bands, 10, (bands - k - 1f) / (bands - k)); }
             }
             z.solid.Box(stone, c + up * 2.5f, new Vector3(12f, 5f, 6f), z.Rot);
+            for (var p = 0; p < 3; p++) z.solid.Cone(stone, c + at[p], 3.6f - p * .6f, h[p], 10);   // each peak, out to its own foot
             // lollipop trees, a lemonade spring, rock candy crystals
             for (var k = 0; k < 4; k++) { var lp = z.At(1.5f, -7f + k * 4.6f); z.mk.Prism(trim, lp, up, .07f, 2.4f, 6); z.mk.Prism(WorldMaterials.Solid(candy[k % 4], .8f), lp + up * 2.7f - z.front * .1f, z.front, .55f, .2f, 16); ArtistBits.PostCollider(z.root, lp, 2.4f, .1f); }
             var lem = z.At(2f, 4.5f); var lemonade = new Material(WorldMaterials.Glow(new Color(1f, .9f, .35f), .5f)) { name = "Lemonade spring" };
@@ -163,6 +164,7 @@ namespace EverythingWorld.World
             for (var k = 0; k < 12; k++) { var a = k * 30f * Mathf.Deg2Rad; z.mk.Box(wood, wc + rot * new Vector3(Mathf.Cos(a) * .8f, Mathf.Sin(a) * .8f, 0), new Vector3(.08f, 1.6f, .08f), rot * Quaternion.Euler(0, 0, k * 30f - 90f)); }
             for (var k = 0; k < 20; k++) { var a0 = k * 18f * Mathf.Deg2Rad; var a1 = (k + 1) * 18f * Mathf.Deg2Rad; var p0 = wc + rot * new Vector3(Mathf.Cos(a0), Mathf.Sin(a0), 0) * 1.6f; var p1 = wc + rot * new Vector3(Mathf.Cos(a1), Mathf.Sin(a1), 0) * 1.6f; z.mk.Box(dark, (p0 + p1) / 2f, new Vector3(.14f, .16f, Vector3.Distance(p0, p1) + .02f), Quaternion.LookRotation(p1 - p0, rot * Vector3.forward)); }
             z.mk.Prism(wood, wc - rot * Vector3.forward * .2f, rot * Vector3.forward, .25f, .4f, 8);
+            z.solid.Box(wood, wc, new Vector3(3.3f, 3.3f, .4f), rot);   // the wheel
             // crows along the top rail
             var crow = WorldMaterials.Solid(new Color(.08f, .08f, .1f)); var beak = WorldMaterials.Solid(new Color(.3f, .3f, .3f));
             for (var k = 0; k < 5; k++)
@@ -181,7 +183,7 @@ namespace EverythingWorld.World
             var keg = c + z.side * 2.2f; z.mk.Prism(wood, keg, up, .6f, 1.2f, 12); for (var k = 0; k < 4; k++) z.mk.Prism(copper, keg + up * (.2f + k * .25f), up, .62f, .06f, 12);
             for (var k = 0; k < 4; k++) { var j = z.At(.5f, -1.5f - k * .6f); z.mk.Prism(Tone(new Color(.85f, .82f, .72f)), j, up, .2f, .35f, 10, .5f); z.mk.Prism(Tone(new Color(.5f, .35f, .2f)), j + up * .35f, up, .05f, .12f, 6); }
             var fire = z.At(-2f, 0) + up * .1f; life.fires.Add(fire); var fl = ArtistBits.PointLight(z.root, fire + up * .5f, new Color(1f, .55f, .2f), 8f, 1.4f); fl.gameObject.AddComponent<FireFlicker>().baseIntensity = 1.4f;
-            z.solid.Box(copper, c + up * 1f, new Vector3(5f, 2f, 2f), Quaternion.LookRotation(z.side));
+            z.solid.Box(copper, c + up * 1f + z.side * .5f, new Vector3(2f, 2f, 6f), Quaternion.LookRotation(z.side));   // the pot and the keg beside it
         }
 
         void FiddleOnRocker(Plot z)
@@ -207,7 +209,7 @@ namespace EverythingWorld.World
             for (var k = 0; k < 5; k++) { var nd = (up + z.side * Mathf.Sin(k * 1.7f) * .8f + z.front * Mathf.Cos(k * 1.3f) * .3f).normalized; z.mk.Prism(bark, p, nd, .5f - k * .06f, 2.2f, 7, .85f); p += nd * 2.1f; dir = nd; }
             for (var k = 0; k < 5; k++) crowns.Blob(leaves[k % 4], p + Quaternion.Euler(0, k * 72f, 0) * Vector3.forward * 2f + up * z.ctx.Range(-.5f, 1f), new Vector3(2.2f, 1.6f, 2.2f), z.ctx.Rng, .3f);
             ArtistBits.PostCollider(z.root, c, 5f, .6f);
-            var g = z.At(0f, 2.5f); Guitar(z.mk, g + up * .85f, z.Rot * Quaternion.Euler(-15f, 0, 0), .9f);
+            var g = z.At(0f, 2.5f); Guitar(z.mk, g + up * .85f, z.Rot * Quaternion.Euler(-15f, 0, 0), .9f); ArtistBits.PostCollider(z.root, g, 1.4f, .35f);
         }
 
         void Lighthouse(Plot z)
@@ -217,7 +219,7 @@ namespace EverythingWorld.World
             for (var k = 0; k < 4; k++) z.mk.Prism(k % 2 == 0 ? trim : red, c + up * (k * 1.6f), up, 1.3f - k * .12f, 1.6f, 12, (1.3f - (k + 1) * .12f) / (1.3f - k * .12f));
             var lamp = c + up * 6.4f; var beam = GlowM(new Color(1f, .9f, .6f), 3f); z.mk.Prism(beam, lamp, up, .7f, 1f, 10); z.mk.Cone(red, lamp + up * 1f, .9f, 1f, 10);
             halos.Add(lamp + up * .5f, 2.2f, Warm, .9f); ArtistBits.PointLight(z.root, lamp + up * .5f, Warm, 16f, 1.6f);
-            z.solid.Prism(stone, c - up * .2f, up, 2.2f, 7f, 10);
+            z.solid.Prism(stone, c - up * .2f, up, 2.2f, 7f, 10); z.solid.Prism(stone, c - up * .2f, up, 3.4f, 1.5f, 10);   // the rocks round its foot
         }
 
         void BlackRiver(Plot z)
@@ -275,7 +277,7 @@ namespace EverythingWorld.World
             z.mk.Prism(trim, c + up * 2.9f + z.front * 3f, z.front, .5f, .03f, 14); z.mk.Prism(SongGlow(ChurchStreet, new Color(1f, .85f, .5f), 2f), c + up * 2.9f + z.front * 3.02f, z.front, .4f, .03f, 14);
             foreach (var s in new[] { -1f, 1f }) for (var k = 0; k < 2; k++) z.mk.Box(GlowM(new Color(1f, .85f, .5f), 1.8f), c + up * 2f + z.side * s * 2.01f + z.front * (-1.2f + k * 2f), new Vector3(.04f, 1.4f, .7f), rot);
             var step = c + z.front * 3.6f; z.mk.Box(stone, step + up * .15f, new Vector3(2f, .3f, 1.2f), rot);
-            Guitar(z.mk, step + up * 1f + z.side * .7f, rot * Quaternion.Euler(-12f, 0, -8f), .9f);
+            Guitar(z.mk, step + up * 1f + z.side * .7f, rot * Quaternion.Euler(-12f, 0, -8f), .9f); ArtistBits.PostCollider(z.root, step + z.side * .7f, 1.5f, .35f);
             ArtistBits.PointLight(z.root, c + up * 2f + z.front * 4.5f, Warm, 10f, 1f);
         }
 
@@ -289,7 +291,8 @@ namespace EverythingWorld.World
                 z.mk.Cone(shell, p + up * .5f * s, 1.6f * s, 1.3f * s, 7); z.mk.Prism(plate, p + up * .35f * s, up, 1.62f * s, .18f * s, 7);
                 for (var l = 0; l < 4; l++) { var d = Quaternion.Euler(0, 45f + l * 90f, 0) * face; z.mk.Prism(skin, p + d * 1.2f * s, up, .3f * s, .5f * s, 6); }
                 z.mk.Blob(skin, p + face * 1.9f * s + up * .6f * s, new Vector3(.4f, .35f, .4f) * s, z.ctx.Rng, 0f);
-                z.solid.Box(shell, p + up * .8f * s, new Vector3(3f, 1.6f, 3f) * s, Quaternion.LookRotation(face));
+                z.solid.Box(shell, p + up * .8f * s, new Vector3(3.3f, 1.6f, 3.3f) * s, Quaternion.LookRotation(face));
+                z.solid.Box(skin, p + face * 1.9f * s + up * .6f * s, new Vector3(.8f, .7f, .8f) * s, Quaternion.LookRotation(face));   // the head
             }
         }
 

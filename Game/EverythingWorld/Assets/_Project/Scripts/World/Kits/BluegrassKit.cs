@@ -52,6 +52,15 @@ namespace EverythingWorld.World
         }
 
         Material GlowM(Color c, float s = 2f) => WorldMaterials.Glow(c, s * .65f);
+        static readonly System.Random Smooth = new System.Random(0);   // for collider blobs: no lumps, and the land's own random stays as it was
+
+        /// A plain box collider on its own object (a hanging jar, a slanted leg: things the merged walls don't cover).
+        static void BoxCol(Transform parent, Vector3 center, Vector3 size, Quaternion rot)
+        {
+            var go = new GameObject("Box collider"); go.transform.SetParent(parent, false); go.transform.SetPositionAndRotation(center, rot);
+            go.AddComponent<BoxCollider>().size = size; go.isStatic = true;
+        }
+
         static float Foot(IslandWorldData.Artist a) => a.name == "Billy Strings" ? 20f : a.name == "Harry McClintock" || a.name == "Flatt & Scruggs" || a.name == "Trampled by Turtles" ? 13f : 9f;
 
         public override bool Ground(float height, float slope, float patch, out Color color)
@@ -278,7 +287,7 @@ namespace EverythingWorld.World
             var j = g + up * 1.9f + Vector3.right * .55f;
             mk.Prism(GlowM(Warm, 2.4f), j - up * .16f, up, .13f, .3f, 8); mk.Prism(metal, j + up * .14f, up, .14f, .05f, 8);
             halos.Add(j, 1.1f, Warm, .8f);
-            ArtistBits.PostCollider(ctx.Root, g, 2.4f, .1f);
+            ArtistBits.PostCollider(ctx.Root, g, 2.4f, .1f); BoxCol(ctx.Root, j, new Vector3(.32f, .5f, .32f), Quaternion.identity);   // the jar hangs at head height
         }
 
         /// A broadleaf tree: a trunk with a few limbs and a crown of lumps in one of the summer greens.
@@ -456,7 +465,7 @@ namespace EverythingWorld.World
                 {
                     if (!ctx.Chance(.45f)) continue;
                     var q = p + sd * s * (CreekW / 2f + ctx.Range(-.5f, 1.5f)); if (!ctx.IsLand(q.x, q.z, 1f)) continue; q.y = ctx.Ground(q.x, q.z);
-                    if (ctx.Chance(.5f)) mk.Blob(stone, q + Vector3.up * .2f, new Vector3(ctx.Range(.4f, 1f), .45f, ctx.Range(.4f, .9f)), ctx.Rng, .35f);
+                    if (ctx.Chance(.5f)) { var sr = new Vector3(ctx.Range(.4f, 1f), .45f, ctx.Range(.4f, .9f)); mk.Blob(stone, q + Vector3.up * .2f, sr, ctx.Rng, .35f); solid.Blob(stone, q + Vector3.up * .2f, sr * 1.1f, Smooth, 0f); }
                     else for (var f = 0; f < 4; f++) crowns.Box(fern, q + new Vector3(ctx.Range(-.5f, .5f), .35f, ctx.Range(-.5f, .5f)), new Vector3(.08f, .05f, .9f), Quaternion.Euler(-35f, f * 90f + ctx.Range(-20f, 20f), 0));
                 }
             }
@@ -642,7 +651,7 @@ namespace EverythingWorld.World
                     if (roll < .72f) { Hardwood(ctx, mk, p, ctx.Range(.85f, 1.45f)); trees++; }
                     else if (roll < .84f) { Rhododendron(ctx, p); other++; }
                     else if (roll < .925f && stills < 5 && !NearPath(px, pz, 10f)) { Moonshine(ctx, mk, solid, p); stills++; }
-                    else if (roll < .9f) { mk.Blob(stone, p + Vector3.up * .5f, new Vector3(ctx.Range(1f, 2.2f), ctx.Range(.6f, 1.3f), ctx.Range(1f, 2f)), ctx.Rng, .35f); crowns.Blob(leaves[2], p + Vector3.up * 1.2f, new Vector3(1.1f, .2f, 1f), ctx.Rng, .3f); solid.Box(stone, p + Vector3.up * .6f, new Vector3(2.6f, 1.3f, 2.4f), Quaternion.identity); other++; }
+                    else if (roll < .9f) { var br = new Vector3(ctx.Range(1f, 2.2f), ctx.Range(.6f, 1.3f), ctx.Range(1f, 2f)); mk.Blob(stone, p + Vector3.up * .5f, br, ctx.Rng, .35f); crowns.Blob(leaves[2], p + Vector3.up * 1.2f, new Vector3(1.1f, .2f, 1f), ctx.Rng, .3f); solid.Blob(stone, p + Vector3.up * .5f, br * 1.15f, Smooth, 0f); other++; }   // the boulder's own shape (a box was far smaller)
                 }
             }
             Debug.Log($"The Bluegrass Hollows: creek {creek.Count * 4} m, {trees} hardwoods, {cabins} cabins, {bales} hay bales, {stills} stills, {other} other things, street {street.Count * 6} m");

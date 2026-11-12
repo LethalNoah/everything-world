@@ -380,7 +380,7 @@ namespace EverythingWorld.World
                 var n = new Vector3(quayNormal[k].x, 0, quayNormal[k].y);
                 mk.Box(darkConcrete, new Vector3(q.x, (top - 4f) / 2f, q.y), new Vector3(step, top + 4f, step), Quaternion.identity);
                 solid.Box(darkConcrete, new Vector3(q.x, (top - 4f) / 2f, q.y), new Vector3(step, top + 4f, step), Quaternion.identity);
-                if (k % 3 == 0) { var b = new Vector3(q.x, top, q.y) + n * (step * .35f); mk.Prism(bollard, b, up, .25f, .6f, 10); mk.Prism(bollard, b + up * .6f, up, .33f, .12f, 10); }
+                if (k % 3 == 0) { var b = new Vector3(q.x, top, q.y) + n * (step * .35f); mk.Prism(bollard, b, up, .25f, .6f, 10); mk.Prism(bollard, b + up * .6f, up, .33f, .12f, 10); ArtistBits.PostCollider(ctx.Root, b, .72f, .3f); }
                 noGrass.Add(new Vector3(q.x, 7f, q.y));
             }
             var hc = ctx.OnGround(harbour2.x, harbour2.y); var n0 = new Vector3(seaDir2.x, 0, seaDir2.y); var t0 = Vector3.Cross(up, n0);

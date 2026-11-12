@@ -58,6 +58,7 @@ namespace EverythingWorld.World
                 var q = p + along * d + face * (Mathf.Sin(d * .15f) * .6f); q = ctx.OnGround(q.x, q.z);
                 var w = .9f + (float)rng.NextDouble() * .6f; var hh = .9f + (float)rng.NextDouble() * .6f;
                 mk.Blob(shades[rng.Next(shades.Length)], q + up * hh * .75f, new Vector3(w, hh, w), rng, .2f);
+                solid.Blob(hedge, q + up * hh * .75f, new Vector3(w, hh, w) * 1.1f, ColRng, 0f);
                 solid.Box(hedge, q + up * hh * .8f, new Vector3(w * 1.6f, hh * 1.6f, w * 1.6f), Quaternion.LookRotation(face));
             }
             // the posts and the gate, swung a little open
@@ -230,7 +231,7 @@ namespace EverythingWorld.World
             }
             var sign = p - face * 1.6f + along * ((n + 1) / 2f * 2.2f); sign = ctx.OnGround(sign.x, sign.z);
             mk.Box(darkWood, sign + up * .6f, new Vector3(.08f, 1.2f, .08f), rot);
-            mk.Box(WorldMaterials.Solid(new Color(.9f, .72f, .22f)), sign + up * 1.15f, new Vector3(.8f, .4f, .05f), rot);
+            mk.Box(WorldMaterials.Solid(new Color(.9f, .72f, .22f)), sign + up * 1.15f, new Vector3(.8f, .4f, .05f), rot); BoxCol(ctx.Root, sign + up * 1.15f, new Vector3(.8f, .4f, .15f), rot);
             ArtistBits.PostCollider(ctx.Root, sign, 1.3f, .1f);
         }
 

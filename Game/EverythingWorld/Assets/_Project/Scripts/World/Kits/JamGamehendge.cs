@@ -48,6 +48,7 @@ namespace EverythingWorld.World
             mk.Prism(stone, bk, up, .6f, 1.2f, 8, .7f); solid.Prism(stone, bk, up, .6f, 1.2f, 8);
             var book = new Material(GlowM(new Color(1f, .92f, .7f), 1.1f)) { name = "Helping Friendly Book" };
             foreach (var s in new[] { -1f, 1f }) { mk.Box(WorldMaterials.Solid(new Color(.45f, .15f, .12f)), bk + up * 1.25f + side * s * .55f, new Vector3(1.1f, .08f, 1.4f), brot * Quaternion.Euler(0, 0, s * 12f)); mk.Box(book, bk + up * 1.31f + side * s * .52f, new Vector3(1f, .04f, 1.3f), brot * Quaternion.Euler(0, 0, s * 12f)); }
+            BoxCol(ctx.Root, bk + up * 1.27f, new Vector3(2.3f, .3f, 1.45f), brot);   // the open book over the pedestal
             halos.Add(bk + up * 1.6f, 2.2f, new Color(1f, .9f, .6f), .6f);
             life.book = book; life.bookAt = bk + up * 1.4f;
             Sign(ctx, mk, bk + toHeart * 2f + side * 2.2f, toHeart, "THE HELPING FRIENDLY BOOK", solid);
@@ -100,6 +101,7 @@ namespace EverythingWorld.World
                 mk.Blob(lizard, lp + up * .9f - d * .3f, new Vector3(.25f, .35f, .25f), ctx.Rng, 0f);
                 mk.Blob(lizard, lp + up * 1.25f - d * .45f, new Vector3(.2f, .18f, .28f), ctx.Rng, 0f);
                 mk.Prism(lizard, lp + up * .35f + d * .6f, (d + up * .1f).normalized, .14f, 1.2f, 6, .2f);
+                ArtistBits.PostCollider(ctx.Root, lp - d * .15f, 1.45f, .45f);   // the lizard, sitting
             }
             var fl = ArtistBits.PointLight(ctx.Root, fire + up * 1f, new Color(1f, .55f, .2f), 12f, 1.8f); fl.gameObject.AddComponent<FireFlicker>().baseIntensity = 1.8f;
             ArtistBits.PostCollider(ctx.Root, fire, .5f, .9f); life.fires.Add(fire + up * .25f);
@@ -120,6 +122,7 @@ namespace EverythingWorld.World
             at.y = ctx.Ground(at.x, at.z); var w = text.Length * .13f + .5f;
             mk.Prism(wood, at - Vector3.up * .3f, Vector3.up, .07f, 1.7f, 6); mk.Box(wood, at + Vector3.up * 1.4f, new Vector3(w, .5f, .08f), Quaternion.LookRotation(face));
             ArtistBits.Label(ctx.Root, text, at + Vector3.up * 1.4f + face * .05f, face, .15f, Ink, TextAnchor.MiddleCenter); ArtistBits.PostCollider(ctx.Root, at, 1.7f, .1f);
+            BoxCol(ctx.Root, at + Vector3.up * 1.4f, new Vector3(w, .5f, .15f), Quaternion.LookRotation(face));   // the board
             StoryBoard(ctx, mk, solid, at, face, text);   // the story, in front of it
         }
 
@@ -153,6 +156,7 @@ namespace EverythingWorld.World
                 var sign = best + f * 6f + Vector3.Cross(Vector3.up, f) * 3f; sign.y = ctx.Ground(sign.x, sign.z);
                 mk.Prism(wood, sign - Vector3.up * .3f, Vector3.up, .07f, 1.6f, 6);
                 mk.Box(wood, sign + Vector3.up * 1.3f, new Vector3(2.6f, .5f, .08f), Quaternion.LookRotation(f));
+                ArtistBits.PostCollider(ctx.Root, sign, 1.6f, .1f); BoxCol(ctx.Root, sign + Vector3.up * 1.3f, new Vector3(2.6f, .5f, .15f), Quaternion.LookRotation(f));
                 ArtistBits.Label(ctx.Root, names[i], sign + Vector3.up * 1.3f + f * .05f, f, .14f, Ink, TextAnchor.MiddleCenter);
                 AlbumLantern(ctx, mk, sign, f, names[i]);
                 ArtistBits.PointLight(ctx.Root, best + Vector3.up * 5f + f * 4f, Warm, 12f, 1.2f);
@@ -196,6 +200,7 @@ namespace EverythingWorld.World
             mk.Blob(hide, cow + up * 1.1f, new Vector3(.6f, .55f, 1.1f), ctx.Rng, 0f); mk.Blob(hide, cow + up * 1.3f + side * 1.1f, new Vector3(.3f, .32f, .4f), ctx.Rng, 0f);
             for (var k = 0; k < 4; k++) mk.Blob(spot, cow + up * (1.2f + Mathf.Sin(k) * .3f) + side * Mathf.Cos(k * 2f) * .5f + f * .55f, new Vector3(.2f, .18f, .05f), ctx.Rng, .2f);
             foreach (var a in new[] { -1f, 1f }) foreach (var b in new[] { -1f, 1f }) mk.Box(hide, cow + side * a * .6f + f * b * .3f + up * .35f, new Vector3(.14f, .7f, .14f), Quaternion.LookRotation(side));
+            BoxCol(ctx.Root, cow + up * .85f, new Vector3(1.3f, 1.7f, 2.3f), Quaternion.identity); BoxCol(ctx.Root, cow + up * 1.3f + side * 1.1f, new Vector3(.7f, .7f, .85f), Quaternion.identity);   // the cow (its body lies along the world axes)
         }
 
         void BigBoat(LandContext ctx, MeshKit mk, MeshKit solid, Vector3 at, Vector3 f)

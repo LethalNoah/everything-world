@@ -230,7 +230,9 @@ namespace EverythingWorld.World
                 if (ground != null)
                 {
                     float gl = ground.Ground(L[i].x, L[i].z), gr = ground.Ground(R[i].x, R[i].z), top = Mathf.Max(pts[i].y, Mathf.Max(gl, gr) - .05f);
-                    L[i].y = Mathf.Max(gl, top - .15f) + lift; R[i].y = Mathf.Max(gr, top - .15f) + lift;
+                    // level across where it can be, but an edge never stands more than .25 m over its own ground (on a
+                    // cross-slope the downhill edge used to float a metre or more over the hillside)
+                    L[i].y = Mathf.Clamp(top - .15f, gl, gl + .25f) + lift; R[i].y = Mathf.Clamp(top - .15f, gr, gr + .25f) + lift;
                 }
             }
             for (var i = 0; i + 1 < n; i++) mk.Quad(m, L[i], R[i], R[i + 1], L[i + 1], (pts[i] + pts[i + 1]) / 2f - Vector3.up);
@@ -251,13 +253,16 @@ namespace EverythingWorld.World
         void ToppledAmps(LandContext ctx, MeshKit mk, MeshKit solid, Vector3 at)
         {
             var up = Vector3.up; var yaw = ctx.Range(0, 360f);
+            // seated on the lowest ground under the stack, so on a slope the cabinets sink into the hill instead of
+            // hanging in the air on the downhill side
+            for (var k = 0; k < 8; k++) { var a = k * Mathf.PI / 4f; at.y = Mathf.Min(at.y, ctx.Ground(at.x + Mathf.Cos(a) * 3f, at.z + Mathf.Sin(a) * 3f)); }
             for (var k = 0; k < 4; k++)
             {
                 var rot = Quaternion.Euler(0, yaw + k * 23f, 0) * Quaternion.Euler(ctx.Range(-80f, -10f) * (k % 2), 0, ctx.Range(-15f, 15f));
                 var p = at + Quaternion.Euler(0, yaw, 0) * new Vector3((k - 1.5f) * 1.5f, .7f + (k % 2) * .3f, (k % 2) * 1.1f);
                 mk.Box(dark, p, new Vector3(1.4f, 1.4f, .8f), rot); mk.Box(grille, p + rot * Vector3.forward * .41f, new Vector3(1.2f, 1.2f, .02f), rot);
             }
-            solid.Box(dark, at + up * .9f, new Vector3(6.4f, 1.8f, 2.6f), Quaternion.Euler(0, yaw, 0));
+            solid.Box(dark, at + up * .9f + Quaternion.Euler(0, yaw, 0) * new Vector3(0, 0, .55f), new Vector3(6.4f, 1.8f, 2.9f), Quaternion.Euler(0, yaw, 0));   // the cabinets stand 0 and 1.1 m back
         }
 
         // ---------------------------------------------------------------- arrival
@@ -401,7 +406,15 @@ namespace EverythingWorld.World
                 for (var i = 0; i + 1 < pts.Count; i += 2)
                 {
                     var d = pts[i + 1] - pts[i]; d.y = 0; if (d.sqrMagnitude < .01f) continue; var sd = Vector3.Cross(up, d.normalized);
-                    foreach (var e in new[] { -1f, 1f }) mk.Blob(obsidian, pts[i] + sd * e * 1.8f + up * .2f, new Vector3(.8f, .4f, 1.4f), ctx.Rng, .35f);
+                    foreach (var e in new[] { -1f, 1f })
+                    {
+                        // a crusted bank rock, seated on the lowest ground under it (on the steep flanks its downhill end
+                        // used to hang a metre over the slope), with a collider: it stands knee high
+                        var bk = pts[i] + sd * e * 1.8f; var lo = ctx.Ground(bk.x, bk.z);
+                        foreach (var o in new[] { new Vector2(.7f, 0), new Vector2(-.7f, 0), new Vector2(0, 1.2f), new Vector2(0, -1.2f) }) lo = Mathf.Min(lo, ctx.Ground(bk.x + o.x, bk.z + o.y));
+                        bk.y = lo + .12f; mk.Blob(obsidian, bk, new Vector3(.8f, .4f, 1.4f), ctx.Rng, .35f);
+                        solid.Box(obsidian, bk, new Vector3(1.4f, .8f, 2.4f), Quaternion.identity);
+                    }
                 }
                 halos.Add(pts[pts.Count / 2] + up * 1f, 4f, s % 2 == 0 ? Cyan : Violet, .25f);
                 life.streams.Add(pts.ToArray());
@@ -494,11 +507,15 @@ namespace EverythingWorld.World
         void Spire(LandContext ctx, MeshKit mk, MeshKit solid, Vector3 at)
         {
             var h = ctx.Range(5f, 14f); var tilt = Quaternion.Euler(ctx.Range(-10f, 10f), ctx.Range(0, 360f), ctx.Range(-10f, 10f)); var dir = tilt * Vector3.up;
-            mk.Prism(obsidian, at - Vector3.up * .5f, dir, h * .14f, h, 5, .08f, ctx.Range(0, 60f));
-            if (ctx.Chance(.6f)) { mk.Prism(obsidian, at - Vector3.up * .3f + tilt * new Vector3(h * .12f, 0, 0), (dir + tilt * Vector3.right * .3f).normalized, h * .07f, h * .5f, 5, .1f); }
+            var tw = ctx.Range(0, 60f); mk.Prism(obsidian, at - Vector3.up * .5f, dir, h * .14f, h, 5, .08f, tw);
+            solid.Prism(obsidian, at - Vector3.up * .5f, dir, h * .14f, h, 5, .08f, tw);   // the collider leans with the blade
+            if (ctx.Chance(.6f))
+            {
+                var bs = at - Vector3.up * .3f + tilt * new Vector3(h * .12f, 0, 0); var bd = (dir + tilt * Vector3.right * .3f).normalized;
+                mk.Prism(obsidian, bs, bd, h * .07f, h * .5f, 5, .1f); solid.Prism(obsidian, bs, bd, h * .07f, h * .5f, 5, .1f);
+            }
             var tip = at + dir * (h - .6f); var col = ctx.Chance(.5f) ? Cyan : Violet;
             mk.Prism(GlowM(col, 2.6f), tip - dir * .3f, dir, h * .03f, .9f, 5, .1f); halos.Add(tip, 1.2f, col, .5f);
-            ArtistBits.PostCollider(ctx.Root, at, Mathf.Min(h, 4f), h * .13f);
         }
 
         /// A cluster of neon crystals growing out of the ash.

@@ -395,7 +395,7 @@ namespace EverythingWorld.World
                     {
                         var top = bp + dir * s * 1.2f; var foot = new Vector3(bp.x, g, bp.z) + dir * s * (1.2f + hgt * .12f);
                         mk.Box(timber, (top + foot) / 2f, new Vector3(.3f, Vector3.Distance(top, foot), .3f), Quaternion.LookRotation(across, top - foot));
-                        ArtistBits.PostCollider(ctx.Root, foot + up * .3f, hgt, .25f);
+                        ArtistBits.PostCollider(ctx.Root, foot + up * .3f, hgt, .25f); BoxCol(ctx.Root, (top + foot) / 2f, new Vector3(.35f, Vector3.Distance(top, foot), .35f), Quaternion.LookRotation(across, top - foot));   // the leg slants
                     }
                     for (var y = g + 2.5f; y < deckY - 1f; y += 3f)
                         foreach (var k in new[] { -1f, 1f }) { var cc = new Vector3(bp.x, y + 1.25f, bp.z); var span = dir * 3f + up * 2.5f * k; mk.Box(timber, cc, new Vector3(.18f, .18f, span.magnitude), Quaternion.LookRotation(span)); }

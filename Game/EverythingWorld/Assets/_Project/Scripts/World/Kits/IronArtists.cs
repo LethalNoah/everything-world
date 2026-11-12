@@ -98,7 +98,7 @@ namespace EverythingWorld.World
                 var p = z.At(-3.5f + i * 2.2f, -4.2f + j * 2.8f); if ((p - fc).magnitude > 7f) continue;
                 z.mk.Box(white, p + up * .9f, new Vector3(.18f, 1.8f, .12f), rot); z.mk.Box(white, p + up * 1.35f, new Vector3(.9f, .16f, .12f), rot);
                 var top = new Vector3(p.x, fc.y + barY, p.z); z.mk.Box(strings, (p + up * 1.8f + top) / 2f, new Vector3(.03f, (top - p).y - 1.8f, .03f), Quaternion.identity);
-                ArtistBits.PostCollider(z.root, p, 1.8f, .15f);
+                ArtistBits.PostCollider(z.root, p, 1.8f, .15f); z.solid.Box(white, p + up * 1.35f, new Vector3(.9f, .16f, .12f), rot);
             }
             foreach (var s in new[] { -1f, 1f }) { var gp = z.At(-1f, s * 7.5f); z.mk.Box(iron, gp + up * barY / 2f, new Vector3(.5f, barY + 1f, .5f), rot); ArtistBits.PostCollider(z.root, gp, barY, .3f); }
             z.mk.Box(iron, fc + up * (barY + .5f), new Vector3(.6f, .5f, 15.5f), Quaternion.LookRotation(z.side));
@@ -151,7 +151,7 @@ namespace EverythingWorld.World
             // a row of soda machines
             Color[] sodas = { new Color(1f, .2f, .2f), new Color(.3f, .6f, 1f), new Color(1f, .8f, .2f), new Color(.4f, 1f, .5f) };
             for (var k = 0; k < 4; k++) { var sp = z.At(-3f, -9f + k * 1.6f); z.mk.Box(dark, sp + up * 1.2f, new Vector3(1.3f, 2.4f, 1f), rot); z.mk.Box(GlowM(sodas[k], 1.8f), sp + up * 1.4f + z.front * .51f, new Vector3(1.1f, 1.8f, .02f), rot); halos.Add(sp + up * 1.4f + z.front * .9f, 1.3f, sodas[k], .45f); }
-            z.solid.Box(dark, z.At(-3f, -6.6f) + up * 1.2f, new Vector3(1.3f, 2.4f, 6.4f), Quaternion.LookRotation(z.side) * Quaternion.Euler(0, 90f, 0));
+            z.solid.Box(dark, z.At(-3f, -6.6f) + up * 1.2f, new Vector3(6.4f, 2.4f, 1.1f), rot);   // the row runs along the side
         }
 
         // ---------------------------------------------------------------- the others
@@ -165,6 +165,8 @@ namespace EverythingWorld.World
                 z.mk.Box(timber, (a + b) / 2f - up * .1f, new Vector3(1.3f, .12f, .25f), Quaternion.LookRotation(sd, up));
                 foreach (var s in new[] { -.4f, .4f }) z.mk.Box(iron, (a + b) / 2f + sd * s, new Vector3(.07f, .08f, d.magnitude + .05f), Quaternion.LookRotation(d));
                 if (k % 4 == 0) { var g = z.ctx.Ground(a.x, a.z); z.mk.Box(timber, new Vector3(a.x, (a.y + g) / 2f, a.z), new Vector3(.2f, a.y - g + .2f, .2f), Quaternion.identity); }
+                var mid = (a + b) / 2f; var mg = Mathf.Min(z.ctx.Ground(a.x, a.z), z.ctx.Ground(b.x, b.z)) - .2f; var top = Mathf.Max(a.y, b.y) + .2f;
+                z.solid.Box(timber, new Vector3(mid.x, (top + mg) / 2f, mid.z), new Vector3(1.3f, top - mg, d.magnitude + .1f), Quaternion.LookRotation(new Vector3(d.x, 0, d.z)));   // the track ring, solid down to the ground
             }
             life.loop = pts.ToArray();
             for (var k = 0; k < 3; k++)

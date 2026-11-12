@@ -450,8 +450,20 @@ namespace EverythingWorld.World
                 float px = x + ctx.Range(0f, cell), pz = z + ctx.Range(0f, cell);
                 if (!Open(ctx, px, pz, 3f)) continue;
                 var p = ctx.OnGround(px, pz); var roll = ctx.Range(0f, 1f);
-                if (roll < .08f) { var n = ctx.Rng.Next(2, 5); for (var k = 0; k < n; k++) mk.Box(stone, p + new Vector3(ctx.Range(-2f, 2f), .8f + k * .5f, ctx.Range(-2f, 2f)), new Vector3(ctx.Range(1.5f, 3f), ctx.Range(.8f, 1.6f), ctx.Range(1.4f, 2.6f)), Quaternion.Euler(0, ctx.Range(0, 90f), ctx.Range(-6f, 6f))); solid.Box(stone, p + Vector3.up * 1.6f, new Vector3(6.4f, 3.4f, 6.4f), Quaternion.identity); tors++; }
-                else if (roll < .18f) { var lean = (Quaternion.Euler(0, 40f, 0) * Vector3.forward + Vector3.up * 1.6f).normalized; mk.Prism(thornBark, p - Vector3.up * .2f, lean, .25f, 3.2f, 6, .6f); var top = p + lean * 3f; for (var k = 0; k < 4; k++) soft.Blob(thornLeaf, top + Quaternion.Euler(0, k * 90f, 0) * Vector3.forward * 1f + Vector3.Cross(lean, Vector3.up) * .3f, new Vector3(1.4f, .9f, 1.2f), ctx.Rng, .35f); ArtistBits.PostCollider(ctx.Root, p, 3f, .3f); thorns++; }
+                if (roll < .08f)
+                {
+                    // a tor: seated on the lowest ground under it (on a slope its downhill blocks hung in the air), each
+                    // block its own collider (one box round the middle left the outer blocks open)
+                    for (var k = 0; k < 8; k++) { var a = k * Mathf.PI / 4f; p.y = Mathf.Min(p.y, ctx.Ground(px + Mathf.Cos(a) * 3.5f, pz + Mathf.Sin(a) * 3.5f)); }
+                    var n = ctx.Rng.Next(2, 5);
+                    for (var k = 0; k < n; k++)
+                    {
+                        var bp = p + new Vector3(ctx.Range(-2f, 2f), .8f + k * .5f, ctx.Range(-2f, 2f)); var bs = new Vector3(ctx.Range(1.5f, 3f), ctx.Range(.8f, 1.6f), ctx.Range(1.4f, 2.6f)); var br = Quaternion.Euler(0, ctx.Range(0, 90f), ctx.Range(-6f, 6f));
+                        mk.Box(stone, bp, bs, br); solid.Box(stone, bp, bs, br);
+                    }
+                    tors++;
+                }
+                else if (roll < .18f) { var lean = (Quaternion.Euler(0, 40f, 0) * Vector3.forward + Vector3.up * 1.6f).normalized; mk.Prism(thornBark, p - Vector3.up * .2f, lean, .25f, 3.2f, 6, .6f); var top = p + lean * 3f; for (var k = 0; k < 4; k++) soft.Blob(thornLeaf, top + Quaternion.Euler(0, k * 90f, 0) * Vector3.forward * 1f + Vector3.Cross(lean, Vector3.up) * .3f, new Vector3(1.4f, .9f, 1.2f), ctx.Rng, .35f); solid.Prism(thornBark, p - Vector3.up * .2f, lean, .25f, 3.2f, 6, .6f); thorns++; }   // the collider leans with the trunk (an upright post missed it from knee height up)
                 else if (roll < .3f) { for (var k = 0; k < 3; k++) { var gp = p + new Vector3(ctx.Range(-1.2f, 1.2f), .5f, ctx.Range(-1.2f, 1.2f)); soft.Blob(gorseM, gp, new Vector3(.9f, .7f, .9f), ctx.Rng, .35f); for (var f = 0; f < 4; f++) soft.Blob(gorseFlower, gp + new Vector3(ctx.Range(-.7f, .7f), ctx.Range(-.2f, .6f), ctx.Range(-.7f, .7f)), Vector3.one * .12f, ctx.Rng, 0f); } gorse++; }
                 else if (roll < .34f && !InFootprint(ctx, px, pz, 12f)) { var face = Quaternion.Euler(0, ctx.Range(0, 360f), 0) * Vector3.forward; mk.Blob(wool, p + Vector3.up * .7f, new Vector3(.55f, .45f, .8f), ctx.Rng, .2f); mk.Blob(dark, p + Vector3.up * .85f + face * .7f, new Vector3(.18f, .2f, .25f), ctx.Rng, 0f); foreach (var s in new[] { -.2f, .2f }) foreach (var f in new[] { -.4f, .4f }) mk.Box(dark, p + Vector3.up * .25f + Vector3.Cross(Vector3.up, face) * s + face * f, new Vector3(.08f, .5f, .08f), Quaternion.identity); solid.Box(wool, p + Vector3.up * .55f, new Vector3(.8f, 1.1f, 1.6f), Quaternion.LookRotation(face)); sheep++; }
             }

@@ -148,6 +148,12 @@ namespace EverythingWorld.World
         public override void Finish(LandContext ctx) { GroundCover(ctx); halos.Build("Wilds glow", ctx.Root); }
 
         // ---------------------------------------------------------------- helpers
+        static void BoxCol(Transform parent, Vector3 center, Vector3 size, Quaternion rot)
+        {
+            var go = new GameObject("Box collider"); go.transform.SetParent(parent, false); go.transform.SetPositionAndRotation(center, rot);
+            go.AddComponent<BoxCollider>().size = size; go.isStatic = true;
+        }
+
         void Remember(Vector3 p, int walk)
         {
             var key = (Mathf.FloorToInt(p.x / 8f), Mathf.FloorToInt(p.z / 8f));
@@ -191,6 +197,7 @@ namespace EverythingWorld.World
             mk.Prism(capGlow[colour % capGlow.Length], top - up * .05f, up, capR * .92f, .1f, 14);
             for (var k = 0; k < 6; k++) { var d = Quaternion.Euler(0, k * 60f + ctx.Range(-20f, 20f), 0) * Vector3.forward; soft.Blob(white, top + up * (.75f * s) + d * capR * ctx.Range(.35f, .7f), new Vector3(.3f, .12f, .3f) * s, ctx.Rng, .2f); }
             ArtistBits.PostCollider(ctx.Root, at, h, .4f * s);
+            if (h < 3f) solid.Prism(stalk, top - up * .1f, up, capR * .9f, .9f * s + .1f, 12);   // a cap low enough to walk into
             noGrass.Add(new Vector3(at.x, capR * .5f, at.z));
         }
 
@@ -235,6 +242,7 @@ namespace EverythingWorld.World
             halos.Add(top - up * 1f, 14f, new Color(.6f, .45f, 1f), .35f);
             ArtistBits.PointLight(ctx.Root, top - up * 3f, new Color(.8f, .6f, 1f), 40f, 2f);
             solid.Prism(stalk, c - up * .3f, up, 3.2f, 38f, 10);
+            for (var k = 0; k < 2; k++) solid.Prism(stalk, c + new Vector3(Mathf.Cos(k * .5f), 0, Mathf.Sin(k * .5f)) * 1.2f + up * (k * 2.4f - .2f), up, Mathf.Lerp(3.2f, 1.8f, k / (float)segs) + .1f, 2.7f, 12);   // its twisted foot
             for (var k = 0; k < 10; k++) { var d = Quaternion.Euler(0, k * 36f + 10f, 0) * Vector3.forward; Mushroom(ctx, mk, solid, ctx.OnGround(c.x + d.x * ctx.Range(6f, 9f), c.z + d.z * ctx.Range(6f, 9f)), ctx.Range(.35f, .7f), k); }
             ArtistBits.Label(ctx.Root, "THE PSYCHEDELIC WILDS", c + up * 2.2f + Vector3.forward * 3.4f, Vector3.forward, .35f, new Color(.25f, .1f, .3f), TextAnchor.MiddleCenter);
             life.spiral = top;
@@ -335,9 +343,9 @@ namespace EverythingWorld.World
                       // a plate whose flat faces land within a few mm of an overlapping neighbour's would flicker: lift it a little
                       for (var tries = 0; tries < 20 && plates.Exists(o => Vector2.Distance(new Vector2(o.c.x, o.c.z), new Vector2(at.x, at.z)) < o.r + 3f * s && System.Array.Exists(o.ys, y => System.Array.Exists(new[] { at.y + h - .04f, at.y + h, at.y + h + .02f, at.y + h + .45f * s }, y2 => Mathf.Abs(y - y2) < .004f))); tries++) h += .006f;
                       plates.Add((at, 3f * s, new[] { at.y + h - .04f, at.y + h, at.y + h + .02f, at.y + h + .45f * s }));
-                      mk.Prism(stalk, at - up * .3f, up, .5f * s, h, 10, .85f); soft.Prism(col, at + up * h, up, 3f * s, .45f * s, 16, .7f, turn); mk.Prism(capGlow[colour % capGlow.Length], at + up * (h - .04f), up, 2.8f * s, .06f, 16); ArtistBits.PostCollider(ctx.Root, at, h, .5f * s); noGrass.Add(new Vector3(at.x, 3f * s, at.z)); break; }
+                      mk.Prism(stalk, at - up * .3f, up, .5f * s, h, 10, .85f); soft.Prism(col, at + up * h, up, 3f * s, .45f * s, 16, .7f, turn); mk.Prism(capGlow[colour % capGlow.Length], at + up * (h - .04f), up, 2.8f * s, .06f, 16); ArtistBits.PostCollider(ctx.Root, at, h, .5f * s); if (h < 3f) solid.Prism(stalk, at + up * (h - .05f), up, 2.9f * s, .45f * s + .05f, 12); noGrass.Add(new Vector3(at.x, 3f * s, at.z)); break; }
                 case 3: // a clump of little ones
-                    { for (var k = 0; k < 7; k++) { var p = at + new Vector3(ctx.Range(-1.4f, 1.4f), 0, ctx.Range(-1.4f, 1.4f)) * s; p.y = ctx.Ground(p.x, p.z); var h = ctx.Range(.5f, 1.1f) * s; mk.Prism(stalk, p - up * .1f, up, .08f * s, h, 6); soft.Blob(col, p + up * h, new Vector3(.4f, .25f, .4f) * s, ctx.Rng, .1f); mk.Prism(capGlow[(colour + k) % capGlow.Length], p + up * (h - .03f), up, .32f * s, .04f, 8); } break; }
+                    { for (var k = 0; k < 7; k++) { var p = at + new Vector3(ctx.Range(-1.4f, 1.4f), 0, ctx.Range(-1.4f, 1.4f)) * s; p.y = ctx.Ground(p.x, p.z); var h = ctx.Range(.5f, 1.1f) * s; mk.Prism(stalk, p - up * .1f, up, .08f * s, h, 6); soft.Blob(col, p + up * h, new Vector3(.4f, .25f, .4f) * s, ctx.Rng, .1f); mk.Prism(capGlow[(colour + k) % capGlow.Length], p + up * (h - .03f), up, .32f * s, .04f, 8); if (h > .45f) ArtistBits.PostCollider(ctx.Root, p, h + .2f * s, .35f * s); } break; }
                 default: Mushroom(ctx, mk, solid, at, s, colour); break;
             }
         }
@@ -346,9 +354,9 @@ namespace EverythingWorld.World
         void Desert(LandContext ctx, MeshKit mk, MeshKit solid, Vector3 at)
         {
             var up = Vector3.up; var roll = ctx.Range(0f, 1f);
-            if (roll < .35f) { var rock = WorldMaterials.Solid(Bands[ctx.Rng.Next(Bands.Length)]); for (var k = 0; k < 3; k++) mk.Blob(rock, at + new Vector3(ctx.Range(-2f, 2f), .6f + k * .4f, ctx.Range(-2f, 2f)), new Vector3(ctx.Range(1.2f, 2.4f), ctx.Range(.8f, 1.4f), ctx.Range(1f, 2f)), ctx.Rng, .25f); solid.Box(rock, at + up * 1f, new Vector3(4.5f, 2f, 4.5f), Quaternion.identity); }
+            if (roll < .35f) { var rock = WorldMaterials.Solid(Bands[ctx.Rng.Next(Bands.Length)]); for (var k = 0; k < 3; k++) { var bc = at + new Vector3(ctx.Range(-2f, 2f), .6f + k * .4f, ctx.Range(-2f, 2f)); var br = new Vector3(ctx.Range(1.2f, 2.4f), ctx.Range(.8f, 1.4f), ctx.Range(1f, 2f)); mk.Blob(rock, bc, br, ctx.Rng, .25f); solid.Box(rock, bc, br * 1.7f, Quaternion.identity); } solid.Box(rock, at + up * 1f, new Vector3(4.5f, 2f, 4.5f), Quaternion.identity); }
             else if (roll < .65f) { var ag = WorldMaterials.Solid(new Color(.45f, .6f, .5f)); for (var k = 0; k < 9; k++) { var d = Quaternion.Euler(0, k * 40f, 0) * Vector3.forward; soft.Prism(ag, at, (d + up * 1.3f).normalized, .15f, 1.6f, 4, .1f); } }
-            else { var cac = WorldMaterials.Solid(new Color(.3f, .55f, .35f)); var h = ctx.Range(3f, 5f); mk.Prism(cac, at - up * .3f, up, .35f, h, 8, .9f); foreach (var s in new[] { -1f, 1f }) { if (ctx.Chance(.6f)) { var arm = at + up * h * ctx.Range(.4f, .6f); var d = Quaternion.Euler(0, ctx.Range(0, 360f), 0) * Vector3.forward; mk.Prism(cac, arm, d, .25f, .8f, 8); mk.Prism(cac, arm + d * .8f, up, .25f, 1.4f, 8, .9f); } } mk.Blob(GlowM(Rainbow[ctx.Rng.Next(Rainbow.Length)], 2f), at + up * (h + .1f), Vector3.one * .2f, ctx.Rng, 0f); ArtistBits.PostCollider(ctx.Root, at, h, .4f); }
+            else { var cac = WorldMaterials.Solid(new Color(.3f, .55f, .35f)); var h = ctx.Range(3f, 5f); mk.Prism(cac, at - up * .3f, up, .35f, h, 8, .9f); foreach (var s in new[] { -1f, 1f }) { if (ctx.Chance(.6f)) { var arm = at + up * h * ctx.Range(.4f, .6f); var d = Quaternion.Euler(0, ctx.Range(0, 360f), 0) * Vector3.forward; mk.Prism(cac, arm, d, .25f, .8f, 8); mk.Prism(cac, arm + d * .8f, up, .25f, 1.4f, 8, .9f); ArtistBits.PostCollider(ctx.Root, at + d * .8f, arm.y - at.y + 1.4f, .45f); } } mk.Blob(GlowM(Rainbow[ctx.Rng.Next(Rainbow.Length)], 2f), at + up * (h + .1f), Vector3.one * .2f, ctx.Rng, 0f); ArtistBits.PostCollider(ctx.Root, at, h, .4f); }
         }
 
         /// A little dancing bear statue by the path, in one of the rainbow colours.
@@ -371,6 +379,7 @@ namespace EverythingWorld.World
                 var p = at + new Vector3(ctx.Range(-1.2f, 1.2f), -.3f, ctx.Range(-1.2f, 1.2f));
                 mk.Prism(WorldMaterials.Glow(Color.Lerp(c, Color.white, .3f), .6f), p, d, ctx.Range(.25f, .5f), h, 6, .5f);
                 mk.Cone(WorldMaterials.Glow(Color.Lerp(c, Color.white, .5f), .9f), p + d * h, ctx.Range(.13f, .25f), .6f, 6);
+                BoxCol(ctx.Root, p + d * (h / 2f), new Vector3(.6f, h, .6f), Quaternion.FromToRotation(Vector3.up, d));   // each leaning crystal, not just the middle
             }
             halos.Add(at + Vector3.up * 1.5f, 1.8f, c, .5f);
             ArtistBits.PostCollider(ctx.Root, at, 2.5f, 1.2f);

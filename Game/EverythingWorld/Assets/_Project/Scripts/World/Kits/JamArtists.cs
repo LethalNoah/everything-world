@@ -182,7 +182,7 @@ namespace EverythingWorld.World
                     z.mk.Blob(WorldMaterials.Solid(new[] { new Color(1f, .5f, .7f), new Color(.45f, .25f, .15f), new Color(.95f, .95f, .9f), new Color(.5f, .7f, 1f) }[k], .6f), p + dr * Vector3.forward * .2f, new Vector3(.55f, .55f, .45f), ctx.Rng, 0f);
                     if (s % 2 == 0) z.mk.Box(WorldMaterials.Solid(Dye[(s + k) % Dye.Length]), p + dr * Vector3.forward * .55f, new Vector3(.25f, .06f, .06f), dr * Quaternion.Euler(0, 0, s * 40f));
                 }
-                z.solid.Box(dark, dp, new Vector3(1f, 3.4f, 3.4f), dr);
+                z.solid.Box(dark, dp, new Vector3(3.4f, 3.4f, 1.3f), dr);   // the ring stands in the box's x-y plane
             }
             // a giant hot dog on a cart
             var hd = z.At(14f, 22f); var hr = Quaternion.LookRotation(z.side);

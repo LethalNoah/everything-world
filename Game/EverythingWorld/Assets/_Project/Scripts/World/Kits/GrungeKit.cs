@@ -307,7 +307,10 @@ namespace EverythingWorld.World
                 if (ground != null)
                 {
                     float gl = ground.Ground(L[i].x, L[i].z), gr = ground.Ground(R[i].x, R[i].z), top = Mathf.Max(pts[i].y, Mathf.Max(gl, gr) - .05f);
-                    L[i].y = Mathf.Max(gl, top - .15f) + lift; R[i].y = Mathf.Max(gr, top - .15f) + lift;
+                    // Each edge follows its own ground (raised only a little where the middle is higher), so on a
+                    // side slope the downhill edge no longer floats out into the air.
+                    var bump = Mathf.Clamp(pts[i].y - (gl + gr) / 2f, 0f, .25f);
+                    L[i].y = gl + bump + lift; R[i].y = gr + bump + lift;
                 }
             }
             for (var i = 0; i + 1 < n; i++) mk.Quad(m, L[i], R[i], R[i + 1], L[i + 1], (pts[i] + pts[i + 1]) / 2f - Vector3.up);
@@ -362,6 +365,7 @@ namespace EverythingWorld.World
                 var a = k * Mathf.PI * 2f / 24f; var off = new Vector3(Mathf.Cos(a), 0, Mathf.Sin(a)); if (Vector3.Dot(off, toV3(toBluff2)) > .6f) continue;
                 if (river2.Count > 1 && Vector2.Angle(new Vector2(off.x, off.z), river2[Mathf.Min(2, river2.Count - 1)] - pool2) < 20f) continue;
                 var rp = ctx.OnGround(pool2.x + off.x * 13.6f, pool2.y + off.z * 13.6f); mk.Blob(k % 3 == 0 ? moss : rock, rp + up * .3f, new Vector3(1.4f, .8f, 1.2f), ctx.Rng, .35f);
+                BoxCol(ctx.Root, rp + up * .4f, new Vector3(2.8f, 1.8f, 2.4f), Quaternion.LookRotation(off));
             }
             halos.Add(pc + toV3(toBluff2) * 8f + up * 4f, 9f, Falls, .3f);
             ArtistBits.PointLight(ctx.Root, pc + up * 6f, Falls, 30f, 1.4f);
@@ -481,7 +485,7 @@ namespace EverythingWorld.World
             {
                 var a = pts[i]; var b = pts[i + 1]; var d = b - a; d.y = 0; var sd = Vector3.Cross(Vector3.up, d.normalized);
                 if (a.y - b.y > 1.2f && i % 2 == 0) mk.Box(foam, (a + b) / 2f + Vector3.up * .06f, new Vector3(RiverW * .55f, .04f, d.magnitude * .5f), Quaternion.LookRotation(b - a));   // rapids
-                if (i % 4 == 1) { var s = i % 8 == 1 ? 1f : -1f; var rp = a + sd * s * (RiverW / 2f + .6f); rp.y = ctx.Ground(rp.x, rp.z); mk.Blob(i % 3 == 0 ? moss : rock, rp + Vector3.up * .3f, new Vector3(1.1f, .6f, 1f), ctx.Rng, .2f); solid.Box(rock, rp + Vector3.up * .4f, new Vector3(2.6f, 1.4f, 2.4f), Quaternion.LookRotation(d)); }
+                if (i % 4 == 1) { var s = i % 8 == 1 ? 1f : -1f; var rp = a + sd * s * (RiverW / 2f + .6f); rp.y = ctx.Ground(rp.x, rp.z); mk.Blob(i % 3 == 0 ? moss : rock, rp + Vector3.up * .3f, new Vector3(1.1f, .6f, 1f), ctx.Rng, .2f); BoxCol(ctx.Root, rp + Vector3.up * .4f, new Vector3(2.6f, 1.4f, 2.4f), Quaternion.LookRotation(d)); }
             }
             life.river = pts.ToArray();
         }
@@ -546,6 +550,12 @@ namespace EverythingWorld.World
             }
             var lamp = g + up * 4.85f; mk.Box(dark, lamp + up * .2f, new Vector3(.4f, .08f, .4f), Quaternion.identity); mk.Box(GlowM(Lamp, 2.6f), lamp, new Vector3(.25f, .3f, .25f), Quaternion.identity);
             halos.Add(lamp, 2f, Lamp, .7f); ArtistBits.PointLight(ctx.Root, lamp + up * .3f, Lamp, 10f, 1.6f);
+        }
+
+        static void BoxCol(Transform parent, Vector3 center, Vector3 size, Quaternion rot)
+        {
+            var go = new GameObject("Box collider"); go.transform.SetParent(parent, false); go.transform.SetPositionAndRotation(center, rot);
+            go.AddComponent<BoxCollider>().size = size; go.isStatic = true;
         }
 
         void Puddle(MeshKit mk, Vector3 at, float r)
@@ -620,7 +630,12 @@ namespace EverythingWorld.World
                 }
                 Strip(mk, pts, mud, RoadW, .2f, ctx);
                 // wheel ruts and puddles in the mud
-                for (var i = 3; i < pts.Count; i += 9) if (!wet[i] && pts.Count > i) Puddle(mk, pts[i] + side * (i % 2 == 0 ? .7f : -.7f) + Vector3.up * .26f, .55f);
+                for (var i = 3; i < pts.Count; i += 9) if (!wet[i] && pts.Count > i)
+                {
+                    // on the ground where the puddle is (not at the road's centre height, which floats it over a side slope)
+                    var pp = pts[i] + side * (i % 2 == 0 ? .7f : -.7f); pp.y = ctx.Ground(pp.x, pp.z) + .26f;
+                    Puddle(mk, pp, .55f);
+                }
                 foreach (var p in pts) Remember(p, walk);
                 for (var i = 6; i < pts.Count; i += 12)
                 {
@@ -686,7 +701,7 @@ namespace EverythingWorld.World
                     var r2 = ctx.Range(0f, 1f);
                     if (r2 < .1f) { FallenLog(ctx, mk, solid, p); logs++; }
                     else if (r2 < .17f) { var sr = ctx.Range(.4f, .8f); mk.Prism(bark, p - Vector3.up * .3f, Vector3.up, sr, ctx.Range(.6f, 1.2f), 8); mk.Blob(moss, p + Vector3.up * .8f, new Vector3(sr * .8f, .15f, sr * .8f), ctx.Rng, .1f); ArtistBits.PostCollider(ctx.Root, p, 1.2f, sr * 1.15f); stumps++; }
-                    else if (r2 < .23f) { var s = ctx.Range(1f, 2.6f); mk.Blob(rock, p + Vector3.up * s * .4f, new Vector3(s, s * .7f, s * .9f), ctx.Rng, .3f); mk.Blob(moss, p + Vector3.up * s * .95f, new Vector3(s * .8f, s * .2f, s * .7f), ctx.Rng, .4f); solid.Box(rock, p + Vector3.up * s * .45f, new Vector3(s * 2.7f, s * 1.7f, s * 2.6f), Quaternion.identity); rocks++; }
+                    else if (r2 < .23f) { var s = ctx.Range(1f, 2.6f); mk.Blob(rock, p + Vector3.up * s * .4f, new Vector3(s, s * .7f, s * .9f), ctx.Rng, .3f); mk.Blob(moss, p + Vector3.up * s * .95f, new Vector3(s * .8f, s * .2f, s * .7f), ctx.Rng, .4f); BoxCol(ctx.Root, p + Vector3.up * s * .45f, new Vector3(s * 2.7f, s * 1.7f, s * 2.6f), Quaternion.identity); rocks++; }
                 }
             }
             Debug.Log($"The Grunge Rainwood: bluff {(hasBluff ? bluffR.ToString("0") + " m" : "none")}, river {river2.Count} points, {pines} pines, {logs} logs, {stumps} stumps, {rocks} boulders, {trailers} trailers, {piles} log piles, {cars} cars, {towers} lookouts, {booths} phone booths, {benches} benches");
@@ -714,7 +729,7 @@ namespace EverythingWorld.World
             mk.Prism(bark, a, b - a, r, Vector3.Distance(a, b), 8);
             for (var k = 0; k < 3; k++) mk.Blob(moss, Vector3.Lerp(a, b, .2f + k * .3f) + up * r * .8f, new Vector3(r * 1.1f, r * .3f, r * 1.4f), ctx.Rng, .15f);
             mk.Prism(WorldMaterials.Solid(new Color(.45f, .36f, .26f)), b - (b - a).normalized * .01f, b - a, r * .9f, .02f, 8);
-            solid.Box(bark, (a + b) / 2f, new Vector3(r * 3f, r * 2.6f, Vector3.Distance(a, b) + .3f), Quaternion.LookRotation(b - a));
+            BoxCol(ctx.Root, (a + b) / 2f + up * r * .2f, new Vector3(r * 3f, r * 3f, Vector3.Distance(a, b) + .3f), Quaternion.LookRotation(b - a));
         }
 
         void LogPile(LandContext ctx, MeshKit mk, MeshKit solid, Vector3 at)
@@ -722,7 +737,7 @@ namespace EverythingWorld.World
             var up = Vector3.up; var d = Quaternion.Euler(0, ctx.Range(0, 180f), 0) * Vector3.forward; var sd = Vector3.Cross(up, d);
             for (var row = 0; row < 3; row++) for (var k = 0; k < 4 - row; k++) mk.Prism(bark, at + up * (.45f + row * .8f) + sd * ((k - (3 - row) / 2f) * .85f) - d * 3f, d, .42f, 6f, 8);
             for (var k = 0; k < 2; k++) mk.Blob(moss, at + up * 2.3f + d * (k - .5f) * 2f, new Vector3(.9f, .2f, 1f), ctx.Rng, .4f);
-            solid.Box(bark, at + up * 1.2f, new Vector3(3.6f, 2.4f, 6f), Quaternion.LookRotation(d));
+            BoxCol(ctx.Root, at + up * 1.25f, new Vector3(4.2f, 2.6f, 6.2f), Quaternion.LookRotation(d));
         }
 
         /// A rusted old car sinking into the moss, ferns growing through it.
@@ -734,7 +749,7 @@ namespace EverythingWorld.World
             mk.Box(body, at + up * .55f, new Vector3(1.9f, .7f, 4.4f), rot); mk.Box(body, at + up * 1.15f - d * .3f, new Vector3(1.7f, .6f, 2.2f), rot);
             mk.Box(dark, at + up * 1.15f - d * .3f, new Vector3(1.72f, .4f, 2f), rot);
             mk.Blob(rust, at + up * .9f + d * 1.5f, new Vector3(.6f, .2f, .5f), ctx.Rng, .5f); mk.Blob(moss, at + up * 1.5f - d * .4f, new Vector3(.8f, .15f, 1f), ctx.Rng, .4f);
-            solid.Box(body, at + up * .8f, new Vector3(2f, 1.6f, 4.5f), rot);
+            BoxCol(ctx.Root, at + up * .8f, new Vector3(2f, 1.7f, 4.5f), rot);
         }
 
         /// A rusted trailer on blocks: a rounded tin box with a lit window (or a dark one), a door step, an awning, a
@@ -758,6 +773,7 @@ namespace EverythingWorld.World
             var ch = at + face * 3.4f + sd * 2.4f; ch.y = ctx.Ground(ch.x, ch.z); var chair = WorldMaterials.Solid(new Color(.3f, .5f, .45f));
             mk.Box(chair, ch + up * .45f, new Vector3(.6f, .06f, .6f), rot); mk.Box(chair, ch + up * .8f - face * .3f, new Vector3(.6f, .7f, .06f), rot * Quaternion.Euler(-15f, 0, 0));
             foreach (var s in new[] { -.28f, .28f }) mk.Box(metal, ch + up * .22f + sd * s, new Vector3(.04f, .45f, .6f), rot);
+            BoxCol(ctx.Root, ch + up * .55f - face * .05f, new Vector3(.65f, 1.1f, .75f), rot);
             if (ctx.Chance(.5f)) { var cl = at + face * 4.5f - sd * 3.5f; cl.y = ctx.Ground(cl.x, cl.z); Clothesline(ctx, mk, solid, cl, sd, 5f); }
             halos.Add(c + up * .2f + face * 1.6f + sd * 1.4f, 1.3f, Lamp, .5f);
             noGrass.Add(new Vector3(at.x, 5f, at.z));

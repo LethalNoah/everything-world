@@ -290,7 +290,12 @@ namespace EverythingWorld.World
             // To Hell And Back: a stair down into a glowing pit, a stair up to a high platform
             var pit = z.At(2f, -14f); var hellM = SongGlow(z, "To Hell And Back", Magenta, 2f);
             z.mk.Prism(obsidian, pit - up * .2f, up, 3.4f, .5f, 16); z.mk.Prism(hellM, pit + up * .31f, up, 2.6f, .03f, 16); halos.Add(pit + up * 1f, 3.4f, Magenta, .6f);
-            for (var k = 0; k < 6; k++) z.mk.Box(basalt, pit + z.front * (5f - k * .5f) + up * (.6f - k * .05f), new Vector3(1.6f, .14f, .5f), rot);
+            for (var k = 0; k < 6; k++)
+            {
+                // each step a solid block down to the ground (thin slabs hung in the air at knee height)
+                var stTop = .67f - k * .05f; var stC = pit + z.front * (5f - k * .5f) + up * ((stTop - .25f) / 2f); var stS = new Vector3(1.6f, stTop + .25f, .5f);
+                z.mk.Box(basalt, stC, stS, rot); z.solid.Box(basalt, stC, stS, rot);
+            }
             var plat = z.At(2f, -22f); for (var k = 0; k < 12; k++) z.mk.Box(basalt, pit - z.side * 3.8f - z.side * (k * .6f) + up * (.25f + k * .45f), new Vector3(.6f, .5f + k * .9f, 1.6f), Quaternion.LookRotation(z.side));
             var top = pit - z.side * 11f + up * 5.6f; z.mk.Box(obsidian, top, new Vector3(4f, .6f, 4f), rot); z.mk.Box(SongGlow(z, "To Hell And Back", Cyan, 2f), top + up * .32f, new Vector3(3.6f, .04f, 3.6f), rot);
             foreach (var a in new[] { -1.8f, 1.8f }) foreach (var b in new[] { -1.8f, 1.8f }) { var leg = top + z.side * a + z.front * b; var gnd = new Vector3(leg.x, ctx.Ground(leg.x, leg.z), leg.z); z.mk.Box(obsidian, (leg + gnd) / 2f, new Vector3(.4f, leg.y - gnd.y, .4f), rot); ArtistBits.PostCollider(z.root, gnd, leg.y - gnd.y, .3f); }

@@ -457,24 +457,30 @@ namespace EverythingWorld.World
                 float px = x + ctx.Range(0f, cell), pz = z + ctx.Range(0f, cell);
                 if (!Open(ctx, px, pz, 3f)) continue;
                 var p = ctx.OnGround(px, pz); var roll = ctx.Range(0f, 1f);
-                if (roll < .22f) { TwistedTree(ctx, mk, bark, p); trees++; }
-                else if (roll < .3f) { mk.Blob(stone, p + Vector3.up * .5f, new Vector3(ctx.Range(1f, 2.4f), ctx.Range(.6f, 1.4f), ctx.Range(1f, 2f)), ctx.Rng, .4f); solid.Box(stone, p + Vector3.up * .6f, new Vector3(2.6f, 1.3f, 2.4f), Quaternion.identity); rocks++; }
+                if (roll < .22f) { TwistedTree(ctx, mk, solid, bark, p); trees++; }
+                else if (roll < .3f)
+                {
+                    // a boulder seated on the lowest ground under it (on a slope its downhill side hung in the air), its
+                    // collider the boulder's own size (a fixed 2.6 m box left the big ones' sides open)
+                    var br = new Vector3(ctx.Range(1f, 2.4f), ctx.Range(.6f, 1.4f), ctx.Range(1f, 2f));
+                    for (var k = 0; k < 8; k++) { var a = k * Mathf.PI / 4f; p.y = Mathf.Min(p.y, ctx.Ground(px + Mathf.Cos(a) * br.x * .8f, pz + Mathf.Sin(a) * br.z * .8f)); }
+                    mk.Blob(stone, p + Vector3.up * .5f, br, ctx.Rng, .4f); solid.Box(stone, p + Vector3.up * .5f, br * 2f, Quaternion.identity); rocks++;
+                }
                 else if (roll < .36f && FlatEnough(ctx, p, 5f)) { var r = ctx.Range(2.5f, 5f); for (var k = 0; k < 16; k++) { float a0 = k * Mathf.PI / 8f, a1 = (k + 1) * Mathf.PI / 8f; var w = p + Vector3.up * .05f; mk.Tri(pool, w, w + new Vector3(Mathf.Cos(a0), 0, Mathf.Sin(a0)) * r, w + new Vector3(Mathf.Cos(a1), 0, Mathf.Sin(a1)) * r, w - Vector3.up); } for (var k = 0; k < 8; k++) { var a = ctx.Range(0, Mathf.PI * 2f); var q = p + new Vector3(Mathf.Cos(a), 0, Mathf.Sin(a)) * (r + .3f); soft.Box(reed, q + Vector3.up * .6f, new Vector3(.05f, 1.2f, .05f), Quaternion.Euler(ctx.Range(-8f, 8f), 0, ctx.Range(-8f, 8f))); } noGrass.Add(new Vector3(p.x, r + .5f, p.z)); pools++; }
-                else if (roll < .39f) { for (var k = 0; k < 5; k++) mk.Blob(stone, p + Vector3.up * (.3f + k * .45f), Vector3.one * (.6f - k * .09f), ctx.Rng, .3f); solid.Box(stone, p + Vector3.up * 1f, new Vector3(1.2f, 2f, 1.2f), Quaternion.identity); cairns++; }
+                else if (roll < .39f) { for (var k = 0; k < 5; k++) mk.Blob(stone, p + Vector3.up * (.3f + k * .45f), Vector3.one * (.6f - k * .09f), ctx.Rng, .3f); solid.Box(stone, p + Vector3.up * 1f, new Vector3(1.5f, 2f, 1.5f), Quaternion.identity); cairns++; }
                 else if (roll < .55f) { for (var k = 0; k < 4; k++) soft.Blob(WorldMaterials.Solid(new Color(.45f, .3f, .5f)), p + new Vector3(ctx.Range(-1.2f, 1.2f), .3f, ctx.Range(-1.2f, 1.2f)), new Vector3(.7f, .35f, .7f), ctx.Rng, .3f); }
             }
             Debug.Log($"The Prog Marches: {loop.Count} loop points, {trees} twisted trees, {rocks} boulders, {pools} pools, {cairns} cairns");
         }
 
-        void TwistedTree(LandContext ctx, MeshKit mk, Material bark, Vector3 at)
+        void TwistedTree(LandContext ctx, MeshKit mk, MeshKit solid, Material bark, Vector3 at)
         {
             var up = Vector3.up; var p = at - up * .3f; var dir = up; var s = ctx.Range(.8f, 1.3f);
             for (var k = 0; k < 4; k++)
             {
-                var nd = (up + new Vector3(ctx.Range(-.6f, .6f), 0, ctx.Range(-.6f, .6f))).normalized; mk.Prism(bark, p, nd, (.4f - k * .08f) * s, 2f * s, 6, .8f); p += nd * 1.9f * s;
-                if (k >= 1) { var bd = (new Vector3(ctx.Range(-1f, 1f), .4f, ctx.Range(-1f, 1f))).normalized; mk.Prism(bark, p, bd, .12f * s, 2f * s, 5, .2f); }
+                var nd = (up + new Vector3(ctx.Range(-.6f, .6f), 0, ctx.Range(-.6f, .6f))).normalized; mk.Prism(bark, p, nd, (.4f - k * .08f) * s, 2f * s, 6, .8f); if (k < 2) solid.Prism(bark, p, nd, (.4f - k * .08f) * s, 2f * s, 6, .8f); p += nd * 1.9f * s;
+                if (k >= 1) { var bd = (new Vector3(ctx.Range(-1f, 1f), .4f, ctx.Range(-1f, 1f))).normalized; mk.Prism(bark, p, bd, .12f * s, 2f * s, 5, .2f); if (p.y - at.y < 2.4f) solid.Prism(bark, p, bd, .12f * s, 2f * s, 5, .2f); }
             }
-            ArtistBits.PostCollider(ctx.Root, at, 4f, .4f * s);
         }
 
         void GroundCover(LandContext ctx)

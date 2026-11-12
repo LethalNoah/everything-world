@@ -265,7 +265,7 @@ namespace EverythingWorld.World
             mk.Box(dark, pole + up * PH, new Vector3(2f, 1.2f, .3f), rot);
             for (var i = 0; i < 3; i++) for (var j = 0; j < 2; j++) mk.Box(SongGlow(id, new Color(.9f, .95f, 1f), 3f), pole + up * (PH - .3f + j * .55f) + side * (i - 1f) * .6f + face * .16f, new Vector3(.45f, .4f, .03f), rot);
             var flag = WorldMaterials.Solid(new Color(.95f, .5f, .15f)); mk.Box(flag, bench + up * 1.4f, new Vector3(.03f, .35f, .9f), rot * Quaternion.Euler(0, 0, 0)); mk.Box(SongGlow(id, Blue, 2f), bench + up * 1.4f + side * .02f, new Vector3(.02f, .12f, .7f), rot);
-            mk.Prism(wood, bench + up * .5f - face * .6f, up, .03f, 1.1f, 6);
+            mk.Prism(wood, bench + up * .5f - face * .6f, up, .03f, 1.1f, 6); ArtistBits.PostCollider(ctx.Root, bench - face * .6f, 1.6f, .12f);
             ArtistBits.PointLight(ctx.Root, pole + up * (PH - 1f) + face * 2f + side * 2f, new Color(.9f, .95f, 1f), 20f, 3f);
             ArtistBits.PointLight(ctx.Root, c + up * 3f, new Color(.9f, .95f, 1f), 12f, 1.6f);
             halos.Add(pole + up * PH + face * .8f, 1.8f, new Color(.9f, .95f, 1f), .6f);

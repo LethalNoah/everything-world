@@ -122,7 +122,7 @@ namespace EverythingWorld.World
             z.mk.Box(dark, P(0, .55f, -D / 2f + 2f), new Vector3(8f, .7f, 3f), rot); z.solid.Box(dark, P(0, .55f, -D / 2f + 2f), new Vector3(8f, .7f, 3f), rot);
             var stem = WorldMaterials.Solid(new Color(.25f, .45f, .22f)); var petals = new[] { new Color(1f, .45f, .55f), new Color(1f, .85f, .3f), new Color(.95f, .95f, .9f), new Color(.85f, .25f, .3f) };
             for (var k = 0; k < 14; k++) { var fp = P(-3.6f + k * .55f, .92f, -D / 2f + 3.3f - (k % 3) * .25f); var dirF = Quaternion.AngleAxis(-60f + (k % 5) * 25f, up) * z.side; z.mk.Box(stem, fp, new Vector3(.03f, .03f, 1f), Quaternion.LookRotation(dirF)); for (var j = 0; j < 4; j++) z.mk.Blob(WorldMaterials.Solid(petals[k % petals.Length]), fp + dirF * (.2f + j * .12f) + up * .04f, Vector3.one * .07f, ctx.Rng, 0f); }
-            foreach (var s in new[] { -1f, 1f }) { var amp = P(s * 3f, 1.6f, -D / 2f + 1.2f); z.mk.Box(dark, amp, new Vector3(1.2f, 1.4f, .7f), rot); z.mk.Box(WorldMaterials.Solid(new Color(.2f, .19f, .17f)), amp + z.front * .36f, new Vector3(1f, 1.1f, .02f), rot); }
+            foreach (var s in new[] { -1f, 1f }) { var amp = P(s * 3f, 1.6f, -D / 2f + 1.2f); z.mk.Box(dark, amp, new Vector3(1.2f, 1.4f, .7f), rot); z.mk.Box(WorldMaterials.Solid(new Color(.2f, .19f, .17f)), amp + z.front * .36f, new Vector3(1f, 1.1f, .02f), rot); z.solid.Box(dark, amp, new Vector3(1.2f, 1.4f, .75f), rot); }
             z.mk.Prism(steel, P(0, .9f, -D / 2f + 2.6f), up, .025f, 1.6f, 6);
             var curtain = SongGlow(IKnowItsOver, new Color(.55f, .08f, .1f), .5f);
             for (var k = 0; k < 18; k++) z.mk.Box(curtain, P(-4.5f + k * .53f, 3.4f, -D / 2f + T + .08f + (k % 2) * .12f), new Vector3(.55f, 5.2f, .06f), rot * Quaternion.Euler(0, (k % 2 == 0 ? 18f : -18f), 0));
@@ -209,9 +209,9 @@ namespace EverythingWorld.World
             {
                 var p = sk + z.side * ((k - 2.5f) * 2.3f) - z.front * ((k % 2) * 1.5f); var hgt = heights[k];
                 z.mk.Box(darkConcrete, p + up * hgt / 2f, new Vector3(1.9f, hgt, 1.9f), rot);
+                BoxCol(z.root, p + up * hgt / 2f, new Vector3(1.95f, hgt, 1.95f), rot);   // each tower its own box (one big box hid the staggered ones)
                 for (var f = 0; f < Mathf.FloorToInt(hgt / 1.1f); f++) for (var b = 0; b < 2; b++) z.mk.Box((f + b + k) % 3 == 0 ? lit : windowsOff, p + up * (.7f + f * 1.1f) + z.front * .96f + z.side * (b - .5f) * .8f, new Vector3(.5f, .55f, .02f), rot);
             }
-            z.solid.Box(darkConcrete, sk + up * 4f - z.front * .7f, new Vector3(14.5f, 8f, 3.6f), rot);
             halos.Add(sk + up * 5f + z.front * 2f, 7f, Window, .12f);
             // Kool Thing: a stack of amps with an old TV on top, its screen flickering
             var amps = z.At(-1.5f, -8f); var arot = Quaternion.LookRotation((z.front + z.side * .4f).normalized);

@@ -85,6 +85,7 @@ namespace EverythingWorld.World
                 mk.Cone(bark, kp, ctx.Range(.15f, .25f), ctx.Range(.4f, .9f), 5);
             }
             ArtistBits.PostCollider(ctx.Root, at, h * .7f, .6f * s);
+            ArtistBits.PostCollider(ctx.Root, at, 1.2f, .85f * s);   // the flared foot is wider than the trunk
             noGrass.Add(new Vector3(at.x, 1.5f * s, at.z));
         }
 
@@ -145,7 +146,7 @@ namespace EverythingWorld.World
             var toWater = Vector3.zero; for (var k = 0; k < 16; k++) { var d = Quaternion.Euler(0, k * 22.5f, 0) * Vector3.forward; var q = at + d * 10f; if (WaterAt(q.x, q.z, 0f, out _)) toWater += d; }
             var face = toWater.sqrMagnitude > .01f ? toWater.normalized : Vector3.forward; var rot = Quaternion.LookRotation(face); var side = Vector3.Cross(up, face);
             var floor = new Vector3(at.x, Mathf.Max(at.y, s) + 1.6f, at.z);
-            foreach (var i in new[] { -1f, 1f }) foreach (var j in new[] { -1f, 1f }) { var p = at + side * i * 2.2f + face * j * 1.8f; var g = ctx.Ground(p.x, p.z); mk.Prism(greyWood, new Vector3(p.x, g - .5f, p.z), up, .14f, floor.y - g + .5f, 6); }
+            foreach (var i in new[] { -1f, 1f }) foreach (var j in new[] { -1f, 1f }) { var p = at + side * i * 2.2f + face * j * 1.8f; var g = ctx.Ground(p.x, p.z); mk.Prism(greyWood, new Vector3(p.x, g - .5f, p.z), up, .14f, floor.y - g + .5f, 6); ArtistBits.PostCollider(ctx.Root, new Vector3(p.x, g, p.z), floor.y - g, .16f); }
             mk.Box(plank, floor, new Vector3(5f, .2f, 4.4f), rot); solid.Box(plank, floor - up * .4f, new Vector3(5f, 1f, 4.4f), rot);
             var w = WorldMaterials.Solid(new Color(.48f, .44f, .38f));
             mk.Box(w, floor + up * 1.3f - face * .4f, new Vector3(4.4f, 2.6f, 3.2f), rot); solid.Box(w, floor + up * 1.3f - face * .4f, new Vector3(4.4f, 2.6f, 3.2f), rot);
@@ -173,7 +174,7 @@ namespace EverythingWorld.World
             var len = best + 5f; var y = Mathf.Max(at.y, s + .6f);
             var mid = new Vector3(at.x, y, at.z) + dir * len / 2f;
             mk.Box(plank, mid, new Vector3(1.8f, .15f, len), rot); solid.Box(plank, mid - up * .3f, new Vector3(1.8f, .7f, len), rot);
-            for (var t = 1f; t <= len; t += 2.5f) foreach (var sd in new[] { -.85f, .85f }) { var p = new Vector3(at.x, 0, at.z) + dir * t + side * sd; var g = ctx.Ground(p.x, p.z); mk.Prism(greyWood, new Vector3(p.x, g - .4f, p.z), up, .1f, y - g + .9f, 6); }
+            for (var t = 1f; t <= len; t += 2.5f) foreach (var sd in new[] { -.85f, .85f }) { var p = new Vector3(at.x, 0, at.z) + dir * t + side * sd; var g = ctx.Ground(p.x, p.z); mk.Prism(greyWood, new Vector3(p.x, g - .4f, p.z), up, .1f, y - g + .9f, 6); if (y - g > .5f) ArtistBits.PostCollider(ctx.Root, new Vector3(p.x, g, p.z), y - g, .12f); }
             var end = new Vector3(at.x, y, at.z) + dir * len;
             var boat = end + side * 2f - dir * 1.5f; boat.y = s + .05f;
             mk.Box(WorldMaterials.Solid(new Color(.55f, .58f, .5f), .6f), boat + up * .25f, new Vector3(1.4f, .5f, 3.6f), rot);

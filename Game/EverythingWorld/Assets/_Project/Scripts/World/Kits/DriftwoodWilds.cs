@@ -191,6 +191,8 @@ namespace EverythingWorld.World
                     var drop = 1.5f + Mathf.Sin(f0 * Mathf.PI) * .3f;
                     mk.Quad(net, T(f0), T(f1), T(f1) - Vector3.up * drop, T(f0) - Vector3.up * drop, T(f0) + sea);
                     mk.Quad(net, T(f0), T(f1), T(f1) - Vector3.up * drop, T(f0) - Vector3.up * drop, T(f0) - sea);
+                    var span = Vector3.ProjectOnPlane(T(f1) - T(f0), Vector3.up);
+                    if (span.sqrMagnitude > .0001f) solid.Box(net, (T(f0) + T(f1)) / 2f - Vector3.up * drop / 2f, new Vector3(.12f, drop, span.magnitude + .02f), Quaternion.LookRotation(span));   // you can't walk through the net
                     if (i % 2 == 0) mk.Blob(cork, T(f0), new Vector3(.1f, .07f, .07f), ctx.Rng, .1f);
                 }
             }
@@ -292,7 +294,12 @@ namespace EverythingWorld.World
             var pipe = Q(2, arc / 2 - 1) + Vector3.up * .05f;
             mk.Prism(iron, pipe, Vector3.up, .09f, 1.1f, 6);
             mk.Box(iron, pipe + Vector3.up * 1.15f, new Vector3(.3f, .06f, .3f), Quaternion.identity);
-            solid.Box(tar, at + Vector3.up * 1f, new Vector3(3.4f, 2.2f, L * .85f), rot);
+            for (var i = 0; i < stations; i++)                       // a collider per station, the hull's own width, down to the sand
+            {
+                var tm = (i + .5f) / stations; var hw = 1.75f * (1f - Mathf.Pow(tm, 2.6f) * .94f); var hh = 2.3f * (1f - Mathf.Pow(tm, 3f) * .45f);
+                var sc = stern + along * (tm * L); var gy = Mathf.Min(ctx.Ground(sc.x, sc.z), baseY) - .3f; var top = baseY + hh;
+                solid.Box(tar, new Vector3(sc.x, (gy + top) / 2f, sc.z), new Vector3(hw * 2f, top - gy, L / stations + .02f), rot);
+            }
             noGrass.Add(new Vector3(at.x, 5.5f, at.z));
             life.landmarks.Add(at);
         }

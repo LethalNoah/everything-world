@@ -265,7 +265,7 @@ namespace EverythingWorld.World
             {
                 var a = ctx.Range(0, Mathf.PI * 2f); var dx = Mathf.Cos(a); var dz = Mathf.Sin(a); var r = LakeEdge(lakeC.x + dx, lakeC.y + dz) + ctx.Range(-1f, 2f);
                 var p = new Vector3(lakeC.x + dx * r, 0, lakeC.y + dz * r); if (!ctx.IsLand(p.x, p.z, 1f)) continue; p.y = ctx.Ground(p.x, p.z);
-                if (k % 3 == 0) { mk.Blob(stone, p + Vector3.up * .3f, new Vector3(ctx.Range(.6f, 1.4f), .6f, ctx.Range(.6f, 1.2f)), ctx.Rng, .35f); }
+                if (k % 3 == 0) { var rr = new Vector3(ctx.Range(.6f, 1.4f), .6f, ctx.Range(.6f, 1.2f)); mk.Blob(stone, p + Vector3.up * .3f, rr, ctx.Rng, .35f); solid.Box(stone, p + Vector3.up * .3f, rr * 1.6f, Quaternion.identity); }
                 else for (var j = 0; j < 4; j++) soft.Box(WorldMaterials.Solid(new Color(.45f, .55f, .3f)), p + new Vector3(ctx.Range(-.4f, .4f), .7f, ctx.Range(-.4f, .4f)), new Vector3(.05f, 1.4f, .05f), Quaternion.Euler(ctx.Range(-10f, 10f), 0, ctx.Range(-10f, 10f)));
             }
             Color[] canoe = { new Color(.75f, .2f, .15f), new Color(.2f, .45f, .6f), new Color(.85f, .65f, .2f) };
@@ -300,14 +300,20 @@ namespace EverythingWorld.World
                 p.y = ctx.IsLand(p.x, p.z, 0f) ? Mathf.Max(ctx.Ground(p.x, p.z), lakeY + .6f) : lakeY + .6f; pts.Add(p);
             }
             // smooth the heights so the line runs gently
-            for (var pass = 0; pass < 6; pass++) for (var k = 1; k < pts.Count - 1; k++) { var p = pts[k]; p.y = (pts[k - 1].y + pts[k].y * 2f + pts[k + 1].y) / 4f; pts[k] = p; }
+            // (two passes: six lifted the track up to a metre over every dip, sleepers and rails floating in the air)
+            for (var pass = 0; pass < 2; pass++) for (var k = 1; k < pts.Count - 1; k++) { var p = pts[k]; p.y = (pts[k - 1].y + pts[k].y * 2f + pts[k + 1].y) / 4f; pts[k] = p; }
             for (var k = 0; k < pts.Count - 1; k++)
             {
                 var a = pts[k]; var b = pts[k + 1]; var dir = (b - a); var side = Vector3.Cross(Vector3.up, new Vector3(dir.x, 0, dir.z).normalized);
                 mk.Box(logM, (a + b) / 2f + Vector3.up * .1f, new Vector3(2.4f, .16f, .4f), Quaternion.LookRotation(side));
                 foreach (var s in new[] { -.6f, .6f }) mk.Box(rail, (a + b) / 2f + side * s + Vector3.up * .25f, new Vector3(.09f, .1f, dir.magnitude + .05f), Quaternion.LookRotation(dir));
                 var g = ctx.Ground((a.x + b.x) / 2f, (a.z + b.z) / 2f); var top = (a.y + b.y) / 2f;
-                if (top - g > .6f) mk.Box(stone, new Vector3((a.x + b.x) / 2f, (top + g) / 2f, (a.z + b.z) / 2f), new Vector3(2.6f, top - g + .2f, dir.magnitude + .1f), Quaternion.LookRotation(dir));
+                if (top - g > .15f)
+                {   // a stone embankment under any stretch that rides above the ground (it used to start only at .6 m, so lower gaps floated)
+                    var emb = new Vector3((a.x + b.x) / 2f, (top + g) / 2f, (a.z + b.z) / 2f); var es = new Vector3(2.6f, top - g + .2f, dir.magnitude + .1f);
+                    mk.Box(stone, emb, es, Quaternion.LookRotation(dir));
+                    if (top - g > .45f) solid.Box(stone, emb, es, Quaternion.LookRotation(dir));
+                }
             }
             life.track = pts.ToArray();
             // the station on the side nearest where you arrive
@@ -350,7 +356,7 @@ namespace EverythingWorld.World
                 {
                     mk.Box(logM, mid + side * s + Vector3.up * 1.05f, new Vector3(.1f, .1f, Vector3.Distance(p0, p1) + .05f), Quaternion.LookRotation(p1 - p0));
                     solid.Box(logM, mid + side * s + Vector3.up * .6f, new Vector3(.15f, 1f, Vector3.Distance(p0, p1) + .05f), Quaternion.LookRotation(p1 - p0));
-                    if (i % 2 == 0) { mk.Prism(logM, p0 + side * s, Vector3.up, .07f, 1.1f, 6); var g = ctx.Ground(p0.x, p0.z); if (p0.y - g > .5f) mk.Prism(logM, new Vector3(p0.x, g - .5f, p0.z) + side * s, Vector3.up, .16f, p0.y - g + .5f, 6); }
+                    if (i % 2 == 0) { mk.Prism(logM, p0 + side * s, Vector3.up, .07f, 1.1f, 6); var g = ctx.Ground(p0.x, p0.z); if (p0.y - g > .5f) { mk.Prism(logM, new Vector3(p0.x, g - .5f, p0.z) + side * s, Vector3.up, .16f, p0.y - g + .5f, 6); ArtistBits.PostCollider(ctx.Root, new Vector3(p0.x, g, p0.z) + side * s, p0.y - g, .18f); } }
                 }
                 if (i % 8 == 4) Lantern(ctx, mk, mid + side * 1.6f);
             }
@@ -438,7 +444,7 @@ namespace EverythingWorld.World
                 foreach (var o in placed) if ((new Vector2(o.x, o.z) - new Vector2(px, pz)).sqrMagnitude < 55f * 55f) ok = false;
                 if (!ok) continue;
                 var at = ctx.OnGround(px, pz); placed.Add(at); var s = ctx.Range(.85f, 1.15f); var h = 46f * s; var r = 2.4f * s;
-                for (var k = 0; k < 6; k++) { var d = Quaternion.Euler(0, k * 60f + 15f, 0) * Vector3.forward; mk.Prism(redBark, at + d * r * .8f - up * .5f, (d * .5f + up).normalized, r * .55f, 4f * s, 6, .2f); }
+                for (var k = 0; k < 6; k++) { var d = Quaternion.Euler(0, k * 60f + 15f, 0) * Vector3.forward; mk.Prism(redBark, at + d * r * .8f - up * .5f, (d * .5f + up).normalized, r * .55f, 4f * s, 6, .2f); solid.Prism(redBark, at + d * r * .8f - up * .5f, (d * .5f + up).normalized, r * .55f, 4f * s, 6, .2f); }
                 mk.Prism(redBark, at - up * .5f, up, r, h, 10, .35f);
                 for (var k = 0; k < 6; k++) { var d = Quaternion.Euler(0, k * 67f, 0) * Vector3.forward; mk.Prism(redBark, at + up * (h * .55f + k * 2.2f), (d + up * .3f).normalized, .35f * s, 5f * s, 5, .3f); }
                 for (var k = 0; k < 5; k++) soft.Cone(crown, at + up * (h * .5f + k * h * .1f), (7f - k * 1.2f) * s, h * .2f, 9, ctx.Range(0, 60f));
@@ -478,6 +484,7 @@ namespace EverythingWorld.World
                 {   // log stilts under the porch deck
                     var p = at + face * f + side * s; var g = ctx.Ground(p.x, p.z);
                     if (at.y - g > .05f) mk.Prism(logM, new Vector3(p.x, g - .3f, p.z), up, .13f, at.y - g + .45f, 6);
+                    if (at.y - g > .4f) ArtistBits.PostCollider(ctx.Root, new Vector3(p.x, g, p.z), at.y - g, .15f);
                 }
             }
             return at;

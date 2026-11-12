@@ -207,8 +207,10 @@ namespace EverythingWorld.World
                 L[i] = pts[i] + Vector3.up * lift - side * (w / 2f * miter); R[i] = pts[i] + Vector3.up * lift + side * (w / 2f * miter);
                 if (ground != null)
                 {
-                    float gl = ground.Ground(L[i].x, L[i].z), gr = ground.Ground(R[i].x, R[i].z), top = Mathf.Max(pts[i].y, Mathf.Max(gl, gr) - .05f);
-                    L[i].y = Mathf.Max(gl, top - .15f) + lift; R[i].y = Mathf.Max(gr, top - .15f) + lift;
+                    // follow the ground across the path (a flat path on a cross-slope floated up to a metre on its
+                    // low side); lift both edges only if the middle bulges above the line between them
+                    float gl = ground.Ground(L[i].x, L[i].z), gr = ground.Ground(R[i].x, R[i].z), bulge = Mathf.Max(0f, pts[i].y - (gl + gr) / 2f);
+                    L[i].y = gl + bulge + lift; R[i].y = gr + bulge + lift;
                 }
             }
             for (var i = 0; i + 1 < n; i++) mk.Quad(m, L[i], R[i], R[i + 1], L[i + 1], (pts[i] + pts[i + 1]) / 2f - Vector3.up);
@@ -261,7 +263,7 @@ namespace EverythingWorld.World
             mk.Box(slate, g + up * 2.2f + toSpire * .48f, new Vector3(8.4f, 1.1f, .02f), rot);
             ArtistBits.Label(ctx.Root, "THE DJENT SPIRES", g + up * 2.25f + toSpire * .5f, toSpire, .48f, Gold, TextAnchor.MiddleCenter);
             halos.Add(g + up * 2.3f + toSpire * 1.4f, 4f, Gold, .25f);
-            foreach (var s in new[] { -1f, 1f }) Crystal(mk, crystal, g + sd * s * 5.6f - up * .3f, (up + sd * s * .15f).normalized, .55f, 5.4f, 10f);
+            foreach (var s in new[] { -1f, 1f }) { Crystal(mk, crystal, g + sd * s * 5.6f - up * .3f, (up + sd * s * .15f).normalized, .55f, 5.4f, 10f); ArtistBits.PostCollider(ctx.Root, g + sd * s * 5.8f, 3f, .6f); }
             ArtistBits.PointLight(ctx.Root, c + up * 6f, new Color(.85f, .93f, 1f), 26f, 1.4f);
             noGrass.Add(new Vector3(c.x, 15f, c.z));
             var mark = new GameObject("Shot: the arrival and the citadel").transform; mark.SetParent(ctx.Root, false);
@@ -356,8 +358,12 @@ namespace EverythingWorld.World
                 for (var i = 1; i < pts.Count; i++)
                 {
                     var a = pts[i]; var b = pts[i - 1]; var dl = a - b; dl.y = 0; if (dl.sqrMagnitude < .01f) continue; var sdd = Vector3.Cross(Vector3.up, dl.normalized);
-                    var y = Mathf.Max(ctx.Ground(a.x - sdd.x * PathW / 2f, a.z - sdd.z * PathW / 2f), ctx.Ground(a.x + sdd.x * PathW / 2f, a.z + sdd.z * PathW / 2f), a.y);
-                    mk.Box(fretM, new Vector3(a.x, y + .24f, a.z), new Vector3(PathW - .2f, .05f, .12f), Quaternion.LookRotation(dl));
+                    // the fret lies on the path's surface, tilted with it across a slope (it used to sit level at the
+                    // path's highest point and float over the low side)
+                    float gl = ctx.Ground(a.x - sdd.x * PathW / 2f, a.z - sdd.z * PathW / 2f), gr = ctx.Ground(a.x + sdd.x * PathW / 2f, a.z + sdd.z * PathW / 2f);
+                    var bulge = Mathf.Max(0f, a.y - (gl + gr) / 2f); var y = (gl + gr) / 2f + bulge;
+                    var fl = new Vector3(a.x, gl + bulge + .24f, a.z) - sdd * (PathW / 2f); var fr = new Vector3(a.x, gr + bulge + .24f, a.z) + sdd * (PathW / 2f);
+                    mk.Box(fretM, (fl + fr) / 2f, new Vector3(.12f, .05f, PathW - .2f), Quaternion.LookRotation(fr - fl));
                     fretN++;
                     if (fretN % 12 == 6) foreach (var s in new[] { -.6f, .6f }) mk.Prism(pearlM, new Vector3(a.x, y + .22f, a.z) - dl.normalized * .75f + sdd * s, Vector3.up, .16f, .04f, 10);
                 }
@@ -439,7 +445,10 @@ namespace EverythingWorld.World
                 var len = k == 0 ? big : big * ctx.Range(.25f, .65f);
                 var d = k == 0 ? Vector3.up : (Quaternion.Euler(ctx.Range(15f, 40f), ctx.Range(0, 360f), 0) * Vector3.up).normalized;
                 var off = k == 0 ? Vector3.zero : new Vector3(ctx.Range(-1.2f, 1.2f), 0, ctx.Range(-1.2f, 1.2f)) * (big * .15f);
-                Crystal(mk, gold && k == 1 ? goldGlow : (k % 4 == 3 ? crystalDeep : crystal), at + off - Vector3.up * .4f, d, len * .13f, len, ctx.Range(0, 60f));
+                var foot = at + off; foot.y = Mathf.Min(at.y, ctx.Ground(foot.x, foot.z));
+                Crystal(mk, gold && k == 1 ? goldGlow : (k % 4 == 3 ? crystalDeep : crystal), foot - Vector3.up * .4f, d, len * .13f, len, ctx.Range(0, 60f));
+                // each leaning crystal gets its own collider up to head height (the one box in the middle missed the outer ones)
+                if (k > 0) { var cl = Mathf.Min(len, 3f / Mathf.Max(.3f, d.y)); BoxCol(ctx.Root, foot - Vector3.up * .4f + d * cl / 2f, new Vector3(len * .26f, len * .26f, cl), Quaternion.LookRotation(d)); }
             }
             halos.Add(at + Vector3.up * big * .5f, big * .35f + 1f, Ice, .3f);
             BoxCol(ctx.Root, at + Vector3.up * Mathf.Min(big, 4f) * .5f, new Vector3(big * .45f + .6f, Mathf.Min(big, 4f), big * .45f + .6f), Quaternion.identity);
@@ -448,7 +457,7 @@ namespace EverythingWorld.World
         /// Cubes hanging in the air in a precise grid, each turning slowly in step (DjentLife), a gold one among them.
         void FloatingCubes(LandContext ctx, MeshKit mk, Vector3 at)
         {
-            var n = ctx.Rng.Next(2, 4); var gap = ctx.Range(2.2f, 3.4f); var s = ctx.Range(.6f, 1.3f); var y0 = ctx.Range(2.8f, 5f);
+            var n = ctx.Rng.Next(2, 4); var gap = ctx.Range(2.2f, 3.4f); var s = ctx.Range(.6f, 1.3f); var y0 = ctx.Range(3.2f, 5f);
             var yaw = Quaternion.Euler(0, ctx.Range(0, 90f), 0); var goldK = ctx.Rng.Next(n * n);
             for (var i = 0; i < n; i++) for (var j = 0; j < n; j++)
             {
@@ -456,6 +465,7 @@ namespace EverythingWorld.World
                 ck.Box(k == goldK ? goldGlow : crystal, Vector3.zero, Vector3.one * s, Quaternion.identity);
                 var go = ck.BuildSingle("Floating cube", life.transform, false); if (go == null) continue;
                 var p = at + yaw * new Vector3((i - (n - 1) / 2f) * gap, y0 + ((i + j) % 2) * gap * .5f, (j - (n - 1) / 2f) * gap);
+                p.y += Mathf.Max(0f, ctx.Ground(p.x, p.z) - at.y);   // on a slope, keep the uphill cubes above head height too
                 go.transform.position = p; life.cubes.Add(go.transform); life.cubeAt.Add(p);
             }
             halos.Add(at + Vector3.up * (y0 + gap * .3f), gap * n * .6f, Ice, .3f);

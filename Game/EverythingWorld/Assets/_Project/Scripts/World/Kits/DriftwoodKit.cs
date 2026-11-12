@@ -73,6 +73,13 @@ namespace EverythingWorld.World
 
         static bool HasStation(IslandWorldData.Artist a) => a.station || a.stationId != 0;
 
+        /// A plain box collider on its own object (a branch, a loose plank: shapes the merged walls don't cover).
+        static void BoxCol(Transform parent, Vector3 center, Vector3 size, Quaternion rot)
+        {
+            var go = new GameObject("Box collider"); go.transform.SetParent(parent, false); go.transform.SetPositionAndRotation(center, rot);
+            go.AddComponent<BoxCollider>().size = size; go.isStatic = true;
+        }
+
         /// How far an artist's own scene reaches from its centre.
         static float Foot(IslandWorldData.Artist a) => a.name == "Jack Johnson" ? 22f : HasStation(a) ? 13f : 8f;
 
@@ -502,7 +509,7 @@ namespace EverythingWorld.World
                 mk.Box(WorldMaterials.Glow(Ember, 2.4f), lantern + up * .15f, new Vector3(.3f, .4f, .3f), Quaternion.identity);
                 mk.Cone(iron, lantern + up * .36f, .26f, .25f, 4, 45f);
                 halos.Add(lantern + up * .15f, 1.8f, Ember, 1f);
-                ArtistBits.PostCollider(ctx.Root, foot, 3f, 1.4f);
+                ArtistBits.PostCollider(ctx.Root, foot, 3f, 2.1f);   // wide enough for the stone pile and the sticks
             }
             ArtistBits.PointLight(ctx.Root, c + up * 4f, Ember, 22f, 1.3f);
             life.archAt = c + up * 15f; life.seaDir = sea;

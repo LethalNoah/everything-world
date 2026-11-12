@@ -252,7 +252,10 @@ namespace EverythingWorld.World
                 if (ground != null)
                 {
                     float gl = ground.Ground(L[i].x, L[i].z), gr = ground.Ground(R[i].x, R[i].z), top = Mathf.Max(pts[i].y, Mathf.Max(gl, gr) - .05f);
-                    L[i].y = Mathf.Max(gl, top - .15f) + lift; R[i].y = Mathf.Max(gr, top - .15f) + lift;
+                    // Each edge follows its own ground (raised only a little where the middle is higher), so on a
+                    // side slope the downhill edge no longer floats out into the air.
+                    var bump = Mathf.Clamp(pts[i].y - (gl + gr) / 2f, 0f, .25f);
+                    L[i].y = gl + bump + lift; R[i].y = gr + bump + lift;
                 }
             }
             for (var i = 0; i + 1 < n; i++) mk.Quad(m, L[i], R[i], R[i + 1], L[i + 1], (pts[i] + pts[i + 1]) / 2f - Vector3.up);
@@ -482,7 +485,7 @@ namespace EverythingWorld.World
             mk.Box(wood, g + up * .95f - face * .55f, new Vector3(1.2f, .7f, .12f), rot * Quaternion.Euler(-20f, 0, 0));
             mk.Blob(GlowM(Gold, 2.2f), g + up * .72f, new Vector3(.5f, .14f, .32f), ctx.Rng, .2f);
             halos.Add(g + up * 1f, 1.4f, Gold, .6f);
-            BoxCol(ctx.Root, g + up * .4f, new Vector3(1.2f, .8f, .8f), rot);
+            BoxCol(ctx.Root, g + up * .65f - face * .15f, new Vector3(1.25f, 1.3f, 1.1f), rot); // body and the open lid behind it
         }
 
         // ---------------------------------------------------------------- paths
@@ -572,8 +575,12 @@ namespace EverythingWorld.World
             for (var k = 0; k < n; k++)
             {
                 var q = ctx.OnGround(at.x + ctx.Range(-5f, 5f), at.z + ctx.Range(-5f, 5f)); var h = ctx.Range(6f, 13f);
-                mk.Prism(woodDark, q - Vector3.up * .3f, Vector3.up, .25f, h * .3f, 6);
-                for (var j = 0; j < 3; j++) mk.Cone(needles, q + Vector3.up * (h * (.2f + j * .22f)), h * (.26f - j * .06f), h * .42f, 7);
+                // Lift the crown so its lowest boughs clear head height even over the uphill ground beside the trunk.
+                var hi = q.y; var r0 = h * .26f;
+                for (var a = 0; a < 6; a++) hi = Mathf.Max(hi, ctx.Ground(q.x + Mathf.Cos(a * 1.047f) * r0, q.z + Mathf.Sin(a * 1.047f) * r0));
+                var lift = Mathf.Max(0f, hi + 2.2f - (q.y + h * .2f));
+                mk.Prism(woodDark, q - Vector3.up * .3f, Vector3.up, .25f, h * .3f + lift, 6);
+                for (var j = 0; j < 3; j++) mk.Cone(needles, q + Vector3.up * (h * (.2f + j * .22f) + lift), h * (.26f - j * .06f), h * .42f, 7);
                 ArtistBits.PostCollider(ctx.Root, q, h * .4f, .3f);
             }
         }
@@ -624,8 +631,14 @@ namespace EverythingWorld.World
         void Cherry(LandContext ctx, MeshKit mk, Vector3 at)
         {
             var up = Vector3.up; var h = ctx.Range(4f, 6f); var blossom = WorldMaterials.Solid(new Color(1f, .7f, .82f));
-            mk.Prism(woodDark, at - up * .3f, (up + new Vector3(ctx.Range(-.2f, .2f), 0, ctx.Range(-.2f, .2f))).normalized, .22f, h * .6f, 6, .7f);
-            for (var k = 0; k < 4; k++) mk.Blob(blossom, at + up * h * .75f + new Vector3(ctx.Range(-1.4f, 1.4f), ctx.Range(-.4f, .6f), ctx.Range(-1.4f, 1.4f)), Vector3.one * ctx.Range(1f, 1.6f), ctx.Rng, .3f);
+            mk.Prism(woodDark, at - up * .3f, (up + new Vector3(ctx.Range(-.2f, .2f), 0, ctx.Range(-.2f, .2f))).normalized, .22f, h * .75f, 6, .7f);
+            for (var k = 0; k < 4; k++)
+            {
+                // Each blossom cloud kept above head height over the ground beneath it (cherries grow on slopes too).
+                var b = at + up * h * .75f + new Vector3(ctx.Range(-1.4f, 1.4f), ctx.Range(-.4f, .6f), ctx.Range(-1.4f, 1.4f)); var bs = ctx.Range(1f, 1.6f);
+                b.y = Mathf.Max(b.y, ctx.Ground(b.x, b.z) + 2.05f + bs);
+                mk.Blob(blossom, b, Vector3.one * bs, ctx.Rng, .3f);
+            }
             halos.Add(at + up * h * .75f, 2.6f, new Color(1f, .6f, .75f), .18f);
             ArtistBits.PostCollider(ctx.Root, at, h * .5f, .25f);
         }

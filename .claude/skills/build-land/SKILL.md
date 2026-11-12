@@ -136,6 +136,24 @@ Every item below is something that went wrong before.
 
 ## 3. Before handing it over
 
+**The standard every land must meet** (the audit's numbers; check them before handing over, and after any
+big change):
+- **Things you could walk through: under 50.** Read the audit's "All of them by kind" list (and the full
+  `<Land>_colliders.txt`), match each material's hex colour to the kit's `Color` literals, and sort every big
+  group into one of three: *real* (a solid thing with no collider: add `solid.Box`/`PostCollider`/`BoxCol`
+  sized to the shape), *visual* (a flat thing floating, see below: fix the look, never give a decal a
+  collider), or *harmless* (glows, water, grass, light, things above head height: leave). Whatever is left must
+  be harmless, and say what it is.
+- **Overlapping surfaces: 0** (or each one explained).
+- **Artists with problems: 0.** **Empty: under 10%** of the land.
+- **No flat thing laid on a slope.** A disc, decal, leaf patch, rug or path piece placed at its centre's
+  ground height floats over the downhill side, up to a metre in the air (this was most of the Escarpment's 474
+  reports). Build ground cover from small pieces each set with `ctx.OnGround`, or skip steep ground.
+- **Nothing hangs at head height** (lanterns on arms, chimes, signs, branches, foliage between 0.45 and 2 m):
+  hang it higher or make it solid.
+- To audit every land at once, run the photo tour for a single small land (e.g. `python build/take_shots.py
+  "The Everything Hub"`): the world loads every land and audits all of them.
+
 1. Compile with Roslyn (the `check.rsp` in the session scratchpad, or recreate it: all project scripts
    plus Unity and URP dlls). Add new files to it.
 2. Simulate the artist placement in Python and print distances from the arrival point and from borders.

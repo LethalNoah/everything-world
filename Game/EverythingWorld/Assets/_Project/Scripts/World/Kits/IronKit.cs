@@ -151,6 +151,13 @@ namespace EverythingWorld.World
         public override void Finish(LandContext ctx) { GroundCover(ctx); halos.Build("Iron glow", ctx.Root); }
 
         // ---------------------------------------------------------------- helpers
+        /// A plain box collider on its own object (shapes whose look and collider differ, branches, rings).
+        static void BoxCol(Transform parent, Vector3 center, Vector3 size, Quaternion rot)
+        {
+            var go = new GameObject("Box collider"); go.transform.SetParent(parent, false); go.transform.SetPositionAndRotation(center, rot);
+            go.AddComponent<BoxCollider>().size = size; go.isStatic = true;
+        }
+
         void Remember(Vector3 p, int walk)
         {
             var key = (Mathf.FloorToInt(p.x / 8f), Mathf.FloorToInt(p.z / 8f));
@@ -184,7 +191,7 @@ namespace EverythingWorld.World
             ctx.IsLand(x, z, 4f) && !InFootprint(ctx, x, z, pad) && !NearPath(x, z, pad + 2f) && !InNoGrass(x, z, pad) && !InRiver(x, z, pad + 2f)
             && Vector2.Distance(new Vector2(x, z), new Vector2(center.x, center.z)) > 26f + pad;
 
-        void Strip(MeshKit mk, List<Vector3> pts, Material m, float w, float lift, LandContext ground = null)
+        void Strip(MeshKit mk, List<Vector3> pts, Material m, float w, float lift, LandContext ground = null, bool followSlope = false)
         {
             var n = pts.Count; var L = new Vector3[n]; var R = new Vector3[n];
             Vector3 Flat(Vector3 v) { v.y = 0; return v.normalized; }
@@ -198,7 +205,8 @@ namespace EverythingWorld.World
                 if (ground != null)
                 {
                     float gl = ground.Ground(L[i].x, L[i].z), gr = ground.Ground(R[i].x, R[i].z), top = Mathf.Max(pts[i].y, Mathf.Max(gl, gr) - .05f);
-                    L[i].y = Mathf.Max(gl, top - .15f) + lift; R[i].y = Mathf.Max(gr, top - .15f) + lift;
+                    if (!followSlope || pts[i].y > Mathf.Max(gl, gr) + .3f) { L[i].y = Mathf.Max(gl, top - .15f) + lift; R[i].y = Mathf.Max(gr, top - .15f) + lift; }   // a deck in the air: keep it level
+                    else { var bump = Mathf.Max(0f, pts[i].y - (gl + gr) / 2f); L[i].y = gl + bump + lift; R[i].y = gr + bump + lift; }   // on the ground: follow a sidehill, lift over a crown
                 }
             }
             for (var i = 0; i + 1 < n; i++) mk.Quad(m, L[i], R[i], R[i + 1], L[i + 1], (pts[i] + pts[i + 1]) / 2f - Vector3.up);
@@ -274,7 +282,7 @@ namespace EverythingWorld.World
             var pc = ctx.OnGround(pool2.x, pool2.y) + Vector3.up * .45f;
             for (var k = 0; k < 28; k++) { float a0 = k * Mathf.PI * 2f / 28f, a1 = (k + 1) * Mathf.PI * 2f / 28f; mk.Tri(lava, pc, pc + new Vector3(Mathf.Cos(a0), 0, Mathf.Sin(a0)) * 11f, pc + new Vector3(Mathf.Cos(a1), 0, Mathf.Sin(a1)) * 11f, pc - Vector3.up); }
             for (var k = 0; k < 22; k++) { var a = k * Mathf.PI * 2f / 22f; var rp = ctx.OnGround(pool2.x + Mathf.Cos(a) * 11.6f, pool2.y + Mathf.Sin(a) * 11.6f); mk.Blob(darkRock, rp + Vector3.up * .5f, new Vector3(1.4f, .9f, 1.2f), ctx.Rng, .35f); }
-            solid.Prism(darkRock, pc - Vector3.up * 1.5f, Vector3.up, 12f, 2.6f, 16);
+            solid.Prism(darkRock, pc - Vector3.up * 1.5f, Vector3.up, 13.4f, 2.6f, 16);
             halos.Add(pc + Vector3.up * 1f, 9f, Molten, .45f); ArtistBits.PointLight(ctx.Root, pc + Vector3.up * 4f, Molten, 26f, 2.2f);
             life.river = pts.ToArray(); life.pool = pc;
             noGrass.Add(new Vector3(pool2.x, 14f, pool2.y));
@@ -338,9 +346,11 @@ namespace EverythingWorld.World
                     var deck = Mathf.Max(pts[i0].y, pts[i1].y) + 1.2f;
                     for (var k = i0; k <= i1; k++) { var p = pts[k]; p.y = deck; pts[k] = p; }
                     var a = pts[i0] - dir * 1.5f; var b = pts[i1] + dir * 1.5f; a.y = b.y = deck; IronBridge(ctx, mk, solid, a, b);
+                    if (i0 > 0) Ramp(solid, pts[i0 - 1], pts[i0]);                   // the ramps up onto the deck, walkable
+                    if (i1 + 1 < pts.Count) Ramp(solid, pts[i1], pts[i1 + 1]);
                     i = j + 1;
                 }
-                Strip(mk, pts, gravel, TrailW, .2f, ctx);
+                Strip(mk, pts, gravel, TrailW, .2f, ctx, true);
                 foreach (var p in pts) Remember(p, walk);
                 for (var i = 7; i < pts.Count; i += 13)
                 {
@@ -351,6 +361,13 @@ namespace EverythingWorld.World
                 }
                 walk++;
             }
+        }
+
+        /// A solid slab under a trail ramp, so you walk up it rather than through it.
+        void Ramp(MeshKit solid, Vector3 a, Vector3 b)
+        {
+            var d = b - a; if (d.sqrMagnitude < .01f) return;
+            var rot = Quaternion.LookRotation(d); solid.Box(iron, (a + b) / 2f + rot * Vector3.down * .2f + Vector3.up * .2f, new Vector3(TrailW, .4f, d.magnitude + .4f), rot);
         }
 
         /// A riveted iron bridge with a lattice of girders along each side.
@@ -384,10 +401,10 @@ namespace EverythingWorld.World
                 var p = ctx.OnGround(px, pz); var roll = ctx.Range(0f, 1f); var steep = OnPeak(px, pz, 0f);
                 if (roll < .03f && mines < 9 && !steep) { MinePortal(ctx, mk, solid, p); mines++; }
                 else if (roll < .3f) { DeadPine(ctx, pine, deadBark, p); pines++; }
-                else if (roll < .46f) { var s = ctx.Range(1.5f, 4.5f); mk.Cone(ctx.Chance(.5f) ? rock : darkRock, p - Vector3.up * .5f, s, s * ctx.Range(1.2f, 2.6f), 5, ctx.Range(0, 60f)); solid.Prism(rock, p - Vector3.up * .5f, Vector3.up, s * .7f, s * 1.6f, 5); crags++; }
+                else if (roll < .46f) { var s = ctx.Range(1.5f, 4.5f); var cm = ctx.Chance(.5f) ? rock : darkRock; var ch = s * ctx.Range(1.2f, 2.6f); var tw = ctx.Range(0, 60f); mk.Cone(cm, p - Vector3.up * .5f, s, ch, 5, tw); solid.Cone(rock, p - Vector3.up * .5f, s, ch, 5, tw); crags++; }
                 else if (roll < .5f && !steep) { SkullRock(ctx, mk, solid, p); skulls++; }
                 else if (roll < .6f && !steep) { var dir = Quaternion.Euler(0, ctx.Range(0, 180f), 0) * Vector3.forward; var q = p; for (var k = 0; k < 5; k++) { var nd = Quaternion.Euler(0, ctx.Range(-35f, 35f), 0) * dir; var r = ctx.OnGround(q.x + nd.x * 2.4f, q.z + nd.z * 2.4f); mk.Box(crackM, (q + r) / 2f + Vector3.up * .03f, new Vector3(.18f, .04f, 2.5f), Quaternion.LookRotation(r - q)); q = r; } cracks++; }
-                else if (roll < .63f && !steep) { mk.Box(iron, p + Vector3.up * .4f, new Vector3(1f, .8f, .7f), Quaternion.Euler(0, ctx.Range(0, 180f), 0)); mk.Box(iron, p + Vector3.up * 1f, new Vector3(1.8f, .4f, .7f), Quaternion.Euler(0, ctx.Range(0, 180f), 0)); solid.Box(iron, p + Vector3.up * .6f, new Vector3(1.8f, 1.2f, .8f), Quaternion.identity); anvils++; }
+                else if (roll < .63f && !steep) { var r0 = Quaternion.Euler(0, ctx.Range(0, 180f), 0); var r1 = Quaternion.Euler(0, ctx.Range(0, 180f), 0); mk.Box(iron, p + Vector3.up * .4f, new Vector3(1f, .8f, .7f), r0); mk.Box(iron, p + Vector3.up * 1f, new Vector3(1.8f, .4f, .7f), r1); BoxCol(ctx.Root, p + Vector3.up * .2f, new Vector3(1f, 1.4f, .7f), r0); BoxCol(ctx.Root, p + Vector3.up * 1f, new Vector3(1.8f, .4f, .7f), r1); anvils++; }
                 else if (roll < .66f && !steep) { var b = p + new Vector3(ctx.Range(4f, 7f), 0, ctx.Range(-2f, 2f)); b = ctx.OnGround(b.x, b.z); foreach (var e in new[] { p, b }) { mk.Box(timber, e + Vector3.up * 2f, new Vector3(.3f, 4f, .3f), Quaternion.identity); ArtistBits.PostCollider(ctx.Root, e, 4f, .2f); } Chain(mk, p + Vector3.up * 3.8f, b + Vector3.up * 3.8f, 1.2f); }
             }
             Debug.Log($"The Iron Range: peak {(hasPeak ? peakR.ToString("0") + " m" : "none")}, {pines} dead pines, {crags} crags, {mines} mine portals, {skulls} skull rocks, {cracks} glowing cracks, {anvils} anvils");
@@ -397,7 +414,12 @@ namespace EverythingWorld.World
         {
             var up = Vector3.up; var s = ctx.Range(.8f, 1.4f); var h = 9f * s;
             soft.Prism(bark, at - up * .3f, up, .3f * s, h, 6, .2f);
-            for (var k = 0; k < 6; k++) { var d = Quaternion.Euler(0, k * 61f + ctx.Range(0, 30f), 0) * Vector3.forward; soft.Prism(bark, at + up * (h * (.3f + k * .1f)), (d + Vector3.down * .2f).normalized, .07f * s, (2f - k * .25f) * s, 4, .3f); }
+            for (var k = 0; k < 6; k++)
+            {
+                var d = Quaternion.Euler(0, k * 61f + ctx.Range(0, 30f), 0) * Vector3.forward; var bs = at + up * (h * (.3f + k * .1f)); var bd = (d + Vector3.down * .2f).normalized; var bl = (2f - k * .25f) * s;
+                soft.Prism(bark, bs, bd, .07f * s, bl, 4, .3f);
+                var tip = bs + bd * bl; if (tip.y - ctx.Ground(tip.x, tip.z) < 2.4f) BoxCol(ctx.Root, bs + bd * bl / 2f, new Vector3(.2f, .2f, bl), Quaternion.LookRotation(bd));   // a branch at head height
+            }
             if (ctx.Chance(.5f)) for (var k = 0; k < 3; k++) soft.Cone(pine, at + up * (h * (.35f + k * .2f)), (1.8f - k * .45f) * s, h * .25f, 6, ctx.Range(0, 60f));
             ArtistBits.PostCollider(ctx.Root, at, h * .6f, .3f * s);
         }
@@ -409,7 +431,7 @@ namespace EverythingWorld.World
             foreach (var k in new[] { -1f, 1f }) { mk.Blob(dark, at + up * 1.25f * s + face * 1.15f * s + side * k * .45f * s, Vector3.one * .3f * s, ctx.Rng, 0f); mk.Blob(GlowM(Molten, 3f), at + up * 1.25f * s + face * 1.3f * s + side * k * .45f * s, Vector3.one * .1f * s, ctx.Rng, 0f); }
             mk.Box(dark, at + up * .85f * s + face * 1.2f * s, new Vector3(.25f, .3f, .1f) * s, Quaternion.LookRotation(face));
             for (var k = 0; k < 4; k++) mk.Box(WorldMaterials.Solid(new Color(.55f, .52f, .48f)), at + up * .5f * s + face * 1.01f * s + side * (k - 1.5f) * .28f * s, new Vector3(.2f, .3f, .05f) * s, Quaternion.LookRotation(face));
-            solid.Box(rock, at + up * 1.2f * s, new Vector3(2.6f, 2.4f, 2.6f) * s, Quaternion.LookRotation(face));
+            BoxCol(ctx.Root, at + up * 1.2f * s + face * .1f * s, new Vector3(2.8f, 2.6f, 2.8f) * s, Quaternion.LookRotation(face));   // round the whole head, teeth and eyes too
             halos.Add(at + up * 1.25f * s + face * 1.5f * s, .8f * s, Molten, .6f);
         }
 
@@ -418,10 +440,11 @@ namespace EverythingWorld.World
         void MinePortal(LandContext ctx, MeshKit mk, MeshKit solid, Vector3 at)
         {
             var up = Vector3.up; var face = new Vector3(center.x - at.x, 0, center.z - at.z).normalized; var rot = Quaternion.LookRotation(face); var side = Vector3.Cross(up, face);
-            mk.Blob(rock, at + up * 2f - face * 2f, new Vector3(6f, 4.5f, 5f), ctx.Rng, .25f); solid.Box(rock, at + up * 2f - face * 2.5f, new Vector3(9f, 5f, 6f), rot);
+            mk.Blob(rock, at + up * 2f - face * 2f, new Vector3(6f, 4.5f, 5f), ctx.Rng, .25f); BoxCol(ctx.Root, at + up * 2f - face * 2f, new Vector3(10.4f, 5f, 8.6f), Quaternion.identity);   // the blob's own axes
             mk.Box(dark, at + up * 1.6f + face * 1.5f, new Vector3(2.8f, 3.2f, .1f), rot);
             foreach (var s in new[] { -1.6f, 1.6f }) mk.Box(timber, at + up * 1.7f + face * 1.6f + side * s, new Vector3(.35f, 3.4f, .35f), rot);
             mk.Box(timber, at + up * 3.45f + face * 1.6f, new Vector3(3.8f, .4f, .4f), rot);
+            BoxCol(ctx.Root, at + up * 1.8f + face * .6f, new Vector3(3.9f, 3.6f, 2.2f), rot);   // the frame and the black mouth
             mk.Prism(GlowM(Molten, 2.4f), at + up * 2.8f + face * 1.9f, up, .15f, .3f, 6); halos.Add(at + up * 3f + face * 2f, .9f, Molten, .8f);
             for (var k = 0; k < 6; k++) { var tp = at + face * (2f + k * 1.2f); tp.y = Mathf.Max(ctx.Ground(tp.x, tp.z), at.y) + .1f; mk.Box(timber, tp, new Vector3(1.4f, .12f, .25f), rot); foreach (var s in new[] { -.4f, .4f }) mk.Box(iron, tp + side * s + up * .1f, new Vector3(.07f, .08f, 1.25f), rot); }
             var cart = at + face * 6f; cart.y = Mathf.Max(ctx.Ground(cart.x, cart.z), at.y) + .2f;

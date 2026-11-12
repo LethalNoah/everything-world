@@ -230,6 +230,7 @@ namespace EverythingWorld.World
                         var q = ctx.OnGround(px + ctx.Range(-5f, 5f), pz + ctx.Range(-5f, 5f)); var h = ctx.Range(4f, 8f);
                         mk.Prism(trunk, q - up * .3f, up, .25f, h * .5f, 6);
                         mk.Blob(tree, q + up * h * .65f, new Vector3(2f, h * .45f, 2f), ctx.Rng, .25f);
+                        solid.Blob(tree, q + up * h * .65f, new Vector3(2f, h * .45f, 2f) * 1.05f, ColRng, 0f);   // a low, dense crown down to head height
                         ArtistBits.PostCollider(ctx.Root, q, h * .5f, .3f);
                     }
                 }

@@ -653,6 +653,7 @@ namespace EverythingWorld.World
                     solid.Box(greyWood, (ra + rb) / 2f - up * .5f, new Vector3(.15f, 1.1f, Vector3.Distance(ra, rb) + .05f), Quaternion.LookRotation(rb - ra));
                     var post = a + side * s * (RoadW / 2f - .1f); var g = ctx.Ground(post.x, post.z);
                     mk.Prism(greyWood, new Vector3(post.x, g - .5f, post.z), up, .12f, post.y - g + 1.6f, 6);
+                    if (post.y - g > .3f) ArtistBits.PostCollider(ctx.Root, new Vector3(post.x, g, post.z), post.y - g, .14f);   // the post under the deck
                 }
             }
             life.bridges.Add(pts[pts.Count / 2]);

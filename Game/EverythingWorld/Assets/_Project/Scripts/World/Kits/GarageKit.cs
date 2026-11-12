@@ -56,6 +56,7 @@ namespace EverythingWorld.World
         }
 
         Material GlowM(Color c, float s = 2f) => WorldMaterials.Glow(c, s * .65f);
+        static readonly System.Random ColRng = new System.Random(0);    // for collider blobs: no lumps, and the land's own random stays as it was
         static bool HasStation(IslandWorldData.Artist a) => a.station || a.stationId != 0;
 
         public override bool Ground(float height, float slope, float patch, out Color color)

@@ -163,7 +163,9 @@ namespace EverythingWorld.World
             for (var i = 0; i < 6; i++)
             {
                 var p = at + along * ctx.Range(-.4f, .4f) * L + side * ctx.Range(-2.5f, 2.5f) + sink + Vector3.up * ctx.Range(1.6f, 3.6f);
-                mk.Box(hull, p, new Vector3(.12f, .4f, ctx.Range(2f, 5f)), Quaternion.LookRotation(along) * Quaternion.Euler(ctx.Range(-15f, 15f), 0, ctx.Range(-30f, 30f)));
+                var plen = ctx.Range(2f, 5f); var prot = Quaternion.LookRotation(along) * Quaternion.Euler(ctx.Range(-15f, 15f), 0, ctx.Range(-30f, 30f));
+                mk.Box(hull, p, new Vector3(.12f, .4f, plen), prot);
+                if (p.y - ctx.Ground(p.x, p.z) < 2.4f) BoxCol(ctx.Root, p, new Vector3(.2f, .45f, plen), prot);   // a loose plank at walking height
             }
             var mastFoot = at + along * 2f + sink;
             var mastDir = (Vector3.up + sea * .6f + along * .2f).normalized;
@@ -312,7 +314,8 @@ namespace EverythingWorld.World
             for (var k = 0; k < 9; k++)
             {
                 var a = k * Mathf.PI * 2f / 9f + ctx.Range(-.2f, .2f);
-                mk.Blob(stone, at + new Vector3(Mathf.Cos(a), 0, Mathf.Sin(a)) * (r + .3f), new Vector3(ctx.Range(.4f, .8f), ctx.Range(.25f, .55f), ctx.Range(.4f, .7f)), ctx.Rng, .25f);
+                var rp = at + new Vector3(Mathf.Cos(a), 0, Mathf.Sin(a)) * (r + .3f);
+                mk.Blob(stone, ctx.OnGround(rp.x, rp.z), new Vector3(ctx.Range(.4f, .8f), ctx.Range(.25f, .55f), ctx.Range(.4f, .7f)), ctx.Rng, .25f);
             }
             var star = WorldMaterials.Solid(new Color(.9f, .45f, .25f));
             var sp = at + new Vector3(ctx.Range(-r, r) * .5f, .05f, ctx.Range(-r, r) * .5f);
@@ -342,9 +345,17 @@ namespace EverythingWorld.World
                 {
                     var dir = Quaternion.Euler(ctx.Range(-6f, 6f), ctx.Range(0, 360f), 0) * Vector3.forward;
                     var len = ctx.Range(1.5f, 7f); var r = ctx.Range(.12f, .45f);
-                    mk.Prism(ctx.Chance(.6f) ? drift : driftDark, p + Vector3.up * r * .6f - dir * len / 2f, dir, r, len, 6, ctx.Range(.5f, .9f));
-                    if (len > 3f && ctx.Chance(.5f)) mk.Prism(drift, p + Vector3.up * r - dir * len * .2f, (dir + Vector3.up * .6f + Vector3.Cross(Vector3.up, dir) * ctx.Range(-1f, 1f)).normalized, r * .4f, len * .3f, 5, .4f);
-                    if (r > .25f) solid.Box(drift, p + Vector3.up * r * .6f, new Vector3(r * 2f, r * 1.4f, len), Quaternion.LookRotation(dir));
+                    // laid along the sand: both ends on the ground, so it doesn't float off a slope
+                    var e0 = p - dir * len / 2f; var e1 = p + dir * len / 2f; e0.y = ctx.Ground(e0.x, e0.z); e1.y = ctx.Ground(e1.x, e1.z);
+                    var ld = e1 - e0; var llen = ld.magnitude; ld /= llen;
+                    mk.Prism(ctx.Chance(.6f) ? drift : driftDark, e0 + Vector3.up * r * .6f, ld, r, llen, 6, ctx.Range(.5f, .9f));
+                    if (len > 3f && ctx.Chance(.5f))
+                    {
+                        var bs = Vector3.Lerp(e0, e1, .3f) + Vector3.up * r; var bd = (ld + Vector3.up * .6f + Vector3.Cross(Vector3.up, ld) * ctx.Range(-1f, 1f)).normalized; var bl = len * .3f;
+                        mk.Prism(drift, bs, bd, r * .4f, bl, 5, .4f);
+                        BoxCol(ctx.Root, bs + bd * bl / 2f, new Vector3(r * .7f, r * .7f, bl), Quaternion.LookRotation(bd));   // the branch sticking up
+                    }
+                    if (r > .25f) solid.Box(drift, (e0 + e1) / 2f + Vector3.up * r * .6f, new Vector3(r * 2f, r * 1.4f, llen), Quaternion.LookRotation(ld));
                     logs++;
                 }
                 else if (roll < .3f && p.y < 3f)

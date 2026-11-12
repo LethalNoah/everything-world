@@ -190,7 +190,7 @@ namespace EverythingWorld.World
                 mk.Box(straw, p + up * .45f, new Vector3(1.5f, .9f, .9f), rot * Quaternion.Euler(0, ctx.Range(-4f, 4f), 0));
                 solid.Box(straw, p + up * .45f, new Vector3(1.5f, .9f, .9f), rot);
             }
-            mk.Box(straw, at + up * 1.35f, new Vector3(1.5f, .9f, .9f), rot * Quaternion.Euler(0, 8f, 0));
+            mk.Box(straw, at + up * 1.35f, new Vector3(1.5f, .9f, .9f), rot * Quaternion.Euler(0, 8f, 0)); solid.Box(straw, at + up * 1.35f, new Vector3(1.5f, .9f, .9f), rot * Quaternion.Euler(0, 8f, 0));   // the bale on top
             // synths on top, glowing keys, a lamp and a cable snaking off
             foreach (var s in new[] { -1.6f, 1.6f })
             {
@@ -232,7 +232,7 @@ namespace EverythingWorld.World
                             var p0 = at + dirA * Mathf.Cos(a0) * r + up * Mathf.Sin(a0) * r; var p1 = at + dirA * Mathf.Cos(a1) * r + up * Mathf.Sin(a1) * r;
                             mk.Prism(WorldMaterials.Solid(bands[b], shiny), p0, (p1 - p0).normalized, .3f, Vector3.Distance(p0, p1) + .1f, 8);
                         }
-                    foreach (var s in new[] { -1f, 1f }) solid.Box(dark, at + dirA * s * 4.6f + up * 1.6f, new Vector3(3.4f, 3.2f, .8f), Quaternion.LookRotation(Vector3.Cross(Vector3.up, dirA)));
+                    foreach (var s in new[] { -1f, 1f }) solid.Box(dark, at + dirA * s * 4.45f + up * 1.6f, new Vector3(3.9f, 3.2f, .8f), Quaternion.LookRotation(Vector3.Cross(Vector3.up, dirA)));   // reaches in to the purple band; head room under the middle
                     break;
                 default: // a mushroom
                     mk.Prism(WorldMaterials.Solid(new Color(.95f, .92f, .85f), shiny), at, up, 1f, 4f, 10, .8f);

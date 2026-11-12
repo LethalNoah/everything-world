@@ -77,6 +77,7 @@ namespace EverythingWorld.World
             {
                 var h = new Vector3(p.x, 0, p.z) + face * (D / 2f + 3.2f) + side * s * (W / 4f + .9f); h = ctx.OnGround(h.x, h.z);
                 mk.Blob(leaf, h + up * .55f, new Vector3(W / 4f + .3f, .7f, .6f), rng, .2f);
+                solid.Blob(leaf, h + up * .55f, new Vector3(W / 4f + .3f, .7f, .6f) * 1.1f, Smooth, 0f);
                 solid.Box(leaf, h + up * .55f, new Vector3(W / 2f + .6f, 1.3f, 1.2f), rot);
             }
         }
@@ -160,6 +161,7 @@ namespace EverythingWorld.World
             }
             var hr = 1.2f + (float)rng.NextDouble();
             mk.Blob(leaf, p + up * hr * .6f, new Vector3(hr * 1.6f, hr * .8f, hr), rng, .2f);
+            solid.Blob(leaf, p + up * hr * .6f, new Vector3(hr * 1.6f, hr * .8f, hr) * 1.1f, Smooth, 0f);
             solid.Box(leaf, p + up * hr * .6f, new Vector3(hr * 3f, hr * 1.6f, hr * 1.9f), Quaternion.identity);
         }
 

@@ -30,6 +30,7 @@ namespace EverythingWorld.World
             foreach (var s in new[] { -1f, 1f }) mk.Prism(wood, at + side * s * 1.1f - Vector3.up * .2f, Vector3.up, .05f, 1.1f, 5);
             var board = at + Vector3.up * 1f;
             mk.Box(wood, board, new Vector3(2.6f, h, .06f), rot);
+            BoxCol(ctx.Root, board - Vector3.up * .25f, new Vector3(2.6f, h + .5f, .25f), rot);   // the slanted board and its posts
             mk.Box(WorldMaterials.Solid(new Color(.88f, .82f, .68f)), board + rot * Vector3.forward * .035f, new Vector3(2.45f, h - .12f, .01f), rot);
             for (var k = 0; k < lines.Length; k++)
             {
@@ -78,7 +79,7 @@ namespace EverythingWorld.World
             var h = .25f + lines.Count * .15f; var rot = Quaternion.LookRotation(front);
             z.mk.Prism(wood, at - Vector3.up * .2f, Vector3.up, .05f, .9f + h * .5f, 5);
             var board = at + Vector3.up * (1f + h * .5f);
-            z.mk.Box(dark, board, new Vector3(1.9f, h, .06f), rot);
+            z.mk.Box(dark, board, new Vector3(1.9f, h, .06f), rot); BoxCol(z.root, board, new Vector3(1.9f, h, .15f), rot);
             for (var k = 0; k < lines.Count; k++)
                 ArtistBits.Label(labels, lines[k], board + front * .045f + Vector3.up * ((lines.Count - 1) / 2f * .15f - k * .15f), front, .075f, Ink, TextAnchor.MiddleCenter);
             ArtistBits.PostCollider(z.root, at, 1.4f, .12f);

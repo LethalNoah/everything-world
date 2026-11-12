@@ -267,7 +267,13 @@ namespace EverythingWorld.World
             mk.Box(chrome, at + lean * (up * 1.15f) + dir * .7f, new Vector3(.95f, .05f, .05f), rot);
             mk.Box(chrome, at + lean * (up * .75f) + dir * .8f, new Vector3(.05f, .75f, .05f), rot * Quaternion.Euler(28f, 0, 0));
             mk.Box(chrome, at + lean * (up * .45f) - dir * .6f + side * .2f, new Vector3(.08f, .08f, .9f), rot);       // pipes
-            solid.Box(black, at + up * .6f, new Vector3(.5f, 1.2f, 2.1f), rot);
+            solid.Box(black, at + up * .65f, new Vector3(1.1f, 1.3f, 2.1f), rot);   // wide enough for the leaning handlebars
+        }
+
+        static void BoxCol(Transform parent, Vector3 center, Vector3 size, Quaternion rot)
+        {
+            var go = new GameObject("Box collider"); go.transform.SetParent(parent, false); go.transform.SetPositionAndRotation(center, rot);
+            go.AddComponent<BoxCollider>().size = size; go.isStatic = true;
         }
 
         // ---------------------------------------------------------------- where you arrive
@@ -409,6 +415,7 @@ namespace EverythingWorld.World
                 var d = Quaternion.Euler(0, ctx.Range(0, 360f), 0) * Vector3.right * s; var y = h * ctx.Range(.35f, .6f);
                 mk.Box(green, g + up * y + d * .5f, new Vector3(.55f, .45f, .5f), Quaternion.LookRotation(d));
                 mk.Prism(green, g + up * y + d * .8f, up, .26f, h * .35f, 8, .9f);
+                BoxCol(ctx.Root, g + up * (y + h * .175f) + d * .7f, new Vector3(.6f, h * .35f + .5f, .8f), Quaternion.LookRotation(d));   // the arm
             }
             ArtistBits.PostCollider(ctx.Root, g, h, .35f);
         }
@@ -439,6 +446,7 @@ namespace EverythingWorld.World
             mk.Box(black, g + up * 1f + u * 6f, new Vector3(.3f, 5.5f, .2f), rot);
             mk.Box(GlowM(Pink, 2.4f), g + up * 1f + u * 8.9f, new Vector3(.6f, .9f, .25f), rot);
             solid.Box(black, g + up * 3f, new Vector3(3f, 6f, 1f), Quaternion.LookRotation(face));
+            solid.Box(black, g + up * 1.2f, new Vector3(3f, 2.4f, 5.6f), Quaternion.LookRotation(face));   // the plinth and the V's lower wings
             halos.Add(g + up * 4f + face, 2f, Pink, .5f);
         }
 

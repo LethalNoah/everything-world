@@ -35,6 +35,13 @@ namespace EverythingWorld.World
         readonly Dictionary<string, Vector3> facing = new Dictionary<string, Vector3>();
         readonly List<Vector3> noGrass = new List<Vector3>();
 
+        /// A plain box collider on its own object (a sign board, a stall's back cloth: things the merged walls don't cover).
+        static void BoxCol(Transform parent, Vector3 center, Vector3 size, Quaternion rot)
+        {
+            var go = new GameObject("Box collider"); go.transform.SetParent(parent, false); go.transform.SetPositionAndRotation(center, rot);
+            go.AddComponent<BoxCollider>().size = size; go.isStatic = true;
+        }
+
         void MakeMaterials()
         {
             dirt = WorldMaterials.Solid(new Color(.45f, .36f, .26f)); wood = WorldMaterials.Solid(new Color(.5f, .37f, .25f));
@@ -289,10 +296,11 @@ namespace EverythingWorld.World
             {
                 var p = ctx.OnGround(c.x + dir.x * (k - 3f) * 5.6f + side.x * s * 5f, c.z + dir.z * (k - 3f) * 5.6f + side.z * s * 5f); var col = Dye[(k * 2 + (s > 0 ? 1 : 0)) % Dye.Length];
                 var trot = Quaternion.LookRotation(-side * s);
-                foreach (var a in new[] { -1f, 1f }) foreach (var b in new[] { -1f, 1f }) mk.Prism(metal, p + dir * a * 1.9f + side * s * b * 1.9f, up, .04f, 2.4f, 6);
+                foreach (var a in new[] { -1f, 1f }) foreach (var b in new[] { -1f, 1f }) { mk.Prism(metal, p + dir * a * 1.9f + side * s * b * 1.9f, up, .04f, 2.4f, 6); ArtistBits.PostCollider(ctx.Root, p + dir * a * 1.9f + side * s * b * 1.9f, 2.4f, .06f); }
                 mk.Box(WorldMaterials.Solid(col, .3f), p + up * 2.5f, new Vector3(4f, .12f, 4f), trot);
                 mk.Cone(WorldMaterials.Solid(col, .3f), p + up * 2.55f, 2.8f, .9f, 4, 45f);
                 for (var b = 0; b < 6; b++) mk.Box(WorldMaterials.Solid(Dye[(b + k) % Dye.Length], .3f), p + side * s * 2f + up * (.5f + b * .32f), new Vector3(3.6f, .32f, .03f + (b % 2) * .01f), trot);
+                solid.Box(wood, p + side * s * 2f + up * 1.2f, new Vector3(3.6f, 1.9f, .12f), trot);   // the striped back cloth
                 mk.Box(wood, p + up * .45f - side * s * .8f, new Vector3(3f, .9f, .8f), trot); solid.Box(wood, p + up * .45f - side * s * .8f, new Vector3(3f, .9f, .8f), trot);
                 if (k == 2 && s > 0) { mk.Box(GlowM(new Color(1f, .5f, .15f), 2f), p + up * .95f - side * s * .8f, new Vector3(1.4f, .05f, .6f), trot); ArtistBits.Label(ctx.Root, "GRILLED CHEESE $5", p + up * 2.1f - side * s * 2.05f, -side * s, .2f, Ink, TextAnchor.MiddleCenter); }
                 if (k == 4 && s < 0) for (var g = 0; g < 12; g++) mk.Box(GlowM(Dye[g % Dye.Length], 2.6f), p + up * (1f + (g % 3) * .1f) - side * s * .8f + dir * ((g - 6f) * .2f), new Vector3(.03f, .3f, .03f), Quaternion.Euler(0, 0, 20f));
@@ -399,6 +407,7 @@ namespace EverythingWorld.World
                 float t0 = .12f + k * .127f, t1 = t0 + .127f;
                 var p0 = Vector3.Lerp(a, b, t0) + up * (1.6f - Mathf.Sin(t0 * Mathf.PI) * .8f); var p1 = Vector3.Lerp(a, b, t1) + up * (1.6f - Mathf.Sin(t1 * Mathf.PI) * .8f);
                 mk.Box(cloth, (p0 + p1) / 2f, new Vector3(1f, .05f, Vector3.Distance(p0, p1) + .02f), Quaternion.LookRotation(p1 - p0));
+                BoxCol(ctx.Root, (p0 + p1) / 2f, new Vector3(1f, .3f, Vector3.Distance(p0, p1) + .02f), Quaternion.LookRotation(p1 - p0));   // the hammock
             }
             StringLights(mk, a + up * 2.6f, b + up * 2.6f, Warm, 8);
         }

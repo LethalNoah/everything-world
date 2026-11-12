@@ -100,10 +100,10 @@ namespace EverythingWorld.World
             for (var k = 0; k < 7; k++)
             {
                 var a = k * 51f * Mathf.Deg2Rad + .3f; var r = ctx.Range(7f, 11.5f); var hp = c + new Vector3(Mathf.Cos(a), 0, Mathf.Sin(a)) * r; var face = (c - hp); face.y = 0; face.Normalize(); var hrot = Quaternion.LookRotation(face);
-                mk.Box(stone, hp + up * 1.1f, new Vector3(2.6f, 2.2f, 2f), hrot); mk.GableRoof(slate, hp + up * 2.2f, new Vector3(2.4f, 0, 3f), .9f, Quaternion.LookRotation(Vector3.Cross(up, face)));
+                mk.Box(stone, hp + up * 1.1f, new Vector3(2.6f, 2.2f, 2f), hrot); solid.Box(stone, hp + up * 1.1f, new Vector3(2.6f, 2.2f, 2f), hrot); mk.GableRoof(slate, hp + up * 2.2f, new Vector3(2.4f, 0, 3f), .9f, Quaternion.LookRotation(Vector3.Cross(up, face)));
                 mk.Box(windows, hp + up * 1.2f + face * 1.01f, new Vector3(.5f, .5f, .02f), hrot);
             }
-            var spire = c + new Vector3(-9f, 0, 8f); mk.Box(stone, spire + up * 2f, new Vector3(1.6f, 4f, 1.6f), Quaternion.identity); mk.Cone(slate, spire + up * 4f, 1.1f, 3f, 4, 45f);
+            var spire = c + new Vector3(-9f, 0, 8f); mk.Box(stone, spire + up * 2f, new Vector3(1.6f, 4f, 1.6f), Quaternion.identity); solid.Box(stone, spire + up * 2f, new Vector3(1.6f, 4f, 1.6f), Quaternion.identity); mk.Cone(slate, spire + up * 4f, 1.1f, 3f, 4, 45f);
             mk.Box(windows, spire + up * 3f + Vector3.forward * .81f, new Vector3(.4f, .7f, .02f), Quaternion.identity);
             // the pyramid, rising out of the water
             for (var k = 0; k < 9; k++) { var s = 10f - k * 1.1f; mk.Box(WorldMaterials.Solid(new Color(.62f, .6f, .54f)), c + up * (k * 1.6f + .8f), new Vector3(s, 1.6f, s), Quaternion.Euler(0, 45f, 0)); }

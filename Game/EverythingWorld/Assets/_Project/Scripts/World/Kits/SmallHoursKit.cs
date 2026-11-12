@@ -22,6 +22,14 @@ namespace EverythingWorld.World
         readonly Dictionary<(int, int), List<Vector3>> pathCells = new Dictionary<(int, int), List<Vector3>>();
         readonly Dictionary<string, Vector3> facing = new Dictionary<string, Vector3>();
         SmallHoursLife life;
+        static readonly System.Random Smooth = new System.Random(0);   // for collider blobs: no lumps, and the land's own random stays as it was
+
+        /// A plain box collider on its own object (a sign board, things the merged walls don't cover).
+        static void BoxCol(Transform parent, Vector3 center, Vector3 size, Quaternion rot)
+        {
+            var go = new GameObject("Box collider"); go.transform.SetParent(parent, false); go.transform.SetPositionAndRotation(center, rot);
+            go.AddComponent<BoxCollider>().size = size; go.isStatic = true;
+        }
 
         void MakeMaterials()
         {
@@ -238,6 +246,7 @@ namespace EverythingWorld.World
                 if (!ctx.TrySpot(out var p, 6f, 4f) || NearPath(p.x, p.z, 3f) || InNoah(p, 6f)) continue;
                 var r = ctx.Range(1.2f, 2.4f);
                 mk.Blob(i % 3 == 0 ? leaf : WorldMaterials.Solid(new Color(.14f, .2f, .2f)), p + Vector3.up * r * .6f, new Vector3(r, r * .8f, r), ctx.Rng, .2f);
+                solid.Blob(leaf, p + Vector3.up * r * .6f, new Vector3(r, r * .8f, r) * 1.1f, Smooth, 0f);   // the hedge's own round shape
                 solid.Box(leaf, p + Vector3.up * r * .6f, new Vector3(r * 1.9f, r * 1.6f, r * 1.9f), Quaternion.identity);
                 if (i % 4 == 0)
                 {

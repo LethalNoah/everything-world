@@ -280,7 +280,7 @@ namespace EverythingWorld.World
                 if ((new Vector2(p.x, p.z) - new Vector2(inside.x, inside.z)).magnitude < 1.2f) continue;
                 var h = ctx.Range(.4f, 1.2f);
                 mk.Prism(pot, p, Vector3.up, .22f, .35f, 8, 1.2f);
-                ArtistBits.PostCollider(ctx.Root, p, .9f, .3f);
+                ArtistBits.PostCollider(ctx.Root, p, .35f + h * 1.1f, .3f);   // the pot and the plant in it
                 mk.Blob(green, p + Vector3.up * (.35f + h * .5f), new Vector3(.4f, h * .6f, .4f), ctx.Rng, .3f);
             }
         }

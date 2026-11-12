@@ -97,7 +97,7 @@ namespace EverythingWorld.World
             mk.Prism(WorldMaterials.Solid(Ink), kit + up * .45f + side * .31f, side, .42f, .01f, 14);
             foreach (var (x, h) in new[] { (-.7f, .85f), (.7f, .9f), (1f, .55f) }) mk.Prism(shell, kit + side * x + face * .3f + up * h, up, .25f, .25f, 10);
             var brass = WorldMaterials.Solid(new Color(.85f, .7f, .3f), .8f);
-            foreach (var x in new[] { -1.2f, 1.3f }) { var p = kit + side * x - face * .2f; mk.Prism(metal, p, up, .02f, 1.3f, 5); mk.Prism(brass, p + up * 1.3f, up, .4f, .02f, 12); }
+            foreach (var x in new[] { -1.2f, 1.3f }) { var p = kit + side * x - face * .2f; mk.Prism(metal, p, up, .02f, 1.3f, 5); mk.Prism(brass, p + up * 1.3f, up, .4f, .02f, 12); ArtistBits.PostCollider(ctx.Root, p, 1.35f, .35f); }   // the cymbal at chest height
             solid.Box(shell, kit + up * .5f, new Vector3(2.6f, 1f, 1.4f), Quaternion.LookRotation(face));
             foreach (var x in new[] { -1f, 1f })
             {

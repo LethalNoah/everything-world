@@ -107,6 +107,7 @@ namespace EverythingWorld.World
             {
                 var p = c + side * i * (W / 4f) + front * j * (D / 3f); var g = ctx.Ground(p.x, p.z);
                 z.mk.Prism(driftDark, new Vector3(p.x, g - .3f, p.z), up, .18f, fy - g + .3f, 6);
+                ArtistBits.PostCollider(z.root, new Vector3(p.x, g, p.z), fy - g, .2f);
             }
             z.mk.Box(planks, c + up * (fy - .1f) + front * deckD / 2f, new Vector3(W, .2f, D + deckD), rot);
             z.solid.Box(planks, c + up * (fy - .3f) + front * deckD / 2f, new Vector3(W, .6f, D + deckD), rot);
