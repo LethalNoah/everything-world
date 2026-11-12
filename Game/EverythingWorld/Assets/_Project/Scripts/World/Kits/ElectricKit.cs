@@ -77,6 +77,7 @@ namespace EverythingWorld.World
                 if (a.name == "MGMT" || a.name == "Santigold" || a.name == "LCD Soundsystem") Level(data, index, new Vector2(a.x, a.z), Foot(a) + 4f, Foot(a) + 22f);
             }
             Level(data, index, heart, 14f, 34f);
+            foreach (var (at, r) in PlaceRings) Level(data, index, at, r, r + 14f);
         }
 
         static void Level(IslandWorldData data, int index, Vector2 c, float flat, float blend)
@@ -112,6 +113,7 @@ namespace EverythingWorld.World
             var gateFront = Gate(ctx, mk, solid);
             Walkways(ctx, mk, solid, gateFront);
             SongPlaces(ctx, mk, solid);
+            FieldPlaces(ctx, mk, solid);
             Festival(ctx, mk, solid);
             mk.Build("Festival", ctx.Root, false);
             soft.Build("Soft festival", ctx.Root, false);

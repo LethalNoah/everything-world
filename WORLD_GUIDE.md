@@ -520,6 +520,13 @@ Someone paces the west track with headphones on.
 
 **Artist areas:** Arctic Monkeys: the biggest garage, nearest the casino, a giant neon soundwave across the front ("Do I Wanna Know?"), a black muscle car outside, a leather jacket on a hook, and the motel's room 505 nearby. Kings of Leon: burn barrels at the door. The Killers: a frame of Vegas bulbs and a neon star. The Black Keys: two giant neon piano keys. Silversun Pickups: a half-closed neon eye on the roof ("Lazy Eye"). The Kooks: a camper van with a surfboard. The Strokes: a Mets pennant. The Voidz: a glitching sign. Cage the Elephant: a getaway car. Everyone else: a couch on the pavement or a burn barrel.
 
+**Out of town, and the people of the Row:** Laid out on purpose, with the Row, the suburbs and every garage left where they were. Two more roads with sodium lamps leave the grid for the dark ends of the land: **the Shore Road** north and **the Hill Road** south-west. Along them:
+- **Lucky Strike Lanes:** a bowling alley to walk into under a neon sign and a giant pin. Three lanes, thirty pins that really fall, balls on a rack to carry and throw, a red button that stands the pins back up, a shoe counter, a bench.
+- **The Skate Park:** two quarter pipes, a fun box with a rail, a ledge to sit on, neon tags; skateboards to carry, a boombox to press play on, someone who has been about to drop in since nine.
+- **Shady Acres,** the trailer park in the south-west hills: four trailers round a gravel yard under string lights, a fire in an oil drum, lawn chairs to sit in, lawn flamingos, a cooler of cans, a band rehearsing outdoors because of the landlord.
+
+On the Row itself there are people now: two walking home down opposite pavements, smokers outside the doors, someone sat on the kerb (you can sit there too).
+
 ### The Electric Fields
 *18 songs · 9 artists · 0.65 km² · built in Unity*
 
