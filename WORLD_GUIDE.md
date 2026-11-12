@@ -843,13 +843,23 @@ Warm, humid, rhythmic. River country, smoky towns and coastline.
 **Artist areas:** Club doorways, café tables and lamp posts with plaques.
 
 ### The Funk Tropics
-*30 songs · 19 artists · 0.65 km²*
+*30 songs · 19 artists · 0.65 km² · built in Unity*
 
-**Arriving:** Lush, sweaty jungle; a flying saucer landed in a clearing, its ramp turned into a stage.
+**Arriving:** A clearing in a neon jungle at night, ringed with lights, a big "1" set in the ground. A path of light-up paving, the One, runs straight ahead to the Mothership: a flying saucer landed in the jungle on three legs, lights racing round her rim, her ramp let down onto a stage. Behind you the One becomes Funk Street.
 
-**The vibe:** Humid and saturated. Vines like bass strings, disco-ball fruit, platform-shoe stepping stones.
+**The vibe:** Dark, humid and saturated, and three kinds of funk in it. The cosmic, silly kind at the Mothership: a synth to hit, a light-up dance floor, the band's people (one of them from further away than the rest). The cool, sly kind on Funk Street: a short strip of neon half swallowed by the jungle, with a club, a rib shack, shopfronts outlined in light, a long low purple car at the kerb, and a roller rink at the end. And the groove everywhere: glowing purple, lime and orange plants that pulse together on the beat, palms hung with mirror-ball fruit, vines strung between trunks like bass strings, giant platform shoes left in the undergrowth, old speaker stacks the jungle has grown over. Everything that lights, lights in colour.
 
-**Artist areas:** Jungle clearings; Parliament and Funkadelic share space near the saucer.
+**Artist areas:** Each artist has a jungle clearing: a dark pad ringed with lights, an overgrown speaker totem, covers on a neon-edged board, a glowing mushroom for every song without its own piece. Parliament (beside the Mothership): a giant flashlight propped up at the sky ("Flash Light"), a little club whose roof floats above its walls ("Give Up The Funk"), giant star glasses. Funkadelic (the other side of the ship): one guitar standing on a mound under one spotlight ("Maggot Brain"), a red-hot neon flame ("Red Hot Mama"). Prince: a round purple stage, a purple motorcycle to sit on, an umbrella ("Purple Rain"), a giant beret on a hat stand ("Raspberry Beret"), a clock stuck at a minute to midnight ("1999"). The Meters: parade umbrellas, a bass drum hung with feathers ("Hey Pocky A-Way"), a snare to play, a black pond with fire on it ("Fire on the Bayou"), neon lips ("Just Kissed My Baby"). James Brown: a stage, a mic stand caught mid-fall, the cape on its stand to take, a red sign ("The Payback"), a steering wheel on a post ("People Get Up And Drive Your Funky Soul"). Thundercat: a giant six-string bass with cat ears, a heart-shaped hole of light ("Them Changes"), a durag and seven gold stars ("Dragonball Durag"). Commodores: a house of mighty bricks ("Brick House") and a hammock between two palms ("Easy"). The rest: bongos to play, a roulette wheel to spin, an old television, eyes watching from a bush, a cactus that asks you to stay a while, and so on.
+
+**Happenings:** The plants pulse on a shared beat; the paving chases; the Mothership hums and turns slowly on her legs; the car hops. "Flash Light" sends beams sweeping the sky from the ship and the giant flashlight. "Give Up The Funk" lifts the ship off her legs and floats the torn-off roof higher. "Purple Rain" makes it rain purple. "Maggot Brain" turns the whole jungle dark but for one spotlight on one guitar. "Fire on the Bayou" makes the fire on the pond climb. "The Payback" turns the light red.
+
+**The paths and places:** Laid out on purpose: the One and Funk Street are the spine, and every lane to an artist branches from them, edged with glowing studs and lit by mirror-ball fruit. The people here strut, and will tell you about it.
+- **The Mothership:** the saucer on her legs, a stage under her ramp with a synth to hit (the rim lights race), a drum kit and amps, a light-up dance floor in front, logs to watch from.
+- **The Pocket:** a club to walk into: a low stage with a bass to slap, a dance floor under a mirror ball, a bar with stools, glowing drinks to carry, a booth.
+- **Funk Street:** shopfronts outlined in neon (menswear with hats to carry off, a guitar shop, a record shop, a chicken place), a rib shack with plates of ribs, and the long low car: sit in it and hit the switches.
+- **Rollerama:** an open-air roller rink under arches of light and a mirror ball, skaters going round, skates to carry (one at a time).
+- **The bass vines:** here and there in the jungle, four vines strung taut between two trunks. Pluck them.
+- **The giant shoes:** platform shoes the size of a bench, to sit on.
 
 ### The Far Shores
 *24 songs · 17 artists · 0.79 km²*

@@ -45,6 +45,13 @@
    "weather": "", "weatherAmount": 0
   },
   {
+   "land": "The Funk Tropics",
+   "sunPitch": 48, "sunYaw": 200, "sunIntensity": 0.85, "sunColor": "#A8DCEC",
+   "skyLight": "#7458D0", "horizonLight": "#7A50B8", "groundLight": "#44705E",
+   "fogColor": "#1E1340", "fogStart": 60, "fogEnd": 900, "stars": 0.6, "sunShadows": false, "dailyWeather": false, "bloom": 1.25,
+   "weather": "", "weatherAmount": 0
+  },
+  {
    "land": "The Soul Lowlands",
    "sunPitch": 21, "sunYaw": 100, "sunIntensity": 1.05, "sunColor": "#FFC873",
    "skyLight": "#8FB4E0", "horizonLight": "#F6D6A6", "groundLight": "#6E5438",
