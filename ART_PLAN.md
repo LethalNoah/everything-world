@@ -144,7 +144,7 @@ Alternative, grunge, punk, emo, metalcore, prog metal and J-rock.
 
 ### 6. The Punk Badlands
 
-*pop punk, punk rock, punk, emo, alternative rock* · 49 songs · energy 0.83, acoustic 0.08, mood 0.56 · top artists: Green Day, Fall Out Boy, Panic! At The Disco, The Offspring, Mayday Parade
+*pop punk, punk rock, punk, emo, alternative rock* · 48 songs · energy 0.83, acoustic 0.08, mood 0.56 · top artists: Green Day, Fall Out Boy, Panic! At The Disco, The Offspring, Mayday Parade
 
 - **Terrain:** Scrappy badlands of eroded rock with suburban ruins; skate bowls carved into the ground.
 - **Colours:** `#9BD13B safety green`, `#E8458B hot pink`, `#3A3A3A asphalt`, `#C9B38A bleached tan`
@@ -500,7 +500,7 @@ Soul, funk, disco, world music and jazz.
 
 ### 29. The Soul Lowlands
 
-*soul, motown, classic soul, gospel, funk* · 32 songs · energy 0.57, acoustic 0.32, mood 0.65 · top artists: Stevie Wonder, Commodores, James Brown, Kirk Franklin, Otis Redding
+*soul, motown, classic soul, gospel, funk* · 33 songs · energy 0.58, acoustic 0.31, mood 0.65 · top artists: Stevie Wonder, Commodores, James Brown, Kirk Franklin, Otis Redding
 
 - **Terrain:** Warm river country with slow bends and wooden towns.
 - **Colours:** `#7B4A2D warm brown`, `#E0A43B gold`, `#4F7FA3 river blue`, `#8E2B3A velvet red`
