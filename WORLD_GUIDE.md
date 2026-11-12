@@ -396,6 +396,12 @@ Someone walks the Scale all day, counting.
 
 **Happenings:** The train runs out along the coast and back (the same train for everyone). "Bad Apple!!" drains the whole land to black and white; "COLORS" cycles the sky through every colour; "FIRE BIRD" sets the sky burning; "Skye" clears it to bright blue and the kite climbs; "OXYGEN" sends bubbles up round the stage.
 
+**More roads and places:** Laid out on purpose, with the city, the shrine, the school and the train left where they were. Two more roads leave the city under power poles strung with paper lanterns, for the empty hills north and south. This is the episode where nothing happens and everyone goes to the festival; the people here are students in summer clothes who know they are in an opening sequence.
+- **Isle Mart:** a convenience store open all night, cold white light pouring out of a glass front. Aisles of bright packets, a wall of drinks fridges, a clerk; rice balls, canned coffee, melon bread and ramune to carry off. A bench and a vending machine outside.
+- **The Batting Centre:** a long net cage under floodlights with a pitching machine at the far end. Press the button and it pitches one of the baseballs (fetch them back or it runs out); bats to carry; a HOME RUN target nobody has ever hit.
+- **The Summer Festival:** a ring of six striped stalls round a red-and-white drum tower with lantern strings running out from its top. Climb up and beat the taiko (the whole place flashes), light the fireworks at the back, take a mask, shaved ice, takoyaki or rings to toss; people in summer robes walk the ring.
+- **Cat Hill:** a little shrine through a torii to a giant white lucky cat whose paw waves. Ring the bell for a fortune. A dozen cats lie about, each to stroke; fish on a mat (for the cats).
+
 ### The Oddball Backroads
 *28 songs · 17 artists · 0.96 km² · built in Unity*
 

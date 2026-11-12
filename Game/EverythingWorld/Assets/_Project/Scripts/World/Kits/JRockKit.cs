@@ -73,7 +73,7 @@ namespace EverythingWorld.World
         bool InCity(float x, float z) => Vector2.Distance(new Vector2(x, z), heart2) < CityR;
 
         // ---------------------------------------------------------------- shaping the ground
-        public override void ShapeGround(IslandWorldData data, int index)
+        void ShapeIsles(IslandWorldData data, int index)
         {
             var isl = data.layout.islands[index]; heart2 = new Vector2(isl.labelX, isl.labelZ);
             bool Inside(Vector2 p, float m) { if (data.IslandAt(p.x, p.y) != isl) return false; for (var k = 0; k < 16; k++) { var a = k * Mathf.PI / 8f; if (data.IslandAt(p.x + Mathf.Cos(a) * m, p.y + Mathf.Sin(a) * m) != isl || data.HeightAt(p.x + Mathf.Cos(a) * m, p.y + Mathf.Sin(a) * m) < 2f) return false; } return true; }
@@ -162,6 +162,7 @@ namespace EverythingWorld.World
             if (hasHill) Shrine(ctx, mk, solid);
             if (hasSchool) School(ctx, mk, solid);
             Train(ctx, mk, solid);
+            IslesPlaces(ctx, mk, solid);
             Wilds(ctx, mk, solid);
             mk.Build("The J-Rock Isles", ctx.Root, false);
             solid.BuildCollider("The J-Rock Isles walls", ctx.Root);
