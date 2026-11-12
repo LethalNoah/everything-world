@@ -485,6 +485,15 @@ Out on the lake there is a fishing hole with a stool and a lantern, and someone 
 
 **Song places:** Clairo's and beabadoobee's songs are little places out in the meadow, each on its own lilac path with a painted sign, glowing while its song plays. Clairo: packed bags waiting by a door standing alone in the grass ("Bags"), a vanity mirror ringed with bulbs ("Pretty Girl"), a chalk heart drawn on the grass with a tape player in it ("Sofia"). beabadoobee: a giant steaming coffee mug ("Coffee"), a giant glue bottle with paper hearts stuck round it ("Glue Song"), two swings hung facing away from each other ("Estranged"). Every one-song artist has a piece from their song beside their daydream: Anna Sofia's thorny little globe, Balu Brigada's car backseat, Beach Bunny's tiara, Cavetown's cardboard town with one red window, Chaos Chaos's neon heart, Dazy's fuzzy creature, Foster The People's drum pads, London Grammar's candle in a jar, Loving's slow wave, Monsune's speech bubble, Pacific Soul's hibiscus, Peach Pit's peach split round a glowing pit, Royel Otis's candles, The Apples In Stereo's apples and lightning bolt, The Neighbourhood's sweater on a hanger in falling snow, The Postal Service's mailbox and paper plane, fun.'s crescent of little lights and stars.
 
+**Side tracks and more daydreams:** Laid out on purpose, gently: the loop, the bed and every daydream are where they were. Three side tracks leave the loop, lined with fairy lights like it, for the empty east, west and south. At their ends, with a few sleepy people in pyjamas to talk to:
+- **The Record Player:** a turntable the size of a room, the record turning slowly; sit on the record and go round with it. A speed switch (33 or 45), two speakers breathing light, cushions.
+- **The Window Seat:** a piece of bedroom wall standing in the grass with a big window in it, the night and a moon in the window, curtains, glow-stars on the wallpaper; a deep cushioned sill to curl up on, a lamp, a cat to stroke.
+- **The Bubble Bath:** a giant clawfoot tub on gold feet, heaped with bubbles that drift up into the sky; steps up, places to sit in the bubbles, a giant duck bobbing, a small rubber duck to carry.
+- **The Sleepover:** sleeping bags like petals round a torch standing on end under fairy lights; hold the torch under your chin and the light turns ghost-story green. Pillows to throw, popcorn to carry.
+- **The Notebook:** open flat on the grass and big enough to walk on, doodles glowing on one page and a to-do list on the other; a giant pencil to sit on, a giant mug of cocoa, a tape player whose reels turn when you press play.
+
+Someone paces the west track with headphones on.
+
 ### Garage Rock Row
 *20 songs · 12 artists · 0.63 km² · built in Unity*
 

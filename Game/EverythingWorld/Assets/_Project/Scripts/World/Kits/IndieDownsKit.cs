@@ -87,6 +87,7 @@ namespace EverythingWorld.World
             soft = new MeshKit();
             var labels = new GameObject("Downs words").transform; labels.SetParent(ctx.Root, false);
             if (hasQuiet) { ctx.AddKeepout(quiet.x, quiet.z, QuietFlat + 4f); noGrass.Add(new Vector3(quiet.x, 16.5f, quiet.z)); }
+            StartPlaces(ctx);
             var otherGate = Gates(ctx);
             noahCap = new Material(WorldMaterials.Glow(NoahBlue, 2f)) { name = "npgallagher's path" };
             seanCap = new Material(WorldMaterials.Glow(SeanGlow, 1.5f)) { name = "Pyrosolstice's path" };
@@ -94,6 +95,7 @@ namespace EverythingWorld.World
             Landmarks(ctx, mk, solid);
             Green(ctx, mk, solid, pictures);
             ChalkGuitar(ctx, mk);
+            DownsPlaces(ctx, mk, solid);
             Hedgerows(ctx, mk, solid);
             LoneTrees(ctx, mk);
             Copses(ctx, mk);
@@ -651,6 +653,7 @@ namespace EverythingWorld.World
             mk.Box(wood, at + Vector3.up * .8f - facing * .22f, new Vector3(1.8f, .32f, .06f), rot);
             foreach (var s in new[] { -1f, 1f }) mk.Box(iron, at + rot * new Vector3(s * .75f, .22f, 0), new Vector3(.07f, .45f, .42f), rot);
             solid.Box(wood, at + Vector3.up * .45f, new Vector3(1.8f, .9f, .5f), rot);
+            if (plife != null) Interact.Bench(plife.transform, at + Vector3.up * (HumanScale.SeatHeight + .05f) - rot * Vector3.right * .5f, at + Vector3.up * (HumanScale.SeatHeight + .05f) + rot * Vector3.right * .5f, facing);
         }
 
         /// A lamp post with gig posters (covers of this land's songs) wrapped round it.

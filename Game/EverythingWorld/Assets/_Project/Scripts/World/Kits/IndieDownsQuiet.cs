@@ -55,7 +55,7 @@ namespace EverythingWorld.World
                 var score = Mathf.Min(d, 200f) + h * .3f - (hi - lo) * 6f;
                 if (score > best) { best = score; quiet = new Vector3(x, h, z); hasQuiet = true; }
             }
-            if (!hasQuiet) { Debug.LogWarning("The Indie Downs: no room for the quiet place"); return; }
+            if (!hasQuiet) { Debug.LogWarning("The Indie Downs: no room for the quiet place"); foreach (var (at, pr) in PlaceRings) PlaceLevel(data, index, at, pr, pr + 14f); return; }
             // level it to the average height round the spot, easing back into the hills
             float sum = data.HeightAt(quiet.x, quiet.z); var n = 1;
             for (var k = 0; k < 16; k++) { var a = k * Mathf.PI / 8f; sum += data.HeightAt(quiet.x + Mathf.Cos(a) * QuietFlat * .6f, quiet.z + Mathf.Sin(a) * QuietFlat * .6f); n++; }
@@ -76,6 +76,7 @@ namespace EverythingWorld.World
                 }
             }
             quiet.y = level;
+            foreach (var (at, pr) in PlaceRings) PlaceLevel(data, index, at, pr, pr + 14f);
         }
 
         void QuietPlace(LandContext ctx, MeshKit mk, MeshKit solid)
