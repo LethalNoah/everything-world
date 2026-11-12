@@ -89,6 +89,7 @@ namespace EverythingWorld.World
                 Level(data, index, new Vector2(a.x, a.z), Foot(a) + 1f, Foot(a) + 14f);
             }
             Level(data, index, heart, 14f, 32f);
+            foreach (var (at, r) in PlaceRings) Level(data, index, at, r, r + 16f);
         }
 
         static void Level(IslandWorldData data, int index, Vector2 c, float flat, float blend)
@@ -121,6 +122,7 @@ namespace EverythingWorld.World
             Arrival(ctx, mk, solid);
             Roads(ctx, mk, solid);
             Stadium(ctx, mk, solid);
+            RidgePlaces(ctx, mk, solid);
             Ridge(ctx, mk, solid);
             mk.Build("Arena", ctx.Root, false);
             soft.Build("Soft arena", ctx.Root, false);
@@ -449,7 +451,7 @@ namespace EverythingWorld.World
             solid.Box(body, at + up * 1f, new Vector3(2.1f, 2f, 5f), rot);
             var tg = at - dir * 3.4f;
             mk.Box(WorldMaterials.Solid(new Color(.85f, .2f, .2f)), tg + up * .25f + side * 1.2f, new Vector3(.7f, .5f, .45f), rot);
-            for (var k = 0; k < 2; k++) { var ch = tg + side * (k == 0 ? -1.2f : .2f) - dir * .6f; mk.Box(WorldMaterials.Solid(new Color(.2f, .4f, .7f)), ch + up * .35f, new Vector3(.6f, .06f, .5f), rot); mk.Box(WorldMaterials.Solid(new Color(.2f, .4f, .7f)), ch + up * .7f - dir * .25f, new Vector3(.6f, .6f, .05f), rot); }
+            for (var k = 0; k < 2; k++) { var ch = tg + side * (k == 0 ? -1.2f : .2f) - dir * .6f; mk.Box(WorldMaterials.Solid(new Color(.2f, .4f, .7f)), ch + up * .35f, new Vector3(.6f, .06f, .5f), rot); mk.Box(WorldMaterials.Solid(new Color(.2f, .4f, .7f)), ch + up * .7f - dir * .25f, new Vector3(.6f, .6f, .05f), rot); Interact.Seat(life.transform, ch + up * .4f, dir, "Sit in the camp chair"); }
             for (var k = 0; k < 8; k++) { var b = at + up * 2.2f - dir * (2.4f + k * .4f) + side * Mathf.Sin(k) * .3f - up * Mathf.Sin(k / 7f * Mathf.PI) * .4f; mk.Blob(GlowM(new Color(1f, .85f, .5f), 2.6f), b, Vector3.one * .08f, ctx.Rng, 0f); }
             halos.Add(at + up * 2f - dir * 3.4f, 1.6f, new Color(1f, .8f, .5f), .7f);
             ArtistBits.PointLight(ctx.Root, at + up * 2f - dir * 3.5f, new Color(1f, .8f, .5f), 8f, 1.2f);

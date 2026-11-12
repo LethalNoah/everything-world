@@ -212,6 +212,16 @@ You can sit in the rocking chairs on the juke joint's porch too.
 
 **Artist areas:** Guns N' Roses, the biggest venue: red brick with glowing roses climbing it (brightening for "My Michelle"), a giant neon guitar across the front that blazes for "Sweet Child O' Mine", a giant neon rose on the roof beside a white door standing open with light pouring out ("Knockin' On Heaven's Door"), and a grand piano under a lone lamp on the stage ("November Rain"). Aerosmith: chrome panels, neon wings, a glowing asteroid hanging overhead, glowing footprints walking in ("Walk This Way"), a dream cloud over the roof ("Dream On"). Mötley Crüe: black walls with painted flames, a neon heart with a heartbeat line, a chopper on a launch ramp, a "GIRLS GIRLS GIRLS" neon sign. Twisted Sister: a giant make-up mirror ringed with bulbs. Bon Jovi: a spinning neon star. Europe: a giant red countdown display and a synth stack. Quiet Riot: a wall of pulsing speakers. Slash: a giant top hat. Van Halen: a giant striped guitar. Warrant: a giant cherry pie. Acotto: a neon lightning bolt.
 
+**Off the Strip:** Laid out on purpose, with the Strip and every venue left where they were. Three more neon-lined roads with chrome lamps, ringed palms and a leopard bench half-way leave the Strip for the empty desert: **the Loop** (pink line; north off the west end, along the high ground and back down to the Club, so there is somewhere to cruise), **the Desert Highway** (cyan; west into the mesas) and **the Canyon Road** (violet; south down the tail). Along them, with the people of the Strip to talk to:
+- **The Motel:** a pink court of rooms round a glowing pool, loungers, a tall neon sign; the television is there to be carried and thrown in the pool.
+- **Tease,** the salon: a pink shop to walk into with a checkered floor, three dryer chairs whose hoods glow when you sit under them, a mirror ringed with bulbs, cans of hairspray to carry off, a hairspray can puffing on the roof.
+- **The Chapel of Love:** a little white chapel with a pink roof and a beating neon heart, a bell to ring, pews, a couple being married for the ninth time, a bouquet to throw.
+- **The Video Shoot** out among the mesas: a band miming on a rock stage before a painted sunset, a wind machine to switch on (streamers fly), a camera crane, a director's chair to sit in.
+- **The Shred Shed:** six pointy guitars on the wall to take down, carry and throw; the amp out front says SMASH HERE.
+- **Makeout Point** at the end of the Canyon Road: giant white letters, BIG HAIR, lit on the ridge; a pink convertible to sit in with a radio to turn, a telescope, the coast below.
+
+The bikes along the Strip can be sat on.
+
 ### The Bluegrass Hollows
 *28 songs · 22 artists · 0.68 km² · built in Unity*
 
