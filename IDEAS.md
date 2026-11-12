@@ -2,6 +2,13 @@
 
 Things to remember that aren't built or decided yet. Newest first.
 
+## Designed lands, residents and things to do (2026-11-12, first version on the Oddball Backroads)
+
+- **Every land laid out on purpose**, not scattered: a road network over the whole land, a string of places made to stop at (each with somewhere to sit, something to play with, a view, its people), and the countryside between them designed too (fields, hedgerows, lone trees on hilltops, dark hollows). Strong contrast by brightness and blue/yellow. The Oddball Backroads is the first; it becomes the standard for new lands, then a pass over the built ones.
+- **Shared systems built:** press E to sit (benches, booths, car seats, a giant chair), to play with toys (doors that open, a jukebox, a fan), to pick things up (put down with E, throw with a click), and to say hi to residents. Walking into loose things (a ball of twine) pushes them.
+- **Residents in every land:** small people who live and work there, placed with purpose (the cook, a farmer, a motel clerk), who look at you, wave, and say a line when you say hi. Their look and lines are each land's own.
+- **Activities (to discuss):** mini golf is planned, probably in the Yacht Rock Riviera. Talk through an activity system (scores, turns, playing with friends) with the owner before building one.
+
 ## Surprise and spontaneity (2026-11-09, core to the theme, first version built)
 
 Built (SurpriseDirector, SharedChance, all on the radio's shared clock, so friends on the same station share them): lights and fires follow the song's energy and pulse when a new song starts; on starry lands a comet in every song, a meteor shower in about one song in three, and the odd shooting star; the aurora with about one song in four (Lanternwood); five wandering lanterns, a new set with each song; snowmen that move each day (days start 5 am US Eastern). Test keys in play: F7 shooting star, F8 aurora, F9 a one-minute meteor shower. More ideas below.

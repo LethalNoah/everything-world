@@ -56,7 +56,15 @@ namespace EverythingWorld.World
         {
             if (height < 2.6f) color = Color.Lerp(new Color(.7f, .65f, .5f), new Color(.76f, .7f, .55f), patch);
             else if (slope > 24f) color = Color.Lerp(new Color(.45f, .42f, .3f), new Color(.52f, .5f, .35f), patch);
-            else color = Color.Lerp(new Color(.48f, .58f, .3f), new Color(.66f, .66f, .36f), Mathf.SmoothStep(0f, 1f, patch));   // sun-dried summer grass
+            else
+            {
+                // contrast by height: near-black green in the hollows, sun-bleached gold on the hills
+                var low = Color.Lerp(new Color(.16f, .26f, .1f), new Color(.22f, .32f, .13f), patch);
+                var mid = Color.Lerp(new Color(.5f, .58f, .28f), new Color(.62f, .64f, .32f), patch);
+                var high = Color.Lerp(new Color(.82f, .72f, .38f), new Color(.9f, .8f, .45f), patch);
+                // (the low coast stays a fresh meadow green; the dark is for the hollows inland)
+                color = height < 24f ? Color.Lerp(Color.Lerp(low, mid, .55f), mid, Ease(10f, 22f, height)) : Color.Lerp(mid, high, Ease(24f, 34f, height));   // the darkest comes from the kudzu groves in the hollows
+            }
             color.a = 1f;
             return true;
         }
@@ -73,7 +81,7 @@ namespace EverythingWorld.World
         public override void ShapeGround(IslandWorldData data, int index)
         {
             var isl = data.layout.islands[index]; heart2 = new Vector2(isl.labelX, isl.labelZ);
-            ArtistPlacement.Spread(data, index, 62f, heart2, 46f, 40f, null, null, Land, 460f);
+            ArtistPlacement.Spread(data, index, 62f, heart2, 46f, 58f, PlaceAvoid(), null, Land, 460f);
             foreach (var a in data.layout.artists)
             {
                 if (a.sceneId != isl.sceneId) continue;
@@ -81,6 +89,9 @@ namespace EverythingWorld.World
                 Level(data, index, new Vector2(a.x, a.z), Foot(a) + 1f, Foot(a) + 10f);
             }
             Level(data, index, heart2, 20f, 34f);
+            // level ground for the places that need it flat
+            Level(data, index, heart2 + DinerOff, 14f, 24f);
+            foreach (var (at, flat, blend) in new[] { (MotelAt, 26f, 38f), (LittleAt, 12f, 20f), (DriveAt, 34f, 50f), (DoorsAt, 16f, 26f), (FarmAt, 16f, 26f), (UfoAt, 18f, 28f), (FruitAt, 14f, 22f) }) Level(data, index, at, flat, blend);
         }
 
         void Level(IslandWorldData data, int index, Vector2 c, float flat, float blend)
@@ -114,7 +125,7 @@ namespace EverythingWorld.World
             Remember(ctx.OnGround(center.x, center.z), 0);
             Arrival(ctx, mk, solid);
             Roads(ctx, mk, solid);
-            Wilds(ctx, mk, solid);
+            Places(ctx, mk, solid);
             mk.Build("The Oddball Backroads", ctx.Root, false);
             solid.BuildCollider("The Oddball Backroads walls", ctx.Root);
         }
@@ -254,6 +265,10 @@ namespace EverythingWorld.World
                     if (!ctx.IsLand(q.x, q.z, 0f)) break;
                     pts.Add(ctx.OnGround(q.x, q.z)); if (dd >= end) break;
                 }
+                DressRoad(pts);
+            }
+            void DressRoad(List<Vector3> pts)
+            {
                 if (pts.Count < 2) return;
                 Strip(mk, pts, WorldMaterials.Solid(new Color(.6f, .56f, .48f)), RoadW + 1.6f, .03f, ctx);
                 Strip(mk, pts, asphalt, RoadW, .16f, ctx);
@@ -270,7 +285,7 @@ namespace EverythingWorld.World
                     mk.Prism(woodDark, g - up * .3f, lean * up, .14f, 8.3f, 6); var top = g + lean * (up * 7.6f);
                     mk.Box(woodDark, top, new Vector3(1.8f, .12f, .12f), Quaternion.LookRotation(sdd) * Quaternion.Euler(0, 90f, 0));
                     ArtistBits.PostCollider(ctx.Root, g, 7f, .16f); poles.Add(pp);
-                    if (ctx.Chance(.35f)) { var kz = g; for (var k = 0; k < 4; k++) mk.Blob(k % 2 == 0 ? kudzu : kudzuDark, kz + up * (1f + k * 1.4f) + new Vector3(ctx.Range(-.6f, .6f), 0, ctx.Range(-.6f, .6f)), Vector3.one * ctx.Range(.7f, 1.1f), ctx.Rng, .35f); }
+                    if (ctx.Chance(.35f)) { var kz = g; for (var k = 0; k < 4; k++) mk.Blob(k % 2 == 0 ? kudzu : kudzuDark, kz + up * (1f + k * 1.4f) + new Vector3(ctx.Range(-.6f, .6f), 0, ctx.Range(-.6f, .6f)), Vector3.one * ctx.Range(.7f, 1.1f), ctx.Rng, .35f); BoxCol(ctx.Root, kz + up * 1.6f, new Vector3(2.6f, 3.2f, 2.6f), Quaternion.identity); }
                     if (last.HasValue) foreach (var o in new[] { -.7f, .7f }) { var w0 = last.Value + a * 0f + Vector3.Cross(up, a) * 0f; var p0 = last.Value + (top - last.Value).normalized * 0f + new Vector3(0, 0, 0); var s0 = last.Value + Vector3.Cross(up, (top - last.Value).normalized) * o; var s1 = top + Vector3.Cross(up, (top - last.Value).normalized) * o; var prev = s0; for (var k = 1; k <= 6; k++) { var t = k / 6f; var q = Vector3.Lerp(s0, s1, t) - up * Mathf.Sin(t * Mathf.PI) * 1f; mk.Box(dark, (prev + q) / 2f, new Vector3(.03f, .03f, Vector3.Distance(prev, q)), Quaternion.LookRotation(q - prev)); prev = q; } }
                     last = top;
                     // a mailbox or an odd sign on the other side now and then
@@ -285,6 +300,7 @@ namespace EverythingWorld.World
                 }
                 walk++;
             }
+            LoopRoads(ctx, mk, solid, (pts, closed) => DressRoad(pts));
             var todo = new List<IslandWorldData.Artist>(ctx.Artists);
             while (todo.Count > 0)
             {
@@ -401,7 +417,8 @@ namespace EverythingWorld.World
                 if (Mathf.PerlinNoise(px * .03f + 4f, pz * .03f + 8f) < .38f) continue;
                 var key = (Mathf.FloorToInt(px / 70f), Mathf.FloorToInt(pz / 70f));
                 if (!meshes.TryGetValue(key, out var wm)) meshes[key] = wm = new WindMesh();
-                var col = Color.Lerp(new Color(.45f, .58f, .28f), new Color(.75f, .72f, .38f), (float)rng.NextDouble());
+                var gh = ctx.Ground(px, pz); var r0 = (float)rng.NextDouble();
+                var col = gh < 18f ? Color.Lerp(new Color(.2f, .32f, .14f), new Color(.3f, .42f, .18f), r0) : gh > 30f ? Color.Lerp(new Color(.85f, .74f, .4f), new Color(.95f, .86f, .5f), r0) : Color.Lerp(new Color(.48f, .58f, .28f), new Color(.75f, .72f, .38f), r0);
                 wm.Tuft(new Vector3(px, ctx.Ground(px, pz) - .04f, pz), .4f + (float)rng.NextDouble() * .5f, col, Color.Lerp(col, new Color(.95f, .9f, .6f), .35f), rng, 4, .05f);
             }
             foreach (var kv in meshes) kv.Value.Build("Backroads grass", ctx.Root, mat);

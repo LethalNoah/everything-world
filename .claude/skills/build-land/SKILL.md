@@ -26,6 +26,16 @@ right in one pass, so the owner only needs one or two checks in play.
 
 - Look at the neighbouring lands (built ones and their guide entries) and make this one clearly different from them: time of day, brightness, palette and its big idea. Give it one strong imaginative central idea (fantasy, sci-fi, supernatural or dreamlike imagery is welcome); realistic countryside alone reads as bland.
 
+## The heart of it: a designed, lived-in land (the owner's standard from 2026-11-12)
+
+Lands must not feel generated. "You walk to the middle, see the artist areas, and there's a ton of empty space outside that... it can't really be random if it's going to feel right." So every land is composed, like the Oddball Backroads (`OddballPlaces.cs`, `OddballPlacesMore.cs`):
+- **A road or path network over the whole land**, not just round the heart: a loop round the artists plus roads out to the far corners and the coast. Check the overhead picture (`Logs/LandAudit/<Land>_top.png`): no big region without a road.
+- **Places made to stop at, all over the land** (10 to 16 of them, picked from the land's real heights: the highest hill, a flat strip by the sea...). Each has a purpose and a vibe, **somewhere to sit** (`Interact.Seat`/`Bench`), **something to play with** (`Interact.Toy`, `Interact.Carry` for things to pick up and throw, `Pushable`), a light, a sign, and **residents** (`Residents.Make`: who lives there and what they do, with lines to say). Keep the artists clear of them (`ArtistPlacement.Spread` avoid list).
+- **The countryside between them designed too:** fields or gardens along the roads, fences, hedgerows, one tree per hilltop, groves in the hollows. Use random scatter only as texture inside those shapes.
+- **Strong contrast** by brightness and blue/yellow (the owner is colourblind): bright surfaces against dark ones (the Metalcore Caldera is the model; the Djent Spires lack it).
+- **Shot markers** ("Shot: ...") at every place, so the photo tour shows each one.
+- Plants you would walk into (corn, sunflowers) go in a mesh named "Soft ..." so the audit treats them as walk-through on purpose.
+
 ## 2. Build it in one pass: the checklist
 
 Write `Kits/<Land>Kit.cs` plus partial files (artists, places, life) and register it in `LandKit.For`.

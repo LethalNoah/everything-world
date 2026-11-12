@@ -243,6 +243,21 @@ The heartland. Old hills, long roads and the tallest mountains in the world. Mos
 
 **Artist areas:** A roadside attraction for every artist, each on a gravel pull-off under a tall bulb-lit "SEE THE ..." sign. Pixies (the largest): a giant head with its top swung open and thoughts floating out ("Where Is My Mind?"), a monkey on a pole with a halo ("Monkey Gone to Heaven"), a fibreglass wave ("Wave of Mutilation"), a sign that just says HEY, a bench facing nothing ("All I Think About Now"). Ween: a giant cheerful sailor wading in a pond ("Ocean Man"), a rose as tall as a house ("Roses Are Free"), a giant baby bottle ("She's Your Baby"). Violent Femmes: a sun in sunglasses ("Blister In The Sun"), giant red lips ("Kiss Off"). Wilco: two halves of a bridge that don't meet ("Too Far Apart"); MJ Lenderman: a giant wristwatch ("Wristwatch"); Silver Jews: giant dice and a ruler ("Random Rules"). Beck a giant hand making an L, R.E.M. a chapel leaning sideways and a meteor in a crater with THE END IS NEAR, The Flaming Lips a pink robot, They Might Be Giants a giant hot dog, CAKE a race car on a plinth, Eels a giant tooth, Butthole Surfers a pepper shaker, Bloodhound Gang a fire hydrant on fire, Dexter and The Moonrocks a LOT sign, That Handsome Devil a little red devil, Victor Jones a moon raining. Every song without its own piece gets a little arrow sign that lights up.
 
+**The roads and places:** Laid out on purpose over the whole land. A loop road circles the crossroads, a west road runs out over the gold plateau and back, a coast road runs down the shore, and a north road climbs to the lighthouse. Fields line the roads behind white fences (gold wheat, corn and sunflowers you can walk into, kudzu, a flamingo pasture), with hedgerows behind them. The road runs through kudzu tunnels, one lone tree stands on each hilltop, and dark kudzu groves fill the hollows. Gravel lanes lead off to the places, each with somewhere to sit, something to play with and the people who live there:
+- the Oddball Diner at the crossroads ("open 25 hours"): booths, counter stools, a jukebox that dances, the cook, a waitress and a regular;
+- a giant chair on the highest hill, climbed by a stack of crates, with the whole land below;
+- the world's largest ball of twine ("please do not push"), which rolls if you push it;
+- the upside-down house: you walk on its ceiling while its owner reads the paper overhead, and a ceiling fan on the floor spins;
+- Littleville, a model village at knee height with tiny folk and tiny cars to pick up;
+- the drive-in by the sea: sit in the cars, watch shapes on the screen, then the snack shack and a bonfire with log seats;
+- a lighthouse that shines inland, its lifeguard chair facing the fields, the keeper fishing in the grass;
+- the Maybe Motel, whose sign can't decide, with a pool of rubber ducks, loungers, and room 6, whose door opens onto somewhere else;
+- a field of doors (one opens onto the sky) and a stretch of road that loops the loop;
+- a farm with a barn, a tractor and scarecrows in the wheat;
+- out west, a flying saucer crashed in a crop circle, its pilot waving;
+- BIG FRUIT, with oranges to throw, and the shoe tree, with shoes to throw into it;
+- down the coast, a living room on the beach facing the sea, a pier that stops halfway, and a windmill that turns backwards when you crank it.
+
 **Happenings:** The head watches you; dandelion fluff drifts in the haze. "Ocean Man" turns the sky ocean blue, "Where Is My Mind?" a dreamy violet, "It's The End Of The World As We Know It" red with meteors streaking down, "Blister In The Sun" white-hot, "Yoshimi" pink.
 
 ### The Nu Metal Quarry

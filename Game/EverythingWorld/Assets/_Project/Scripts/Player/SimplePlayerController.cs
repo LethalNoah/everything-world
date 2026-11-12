@@ -20,6 +20,8 @@ namespace EverythingWorld.Player
         public float flySpeed = 70f;
         [Tooltip("Flying speed with Shift held, in metres per second.")]
         public float flyBoostSpeed = 220f;
+        [Tooltip("How hard you shove loose things you walk into, in newtons.")]
+        public float pushForce = 900f;
 
         CharacterController controller;
         float pitch;
@@ -30,7 +32,33 @@ namespace EverythingWorld.Player
         /// True while flying (IslandExplorer leaves you be: no wading limit, and it keeps you above the ground).
         public bool Flying { get; private set; }
 
-        void Awake() => controller = GetComponent<CharacterController>();
+        /// True while sitting on a seat (PlayerInteractor): you can look around but not walk.
+        public bool Seated { get; private set; }
+        float standEye = -1f;
+
+        void Awake()
+        {
+            controller = GetComponent<CharacterController>();
+            if (GetComponent<PlayerInteractor>() == null) gameObject.AddComponent<PlayerInteractor>();
+        }
+
+        /// Sits down on the seat surface, eyes about 0.75 m above it, facing out.
+        public void Sit(Vector3 seat, Vector3 facing, float seatHeight)
+        {
+            if (Flying) SetFlying(false);
+            Seated = true; controller.enabled = false; verticalVelocity = 0f;
+            transform.SetPositionAndRotation(seat, Quaternion.LookRotation(facing));   // the body's middle on the seat
+            if (cameraPivot != null) { if (standEye < 0f) standEye = cameraPivot.localPosition.y; var lp = cameraPivot.localPosition; lp.y = .75f; cameraPivot.localPosition = lp; }
+            pitch = 0f;
+        }
+
+        /// Stands up at 'feet'.
+        public void Stand(Vector3 feet)
+        {
+            Seated = false;
+            if (cameraPivot != null && standEye >= 0f) { var lp = cameraPivot.localPosition; lp.y = standEye; cameraPivot.localPosition = lp; }
+            transform.position = feet + Vector3.up * (controller.height / 2f + .05f); controller.enabled = true;
+        }
 
         void Start() => SetCursorLocked(true);
 
@@ -42,7 +70,7 @@ namespace EverythingWorld.Player
 
             if (keyboard.escapeKey.wasPressedThisFrame) SetCursorLocked(false);
             if (mouse.leftButton.wasPressedThisFrame) SetCursorLocked(true);
-            if (keyboard.fKey.wasPressedThisFrame) SetFlying(!Flying);
+            if (keyboard.fKey.wasPressedThisFrame && !Seated) SetFlying(!Flying);
 
             if (Cursor.lockState == CursorLockMode.Locked)
             {
@@ -51,6 +79,8 @@ namespace EverythingWorld.Player
                 pitch = Mathf.Clamp(pitch - look.y, -85f, 85f);
                 if (cameraPivot != null) cameraPivot.localEulerAngles = new Vector3(pitch, 0f, 0f);
             }
+
+            if (Seated) return;   // look around, but stay put
 
             var input = Vector2.zero;
             if (keyboard.wKey.isPressed) input.y += 1f;
@@ -97,6 +127,15 @@ namespace EverythingWorld.Player
             Flying = on;
             controller.enabled = !on;
             flyVelocity = Vector3.zero; verticalVelocity = 0f;
+        }
+
+        /// Walking into something loose (a ball of twine, a dropped duck) gives it a shove.
+        void OnControllerColliderHit(ControllerColliderHit hit)
+        {
+            var rb = hit.collider.attachedRigidbody;
+            if (rb == null || rb.isKinematic || hit.moveDirection.y < -.3f) return;
+            var push = new Vector3(hit.moveDirection.x, 0f, hit.moveDirection.z);
+            rb.AddForceAtPosition(push * pushForce, hit.point, ForceMode.Force);
         }
 
         void OnGUI()
