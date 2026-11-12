@@ -166,6 +166,16 @@ Guards stand at the castle gate, a flower seller and a walker keep the village g
 
 **Artist areas:** Porches on stilts, the five biggest over their own fishing holes. The Marshall Tucker Band: a rainbow over the fishing hole, an eagle on a post, a boxcar on a stretch of track. The Allman Brothers Band: a flatbed truck heaped with giant peaches, peach trees, two drum kits and two guitars on the porch, a sunburst sign, an old headstone with candles. Creedence Clearwater Revival: a white paddle steamer at the river and a swamp moon on a pole. Little Feat: a cantina under a glowing crescent moon, an upright piano and a clock. Lynyrd Skynyrd: a road sign home, a tall birdcage standing open with birds on the roof, a wall of guitars. The Outlaws: a hitching rail with saddles, a longhorn skull and a cowboy hat. 38 Special: a rope swing from an oak ("Hold On Loosely"). George Thorogood: a chopper and a giant bone. James Gang: boots left by a "Walk Away" sign and a suitcase. The Red Clay Strays: a porch swing with a fiddle on a patch of red clay.
 
+**The bank roads and new places:** Laid out on purpose, with everything that was already here left where it was. Three more dirt roads with lanterns run out into the quiet parts, each keeping to one bank: south down the west bank to the tip of the land, south down the east bank to the river mouth, and north up the narrow strip in the north-west. Along them, with the neighbours to talk to:
+- **The Fish Camp** at the south tip: a crawfish boil on a long table under string lights, a boil pot steaming, a fire ringed with lawn chairs, a dock with a bench at its end.
+- **The General Store:** a deep porch with rocking chairs, an ice chest, cold drinks, and a tyre swing to push on the live oak beside it.
+- **The Smokehouse:** a pit smoking under a tin roof, picnic tables, and a horseshoe pit with horseshoes to throw.
+- **The Airboat,** pulled up on the east bank: sit on its bench, spin its fan.
+- **The Church in the Wildwood:** white boards and a little steeple, a bell to ring by its rope, dinner on the grounds at two long tables.
+- **The Still in the woods:** a copper still over a fire, jugs to carry off, a lawn chair, a sleeping hound to pet.
+
+You can sit in the rocking chairs on the juke joint's porch too.
+
 ### The Hair Metal Strip
 *22 songs · 11 artists · 0.45 km² · built in Unity*
 

@@ -193,6 +193,7 @@ namespace EverythingWorld.World
                 ponds.Add((new Vector3(pc.x, lvl, pc.y), 7.5f));
             }
             Level(data, index, heart, 14f, 32f);
+            foreach (var (at, flat, blend) in new[] { (StoreAt, 10f, 17f), (SmokeAt, 11f, 18f), (ChurchAt, 12f, 19f), (CampAt, 11f, 18f), (StillAt, 6f, 12f) }) Level(data, index, at, flat, blend);
         }
 
         /// The water surface along a channel: never above the ground it runs through (a metre under it), never
@@ -331,6 +332,7 @@ namespace EverythingWorld.World
             Roads(ctx, mk, solid);
             Swamp(ctx, mk, solid);
             SongPlaces(ctx, mk, solid);
+            BayouPlaces(ctx, mk, solid);   // after everything that was here, before the scatter
             Wilds(ctx, mk, solid);
             mk.Build("Bayou", ctx.Root, false);
             solid.BuildCollider("Bayou walls", ctx.Root);
@@ -537,6 +539,7 @@ namespace EverythingWorld.World
             mk.Box(plank, at + up * .9f - face * .27f, new Vector3(.6f, .9f, .06f), rot * Quaternion.Euler(-10f, 0, 0));
             foreach (var s in new[] { -.28f, .28f }) mk.Box(plank, at + side * s + up * .65f, new Vector3(.05f, .05f, .5f), rot);
             solid.Box(plank, at + up * .5f, new Vector3(.7f, 1f, .7f), rot);
+            if (life != null) Interact.Seat(life.transform, at + up * .52f + face * .05f, face, "Sit in the rocking chair");
         }
 
         void Motorcycle(LandContext ctx, MeshKit mk, MeshKit solid, Vector3 at, Vector3 dir, Color paint)
