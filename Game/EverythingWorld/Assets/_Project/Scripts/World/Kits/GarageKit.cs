@@ -80,7 +80,7 @@ namespace EverythingWorld.World
         /// Lay out the Row: from where you arrive, the longest straight run that stays well inside the land; level
         /// a smooth road along it (with the lots either side), and put the garages down both sides, Arctic
         /// Monkeys and The Killers in the last pair before the casino.
-        public override void ShapeGround(IslandWorldData data, int index)
+        void ShapeRow(IslandWorldData data, int index)
         {
             var isl = data.layout.islands[index];
             var heart = new Vector2(isl.labelX, isl.labelZ);
@@ -177,6 +177,7 @@ namespace EverythingWorld.World
             }
             SongPlaces(ctx, mk, solid);
             Suburbs(ctx, mk, solid);
+            RowPlaces(ctx, mk, solid);
             Outskirts(ctx, mk, solid);
             mk.Build("The Row", ctx.Root, false);
             solid.BuildCollider("The Row walls", ctx.Root);
