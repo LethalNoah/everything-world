@@ -324,6 +324,16 @@ The tailgate chairs can be sat in.
 
 **Happenings:** Leaves fall, chimes sway, string lights twinkle with the music. In the post-rock songs the quiet side swells with the song, the lanterns, falls and sky brightening slowly toward the climax and settling at the end. "Ashes in the Snow" brings snow over the whole land; "two moons" hangs two moons in the sky; "Supermoon" raises a giant moon; "春雨 Spring Rain" brings a soft rain; "Everlasting Light" sends a beam up from MONO's lamp.
 
+**More paths and places:** Laid out on purpose, with the deck, the scarp, the streams and every terrace and clearing left where they were. Three more packed-earth paths with lanterns and drifts of leaves reach the empty east, south and west. On the warm math-rock side above the scarp, with people to talk to:
+- **The Yatai:** a lantern-hung food stall on a deck: noren curtains, a steaming pot, stools to sit at, bowls of ramen to carry.
+- **The Counting Floor:** a deck of tiles seven across and eleven long under string lights. A tile lights when you stand on it, and a pulse walks the floor on its own, counting; a metronome post changes the count (seven, eleven, five, plain four).
+- **The Persimmon Orchard:** bare-branched trees hung with bright orange fruit, the leaves all on the ground; a drying shed strung with persimmons glowing like lanterns; a ladder, baskets of fruit to carry.
+
+And on the quiet post-rock side below it:
+- **The Crescendo Field:** one weathered piano in the long grass facing the sea, and forty pale lamps on thin poles, dark. Press one key and sit down: over most of a minute the lamps come on one by one, outward from the piano, to a blaze; it holds; then they all go out.
+
+The benches at the new places can be sat on.
+
 ### The Grunge Rainwood
 *40 songs · 20 artists · 0.88 km² · built in Unity*
 
