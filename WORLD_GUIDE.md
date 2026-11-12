@@ -844,13 +844,22 @@ Warm, humid, rhythmic. River country, smoky towns and coastline.
 - **The buskers:** on corners out of town, each with an open case and something to say.
 
 ### The Old Jazz Quarter
-*29 songs · 25 artists · 0.75 km²*
+*28 songs · 24 artists · 0.75 km² · built in Unity*
 
-**Arriving:** Smoky hill towns with cobbled squares and stone bridges; a glowing club marquee, and a lone saxophonist on the bridge.
+**Arriving:** Cobble Square, a little past midnight, in the rain. The whole town is in black and white, like an old photograph of a jazz club: wet grey cobbles, tall dark houses, pools of lamplight, steam rising from a grating. A clock on a post has stopped at five past twelve. On one side of the square a red neon marquee says THE BLUE MODE: the only red in town.
 
-**The vibe:** Late night and smoky. Rain-slick cobbles, street lamps, small cocktail tables. Now with the big-band and swing era too.
+**The vibe:** Late night and smoky, quiet and close, a little sad. It always rains. Colour is kept for the music: the red of the club's sign and the blue light inside it, the brass of the horns and the street lamps, and gold at the top of the hill. Lamp Street climbs from the square over a stone bridge, where somebody is always playing a saxophone to the river, and on up between tall houses (a few windows lit behind their blinds, fire escapes, water tanks on the roofs, HOTEL and BAR in white neon) to the hilltop, where a round white temple with a gold dome stands above the rain. Out of town: bare black trees, puddles, lamps with a bench under them, phone boxes that are worth answering, long black cars parked with their lamps left on.
 
-**Artist areas:** Club doorways, café tables and lamp posts with plaques.
+**Artist areas:** Most artists have a club doorway of their own: a slice of dark wall, a door under a small awning with a lamp, a cocktail table with a candle and two chairs, and one thing from their song beside it, in brass or in light; covers on a white card in a black frame. Miles Davis is the club itself, The Blue Mode: a marquee with chasing bulbs, and inside blue light and smoke, a small stage (a trumpet on a stand in a blue spot, a piano to play, a bass player, drums), tables with candles, a bar with drinks to carry. Alice Coltrane has the hilltop temple: a harp to play, an organ, saffron cloth, lotus lamps round the steps, a piano with two candles. Duke Ellington: a subway car at a platform with a blue A on it, a station entrance with globe lamps, a white piano, a jeep with blue lamps ("Jeep's Blues"). Billie Holiday: one microphone in one light on a low dark stage, a white gardenia on a stool, chairs set out in the dark. Chet Baker: a bench under the one tree in town with leaves, and they are amber; a trumpet left on the seat. Herbie Hancock: a shallow pond with an island and a piano on it, a palm of light, cantaloupes (two to carry), three standing stones, a synthesiser. The swing era, downhill: Glenn Miller's bandstand, Cab Calloway's HI-DE-HO sign and a microphone to call into, Ella Fitzgerald's little yellow basket (to carry) and a dropped letter, Frank Sinatra's lamp post with a hat and coat on it, Nat King Cole's piano with a photograph and a rose. Soul jazz, east: Cannonball Adderley's three MERCY signs, Jimmy Smith's organ with its roots gone down into the ground, Les McCann's scales with a question mark in one pan, Donald Byrd's game of dominoes. West: Django Reinhardt's caravan, fire and a small swing to sit on ("Minor Swing"), Dave Brubeck's ring of nine stones, Stan Getz's wave pavement, striped umbrella and deck chair, Moondog standing on his corner under a wire of white birds. Over the bridge: Sonny Rollins and his quartet on either side of Lamp Street; then Pharoah Sanders' orbiting lights, Joe Henderson's globe, Zoh Amba's clock without hands.
+
+**Happenings:** The rain never stops, except for Alice Coltrane: while one of her songs plays the rain stops, gold comes into the sky and the stars come out over the hill. "Astral Traveling" brings the stars out too. During "Strange Fruit" every lamp, window and sign in town goes down low and one light is left. "So What" turns the town blue. "Take the 'A' Train" sets the train's windows flashing. "In the Mood" sends the marquee bulbs chasing. "'Tis Autumn" brings the amber leaves down. "Blue Rondo à la Turk" lights the nine stones in twos and threes. The marquee flickers now and then; notes drift up from the saxophone on the bridge; smoke hangs in the club.
+
+**The streets and places:** Laid out on purpose: the square, Lamp Street, the bridge and the hilltop are the spine, and every lane to an artist branches from them without crossing the river. The people here are in black and white too, and will talk to you.
+- **The Blue Mode:** the club on the square. Walk in under the marquee: sit at a table, play two chords on the piano, take a drink from the bar.
+- **Cobble Square:** the stopped clock, a news stand with the late edition and umbrellas to carry, a phone box, a long black car at the kerb.
+- **The bridge:** stone, with a lamp at each corner and the saxophonist leaning on the parapet. Stop and listen.
+- **Lamp Street:** the houses up the hill, and people waiting in doorways.
+- **The temple:** above the rain. The view back down over the town.
 
 ### The Funk Tropics
 *30 songs · 19 artists · 0.65 km² · built in Unity*
@@ -933,7 +942,7 @@ City islands joined by bridges. Dusk into night, with one sunny beach.
 **Artist areas:** Stoops, murals and corner stages. The most crowded land in the world (49 artists), so the plots should feel like a dense neighbourhood.
 
 ### The Velvet Rooftops
-*28 songs · 22 artists · 0.48 km²*
+*29 songs · 23 artists · 0.48 km²*
 
 **Arriving:** City rooftops at night joined by sky bridges; a rooftop pool lounge on a glowing tower.
 
