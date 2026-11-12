@@ -38,6 +38,13 @@
    "weather": "", "weatherAmount": 0
   },
   {
+   "land": "The Djent Spires",
+   "sunPitch": 36, "sunYaw": 210, "sunIntensity": 1.0, "sunColor": "#FFF0D2",
+   "skyLight": "#A8C8EA", "horizonLight": "#DCEAF6", "groundLight": "#8C98AC",
+   "fogColor": "#C6DAEC", "fogStart": 160, "fogEnd": 1700, "stars": 0, "sunShadows": false, "dailyWeather": false, "bloom": 1.0,
+   "weather": "", "weatherAmount": 0
+  },
+  {
    "land": "The Iron Range",
    "sunPitch": 14, "sunYaw": 120, "sunIntensity": 0.9, "sunColor": "#FF9A60",
    "skyLight": "#5E5A6A", "horizonLight": "#8A5A40", "groundLight": "#5A4232",

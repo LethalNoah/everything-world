@@ -53,7 +53,7 @@ namespace EverythingWorld.World
             if (kits == null)
             {
                 kits = new Dictionary<string, LandKit>();
-                foreach (var k in new LandKit[] { new LanternwoodKit(), new HubKit(), new IndieDownsKit(), new MeadowsKit(), new SmallHoursKit(), new DriftwoodKit(), new FensKit(), new ElectricKit(), new GarageKit(), new ClassicKit(), new BayouKit(), new HairKit(), new ArenaKit(), new PsychKit(), new JamKit(), new YachtKit(), new FolkKit(), new BluegrassKit(), new ProgKit(), new IronKit(), new MoorsKit(), new GrungeKit(), new DocksKit(), new CalderaKit() }) kits[k.Land] = k;
+                foreach (var k in new LandKit[] { new LanternwoodKit(), new HubKit(), new IndieDownsKit(), new MeadowsKit(), new SmallHoursKit(), new DriftwoodKit(), new FensKit(), new ElectricKit(), new GarageKit(), new ClassicKit(), new BayouKit(), new HairKit(), new ArenaKit(), new PsychKit(), new JamKit(), new YachtKit(), new FolkKit(), new BluegrassKit(), new ProgKit(), new IronKit(), new MoorsKit(), new GrungeKit(), new DocksKit(), new CalderaKit(), new DjentKit() }) kits[k.Land] = k;
             }
             return land != null && kits.TryGetValue(land, out var kit) ? kit : null;
         }
