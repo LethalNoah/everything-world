@@ -550,7 +550,7 @@ Soul, funk, disco, world music and jazz.
 
 ### 48. The Old Jazz Quarter
 
-*jazz, free jazz, hard bop, cool jazz, big band* · 29 songs · energy 0.41, acoustic 0.65, mood 0.47 · top artists: Alice Coltrane, Duke Ellington, Herbie Hancock, Billie Holiday, Cab Calloway
+*jazz, hard bop, cool jazz, free jazz, big band* · 28 songs · energy 0.40, acoustic 0.65, mood 0.46 · top artists: Alice Coltrane, Duke Ellington, Herbie Hancock, Billie Holiday, Cab Calloway
 
 - **Terrain:** Smoky hill towns with cobbled squares and stone bridges.
 - **Colours:** `#1F2A44 midnight blue`, `#C9A24A brass`, `#7D7D85 smoke`, `#6E2230 oxblood`
@@ -614,7 +614,7 @@ Hip-hop, R&B and lo-fi beats.
 
 ### 45. The Velvet Rooftops
 
-*r&b, soul, hip hop, pop, alternative rnb* · 28 songs · energy 0.57, acoustic 0.24, mood 0.48 · top artists: Frank Ocean, Rihanna, SZA, The Weeknd, 070 Shake
+*r&b, soul, hip hop, pop, alternative rnb* · 29 songs · energy 0.57, acoustic 0.25, mood 0.48 · top artists: Frank Ocean, Rihanna, SZA, The Weeknd, 070 Shake
 
 - **Terrain:** City rooftops at night, joined by sky bridges.
 - **Colours:** `#A3162B deep red`, `#4B1C4F velvet purple`, `#E3B341 gold`, `#141B33 night blue`
