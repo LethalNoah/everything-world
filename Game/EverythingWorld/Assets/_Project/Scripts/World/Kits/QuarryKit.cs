@@ -90,7 +90,7 @@ namespace EverythingWorld.World
         }
 
         // ---------------------------------------------------------------- shaping the ground
-        public override void ShapeGround(IslandWorldData data, int index)
+        void ShapeQuarry(IslandWorldData data, int index)
         {
             var isl = data.layout.islands[index]; heart2 = new Vector2(isl.labelX, isl.labelZ);
             bool Inside(Vector2 p, float m) { if (data.IslandAt(p.x, p.y) != isl) return false; for (var k = 0; k < 24; k++) { var a = k * Mathf.PI / 12f; if (data.IslandAt(p.x + Mathf.Cos(a) * m, p.y + Mathf.Sin(a) * m) != isl) return false; } return true; }
@@ -169,6 +169,7 @@ namespace EverythingWorld.World
             Arrival(ctx, mk, solid);
             if (hasPit) Pit(ctx, mk, solid);
             Paths(ctx, mk, solid);
+            QuarryPlaces(ctx, mk, solid);
             Wilds(ctx, mk, solid);
             mk.Build("The Nu Metal Quarry", ctx.Root, false);
             solid.BuildCollider("The Nu Metal Quarry walls", ctx.Root);

@@ -445,6 +445,12 @@ Someone walks the Scale all day, counting.
 
 **Happenings:** The haul truck runs the road (the same for everyone); rocks ride the conveyor; dust drifts in the pit; crows circle the rig. "Kryptonite" turns the light green; "The Sound of Silence" sinks the fires and darkens the sky; "Photograph" sets off camera flashes; "Higher" sends a beam up from Creed's tower; "Stricken" brings lightning down on the rod.
 
+**More haul roads and places:** Laid out on purpose, with the gate, the pit and the rim left where they were. Two more gravel haul roads with yellow marker posts and sodium lamps run out over the empty south. The crew live along them, in hi-vis and hard hats; the radio only gets one station and it only plays one year.
+- **The Blast Bench:** a sandbagged tin shelter on a hilltop with a bench inside, wires running off to a heap of shot rock. Push the plunger: the siren winds up, then the heap goes up in a flash and dust and the loose rocks come down roughly where they went up.
+- **The Lot:** the staff car park, five cars from 2003 nosed up to the view. Sit in a driver's seat, turn the key in the one with the stereo (the headlights come on), sit on the pickup's tailgate; cans in a cooler, CDs on a bonnet to throw.
+- **The Blue Hole:** an old pit flooded bright turquoise under a cut rock face, the one piece of colour in the grey. A rope swing off a crane jib, a jumping rock with steps up the back, a drowned digger's arm reaching out of the water, an inner tube, towels on the bank.
+- **The Crib:** the crew's canteen cabin up on blocks: two tables with benches, a tea urn, a radio to turn the dial on, a calendar stopped at August 2003, hard hats on hooks and lunch boxes to carry off.
+
 ### The Power Metal Peaks
 *20 songs · 10 artists · 0.57 km² · built in Unity*
 
