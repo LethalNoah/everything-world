@@ -45,6 +45,13 @@
    "weather": "", "weatherAmount": 0
   },
   {
+   "land": "Discotopia",
+   "sunPitch": 52, "sunYaw": 30, "sunIntensity": 0.95, "sunColor": "#D4E2FF",
+   "skyLight": "#7C8CE0", "horizonLight": "#8A92D0", "groundLight": "#70748C",
+   "fogColor": "#0F1736", "fogStart": 120, "fogEnd": 1500, "stars": 1.0, "sunShadows": false, "dailyWeather": false, "bloom": 1.3,
+   "weather": "", "weatherAmount": 0
+  },
+  {
    "land": "The Funk Tropics",
    "sunPitch": 48, "sunYaw": 200, "sunIntensity": 0.85, "sunColor": "#A8DCEC",
    "skyLight": "#7458D0", "horizonLight": "#7A50B8", "groundLight": "#44705E",

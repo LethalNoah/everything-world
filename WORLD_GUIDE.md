@@ -880,13 +880,21 @@ Warm, humid, rhythmic. River country, smoky towns and coastline.
 **Artist areas:** Porches and shacks along the roads; Robert Johnson at the crossroads itself.
 
 ### Discotopia
-*16 songs · 12 artists · 0.53 km²*
+*16 songs · 12 artists · 0.53 km² · built in Unity*
 
-**Arriving:** A glittering coastal town on terraced hills; a lighthouse topped with a giant mirror ball.
+**Arriving:** On the Floor: a great light-up dance floor that is the town square, nine tiles by nine, chasing in gold, white, amber and aqua. Four white arches rise from its corners to a ring overhead and a mirror ball hangs from it. A DJ in a white and gold booth on one side, a white limousine at the kerb on the other, silver globe lamps all round. It is a clear night, full of stars, by the sea.
 
-**The vibe:** A sparkling, joyful night. Light-up dance floors, platform shoes.
+**The vibe:** A sparkling, joyful night in a white resort town, everything picked out in silver, gold and white light. Out along the headland the Lighthouse has a giant mirror ball where its lamp should be: it turns, and specks of light sweep over the town, the lawns and the water. The Esplanade, a white promenade with globe lamps and strings of lights, runs out to it past the silly Euro-disco corner. Inland the Belvedere, a raised white terrace up a grand stair, is where the glamour sits. On the cool blue-green lawns: white villas with gold windows and lights along their roofs, glitter trees dotted with lights, mirror balls on plinths, little tables under parasols, white benches.
 
-**Artist areas:** ABBA gets the largest monument. Others are light-up floor tiles.
+**Artist areas:** Each artist has a round white pad; most have a little light-up floor of their own under a small mirror ball on an arch, with something from their song beside it; covers on a white board framed in gold; a little mirror ball on a stand for every song without its own piece. ABBA (the largest): a star-shaped white stage with four microphones; a crown turning over a round dance floor ("Dancing Queen"); a white cannon, a white flag and a certain hat ("Waterloo"); a pair of giant dice ("Take A Chance On Me"); a winners' podium with one trophy under one cold light ("The Winner Takes It All"). Earth, Wind & Fire: a gold pyramid with a glowing cap, a kalimba to play, a calendar page turned to the 21st ("September"), a wall of light bars ("Let's Groove"). Out toward the lighthouse, the Euro-disco corner: Boney M. an onion-domed kiosk and a pair of dancing boots ("Rasputin"); Dschinghis Khan the word in lights, a fur hat and a balalaika ("Moskau"); Sandy Marton a camel in sunglasses ("Camel by Camel"); International Music System a desert road sign and a cactus ("Mojave"); Walter Murphy a bust in a wide white collar and a bottle ("A Fifth of Beethoven"). And the rest: CHIC a velvet rope and FREAK OUT in lights, Hot Chocolate a giant mug under a heart, Rufus a loving cup, The Brothers Johnson a giant strawberry and a letter numbered 23, Die Bokjollers a little paddle wheel to spin.
+
+**Happenings:** The tiles and strings of lights chase on a shared beat; the mirror balls turn; specks of light sweep past you. "Dancing Queen" turns every tile gold, spins the crown and doubles the specks. "Waterloo" fires confetti from the cannon. "The Winner Takes It All" dims the whole town and drops one cold light on the podium. "September" sets off fireworks over the sea by the lighthouse. "Rasputin" spins the onion dome and turns the light red and gold.
+
+**The promenade and places:** Laid out on purpose: the Floor at the heart, the Esplanade out to the Lighthouse, a white path back to the Belvedere, and every lane to an artist branching from those, with gold studs down the middle and globe lamps. The people here are dressed for it and will tell you so.
+- **The Floor:** the dance floor square. Ask the DJ for one more song (every tile lights), dance among the dancers, sit in the limousine, and help yourself to a feather boa, a tambourine or a pair of star-shaped glasses.
+- **The Esplanade:** white benches facing the sea, a photo booth to strike a pose in, an ice-cream cart with cones to carry.
+- **The Lighthouse:** white with gold bands and the great mirror ball on top. At its foot a lever to throw (the ball spins up and the specks race), a telescope, the keeper.
+- **The Belvedere:** up the grand stair: little tables to sit at, a champagne tower to pour, glasses to carry, a waiter, and the view back over the Floor.
 
 ### The Afrobeat Coast
 *13 songs · 12 artists · 0.45 km² · new*
