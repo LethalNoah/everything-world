@@ -54,8 +54,11 @@ namespace EverythingWorld.World
 
         /// The artists stay where the layout put them, except any too close to the next land: those move inward,
         /// next to the similar artists round them (ArtistPlacement).
-        public override void ShapeGround(IslandWorldData data, int index) =>
+        public override void ShapeGround(IslandWorldData data, int index)
+        {
             ArtistPlacement.KeepFromBorders(data, index, heartClear: 30f, land: Land);
+            foreach (var (at, r) in PlaceRings) PlaceLevel(data, index, at, r, r + 12f);
+        }
 
         public override void Dress(LandContext ctx)
         {
@@ -67,6 +70,7 @@ namespace EverythingWorld.World
             soft = new MeshKit();
             Loop(ctx, mk);
             Bed(ctx, mk, solid);
+            MeadowPlaces(ctx, mk, solid);
             Trees(ctx, mk);
             Daydreams(ctx, mk, solid, pictures);
             SongPlaces(ctx, mk, solid);
