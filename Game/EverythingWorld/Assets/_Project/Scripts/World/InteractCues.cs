@@ -72,7 +72,8 @@ namespace EverythingWorld.World
                     var go = new GameObject("Cue glow"); go.transform.SetParent(mf.transform, false);
                     go.AddComponent<MeshFilter>().sharedMesh = mf.sharedMesh; var r = go.AddComponent<MeshRenderer>();
                     var mats = new Material[Mathf.Max(1, mf.sharedMesh.subMeshCount)]; for (var i = 0; i < mats.Length; i++) mats[i] = glow; r.sharedMaterials = mats;
-                    r.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off; r.receiveShadows = false; r.enabled = false; c.shells.Add(r);
+                    r.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off; r.receiveShadows = false; r.enabled = false;
+                    if (mf.sharedMesh.bounds.extents.magnitude * Mathf.Abs(mf.transform.lossyScale.x) < 2.5f) c.shells.Add(r); else Destroy(go);   // big things (a carousel, a giant record player) get the outline only
                     // and an outline: a slightly bigger copy seen from the inside, so a band of colour shows all round the thing whatever its own colour is
                     var b = mf.sharedMesh.bounds; var k = Mathf.Clamp(.045f / Mathf.Max(.02f, b.extents.magnitude), .03f, 1f); var s = mf.transform.lossyScale; if (s.x * s.y * s.z < 0f) continue;
                     var og = new GameObject("Cue glow"); og.transform.SetParent(mf.transform, false); og.transform.localScale = Vector3.one * (1f + k); og.transform.localPosition = -b.center * k;
@@ -83,7 +84,7 @@ namespace EverythingWorld.World
             var m = new GameObject("Cue marker"); m.transform.SetParent(transform.parent, false);   // not a child of the thing: it must not turn or scale with it
             m.AddComponent<MeshFilter>().sharedMesh = c.kind == 0 ? square : c.kind == 1 ? diamond : c.kind == 2 ? ball : bubble;
             var rr = m.AddComponent<MeshRenderer>(); rr.sharedMaterial = solid; rr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off; rr.receiveShadows = false; rr.enabled = false;
-            m.transform.localScale = c.kind == 0 ? new Vector3(.34f, 1f, .34f) : c.kind == 1 ? Vector3.one * .2f : c.kind == 2 ? Vector3.one * .11f : Vector3.one * .34f;
+            m.transform.localScale = c.kind == 0 ? new Vector3(.34f, 1f, .34f) : c.kind == 1 ? Vector3.one * .2f : c.kind == 2 ? Vector3.one * .075f : Vector3.one * .34f;
             c.marker = m.transform; c.markerR = rr;
             return c;
         }
@@ -128,9 +129,10 @@ namespace EverythingWorld.World
                 if (c.kind == 3 && c.it.GetComponentInChildren<TextMesh>() != null) hide = true;   // they're speaking: the words are there instead
                 Show(c, a > .01f && !hide); if (!c.on) continue;
                 var col = ColorOf(c.it); var dim = Color.Lerp(col, new Color(col.r * .22f, col.g * .22f, col.b * .22f), 1f - beat);   // shifts between its colour and a dark version, so it shows against light and dark alike
-                if (c.shells.Count > 0) { block.SetColor(ColorId, new Color(col.r, col.g, col.b, a)); block.SetFloat(FillId, .1f + .4f * beat); block.SetFloat(RimId, 1.4f); foreach (var r in c.shells) if (r != null) r.SetPropertyBlock(block); }
+                // the glow is light enough that the thing keeps its own colours (a black cat stays black); the outline does the telling
+                if (c.shells.Count > 0) { block.SetColor(ColorId, new Color(col.r, col.g, col.b, a)); block.SetFloat(FillId, .06f + .2f * beat); block.SetFloat(RimId, 1.2f); foreach (var r in c.shells) if (r != null) r.SetPropertyBlock(block); }
                 if (c.outlines.Count > 0) { block.SetColor(ColorId, new Color(dim.r, dim.g, dim.b, a)); block.SetFloat(FillId, 1f); block.SetFloat(RimId, 0f); foreach (var r in c.outlines) if (r != null) r.SetPropertyBlock(block); }
-                var mcol = Color.Lerp(col, dim, .6f); block.SetColor(ColorId, new Color(mcol.r, mcol.g, mcol.b, a)); block.SetFloat(FillId, 1f); block.SetFloat(RimId, 0f); c.markerR.SetPropertyBlock(block);
+                var mcol = Color.Lerp(col, dim, .35f); block.SetColor(ColorId, new Color(mcol.r, mcol.g, mcol.b, a)); block.SetFloat(FillId, 1f); block.SetFloat(RimId, 0f); c.markerR.SetPropertyBlock(block);
                 switch (c.kind)
                 {
                     case 0: c.marker.SetPositionAndRotation(c.it.transform.position + Vector3.up * .03f, c.it.transform.rotation); break;
