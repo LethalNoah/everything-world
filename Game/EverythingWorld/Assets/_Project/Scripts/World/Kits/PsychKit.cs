@@ -62,6 +62,9 @@ namespace EverythingWorld.World
                 var sandC = Color.Lerp(new Color(.95f, .8f, .5f), new Color(.92f, .7f, .48f), Mathf.SmoothStep(.1f, .7f, patch));
                 var pinkC = Color.Lerp(new Color(.92f, .62f, .62f), new Color(.75f, .55f, .8f), Mathf.Clamp01((patch - .78f) / .22f));
                 color = Color.Lerp(sandC, pinkC, Mathf.SmoothStep(.66f, .84f, patch));
+                // contrast by height: the lowest ground falls into dusk violet, the high ground bleaches pale
+                color = Color.Lerp(new Color(.36f, .28f, .55f), color, Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(24.3f, 27f, height)));
+                color = Color.Lerp(color, new Color(1f, .96f, .82f), .7f * Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(36f, 42f, height)));
             }
             color.a = 1f;
             return true;
@@ -78,6 +81,7 @@ namespace EverythingWorld.World
                 Level(data, index, new Vector2(a.x, a.z), Foot(a) + 1f, Foot(a) + 12f);
             }
             Level(data, index, heart, 16f, 34f);
+            foreach (var (at, flat, blend) in new[] { (OasisAt, 20f, 30f), (ShackAt, 9f, 16f), (MotorikAt, 11f, 18f), (FuzzAt, 12f, 20f), (LoveAt, 14f, 22f), (SoundAt, 9f, 16f), (DomeAt, 9f, 15f), (MirrorAt, 11f, 17f), (TeaAt, 6f, 12f) }) Level(data, index, at, flat, blend);
             // a few striped mesas pushed up out of the desert, away from the artists and the heart
             var rng = new System.Random(1967); var made = 0;
             for (var t = 0; t < 400 && made < 7; t++)
@@ -87,6 +91,8 @@ namespace EverythingWorld.World
                 if (data.IslandAt(x, z) != isl || Vector2.Distance(p, heart) < 90f) continue;
                 var ok = true;
                 foreach (var a in data.layout.artists) if (a.sceneId == isl.sceneId && Vector2.Distance(p, new Vector2(a.x, a.z)) < a.r + 40f) ok = false;
+                foreach (var (at, pr) in PlaceRings) if (Vector2.Distance(p, at) < pr + 44f) ok = false;   // not on a place
+                for (var w = 0; w < Horseshoe.Length - 1 && ok; w++) for (var u = 0f; u <= 1f; u += .2f) if (Vector2.Distance(p, Vector2.Lerp(Horseshoe[w], Horseshoe[w + 1], u)) < 46f) ok = false;   // nor on the Rainbow Road
                 for (var k = 0; k < 8 && ok; k++) { var an = k * Mathf.PI / 4f; if (data.IslandAt(x + Mathf.Cos(an) * 60f, z + Mathf.Sin(an) * 60f) != isl) ok = false; }
                 if (!ok) continue;
                 Mesa(data, index, p, 14f + (float)rng.NextDouble() * 12f, 12f + (float)rng.NextDouble() * 14f);
@@ -138,7 +144,9 @@ namespace EverythingWorld.World
             life.center = center; life.capGlow = capGlow;
             var mk = new MeshKit(); var solid = new MeshKit();
             SpiralMushroom(ctx, mk, solid);
+            RainbowRoads(ctx, mk, solid);
             Paths(ctx, mk, solid);
+            Places(ctx, mk, solid);
             Wilds(ctx, mk, solid);
             mk.Build("Wilds", ctx.Root, false);
             soft.Build("Soft wilds", ctx.Root, false);
@@ -266,7 +274,7 @@ namespace EverythingWorld.World
                 facing[next.name] = -dir;
                 var side = Vector3.Cross(Vector3.up, dir); var end = total - Foot(next) * .8f;
                 var pts = new List<Vector3>();
-                for (var d = walk == 1 ? 10f : PathW / 2f + .1f; ; d += 2.5f)
+                for (var d = (new Vector2(join.x - center.x, join.z - center.z)).sqrMagnitude < 4f ? 10f : RoadW / 2f + .1f; ; d += 2.5f)
                 {
                     var dd = Mathf.Min(d, end);
                     var q = from + dir * dd + side * Mathf.Sin(dd / 18f) * Mathf.Min(4f, end * .05f);
@@ -317,7 +325,7 @@ namespace EverythingWorld.World
                 if (forest > .56f && roll < .55f) { var kind = Mathf.FloorToInt(Mathf.PerlinNoise(px * .004f + 9f, pz * .004f) * 4f) % 4; var pal = Mathf.FloorToInt(Mathf.PerlinNoise(px * .005f, pz * .005f + 5f) * 6f) % Rainbow.Length; for (var k = 0; k < ctx.Rng.Next(2, 5); k++) Shroom(ctx, mk, solid, ctx.OnGround(px + ctx.Range(-8f, 8f), pz + ctx.Range(-8f, 8f)), ctx.Range(.6f, 2f) * (.5f + forest), (pal + (k % 2)) % Rainbow.Length, kind); shrooms++; }
                 else if (forest <= .56f && roll < .3f) { Desert(ctx, mk, solid, p); }
                 else if (roll < .62f) { Crystals(ctx, mk, solid, p); crystals++; }
-                else if (roll < .78f && vans < 6 && NearPath(px, pz, 14f)) { Camper(ctx, mk, solid, p, vans); vans++; }
+                else if (roll < .78f && vans < 0 && NearPath(px, pz, 14f)) { Camper(ctx, mk, solid, p, vans); vans++; }
                 else if (roll < .86f && lamps < 10) { LavaLamp(ctx, mk, p, ctx.Range(.6f, 1f), lamps % Rainbow.Length); lamps++; }
                 else if (roll < .93f) { Spiral(ctx, mk, p); spirals++; }
                 else continue;
