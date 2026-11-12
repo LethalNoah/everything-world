@@ -160,6 +160,7 @@ namespace EverythingWorld.World
                 Level(data, index, new Vector2(a.x, a.z), Foot(a) + 1f, Foot(a) + 12f);
             }
             Level(data, index, heart2 - perp2 * 10f, 24f, 40f);
+            foreach (var (at, r) in PlaceRings) Level(data, index, at, r, r + 14f);
         }
 
         void Carve(IslandWorldData data, int index)
@@ -216,6 +217,7 @@ namespace EverythingWorld.World
             Town(ctx, mk, solid);
             if (creek.Count > 1) Trestle(ctx, mk, solid);
             Mine(ctx, mk, solid);
+            HollowPlaces(ctx, mk, solid);
             Hollows(ctx, mk, solid);
             mk.Build("Bluegrass Hollows", ctx.Root, false);
             crowns.Build("Soft bluegrass crowns and leaves", ctx.Root, false);   // "Soft…": walked through, so the land audit skips it
@@ -422,6 +424,7 @@ namespace EverythingWorld.World
                 mk.Box(wood, at + side * s + up * .68f + dir * .05f, new Vector3(.05f, .05f, .5f), rot);
             }
             solid.Box(wood, at + up * .5f, new Vector3(.7f, 1f, .8f), rot);
+            Interact.Seat(life.transform, at + up * .52f, dir, "Sit and rock");
         }
 
         // ---------------------------------------------------------------- the creek, bridges, the mill
