@@ -38,6 +38,13 @@
    "weather": "", "weatherAmount": 0
   },
   {
+   "land": "The Oddball Backroads",
+   "sunPitch": 32, "sunYaw": 240, "sunIntensity": 1.05, "sunColor": "#FFE8B0",
+   "skyLight": "#A8C4C8", "horizonLight": "#E8DCA8", "groundLight": "#7A7A50",
+   "fogColor": "#D6D4AE", "fogStart": 160, "fogEnd": 1500, "stars": 0, "sunShadows": false, "dailyWeather": false, "bloom": 1.0,
+   "weather": "", "weatherAmount": 0
+  },
+  {
    "land": "The Nu Metal Quarry",
    "sunPitch": 40, "sunYaw": 200, "sunIntensity": 0.7, "sunColor": "#E8E2D6",
    "skyLight": "#8A8C90", "horizonLight": "#A8A49A", "groundLight": "#6A665C",

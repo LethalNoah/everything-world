@@ -235,13 +235,15 @@ The heartland. Old hills, long roads and the tallest mountains in the world. Mos
 **Happenings:** The train runs out along the coast and back (the same train for everyone). "Bad Apple!!" drains the whole land to black and white; "COLORS" cycles the sky through every colour; "FIRE BIRD" sets the sky burning; "Skye" clears it to bright blue and the kite climbs; "OXYGEN" sends bubbles up round the stage.
 
 ### The Oddball Backroads
-*28 songs · 17 artists · 0.96 km²*
+*28 songs · 17 artists · 0.96 km² · built in Unity*
 
-**Arriving:** Winding rural back roads that feel slightly wrong, overgrown with kudzu. A giant fibreglass head stands next to a crooked water tower.
+**Arriving:** A crossroads on a hazy summer afternoon: a giant fibreglass head grinning on a plinth (its eyes follow you), a water tower leaning badly beside it with ODDBALL on the tank, a stop sign that says MAYBE, an old gas pump, a row of pink lawn flamingos, and a hand-painted sign: "THE ODDBALL BACKROADS, you are probably here".
 
-**The vibe:** Hazy summer, slightly off. Lawn flamingos, junk sculptures, a thrift-store couch in a field. Lots of room to get pleasantly lost.
+**The vibe:** Weird and funny, a wink in everything. Two-lane back roads with a yellow line wind over low hills, telephone poles leaning along them with sagging wires, mailboxes, and road signs that are slightly wrong ("SPEED LIMIT: VIBES", "BRIDGE MAY BE A DREAM", "DEER?"). Kudzu swallows trees, poles, pickups and an old red barn. Flamingo flocks, junk sculptures, a thrift-store couch alone in a field with its lamp on, rusted pickups, corn patches, hay bales, a lone door standing in a field. Lots of room to get pleasantly lost.
 
-**Artist areas:** Roadside attractions, one per artist: Pixies and Ween get the strangest ones.
+**Artist areas:** A roadside attraction for every artist, each on a gravel pull-off under a tall bulb-lit "SEE THE ..." sign. Pixies (the largest): a giant head with its top swung open and thoughts floating out ("Where Is My Mind?"), a monkey on a pole with a halo ("Monkey Gone to Heaven"), a fibreglass wave ("Wave of Mutilation"), a sign that just says HEY, a bench facing nothing ("All I Think About Now"). Ween: a giant cheerful sailor wading in a pond ("Ocean Man"), a rose as tall as a house ("Roses Are Free"), a giant baby bottle ("She's Your Baby"). Violent Femmes: a sun in sunglasses ("Blister In The Sun"), giant red lips ("Kiss Off"). Wilco: two halves of a bridge that don't meet ("Too Far Apart"); MJ Lenderman: a giant wristwatch ("Wristwatch"); Silver Jews: giant dice and a ruler ("Random Rules"). Beck a giant hand making an L, R.E.M. a chapel leaning sideways and a meteor in a crater with THE END IS NEAR, The Flaming Lips a pink robot, They Might Be Giants a giant hot dog, CAKE a race car on a plinth, Eels a giant tooth, Butthole Surfers a pepper shaker, Bloodhound Gang a fire hydrant on fire, Dexter and The Moonrocks a LOT sign, That Handsome Devil a little red devil, Victor Jones a moon raining. Every song without its own piece gets a little arrow sign that lights up.
+
+**Happenings:** The head watches you; dandelion fluff drifts in the haze. "Ocean Man" turns the sky ocean blue, "Where Is My Mind?" a dreamy violet, "It's The End Of The World As We Know It" red with meteors streaking down, "Blister In The Sun" white-hot, "Yoshimi" pink.
 
 ### The Nu Metal Quarry
 *27 songs · 12 artists · 0.62 km² · built in Unity*
