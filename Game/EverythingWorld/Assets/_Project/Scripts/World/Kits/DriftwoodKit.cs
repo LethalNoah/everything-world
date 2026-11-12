@@ -102,7 +102,7 @@ namespace EverythingWorld.World
 
         /// Level the heart for the lagoon, and spread the artists round it with room to wander between them,
         /// leaving the way to the sea open and keeping well away from the borders with the next lands.
-        public override void ShapeGround(IslandWorldData data, int index)
+        void ShapeShore(IslandWorldData data, int index)
         {
             var isl = data.layout.islands[index]; var sid = isl.sceneId;
             var heart = new Vector2(isl.labelX, isl.labelZ);
@@ -150,10 +150,12 @@ namespace EverythingWorld.World
             soft = new MeshKit();
             ArchAndLagoon(ctx, mk, solid);
             Boardwalk(ctx);
+            ShoreWalks(ctx);
             foreach (var w in walks) Walk(mk, solid, w);
             Rails(mk, solid);
             Lamps(ctx, mk);
             SongPlaces(ctx, mk, solid);
+            ShorePlaces(ctx, mk, solid);
             Coast(ctx, mk, solid);
             Wilds(ctx, mk, solid);
             Washed(ctx, mk, solid);

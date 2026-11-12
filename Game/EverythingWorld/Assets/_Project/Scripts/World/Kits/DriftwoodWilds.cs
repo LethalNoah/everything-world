@@ -244,7 +244,7 @@ namespace EverythingWorld.World
             mk.Box(drift, at + Vector3.up * .46f, new Vector3(1.8f, .08f, .45f), rot);
             mk.Box(drift, at + Vector3.up * .8f - look * .22f, new Vector3(1.8f, .35f, .06f), rot * Quaternion.Euler(-10f, 0, 0));
             foreach (var s in new[] { -1f, 1f }) mk.Box(driftDark, at + side * s * .75f + Vector3.up * .23f, new Vector3(.1f, .46f, .42f), rot);
-            solid.Box(drift, at + Vector3.up * .5f, new Vector3(1.8f, 1f, .5f), rot);
+            solid.Box(drift, at + Vector3.up * .5f, new Vector3(1.8f, 1f, .5f), rot); if (plife != null) Interact.Bench(plife.transform, at + Vector3.up * .52f - side * .5f, at + Vector3.up * .52f + side * .5f, look);
             var lamp = ArtistBits.LanternPost(mk, ctx.Root, ctx.OnGround(at.x + side.x * 1.6f, at.z + side.z * 1.6f), -side, driftDark, iron, Ember, 2.2f);
             halos.Add(lamp.transform.position, 1.3f, Ember, .9f);
             noGrass.Add(new Vector3(at.x, 1.4f, at.z));
