@@ -135,8 +135,7 @@ namespace EverythingWorld.World
             var leather = WorldMaterials.Solid(new Color(.35f, .18f, .12f)); var ac = fo.P(0, 0, .6f);
             mk.Box(leather, ac + up * .25f, new Vector3(.95f, .5f, .9f), f.r); mk.Box(leather, ac + up * .8f + f.Fwd * .38f, new Vector3(.95f, .8f, .16f), f.r); foreach (var e in new[] { -1f, 1f }) mk.Box(leather, ac + up * .5f + f.Right * e * .45f, new Vector3(.14f, .5f, .85f), f.r);
             Interact.Seat(plife.transform, ac + up * .52f, -f.Fwd, "Sit in the sweet spot"); Col(ac + up * .5f + f.Fwd * .38f, new Vector3(.95f, 1.2f, .2f), f.r);
-            Col(so + up * .5f + f.Right * .38f, new Vector3(.2f, 1.2f, 2.2f), f.r);
-            var so = fo.P(2.2f, 0, 2f); mk.Box(leather, so + up * .25f, new Vector3(.9f, .5f, 2.2f), f.r); mk.Box(leather, so + up * .75f + f.Right * .38f, new Vector3(.16f, .7f, 2.2f), f.r); Interact.Bench(plife.transform, so + up * .52f - f.Fwd * .7f, so + up * .52f + f.Fwd * .7f, -f.Right);
+            var so = fo.P(2.2f, 0, 2f); mk.Box(leather, so + up * .25f, new Vector3(.9f, .5f, 2.2f), f.r); mk.Box(leather, so + up * .75f + f.Right * .38f, new Vector3(.16f, .7f, 2.2f), f.r); Interact.Bench(plife.transform, so + up * .52f - f.Fwd * .7f, so + up * .52f + f.Fwd * .7f, -f.Right); Col(so + up * .5f + f.Right * .38f, new Vector3(.2f, 1.2f, 2.2f), f.r);
             Folk(so + up * .52f + f.Fwd * .55f, -f.Right, Resident.Pose.Sit, new[] { "Shh. Not during side two.", "You can hear the room they recorded it in. And the tea.", "Sweet spot's free. I gave it up in '78. Too much responsibility." }, Look(Residents.Tool.Mug));
             StoneSign(ctx, mk, f.P(Door / 2f + 2f, 0, D / 2f + 1.6f), f.Fwd, "THE LISTENING ROOM\nplease stay for the whole side", 3.6f, .14f);
             Lane(ctx, mk, f.P(0, 0, D / 2f + 2f)); Ring(g, 8f);
