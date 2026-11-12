@@ -313,6 +313,12 @@ The tailgate chairs can be sat in.
 
 **Happenings:** Kids skate the pool and the bowls (the same skaters for everyone); tumbleweeds roll through. "Wake Me up When September Ends" brings autumn leaves and gold light; "Boulevard of Broken Dreams" dims the land to a lonely blue and the boulevard's lamps flicker; "Welcome to the Black Parade" darkens the sky and black confetti falls; "99 Red Balloons" sends red balloons up across the land; "High Hopes" lets balloons go from the top of the ladder.
 
+**More sidewalks and places:** Laid out on purpose, with the cul-de-sac, the pool and every driveway left where they were. Four more cracked sidewalks under streetlights run out to the empty east, north, south-west and west, with a couch, a mailbox or a shopping cart left under the lights (the couches can be sat on). The kids who never left live along them; it has been noon on the last day of school for years.
+- **Badlands High, the gym on prom night:** a brick gym to walk into: a basketball court under streamers and a balloon arch, coloured lights, a mirror ball to spin, a stage with a DJ and a banner, bleachers to sit on, a punch table (cups to carry), basketballs, a chaperone by the door. A school bus that never leaves outside.
+- **Sal's Pizza:** a parlour with a checkered floor, an oven glowing behind the counter, two booths, a jukebox to kick, and a stack of pizza boxes to carry off. A picnic table outside.
+- **The TP'd House and the Legal Wall:** the one neat house in the Badlands, on the one green lawn, buried in toilet paper; its owner sits in a lawn chair with a hose, the culprit hides behind the tree, and a crate of rolls waits to be thrown over the roof. Beside it a long grey wall: spray it and a tag appears each time, until someone from the city paints it grey again.
+- **The Water Tower:** a steel tank on four legs with the town's name on it and what the kids added. One long flight of stairs climbs to the catwalk: sit with your legs over the edge and look out, press play on the boombox.
+
 ### The Math Rock Escarpment
 *43 songs · 33 artists · 0.52 km² · built in Unity*
 

@@ -80,7 +80,7 @@ namespace EverythingWorld.World
         static float Ease(float a, float b, float x) { var t = Mathf.Clamp01((x - a) / (b - a)); return t * t * (3f - 2f * t); }
 
         // ---------------------------------------------------------------- shaping the ground
-        public override void ShapeGround(IslandWorldData data, int index)
+        void ShapeBadlands(IslandWorldData data, int index)
         {
             var isl = data.layout.islands[index]; heart2 = new Vector2(isl.labelX, isl.labelZ); bowls.Clear(); mesas.Clear();
             bool Inside(Vector2 p, float m) { if (data.IslandAt(p.x, p.y) != isl) return false; for (var k = 0; k < 16; k++) { var a = k * Mathf.PI / 8f; if (data.IslandAt(p.x + Mathf.Cos(a) * m, p.y + Mathf.Sin(a) * m) != isl || data.HeightAt(p.x + Mathf.Cos(a) * m, p.y + Mathf.Sin(a) * m) < 2.5f) return false; } return true; }
@@ -196,6 +196,7 @@ namespace EverythingWorld.World
             Arrival(ctx, mk, solid);
             if (hasPool) Pool(ctx, mk, solid);
             Paths(ctx, mk, solid);
+            BadlandsPlaces(ctx, mk, solid);
             Wilds(ctx, mk, solid);
             mk.Build("The Punk Badlands", ctx.Root, false);
             solid.BuildCollider("The Punk Badlands walls", ctx.Root);
