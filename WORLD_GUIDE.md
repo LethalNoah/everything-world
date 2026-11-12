@@ -531,6 +531,15 @@ Someone paces the west track with headphones on.
 
 **Artist areas:** MGMT: the Big Top, with a carousel beside it ("Congratulations") and a neon eel arching over the way in ("Electric Feel"). Santigold: the main stage, black and yellow, an LED wall, speaker towers, a lighting truss, a painted road up to the crowd barrier ("Run the Road"). LCD Soundsystem: a silver dome stage with a huge mirror ball, and a ring of camp chairs and a cooler outside ("All My Friends"). Empire of the Sun: a great golden sunburst ("Walking On A Dream"). Phoenix: a white bandstand with a piano and a chandelier ("Lisztomania"). Passion Pit: a chill-out tent with hammocks ("Sleepyhead"). Two Door Cinema Club: an outdoor cinema with deckchairs and two doors standing alone in the grass. Django Django: a comet on poles ("Hail Bop"). Imogen Heap: a microphone in a ring of light ("Headlock"). Everyone has a plaque, a board of covers and a light pole by the walkway.
 
+**The far fields:** Laid out on purpose, with the gate, the stages and the walkways left where they were. Five more straw walkways with coloured light poles reach the far fields a festival always has, with festival people to talk to:
+- **The Silent Disco** in the south field: a dark round floor and a ring of dim poles, eight people dancing hard to nothing you can hear. Put the headphones on at the rack and the floor and every light come alive on the beat; take them off and it is a field of people dancing to crickets.
+- **The Secret Stage,** beyond it: hidden in a ring of trees strung with fairy lights, a stage of pallets, one performer, hay bales to sit on. "you found it".
+- **The Carousel** in the north-east: always turning under a striped canopy; horses, unicorns and giraffes going up and down. Sit on one and ride. A ticket booth (rides free, forever).
+- **Lost & Found** in the north: a canvas tent with a table of single things, all of which can be carried off (one left wellington, a phone with 37 missed calls, a cuddly dinosaur).
+- **The Chai Tent** in the west: a low patchwork tent full of rugs, cushions to sit on round low tables, cups of chai, lanterns, a gong to strike.
+
+Hay bales at the new places can be sat on.
+
 ### The Small Hours
 *15 songs plus a whole discography · 11 artists · 0.66 km² · built in Unity*
 

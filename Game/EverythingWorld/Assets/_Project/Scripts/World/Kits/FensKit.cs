@@ -84,7 +84,7 @@ namespace EverythingWorld.World
         /// shallow fen round them all: the floor half a metre under the water, each artist on a low island of
         /// moss, the cathedral on its own, and the hills rising gently from the water's edge. The fen stops
         /// well short of the next lands, so nothing changes at the borders.
-        public override void ShapeGround(IslandWorldData data, int index)
+        void ShapeFen(IslandWorldData data, int index)
         {
             var isl = data.layout.islands[index]; var sid = isl.sceneId;
             heart = new Vector2(isl.labelX, isl.labelZ);
@@ -203,6 +203,7 @@ namespace EverythingWorld.World
             Causeways(ctx, mk, solid);
             Trails(ctx, mk, solid);
             SongPlaces(ctx, mk, solid);
+            HillPlaces(ctx, mk, solid);
             Wilds(ctx, mk, solid);
             mk.Build("Fens scenery", ctx.Root, false);
             soft.Build("Soft foliage", ctx.Root, false);
