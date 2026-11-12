@@ -93,6 +93,7 @@ namespace EverythingWorld.World
                 Level(data, index, new Vector2(a.x, a.z), Foot(a) + 1f, Foot(a) + 12f);
             }
             Level(data, index, heart, 14f, 30f);
+            Level(data, index, OrchardAt, 14f, 22f);
         }
 
         void Level(IslandWorldData data, int index, Vector2 c, float flat, float blend)
@@ -126,6 +127,7 @@ namespace EverythingWorld.World
             if (hasLake) { Lake(ctx, mk, solid); Railway(ctx, mk, solid); Footbridge(ctx, mk, solid); }
             Trails(ctx, mk, solid);
             Village(ctx, mk, solid);
+            WoodsPlaces(ctx, mk, solid);   // after everything that was here, before the trees are scattered
             Woods(ctx, mk, solid);
             mk.Build("Folk Woods", ctx.Root, false);
             soft.Build("Soft folk woods crowns and reeds", ctx.Root, false);   // "Soft…": walked through, so the land audit skips it
@@ -583,7 +585,7 @@ namespace EverythingWorld.World
         {
             var up = Vector3.up;
             for (var k = 0; k < 8; k++) mk.Blob(stone, at + Quaternion.Euler(0, k * 45f, 0) * Vector3.forward * .9f + up * .15f, new Vector3(.25f, .18f, .22f), ctx.Rng, .3f);
-            for (var k = 0; k < 3; k++) { var d = Quaternion.Euler(0, k * 120f + 30f, 0) * Vector3.forward; var lg = at + d * 2.6f + up * .25f; mk.Prism(logM, lg - Vector3.Cross(up, d), Vector3.Cross(up, d), .25f, 2f, 8); solid.Box(logM, lg, new Vector3(.5f, .5f, 2f), Quaternion.LookRotation(Vector3.Cross(up, d))); }
+            for (var k = 0; k < 3; k++) { var d = Quaternion.Euler(0, k * 120f + 30f, 0) * Vector3.forward; var lg = at + d * 2.6f + up * .25f; mk.Prism(logM, lg - Vector3.Cross(up, d), Vector3.Cross(up, d), .25f, 2f, 8); Interact.Bench(ctx.Root, lg + up * .3f - Vector3.Cross(up, d) * .6f, lg + up * .3f + Vector3.Cross(up, d) * .6f, -d); solid.Box(logM, lg, new Vector3(.5f, .5f, 2f), Quaternion.LookRotation(Vector3.Cross(up, d))); }
             var fl = ArtistBits.PointLight(ctx.Root, at + up * 1f, new Color(1f, .55f, .2f), 9f, 1.4f); fl.gameObject.AddComponent<FireFlicker>().baseIntensity = 1.4f;
             ArtistBits.PostCollider(ctx.Root, at, .5f, .9f);
             life.fires.Add(at + up * .25f);
