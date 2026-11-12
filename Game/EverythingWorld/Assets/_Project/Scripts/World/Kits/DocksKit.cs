@@ -82,7 +82,7 @@ namespace EverythingWorld.World
         bool OnQuay(float x, float z, float within = 70f) => hasHarbour && HarbourDist(x, z) < within;
 
         // ---------------------------------------------------------------- shaping the ground
-        public override void ShapeGround(IslandWorldData data, int index)
+        void ShapeDocks(IslandWorldData data, int index)
         {
             var isl = data.layout.islands[index]; heart2 = new Vector2(isl.labelX, isl.labelZ); step = data.Step;
             quayEdge.Clear(); quayNormal.Clear();
@@ -174,6 +174,7 @@ namespace EverythingWorld.World
             if (hasHarbour) Harbour(ctx, mk, solid);
             if (hasHarbour) Grid(ctx, mk, solid);
             Streets(ctx, mk, solid);
+            DockPlaces(ctx, mk, solid);
             City(ctx, mk, solid);
             mk.Build("Post-Punk Docklands", ctx.Root, false);
             solid.BuildCollider("Post-Punk Docklands walls", ctx.Root);
@@ -823,7 +824,7 @@ namespace EverythingWorld.World
         void Bench(LandContext ctx, MeshKit mk, MeshKit solid, Vector3 at)
         {
             var up = Vector3.up; var d = Quaternion.Euler(0, ctx.Range(0, 360f), 0) * Vector3.forward; var rot = Quaternion.LookRotation(d); var sd = Vector3.Cross(up, d);
-            mk.Box(concrete, at + up * .25f, new Vector3(2.2f, .5f, .6f), rot); solid.Box(concrete, at + up * .25f, new Vector3(2.2f, .5f, .6f), rot);
+            mk.Box(concrete, at + up * .25f, new Vector3(2.2f, .5f, .6f), rot); solid.Box(concrete, at + up * .25f, new Vector3(2.2f, .5f, .6f), rot); if (plife != null) Interact.Bench(plife.transform, at + up * .56f - sd * .6f, at + up * .56f + sd * .6f, d);
             SodiumLamp(ctx, mk, at + sd * 1.8f - d * .5f, -sd);
         }
 
