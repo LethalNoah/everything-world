@@ -55,7 +55,13 @@ namespace EverythingWorld.World
         public override bool Ground(float height, float slope, float patch, out Color color)
         {
             if (slope > 9f) color = Color.Lerp(new Color(.4f, .38f, .44f), new Color(.5f, .48f, .52f), patch);
-            else color = Color.Lerp(new Color(.3f, .38f, .3f), new Color(.46f, .46f, .34f), Mathf.SmoothStep(.2f, .9f, patch));
+            else
+            {
+                color = Color.Lerp(new Color(.3f, .38f, .3f), new Color(.46f, .46f, .34f), Mathf.SmoothStep(.2f, .9f, patch));
+                // contrast by height: the low marsh pale with cotton grass, the heights dark
+                color = Color.Lerp(new Color(.56f, .6f, .52f), color, Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(8f, 24f, height)));
+                color = Color.Lerp(color, new Color(.17f, .16f, .24f), .8f * Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(48f, 66f, height)));
+            }
             color.a = 1f;
             return true;
         }
@@ -85,6 +91,7 @@ namespace EverythingWorld.World
                 Level(data, index, new Vector2(a.x, a.z), Foot(a) + 1f, Foot(a) + 12f);
             }
             Level(data, index, heart2, 26f, 46f);
+            foreach (var (at, flat, blend) in new[] { (KeysAt, 11f, 18f), (TapeAt, 10f, 17f), (TeaAt, 13f, 20f), (ListenAt, 7f, 13f) }) Level(data, index, at, flat, blend);
         }
 
         void Level(IslandWorldData data, int index, Vector2 c, float flat, float blend)
@@ -116,9 +123,11 @@ namespace EverythingWorld.World
             var mk = new MeshKit(); var solid = new MeshKit();
             Prism(ctx, mk, solid);
             LoopRoad(ctx, mk, solid);
+            MarchRoads(ctx, mk, solid);
             Trails(ctx, mk, solid);
             FloydWorld(ctx, mk, solid);
             Marvels(ctx, mk, solid);
+            Places(ctx, mk, solid);
             Marches(ctx, mk, solid);
             mk.Build("Prog Marches", ctx.Root, false);
             soft.Build("Soft prog reeds and heather", ctx.Root, false);   // "Soft…": walked through, so the land audit skips it
