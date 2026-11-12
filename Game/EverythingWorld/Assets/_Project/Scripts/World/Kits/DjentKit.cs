@@ -59,9 +59,9 @@ namespace EverythingWorld.World
         public override bool Ground(float height, float slope, float patch, out Color color)
         {
             if (height < 3f) color = Color.Lerp(new Color(.7f, .7f, .66f), new Color(.78f, .77f, .72f), patch);                  // pale shingle by the sea
-            else if (slope > 26f) color = Color.Lerp(new Color(.5f, .55f, .63f), new Color(.6f, .65f, .73f), patch);              // the cliff faces, cool blue-grey
-            else if (slope > 12f) color = Color.Lerp(new Color(.64f, .68f, .75f), new Color(.74f, .78f, .84f), patch);
-            else color = Color.Lerp(new Color(.6f, .67f, .66f), new Color(.75f, .8f, .8f), Mathf.SmoothStep(0f, 1f, patch));    // the terraces, frosted pale
+            else if (slope > 26f) color = Color.Lerp(new Color(.68f, .76f, .88f), new Color(.8f, .86f, .95f), patch);              // the cliff faces, cool blue-grey
+            else if (slope > 12f) color = Color.Lerp(new Color(.8f, .85f, .92f), new Color(.92f, .95f, .98f), patch);                // the risers between terraces, pale ice
+            else color = Color.Lerp(new Color(.17f, .26f, .48f), new Color(.26f, .37f, .6f), Mathf.SmoothStep(0f, 1f, patch));   // the treads, deep blue slate: the land reads dark against light (it used to be pale on pale)
             color.a = 1f;
             return true;
         }
@@ -75,7 +75,7 @@ namespace EverythingWorld.World
         static float Ease(float a, float b, float x) { var t = Mathf.Clamp01((x - a) / (b - a)); return t * t * (3f - 2f * t); }
 
         // ---------------------------------------------------------------- shaping the ground
-        public override void ShapeGround(IslandWorldData data, int index)
+        void ShapeSpires(IslandWorldData data, int index)
         {
             var isl = data.layout.islands[index]; heart2 = new Vector2(isl.labelX, isl.labelZ);
             bool Inside(Vector2 p, float m) { if (data.IslandAt(p.x, p.y) != isl) return false; for (var k = 0; k < 16; k++) { var a = k * Mathf.PI / 8f; if (data.IslandAt(p.x + Mathf.Cos(a) * m, p.y + Mathf.Sin(a) * m) != isl) return false; } return true; }
@@ -152,6 +152,7 @@ namespace EverythingWorld.World
             Arrival(ctx, mk, solid);
             if (hasSpire) Citadel(ctx, mk, solid);
             Paths(ctx, mk, solid);
+            SpirePlaces(ctx, mk, solid);
             Wilds(ctx, mk, solid);
             mk.Build("The Djent Spires", ctx.Root, false);
             solid.BuildCollider("The Djent Spires walls", ctx.Root);
