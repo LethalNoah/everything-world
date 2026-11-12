@@ -65,7 +65,7 @@ namespace EverythingWorld.World
                     var ok = Vector2.Distance(new Vector2(px, pz), new Vector2(center.x, center.z)) < near;
                     foreach (var s in spots) if ((new Vector2(s.x, s.z) - new Vector2(px, pz)).magnitude < cl + 30f) ok = false;
                     if (!ok) continue;
-                    var p = ctx.OnGround(px, pz); spots.Add(p); noGrass.Add(new Vector3(p.x, cl * .9f, p.z)); return p;
+                    var p = ctx.OnGround(px, pz); spots.Add(p); marvelSpots.Add(p); noGrass.Add(new Vector3(p.x, cl * .9f, p.z)); return p;
                 }
                 return Vector3.positiveInfinity;
             }

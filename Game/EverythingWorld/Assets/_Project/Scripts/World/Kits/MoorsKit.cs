@@ -34,7 +34,7 @@ namespace EverythingWorld.World
         readonly List<(Vector3 p, int w)> walkPoints = new List<(Vector3, int)>();
         readonly Dictionary<string, Vector3> facing = new Dictionary<string, Vector3>();
         readonly List<Vector3> noGrass = new List<Vector3>();
-        Vector2 heart2, hill2; bool hasHill;
+        Vector2 heart2, hill2; bool hasHill; Transform rootT;
 
         void MakeMaterials()
         {
@@ -69,7 +69,10 @@ namespace EverythingWorld.World
             if (slope > 10f) color = Color.Lerp(new Color(.45f, .45f, .43f), new Color(.55f, .55f, .52f), patch);
             else
             {
-                color = Color.Lerp(new Color(.42f, .5f, .36f), new Color(.55f, .58f, .42f), Mathf.SmoothStep(.1f, .9f, patch));   // grey-green moor; the heather is in the grass
+                // contrast by height: the low ground a light grey-green, the tops dark with heather
+                var low = Color.Lerp(new Color(.5f, .58f, .4f), new Color(.62f, .66f, .46f), Mathf.SmoothStep(.1f, .9f, patch));
+                var high = Color.Lerp(new Color(.24f, .22f, .26f), new Color(.32f, .27f, .32f), patch);
+                color = Color.Lerp(low, high, Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(33f, 44f, height)));
             }
             color.a = 1f;
             return true;
@@ -102,6 +105,7 @@ namespace EverythingWorld.World
             PickPool(data, index, avoid);
             PickDistrict(data, index, avoid);
             if (hasDistrict) foreach (var a in data.layout.artists) if (a.sceneId == isl.sceneId && a.name == "Radiohead") { a.x = district2.x; a.z = district2.y; a.r = 50f; }
+            AvoidPlaces(avoid);   // the places and the main roads keep their ground (added after the pool and district have picked theirs)
             ArtistPlacement.Spread(data, index, 48f, heart2, 40f, 34f, avoid, hasDistrict ? new[] { "Radiohead" } : null, Land, 320f);
             foreach (var a in data.layout.artists)
             {
@@ -112,6 +116,7 @@ namespace EverythingWorld.World
             Level(data, index, heart2, 14f, 28f);
             if (hasDistrict) Level(data, index, district2, 46f, 58f);
             if (hasHill) Level(data, index, hill2, 9f, 16f);
+            foreach (var (at, flat, blend) in new[] { (VillageAt, 44f, 60f), (FarmAt, 18f, 30f), (TeaAt, 10f, 18f), (WaitingAt, 6f, 14f), (DeskAt, 5f, 12f), (CircleAt, 10f, 18f), (BogAt, 30f, 44f) }) Level(data, index, at, flat, blend);
         }
 
         void Level(IslandWorldData data, int index, Vector2 c, float flat, float blend)
@@ -144,8 +149,12 @@ namespace EverythingWorld.World
             var mk = new MeshKit(); var solid = new MeshKit();
             Arrival(ctx, mk, solid);
             if (hasHill) Transmitter(ctx, mk, solid);
+            rootT = ctx.Root;
+            MoorRoads(ctx, mk, solid);
             Trails(ctx, mk, solid);
             Marvels(ctx, mk, solid);
+            Village(ctx, mk, solid); Farm(ctx, mk, solid); MorePlaces(ctx, mk, solid);
+            RoadFields(ctx, mk, solid); HilltopTors(ctx, mk, solid); RoadBenches(ctx, mk);
             Moor(ctx, mk, solid);
             mk.Build("Alt Rock Moors", ctx.Root, false);
             solid.BuildCollider("Alt Rock Moors walls", ctx.Root);
@@ -357,7 +366,7 @@ namespace EverythingWorld.World
                 {
                     var a0 = route[leg]; var a1 = route[leg + 1]; var ld = a1 - a0; var len = ld.magnitude; if (len < .5f) continue; ld /= len; var ls = Vector3.Cross(Vector3.up, ld);
                     var broken = false;
-                    for (var d = leg == 0 ? (walk == 1 ? 9f : TrailW / 2f + .1f) : 1.5f; ; d += 1.5f)
+                    for (var d = leg == 0 ? ((new Vector2(join.x - center.x, join.z - center.z)).sqrMagnitude < 4f ? 9f : RoadW / 2f + .1f) : 1.5f; ; d += 1.5f)
                     {
                         var dd = Mathf.Min(d, len); var q = a0 + ld * dd + ls * Mathf.Sin(dd / 17f) * Mathf.Min(3f, len * .05f) * Mathf.Sin(Mathf.PI * dd / len);
                         if (!ctx.IsLand(q.x, q.z, 0f)) { broken = true; break; }
@@ -423,9 +432,9 @@ namespace EverythingWorld.World
             var pylons = new List<Vector3>();
             for (var t = -400f; t <= 400f; t += 70f) { var p = po + pd * t; if (!ctx.IsLand(p.x, p.z, 8f) || InFootprint(ctx, p.x, p.z, 6f) || NearPath(p.x, p.z, 4f)) { if (pylons.Count > 0) Wires(mk, pylons); pylons.Clear(); continue; } var g = ctx.OnGround(p.x, p.z); Pylon(ctx, mk, solid, g, pd); pylons.Add(g); }
             if (pylons.Count > 0) Wires(mk, pylons);
-            // hamlets: two little clusters of cottages near trails
+            // (the village, the farm, the walled fields and the tors are laid out on purpose in MoorsPlaces)
             var hamlets = 0;
-            for (var tries = 0; tries < 300 && hamlets < 2; tries++)
+            for (var tries = 0; tries < 0 && hamlets < 2; tries++)
             {
                 var px = ctx.Range(ctx.MinX, ctx.MaxX); var pz = ctx.Range(ctx.MinZ, ctx.MaxZ);
                 if (!Open(ctx, px, pz, 18f) || !NearPath(px, pz, 30f) || Vector2.Distance(new Vector2(px, pz), new Vector2(center.x, center.z)) < 60f) continue;
@@ -435,7 +444,7 @@ namespace EverythingWorld.World
                 for (var k = 0; k < 2; k++) { var a = ctx.Range(0f, Mathf.PI * 2f); var fd = new Vector3(Mathf.Cos(a), 0, Mathf.Sin(a)); var fc = new Vector3(px, 0, pz) + fd * 34f; if (ctx.IsLand(fc.x, fc.z, 18f)) Field(ctx, mk, solid, fc, -fd, ctx.Range(26f, 34f), ctx.Range(20f, 26f)); }
             }
             // and a few more fields out on the moor
-            for (int tries = 0, fields = 0; tries < 200 && fields < 7; tries++)
+            for (int tries = 0, fields = 0; tries < 0 && fields < 7; tries++)
             {
                 var fx = ctx.Range(ctx.MinX, ctx.MaxX); var fz = ctx.Range(ctx.MinZ, ctx.MaxZ);
                 if (!ctx.IsLand(fx, fz, 22f) || !Open(ctx, fx, fz, 14f)) continue;
@@ -448,9 +457,11 @@ namespace EverythingWorld.World
             for (var z = ctx.MinZ; z < ctx.MaxZ; z += cell)
             {
                 float px = x + ctx.Range(0f, cell), pz = z + ctx.Range(0f, cell);
-                if (!Open(ctx, px, pz, 3f)) continue;
+                if (!Open(ctx, px, pz, 3f) || InField(px, pz)) continue;
                 var p = ctx.OnGround(px, pz); var roll = ctx.Range(0f, 1f);
-                if (roll < .08f)
+                var drift = Mathf.PerlinNoise(px * .012f + 5f, pz * .012f + 2f);   // gorse and thorns come in drifts, not evenly
+                if (roll < .3f && roll >= .08f && drift < .5f) continue;
+                if (roll < 0f)
                 {
                     // a tor: seated on the lowest ground under it (on a slope its downhill blocks hung in the air), each
                     // block its own collider (one box round the middle left the outer blocks open)
@@ -465,7 +476,7 @@ namespace EverythingWorld.World
                 }
                 else if (roll < .18f) { var lean = (Quaternion.Euler(0, 40f, 0) * Vector3.forward + Vector3.up * 1.6f).normalized; mk.Prism(thornBark, p - Vector3.up * .2f, lean, .25f, 3.2f, 6, .6f); var top = p + lean * 3f; for (var k = 0; k < 4; k++) soft.Blob(thornLeaf, top + Quaternion.Euler(0, k * 90f, 0) * Vector3.forward * 1f + Vector3.Cross(lean, Vector3.up) * .3f, new Vector3(1.4f, .9f, 1.2f), ctx.Rng, .35f); solid.Prism(thornBark, p - Vector3.up * .2f, lean, .25f, 3.2f, 6, .6f); thorns++; }   // the collider leans with the trunk (an upright post missed it from knee height up)
                 else if (roll < .3f) { for (var k = 0; k < 3; k++) { var gp = p + new Vector3(ctx.Range(-1.2f, 1.2f), .5f, ctx.Range(-1.2f, 1.2f)); soft.Blob(gorseM, gp, new Vector3(.9f, .7f, .9f), ctx.Rng, .35f); for (var f = 0; f < 4; f++) soft.Blob(gorseFlower, gp + new Vector3(ctx.Range(-.7f, .7f), ctx.Range(-.2f, .6f), ctx.Range(-.7f, .7f)), Vector3.one * .12f, ctx.Rng, 0f); } gorse++; }
-                else if (roll < .34f && !InFootprint(ctx, px, pz, 12f)) { var face = Quaternion.Euler(0, ctx.Range(0, 360f), 0) * Vector3.forward; mk.Blob(wool, p + Vector3.up * .7f, new Vector3(.55f, .45f, .8f), ctx.Rng, .2f); mk.Blob(dark, p + Vector3.up * .85f + face * .7f, new Vector3(.18f, .2f, .25f), ctx.Rng, 0f); foreach (var s in new[] { -.2f, .2f }) foreach (var f in new[] { -.4f, .4f }) mk.Box(dark, p + Vector3.up * .25f + Vector3.Cross(Vector3.up, face) * s + face * f, new Vector3(.08f, .5f, .08f), Quaternion.identity); solid.Box(wool, p + Vector3.up * .55f, new Vector3(.8f, 1.1f, 1.6f), Quaternion.LookRotation(face)); sheep++; }
+                else if (roll < 0f) { var face = Quaternion.Euler(0, ctx.Range(0, 360f), 0) * Vector3.forward; mk.Blob(wool, p + Vector3.up * .7f, new Vector3(.55f, .45f, .8f), ctx.Rng, .2f); mk.Blob(dark, p + Vector3.up * .85f + face * .7f, new Vector3(.18f, .2f, .25f), ctx.Rng, 0f); foreach (var s in new[] { -.2f, .2f }) foreach (var f in new[] { -.4f, .4f }) mk.Box(dark, p + Vector3.up * .25f + Vector3.Cross(Vector3.up, face) * s + face * f, new Vector3(.08f, .5f, .08f), Quaternion.identity); solid.Box(wool, p + Vector3.up * .55f, new Vector3(.8f, 1.1f, 1.6f), Quaternion.LookRotation(face)); sheep++; }
             }
             Debug.Log($"The Alt Rock Moors: hill {(hasHill ? "yes" : "no")}, {tors} tors, {thorns} hawthorns, {gorse} gorse, {sheep} sheep, {hamlets} hamlets");
         }
@@ -504,8 +515,11 @@ namespace EverythingWorld.World
                 if (Mathf.PerlinNoise(px * .03f + 7f, pz * .03f + 3f) < .32f) continue;
                 var key = (Mathf.FloorToInt(px / 70f), Mathf.FloorToInt(pz / 70f));
                 if (!meshes.TryGetValue(key, out var wm)) meshes[key] = wm = new WindMesh();
-                var col = Color.Lerp(new Color(.38f, .45f, .3f), new Color(.52f, .54f, .38f), (float)rng.NextDouble());
-                var at = new Vector3(px, ctx.Ground(px, pz) - .04f, pz);
+                var gh = ctx.Ground(px, pz); var inField = InField(px, pz); var r0 = (float)rng.NextDouble();
+                var col = inField ? Color.Lerp(new Color(.6f, .78f, .3f), new Color(.78f, .86f, .38f), r0)
+                    : Color.Lerp(Color.Lerp(new Color(.45f, .54f, .34f), new Color(.6f, .62f, .42f), r0), Color.Lerp(new Color(.25f, .22f, .27f), new Color(.36f, .28f, .36f), r0), Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(33f, 44f, gh)));
+                var at = new Vector3(px, gh - .04f, pz);
+                if (inField && rng.NextDouble() < .25) wm.Flower(at + new Vector3(-.1f, 0, .1f), .25f, new Color(1f, .9f, .2f), rng);   // buttercups
                 wm.Tuft(at, .4f + (float)rng.NextDouble() * .45f, col, Color.Lerp(col, new Color(.8f, .8f, .65f), .3f), rng, 4, .06f);
                 if (rng.NextDouble() < (Mathf.PerlinNoise(px * .02f + 1f, pz * .02f + 9f) > .55f ? .45 : .06)) wm.Flower(at + new Vector3(.1f, 0, .1f), .3f, flowers[rng.Next(flowers.Length)], rng);   // heather in drifts
             }
