@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<base href="../">
+<title>The Everything World: the original map</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<link rel="stylesheet" href="assets/fonts/fonts.css">
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body>
+<canvas id="map" aria-label="Fantasy map of the Everything playlist"></canvas>
+
+<div id="cartouche">
+  <div class="c-small">A true &amp; faithful chart of</div>
+  <div class="c-title">The Everything World</div>
+  <div class="c-small" id="c-count"></div>
+</div>
+
+<div id="tools">
+  <div class="search">
+    <input id="q" type="search" placeholder="Find a song, artist, genre or land&hellip;" autocomplete="off" spellcheck="false" aria-label="Search the map">
+    <div id="results" hidden></div>
+  </div>
+  <button id="wander" title="Fly to a random song">Wander</button>
+</div>
+
+<div id="zoom">
+  <button id="zin" aria-label="Zoom in">+</button>
+  <button id="zout" aria-label="Zoom out">&minus;</button>
+  <button id="zfit" aria-label="Show whole map" title="Whole map">&#10021;</button>
+</div>
+
+<div id="back" style="position:fixed;left:18px;bottom:18px;z-index:4;padding:5px 12px;background:rgba(236,220,182,.94);border:1px solid #5c3a22;font-style:italic;font-size:15px"><a href="./" style="color:#8c2f1c">&larr; The current map of the Isles</a></div>
+<div id="hint">Scroll to zoom in. Towns, then songs, then album covers appear as you get closer.</div>
+<div id="tip" hidden></div>
+<aside id="panel" hidden><button id="pclose" aria-label="Close">&times;</button><div id="pbody"></div></aside>
+<div id="loading"><div>Surveying the realm&hellip;</div></div>
+
+<script src="assets/world.js"></script>
+<script src="assets/glyphs.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

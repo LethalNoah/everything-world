@@ -2,39 +2,59 @@
 
 ### 🗺️ [Explore the map: sealteamtwo.github.io/everything-world](https://sealteamtwo.github.io/everything-world/)
 
-### 🏝️ New: [The Everything Isles](https://sealteamtwo.github.io/everything-world/world/), the plan for the 3D game: 59 islands in 8 realms, joined by bridges, causeways, sea lanes and fast-travel towers. Click an island to see how it should look.
+A shared Spotify playlist of 2,166 songs (and growing), turned into a world. It started as a parchment map. It is now becoming a low-poly 3D world to walk around with friends, where every land looks and feels like the music that lives there, and that music plays while you are in it.
 
-A Spotify playlist of 1,856 songs, charted as a zoomable fantasy map on old parchment. Every song is a place you can visit, in one of 44 lands with names like the Jam Band Commonwealth, the Iron Range and the Vale of Emo.
+[![The map of the Everything World: 67 isles in 8 realms, with a flag on each land built so far](map_poster.png)](https://sealteamtwo.github.io/everything-world/)
 
-[![The whole map of the Everything World](map_poster.png)](https://sealteamtwo.github.io/everything-world/)
+## Where the project is now
 
-## How to explore
+*November 2026*
 
-- **Zoom in** with the scroll wheel or a pinch. Towns appear first, then songs, then album covers.
-- **Click** a song, town or land for details. Songs include a Spotify player and their nearest neighbours on the map.
-- **Search** for any song, artist, genre or land. Press `/` to jump to the search box.
-- **Wander** flies you to a random song.
+- **The world is charted.** 1,322 artists are grouped into 66 "scenes" (looser than genres: an artist's songs always stay together, and similar scenes are neighbours). Each scene is a land. The lands form 8 realms round a central Hub, 67 places in all.
+- **30 lands and the Hub are built** in Unity. The blue flags on the map mark them.
+- **Every built land is made by hand for its own music**, not from a shared template: its own landmark, sky, light, ground and weather; an area for every artist, built from their actual songs; and things that happen when particular songs come on.
+- **Each land is laid out to be wandered.** Roads lead out from where you arrive to named places: a pizza parlour in the Punk Badlands, a summer festival in the J-Rock Isles, a flooded quarry in the Nu Metal Quarry. There are places to sit, things to use, things to pick up and throw, and small residents with something to say.
+- **Not done yet:** the other 36 lands, playing together online, and a lot of polish. So far it has only been walked by the person building it.
 
-## How the music shapes the map
+There are no pictures of the game here yet, on purpose. The map has the written description of every built land: click one.
 
-- **Land size** grows with song count.
-- **Neighbours are similar music.** Metal borders metalcore, Southern Rock sits between Classic Rock and Country, and the Blues Delta is the land bridge to Soul.
-- **Mountains come from loud songs.** Local song energy raises the terrain, and local acousticness thickens the plant cover.
-- **Symbols come from each land's character:** mushrooms in the Psychedelic Wilds, willows in the Vale of Emo, crystals in the Dubstep Shards.
-- **Towns are artists** with 3 or more songs. The castle marks the artist with the most songs in that land.
-- **Named places are genres.** Every genre in the playlist has a feature, such as Riddim Ridge, Hairspray Heights or Lo-Fi Lagoon.
+## Using the map
 
-Genre tags and audio features came from a playlist export. Artists with no tags, and a few with misleading ones, were placed by hand, so some of the geography is a matter of opinion.
+- **Zoom in** with the scroll wheel or a pinch. Artists appear first, then songs, then album covers.
+- **Click a land** for what it is like in the game (if it is built), the plan for how it should look, and every song that lives there.
+- **Click a song** for a Spotify player and its neighbours.
+- **Search** for any song, artist, land or tower. **Wander** flies you to a random song.
+- **Blue flags** mark the lands built so far. Towers are the fast-travel points, one per realm.
 
-## Running it yourself
+The [original map](https://sealteamtwo.github.io/everything-world/original/) from the start of the project is still there: the same playlist when it was 1,856 songs, as one continent of 44 lands.
 
-The site is plain HTML, CSS and JavaScript with no build step. Download the repo and double-click `index.html`.
+## How the music shapes the world
+
+- **Where a song lives** comes from its artist. Artists are grouped by their Last.fm tags, by which artists listeners find similar, and by how the songs sound. A few were placed by hand, so some of the geography is a matter of opinion.
+- **Neighbours are similar music.** Grunge sits beside alt rock, shoegaze beside bedroom pop, and the lands of one realm share a family resemblance.
+- **Each land's look comes from its music:** its palette, landmark, light and weather were written for that scene before anything was built. The plans are in [ART_PLAN.md](ART_PLAN.md) and the descriptions of the built lands in [WORLD_GUIDE.md](WORLD_GUIDE.md).
+- **The playlist keeps growing**, so the world is generated from data and new songs find their place without reshuffling the lands that exist.
+
+## How the music plays in the game
+
+- Every land is a **radio station**: an always-on shuffle of that land's songs, worked out from a shared clock, so friends standing in the same land hear the same song at the same moment.
+- The sound comes from **Spotify itself**. The game controls each player's own Spotify app, so every player needs Spotify Premium. Music is per player: you hear the land you are standing in.
+- Artists with enough songs have their own station inside their area.
+
+## What is in this repository
+
+- `index.html`, `world/`, `assets/`: the map website (plain HTML, CSS and JavaScript, no build step). `original/` is the first map.
+- `build/`: the Python scripts that group the artists into scenes, lay out the world, draw the map and export the world for Unity.
+- `Game/EverythingWorld/`: the Unity project (Unity 6, URP). The world is built by code when you press Play, from the exported data.
+- `WORLD_GUIDE.md`, `ART_PLAN.md`, `IDEAS.md`: what each land is like, the plan each was built from, and ideas not yet built.
+
+Not included: the playlist export itself, API keys, and the Asset Store packages the Unity project uses (their licences don't allow sharing them), so the Unity project will not open cleanly from a fresh download.
 
 ## Charting your own playlist
 
-The scripts in `build/` generate the world. They need Python with numpy, scipy, pillow and contourpy.
+The original parchment map can be made from any playlist. The scripts need Python with numpy, scipy, pillow and contourpy.
 
-1. Export a playlist as CSV with [Exportify](https://exportify.net) and save it as `build/playlist.csv`. The original export isn't included here.
+1. Export a playlist as CSV with [Exportify](https://exportify.net) and save it as `build/playlist.csv`.
 2. From the `build` folder, run these in order:
 
 ```bash

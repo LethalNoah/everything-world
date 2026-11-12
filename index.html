@@ -4,11 +4,13 @@
 <meta charset="utf-8">
 <title>The Everything World</title>
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<meta name="description" content="A shared playlist of over 2,000 songs, charted as a world of isles to walk with friends while each land's music plays. The map shows every song in its land and which lands are built so far.">
 <link rel="stylesheet" href="assets/fonts/fonts.css">
 <link rel="stylesheet" href="assets/app.css">
+<link rel="stylesheet" href="world/world.css">
 </head>
 <body>
-<canvas id="map" aria-label="Fantasy map of the Everything playlist"></canvas>
+<canvas id="map" aria-label="Fantasy map of the Everything playlist as islands"></canvas>
 
 <div id="cartouche">
   <div class="c-small">A true &amp; faithful chart of</div>
@@ -18,7 +20,7 @@
 
 <div id="tools">
   <div class="search">
-    <input id="q" type="search" placeholder="Find a song, artist, genre or land&hellip;" autocomplete="off" spellcheck="false" aria-label="Search the map">
+    <input id="q" type="search" placeholder="Find a song, artist, isle or tower&hellip;" autocomplete="off" spellcheck="false" aria-label="Search the map">
     <div id="results" hidden></div>
   </div>
   <button id="wander" title="Fly to a random song">Wander</button>
@@ -30,13 +32,24 @@
   <button id="zfit" aria-label="Show whole map" title="Whole map">&#10021;</button>
 </div>
 
-<div id="hint">Scroll to zoom in. Towns, then songs, then album covers appear as you get closer.</div>
+<aside id="legend" aria-label="Map key">
+  <div class="l-title">Ways to Travel</div>
+  <div class="l-row"><svg viewBox="0 0 40 14" aria-hidden="true"><rect x="2" y="4" width="36" height="6" fill="#d9c08e" stroke="#2d1d0e" stroke-width="1"/><path d="M6 4v6M10 4v6M14 4v6M18 4v6M22 4v6M26 4v6M30 4v6M34 4v6" stroke="#2d1d0e" stroke-width=".6" opacity=".6"/></svg>Bridge, between isles of a realm</div>
+  <div class="l-row"><svg viewBox="0 0 40 14" aria-hidden="true"><rect x="2" y="3" width="36" height="8" fill="#e3d2a6" stroke="#2d1d0e" stroke-width="1"/><path d="M3 7h34" stroke="#5c3a22" stroke-width=".9" stroke-dasharray="3 3"/><path d="M6 11a3 3 0 0 0 6 0M18 11a3 3 0 0 0 6 0M30 11a3 3 0 0 0 6 0" fill="none" stroke="#2d1d0e" stroke-width=".7"/></svg>Causeway, between realms</div>
+  <div class="l-row"><svg viewBox="0 0 40 14" aria-hidden="true"><path d="M2 10Q20 0 38 8" fill="none" stroke="#26404e" stroke-width="1.6" stroke-dasharray="1.5 4" stroke-linecap="round"/></svg>Sea lane, for boats (one day)</div>
+  <div class="l-row"><svg viewBox="0 0 40 18" aria-hidden="true"><g transform="translate(20 17)"><path d="M-4 0L-3 -11H3L4 0Z" fill="#e8d9b2" stroke="#2d1d0e"/><path d="M-4.5 -11V-13.5H4.5V-11Z" fill="#e8d9b2" stroke="#2d1d0e" stroke-width=".8"/><path d="M0 -13.5V-17L4 -16L0 -15" fill="#8c2f1c" stroke="#2d1d0e" stroke-width=".5"/></g></svg>Tower, fast travel to any other tower</div>
+  <div class="l-row"><svg viewBox="0 0 40 18" aria-hidden="true"><path d="M20 17V2" stroke="#2d1d0e" stroke-width="1.2"/><path d="M20 2L31 6L20 10Z" fill="#1f4f8a" stroke="#2d1d0e" stroke-width="1"/></svg>Built in the game so far</div>
+  <div class="l-note">Every isle can be reached on foot.<br><a href="original/">The original map</a> &middot; <a href="https://github.com/SealTeamTwo/everything-world">About the project</a></div>
+</aside>
+
+<div id="hint">Scroll to zoom in for songs. Click an isle for its songs and what it is like in the game.</div>
 <div id="tip" hidden></div>
 <aside id="panel" hidden><button id="pclose" aria-label="Close">&times;</button><div id="pbody"></div></aside>
-<div id="loading"><div>Surveying the realm&hellip;</div></div>
+<div id="loading"><div>Charting the isles&hellip;</div></div>
 
-<script src="assets/world.js"></script>
+<script src="world/assets/world.js"></script>
+<script src="world/assets/guide.js"></script>
 <script src="assets/glyphs.js"></script>
-<script src="assets/app.js"></script>
+<script src="world/app.js"></script>
 </body>
 </html>

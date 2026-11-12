@@ -7,6 +7,7 @@ const canvas=$('map'),ctx=canvas.getContext('2d');
 const songs=W.songs.map((a,i)=>({i,uri:a[0],t:a[1],a:a[2],al:a[3],y:a[4],ms:a[5],pop:a[6],g:a[7],e:a[8],v:a[9],ac:a[10],d:a[11],tempo:a[12],by:a[13],r:a[14],x:a[15],y2:a[16],c:a[17],iid:a[18]}));
 songs.forEach(s=>{s.wy=s.y2});
 const regions=W.regions,towns=W.towns,glyphTypes=W.glyphTypes;
+const GUIDE=window.GUIDE||{};regions.forEach(r=>{r.built=GUIDE[r.n]||null});const builtCount=regions.filter(r=>r.built).length;
 const glyphs=W.glyphs;              // sorted by y: [type,x,y,scale,seed]
 const FF='"IM Fell English",Georgia,serif',FS='"IM Fell English SC","IM Fell English",Georgia,serif',FD='"Cinzel Decorative","IM Fell English SC",Georgia,serif';
 const COVER=24;                     // cover size in world units
@@ -22,7 +23,7 @@ let sel=null,hover=null,hoverTower=null,panelW=0,touched=false;
 const base=new Image(),atlas=new Image();let atlasC=null;
 atlas.onload=()=>{atlasC=atlas;dirty=true};
 const hires=new Map();
-function hi(iid){let im=hires.get(iid);if(!im&&hires.size<400){im=new Image();im.onload=()=>{dirty=true};im.src='../assets/covers/'+iid+'.jpg';hires.set(iid,im)}return im&&im.complete&&im.naturalWidth?im:null}
+function hi(iid){let im=hires.get(iid);if(!im&&hires.size<400){im=new Image();im.onload=()=>{dirty=true};im.src='assets/covers/'+iid+'.jpg';hires.set(iid,im)}return im&&im.complete&&im.naturalWidth?im:null}
 
 /* ---------- tiles ---------- */
 const TILE=512,LEVELS=[1,2,4,8];
@@ -90,6 +91,15 @@ function paintTower(c,sz,hot){ // a tall tower with battlements, a beacon and a 
   c.fillStyle=hot?'#e0902c':'#c9a24a';c.beginPath();c.arc(0,-h-t*2.2,t*.75,0,6.3);c.fill();c.stroke();
   c.beginPath();c.moveTo(0,-h-t*2.9);c.lineTo(0,-h-sz*.95);c.stroke();c.fillStyle='#8c2f1c';c.beginPath();c.moveTo(0,-h-sz*.95);c.lineTo(sz*.42,-h-sz*.83);c.lineTo(0,-h-sz*.7);c.fill()}
 function towerSize(s){return Math.min(30,13+s*9)}
+function drawFlag(x,y,sz){ // a little pennant: this land is built in the game
+  ctx.save();ctx.lineWidth=1.2;ctx.strokeStyle='#2d1d0e';ctx.beginPath();ctx.moveTo(x,y+sz*.9);ctx.lineTo(x,y-sz*.9);ctx.stroke();
+  ctx.fillStyle='#1f4f8a';ctx.beginPath();ctx.moveTo(x,y-sz*.9);ctx.lineTo(x+sz*.95,y-sz*.55);ctx.lineTo(x,y-sz*.2);ctx.closePath();ctx.fill();ctx.stroke();
+  ctx.fillStyle='#2d1d0e';ctx.beginPath();ctx.arc(x,y+sz*.9,1.6,0,6.3);ctx.fill();ctx.restore()}
+function builtHTML(b){if(!b)return '<p class="sub notbuilt">Not built in the game yet: this is the plan for it.</p>';
+  return `<p class="builtnote"><span class="flag"></span>Built in the game</p>${b.arriving?`<h3>Arriving</h3><p>${esc(b.arriving)}</p>`:''}${b.vibe?`<h3>What It Is Like</h3><p>${esc(b.vibe)}</p>`:''}${b.places&&b.places.length?`<h3>Places to Find</h3>${b.roads?`<p>${esc(b.roads)}</p>`:''}<ul class="places">${b.places.map(p=>`<li><b>${esc(p[0])}.</b> ${esc(p[1])}</li>`).join('')}</ul>`:''}${b.happenings?`<h3>What Happens There</h3><p>${esc(b.happenings)}</p>`:''}`}
+function allSongs(l){const by=new Map();for(const a of l){const k=a.a[0];if(!by.has(k))by.set(k,[]);by.get(k).push(a)}
+  const arts=[...by.entries()].sort((p,q)=>q[1].length-p[1].length||p[0].localeCompare(q[0]));
+  return `<details class="allsongs"><summary>Every song here (${l.length})</summary>${arts.map(([n,ss])=>`<div class="as-artist"><button class="link" data-artist="${esc(n)}">${esc(n)}</button></div><div class="list">${ss.sort((p,q)=>p.t.localeCompare(q.t)).map(a=>`<button data-song="${a.i}">${esc(a.t)}</button>`).join('')}</div>`).join('')}</details>`}
 function towerAt(mx,my){const s=view.s,sz=towerSize(s);for(const t of W.towers||[]){const x=(t.x-view.x)*s,y=(t.y-view.y)*s;if(Math.abs(mx-x)<sz*.6&&my>y-sz*2.4&&my<y+6)return t}return null}
 function tileKey(l,i,j){return l+'/'+i+'/'+j}
 function renderTile(k,l,i,j){
@@ -167,7 +177,7 @@ function drawLabels(){
     const w=sp.tot*px/sp.q;boxes.push(Math.abs(r.a)>45?[x-px,y-w/2,x+px,y+w/2]:[x-w/2,y-px,x+w/2,y+px])}
   const rFade=1-fade(s,2.4,3.6);
   if(rFade>0)for(const r of regionsBySize){const x=sx(r.x),y=sy(r.y);if(!vis(x,y,300))continue;
-    const fs=Math.min(58,Math.max(21,Math.sqrt(r.area)*.052));const px=Math.max(12,Math.min(fs*s,34)),sp=px*.12;
+    const fs=Math.min(58,Math.max(21,Math.sqrt(r.area||40000)*.052));const px=Math.max(12,Math.min(fs*s,34)),sp=px*.12;
     const m=t=>mt(t,'',FS,px)+sp*t.length;
     const ls=r.__l&&r.__lk===Math.round(Math.max(70,r.w*s*1.6)/12)?r.__l:(r.__lk=Math.round(Math.max(70,r.w*s*1.6)/12),r.__l=wrap(r.n,Math.max(70,r.w*s*1.6),m));
     const lh=px*1.08,rot=Math.round(r.ang*.7)*Math.PI/180,wMax=Math.max(...ls.map(m));
@@ -179,6 +189,7 @@ function drawLabels(){
     drawTower(x,y,sz,hoverTower===t);boxes.push([x-sz*.5,y-sz*2.2,x+sz*.5,y+2]);
     if(s>=fitS*1.25){const px=Math.min(18,11+s*2.4),w=mt(t.n,'italic ',FF,px),ly=y+px*.85;
       ctx.globalAlpha=fade(s/fitS,1.25,1.6);blit(curvedSprite(t.n,'italic ',FF,px,0,0,0,'#5c1f10',HALO,3),x,ly,px);ctx.globalAlpha=1;boxes.push([x-w/2,ly-px/2,x+w/2,ly+px/2])}}
+  for(const r of regions){if(!r.built)continue;const x=sx(r.x),y=sy(r.y);if(!vis(x,y,80))continue;const fs=Math.min(58,Math.max(21,Math.sqrt(r.area||40000)*.052)),px=Math.max(12,Math.min(fs*s,34));drawFlag(x,y-px*1.9-6,Math.min(20,9+s*7))}
   const t3=fade(s,.33,.42);
   for(const t of townsByRank){const need=t.cap?.36:(t.c>=5?.5:.82);if(s<need)continue;
     const x=sx(t.x),y=sy(t.y);if(!vis(x,y,80))continue;
@@ -332,7 +343,7 @@ $('pclose').onclick=closePanel;
 /* ---------- panels ---------- */
 function esc(t){return String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
 function bar(n,v){return `<div class="bar"><span>${n}</span><i><span style="width:${Math.round(v*100)}%"></span></i></div>`}
-function coverURL(a){return a.iid?`../assets/covers/${a.iid}.jpg`:''}
+function coverURL(a){return a.iid?`assets/covers/${a.iid}.jpg`:''}
 function grid(list){return `<div class="grid">${list.map(a=>`<button data-song="${a.i}" title="${esc(a.t)} — ${esc(a.a[0])}" aria-label="${esc(a.t)}">${a.iid?`<img loading="lazy" src="${coverURL(a)}" alt="">`:''}</button>`).join('')}</div>`}
 function show(html){const p=$('panel');p.hidden=false;$('pbody').innerHTML=html;p.scrollTop=0}
 function closePanel(){$('panel').hidden=true;$('pbody').innerHTML='';sel=null;dirty=true}
@@ -363,13 +374,15 @@ function crossings(i){const out=[];for(const b of W.bridges||[]){if(b.a===i||b.b
 function openRegion(r){sel=null;const ri=regions.indexOf(r),l=songs.filter(a=>a.r===ri);const pick=[...l].sort((p,q)=>q.pop-p.pop).slice(0,12);
   const tw=(W.towers||[]).find(t=>t.isl===ri);
   show(`<h2>${esc(r.n)}</h2><p class="sub">${esc(r.realm)} · ${r.c} songs · ${r.y0}–${r.y1}</p>
-   <h3>The Look of This Isle</h3><p>${esc(r.desc)}</p>${r.brief?`<p><b>Landmark.</b> ${esc(r.brief.landmark)}</p><p><b>Found here.</b> ${esc(r.brief.props)}</p><p><b>Light.</b> ${esc(r.brief.mood)}</p>${swatches(r.brief.palette)}`:''}
+   ${builtHTML(r.built)}
+   <h3>${r.built?'The Plan It Was Built From':'The Look of This Isle'}</h3><p>${esc(r.desc)}</p>${r.brief?`<p><b>Landmark.</b> ${esc(r.brief.landmark)}</p><p><b>Found here.</b> ${esc(r.brief.props)}</p><p><b>Light.</b> ${esc(r.brief.mood)}</p>${swatches(r.brief.palette)}`:''}
    ${tw?`<p class="towernote">Home of <button class="link" data-tower="${W.towers.indexOf(tw)}">${esc(tw.n)}</button>, the fast-travel tower of ${esc(tw.realm)}.</p>`:''}
    <h3>Getting There on Foot</h3><div class="list">${crossings(ri)}</div>
    <h3>The Lay of This Land</h3>${bar('Energy',r.e)}${bar('Mood',r.v)}${bar('Acoustic',r.ac)}${bar('Danceable',r.d)}<p class="sub">${r.tempo} BPM on average</p>
    <h3>Leading Artists</h3><div class="list">${r.topA.map(n=>`<button data-artist="${esc(n)}">${esc(n)}</button>`).join('')}</div>
    ${r.topG.length?`<h3>Local Genres</h3><div class="chips">${r.topG.map(g=>`<span class="chip" data-genre="${esc(g)}">${esc(g)}</span>`).join('')}</div>`:''}
-   <h3>Best Known Here</h3>${grid(pick)}`);
+   <h3>Best Known Here</h3>${grid(pick)}
+   ${allSongs(l)}`);
   fly(r.x,r.y,Math.max(goal.s,Math.min(1.2,Math.sqrt(vw*vh*.35/r.area))))}
 function openTower(t){sel=null;const others=W.towers.filter(o=>o!==t);
   show(`<h2>${esc(t.n)}</h2><p class="sub">Fast-travel tower of ${esc(t.realm)}</p>
@@ -417,7 +430,7 @@ function setupDecor(){
 
 /* ---------- start ---------- */
 function start(){
-  $('c-count').textContent=`being ${regions.length} isles in ${W.realms.length} realms, holding all ${songs.length.toLocaleString()} songs`;
+  $('c-count').textContent=`being ${regions.length} isles in ${W.realms.length} realms, holding all ${songs.length.toLocaleString()} songs; ${builtCount} built so far`;
   setupDecor();
   overview=document.createElement('canvas');overview.width=W.W*OVS;overview.height=W.H*OVS;
   const c=overview.getContext('2d',{alpha:false});paint(c,0,0,W.W,W.H,OVS);
@@ -446,5 +459,5 @@ function start(){
     return out}};
 }
 base.onload=()=>{const go=()=>start();(document.fonts&&document.fonts.load?Promise.all([document.fonts.load(`20px "IM Fell English"`),document.fonts.load(`italic 20px "IM Fell English"`),document.fonts.load(`20px "IM Fell English SC"`),document.fonts.load(`700 20px "Cinzel Decorative"`)]):Promise.resolve()).then(go,go)};
-base.src='assets/base.jpg';atlas.src='assets/covers.jpg';
+base.src='world/assets/base.jpg';atlas.src='world/assets/covers.jpg';
 })();
