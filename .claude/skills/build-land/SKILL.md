@@ -151,6 +151,11 @@ big change):
   reports). Build ground cover from small pieces each set with `ctx.OnGround`, or skip steep ground.
 - **Nothing hangs at head height** (lanterns on arms, chimes, signs, branches, foliage between 0.45 and 2 m):
   hang it higher or make it solid.
+- **Inland water:** if the land has its own water above sea level (a marsh, a swamp, a lake), register each
+  piece with `LandAudit.AddWater(Land, x, z, radius, surfaceY)` (radius 0 = the whole land), so lily pads and
+  things standing in it are measured from the water, not the bed.
+- **Every path walkable:** no stretch steeper than about 40 degrees (shaped ground like terraces or a summit
+  can make one stand up like a ladder: soften the shaping or widen the blend).
 - To audit every land at once, run the photo tour for a single small land (e.g. `python build/take_shots.py
   "The Everything Hub"`): the world loads every land and audits all of them.
 

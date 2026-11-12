@@ -88,7 +88,7 @@ namespace EverythingWorld.World
         {
             var isl = data.layout.islands[index]; var sid = isl.sceneId;
             heart = new Vector2(isl.labelX, isl.labelZ);
-            waterY = data.HeightAt(heart.x, heart.y);
+            waterY = data.HeightAt(heart.x, heart.y); LandAudit.InlandWater.Remove(Land); LandAudit.AddWater(Land, 0f, 0f, 0f, waterY);
             int Id(float x, float z)
             {
                 var cc = Mathf.RoundToInt(x / data.Step); var rr = Mathf.RoundToInt((data.layout.depth - z) / data.Step);

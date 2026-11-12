@@ -103,7 +103,7 @@ namespace EverythingWorld.World
                     var i = r * data.Nx + col; if (data.islandIds[i] != index) continue;
                     var h = data.heights[i]; var w = Ease(5f, 12f, h); if (w <= 0f) continue;
                     var f = h / T; var fi = Mathf.Floor(f); var fr = f - fi;
-                    var stepped = (fi + Ease(.72f, 1f, fr)) * T;
+                    var stepped = (fi + Ease(.55f, 1f, fr)) * T;   // risers soft enough to walk up (at .72 a path over one stood up like a ladder)
                     data.heights[i] = Mathf.Lerp(h, stepped, .9f * w);
                 }
             }
@@ -117,7 +117,7 @@ namespace EverythingWorld.World
                 Level(data, index, new Vector2(a.x, a.z), Foot(a) + 1f, Foot(a) + 10f);
             }
             Level(data, index, heart2, 16f, 28f);
-            if (hasSpire) Level(data, index, spire2, SpireR, SpireR + 14f);
+            if (hasSpire) Level(data, index, spire2, SpireR, SpireR + 40f);   // a wide shoulder, so the path up to the citadel can be walked
         }
 
         void Level(IslandWorldData data, int index, Vector2 c, float flat, float blend)
@@ -209,7 +209,7 @@ namespace EverythingWorld.World
                 {
                     // follow the ground across the path (a flat path on a cross-slope floated up to a metre on its
                     // low side); lift both edges only if the middle bulges above the line between them
-                    float gl = ground.Ground(L[i].x, L[i].z), gr = ground.Ground(R[i].x, R[i].z), bulge = Mathf.Max(0f, pts[i].y - (gl + gr) / 2f);
+                    float gl = ground.Ground(L[i].x, L[i].z), gr = ground.Ground(R[i].x, R[i].z), bulge = Mathf.Clamp(pts[i].y - (gl + gr) / 2f, 0f, .35f);
                     L[i].y = gl + bulge + lift; R[i].y = gr + bulge + lift;
                 }
             }
@@ -361,7 +361,7 @@ namespace EverythingWorld.World
                     // the fret lies on the path's surface, tilted with it across a slope (it used to sit level at the
                     // path's highest point and float over the low side)
                     float gl = ctx.Ground(a.x - sdd.x * PathW / 2f, a.z - sdd.z * PathW / 2f), gr = ctx.Ground(a.x + sdd.x * PathW / 2f, a.z + sdd.z * PathW / 2f);
-                    var bulge = Mathf.Max(0f, a.y - (gl + gr) / 2f); var y = (gl + gr) / 2f + bulge;
+                    var bulge = Mathf.Clamp(a.y - (gl + gr) / 2f, 0f, .35f); var y = (gl + gr) / 2f + bulge;
                     var fl = new Vector3(a.x, gl + bulge + .24f, a.z) - sdd * (PathW / 2f); var fr = new Vector3(a.x, gr + bulge + .24f, a.z) + sdd * (PathW / 2f);
                     mk.Box(fretM, (fl + fr) / 2f, new Vector3(.12f, .05f, PathW - .2f), Quaternion.LookRotation(fr - fl));
                     fretN++;

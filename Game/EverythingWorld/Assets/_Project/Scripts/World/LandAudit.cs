@@ -25,6 +25,13 @@ namespace EverythingWorld.World
 
         class Cluster { public Vector3 sum; public int points; public float minY = float.MaxValue, maxY = float.MinValue; public string what; public Vector3 At => sum / points; }
 
+        /// A land's own inland water (a marsh, a swamp): over it, heights are measured from the water's surface, so
+        /// lily pads and the feet of trees standing in the water aren't counted as things floating in the air.
+        /// Each piece of water: x, z, radius (0 = the whole land), and its surface height.
+        public static readonly Dictionary<string, List<Vector4>> InlandWater = new Dictionary<string, List<Vector4>>();
+        public static void AddWater(string land, float x, float z, float radius, float y) { if (!InlandWater.TryGetValue(land, out var l)) InlandWater[land] = l = new List<Vector4>(); l.Add(new Vector4(x, z, radius, y)); }
+        static float WaterAt(string land, float x, float z) { var best = float.MinValue; if (InlandWater.TryGetValue(land, out var l)) foreach (var w in l) if (w.z <= 0f || (x - w.x) * (x - w.x) + (z - w.y) * (z - w.y) < w.z * w.z) best = Mathf.Max(best, w.w); return best; }
+
         public static void Run(IslandWorldData data, LandContext ctx, string land)
         {
             Physics.SyncTransforms();
@@ -78,7 +85,7 @@ namespace EverythingWorld.World
                         Vector3 v0 = tf.TransformPoint(verts[tris[i]]), v1 = tf.TransformPoint(verts[tris[i + 1]]), v2 = tf.TransformPoint(verts[tris[i + 2]]);
                         var p = (v0 + v1 + v2) / 3f;
                         var flat = Mathf.Abs(Vector3.Cross(v1 - v0, v2 - v0).normalized.y) > .9f;   // water, pads, rugs, decks: nothing to walk into
-                        var g = data.HeightAt(p.x, p.z);
+                        var g = Mathf.Max(data.HeightAt(p.x, p.z), WaterAt(land, p.x, p.z));
                         var h = p.y - g;
                         if (h > .3f) scenery.Add((Mathf.FloorToInt(p.x / 10f), Mathf.FloorToInt(p.z / 10f)));
                         if (flat || h < BandLow || h > BandHigh || g < 1.2f) continue;

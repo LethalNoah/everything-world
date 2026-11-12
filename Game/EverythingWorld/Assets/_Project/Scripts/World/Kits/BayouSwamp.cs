@@ -59,14 +59,15 @@ namespace EverythingWorld.World
             // start the swamp past any high ground at the near end, so it doesn't cut a deep valley
             while (swampSpine.Count > 4 && data.HeightAt(swampSpine[0].x, swampSpine[0].z) > swampY + 7f) swampSpine.RemoveAt(0);
             if (swampSpine.Count < 4 || swampY < seaLevel + 1f) return;
+            LandAudit.InlandWater.Remove(Land);
             hasSwamp = true;
             var last = swampSpine[swampSpine.Count - 1]; oldTree = new Vector2(last.x, last.z);
-            foreach (var s in swampSpine) { var pc = new Vector3(s.x, swampY, s.z); ponds.Add((pc, s.y)); swampPools.Add((pc, s.y)); }
+            foreach (var s in swampSpine) { var pc = new Vector3(s.x, swampY, s.z); ponds.Add((pc, s.y)); swampPools.Add((pc, s.y)); LandAudit.AddWater(Land, s.x, s.z, s.y + 4f, swampY); }
             // the gaps between pools along the arm, so the water is one long backwater
             for (var i = 0; i + 1 < swampSpine.Count; i++)
             {
                 var a = swampSpine[i]; var b = swampSpine[i + 1]; var m = (a + b) / 2f; var rr = Mathf.Min(a.y, b.y) * .85f;
-                var pc = new Vector3(m.x, swampY, m.z); ponds.Add((pc, rr)); swampPools.Add((pc, rr));
+                var pc = new Vector3(m.x, swampY, m.z); ponds.Add((pc, rr)); swampPools.Add((pc, rr)); LandAudit.AddWater(Land, m.x, m.z, rr + 4f, swampY);
             }
         }
 

@@ -302,11 +302,13 @@ namespace EverythingWorld.World
             // smooth the heights so the line runs gently
             // (two passes: six lifted the track up to a metre over every dip, sleepers and rails floating in the air)
             for (var pass = 0; pass < 2; pass++) for (var k = 1; k < pts.Count - 1; k++) { var p = pts[k]; p.y = (pts[k - 1].y + pts[k].y * 2f + pts[k + 1].y) / 4f; pts[k] = p; }
+            // then keep it hugging the ground on land (smoothing still lifted it over dips, rails at knee height)
+            for (var k = 0; k < pts.Count; k++) { var p = pts[k]; if (!ctx.IsLand(p.x, p.z, 0f)) continue; var g = Mathf.Max(ctx.Ground(p.x, p.z), lakeY + .6f); p.y = Mathf.Clamp(p.y, g, g + .1f); pts[k] = p; }
             for (var k = 0; k < pts.Count - 1; k++)
             {
                 var a = pts[k]; var b = pts[k + 1]; var dir = (b - a); var side = Vector3.Cross(Vector3.up, new Vector3(dir.x, 0, dir.z).normalized);
-                mk.Box(logM, (a + b) / 2f + Vector3.up * .1f, new Vector3(2.4f, .16f, .4f), Quaternion.LookRotation(side));
-                foreach (var s in new[] { -.6f, .6f }) mk.Box(rail, (a + b) / 2f + side * s + Vector3.up * .25f, new Vector3(.09f, .1f, dir.magnitude + .05f), Quaternion.LookRotation(dir));
+                mk.Box(logM, (a + b) / 2f + Vector3.up * .04f, new Vector3(2.4f, .14f, .4f), Quaternion.LookRotation(side));
+                foreach (var s in new[] { -.6f, .6f }) mk.Box(rail, (a + b) / 2f + side * s + Vector3.up * .16f, new Vector3(.09f, .1f, dir.magnitude + .05f), Quaternion.LookRotation(dir));
                 var g = ctx.Ground((a.x + b.x) / 2f, (a.z + b.z) / 2f); var top = (a.y + b.y) / 2f;
                 if (top - g > .15f)
                 {   // a stone embankment under any stretch that rides above the ground (it used to start only at .6 m, so lower gaps floated)
