@@ -75,7 +75,7 @@ namespace EverythingWorld.World
         bool OnVolcano(float x, float z, float pad) { foreach (var v in volcanoes) if (Vector2.Distance(new Vector2(x, z), new Vector2(v.x, v.z)) < v.y + pad) return true; return false; }
 
         // ---------------------------------------------------------------- shaping the ground
-        public override void ShapeGround(IslandWorldData data, int index)
+        void ShapeCaldera(IslandWorldData data, int index)
         {
             var isl = data.layout.islands[index]; heart2 = new Vector2(isl.labelX, isl.labelZ);
             volcanoes.Clear();
@@ -174,6 +174,7 @@ namespace EverythingWorld.World
             if (hasArena) Arena(ctx, mk, solid);
             foreach (var v in volcanoes) Volcano(ctx, mk, solid, v);
             Paths(ctx, mk, solid);
+            BasinPlaces(ctx, mk, solid);
             Wilds(ctx, mk, solid);
             mk.Build("Metalcore Caldera", ctx.Root, false);
             solid.BuildCollider("Metalcore Caldera walls", ctx.Root);
