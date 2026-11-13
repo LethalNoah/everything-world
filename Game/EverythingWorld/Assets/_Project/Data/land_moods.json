@@ -101,6 +101,13 @@
    "weather": "", "weatherAmount": 0
   },
   {
+   "land": "The Neo Soul Quarter",
+   "sunPitch": 9, "sunYaw": 285, "sunIntensity": 0.7, "sunColor": "#FFAE7C",
+   "skyLight": "#A586B4", "horizonLight": "#E8A070", "groundLight": "#7A5A56",
+   "fogColor": "#4A2C4C", "fogStart": 70, "fogEnd": 900, "stars": 0.5, "sunShadows": false, "dailyWeather": false, "bloom": 1.25,
+   "weather": "", "weatherAmount": 0
+  },
+  {
    "land": "Discotopia",
    "sunPitch": 52, "sunYaw": 30, "sunIntensity": 0.95, "sunColor": "#D4E2FF",
    "skyLight": "#7C8CE0", "horizonLight": "#8A92D0", "groundLight": "#70748C",

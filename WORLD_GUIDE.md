@@ -1013,13 +1013,22 @@ City islands joined by bridges. Dusk into night, with one sunny beach.
 **Artist areas:** Little study windows and porches with a lamp.
 
 ### The Neo Soul Quarter
-*23 songs · 13 artists · 0.48 km² · new*
+*23 songs · 13 artists · 0.48 km² · built in Unity*
 
-**Arriving:** Warm brownstone streets on a low hill with leafy courtyards; a candlelit listening lounge, its stoop full of record crates.
+**Arriving:** The Courtyard, on a candlelit evening. A tiled court under strings of honey-coloured lights, and in one corner a monstera the size of a house, still in its pot. A book and record stall, a circle of floor cushions round a low table of candles, tea and incense. The sky is plum; every window round the court is lit.
 
-**The vibe:** Slow, warm and intimate. Incense, houseplants, a corner bookstore.
+**The vibe:** Slow, warm, intimate. The houseplants took the quarter over years ago and nobody minded: monsteras lean over the rooftops, ferns arch across the lanes, snake plants stand as tall as lamp posts, fig trees grow out of pots on every corner. The houses are terracotta, clay and honey, with balconies full of leaves and candles on every step. Honey Street runs out of the Courtyard under lights strung from pole to pole. Sofas stand out in the open with a lantern beside them. Fireflies. Nobody is in a hurry.
 
-**Artist areas:** Maxwell gets the largest. Lauryn Hill, Solange and Erykah Badu get courtyards.
+**Artist areas:** Most artists have a nook of their own: a piece of terracotta wall with a lit arch in it, vines over the top, a chair, a plant, candles, and one thing from their song; covers on a cream card on a clay board. Maxwell has the Listening Room, on the Courtyard: a room to walk into, with a whole wall of records, a turntable to play, two sofas and a table of candles; crates of records on the step, a four-leaf clover in a pot ("Fortunate"), a lamp left on beside an empty chair ("This Woman's Work"), white wings on the outside wall ("Pretty Wings"), and rungs of light climbing from the roof into the sky ("Ascension"). Ms. Lauryn Hill has an open-air schoolroom: a blackboard with one word on it, desks to sit at, an apple for the teacher; a street-corner lamp with three microphones under it ("Doo Wop"); a rope pulled tight between two posts with a knot that won't come out ("Ex-Factor"); two chairs facing each other over one lantern ("Nothing Even Matters"). Erykah Badu has a great painted wheel that never stops turning ("On & On"), a signpost pointing every way at once ("Didn't Cha Know"), and tea and incense on a low table. D'Angelo has a small dark stage, one warm spotlight leaning in over it, and an electric piano to play. Solange has three white cranes with paper cranes hanging from them, round white steps to sit on, a shelf of brown bottles glowing like honey ("Almeda") and bright cloth on a line ("Losing You"). Also Jill Scott's gold sun rising over her wall, Jorja Smith's blue lamp, Kali Uchis' tin-can telephone with a glowing string, Hiatus Kaiyote's red room, SAULT's black cube in a ring of flame, Children of Zeus' workbench, KIRBY's web under a street lamp, and Victoria Monét's mirror and family photographs.
+
+**Happenings:** Candles flicker; the strings of lights breathe one after another; incense smoke climbs; fireflies drift; the wheel turns. "Blue Lights" pulses the whole quarter blue, windows and all. "Golden" turns everything gold. "Red Room" turns it red. "Wildfires" flickers orange and sends embers up from the cube. "Pretty Wings" brings white feathers down. "Ascension" sends lights rising out of the streets. "Cranes in the Sky" sets paper cranes drifting up. "Untitled (How Does It Feel)" takes the quarter dark but for the one spotlight. "On & On" turns the wheel faster.
+
+**The streets and places:** Laid out on purpose: the Courtyard and Honey Street are the spine, and every lane to an artist branches from them.
+- **The Courtyard:** take a book, flip through the record crates, sit on a cushion, have tea.
+- **Honey Street:** the lit windows and the lights overhead.
+- **The Listening Room:** drop the needle; take a sofa.
+- **The stage:** play a slow chord.
+- **The wilds:** sofas and lanterns among the giant plants.
 
 ### The Roots Bay
 *20 songs · 16 artists · 0.46 km² · built in Unity*
