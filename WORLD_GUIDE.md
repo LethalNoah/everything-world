@@ -671,13 +671,20 @@ A few people sit about them, each with a tune they can't finish. The lamp benche
 **Artist areas:** Mr. Bill gets a hall (13 songs). Others are glitching cubes.
 
 ### The Melodic Bass Highlands
-*29 songs · 15 artists · 0.48 km²*
+*29 songs · 15 artists · built in Unity*
 
-**Arriving:** Big summits above a sea of clouds; a glowing ring-shaped stage floats over the highest peak.
+**Arriving:** The Rune Circle, at twilight. A ring of tall standing stones carved with glowing violet runes stands round a turf floor inlaid with a rune ring, a rune stone in the middle to touch, and gold lanterns at the corners. Overhead hangs a great floating island with pink-blossomed trees on it, and its waterfall pours down into a glowing pool beside the circle, spray rising.
 
-**The vibe:** Permanent sunset. Floating lanterns, waterfalls pouring into the clouds.
+**The vibe:** Fantasy highlands where the drop lifts you off the ground: big, emotional and soaring. A violet sky with a pink horizon and pink clouds; floating islands everywhere, turned-down cones of rock with turf and blossom on top, drifting and bobbing and rising higher when the music swells, some pouring thin waterfalls into the air; crystal clusters in pink and violet growing out of the hills, rune stones, twisted trees with pink blossom, little pools ringed with rocks, and benches under floating lanterns. The Rune Road runs between rune stones to the Sky Stair: a spiral of floating stone steps round a glowing pink crystal pillar, up to a lookout island high above the land with a bench and a telescope.
 
-**Artist areas:** Seven Lions gets a hall on a summit. Others are lantern platforms.
+**Artist areas:** Most artists stand on a round dais of turf ringed with a glowing rune band, with a tall rune stone bearing their name and a little island floating over them; covers on a violet board edged in gold, and a floating crystal for each song. Seven Lions has seven stone lions in a ring round a pool, a great crystal floating and turning over it ("Creation"), a little floating rock pouring a waterfall into the pool ("The Fall"), a glowing flower ("Nepenthe") and a huge rising sun ("Days to Come"). Mr FijiWiji has a bed on a rock under the stars to lie on ("Insomnia"), a crystal ball ("The Mentalist"), paper lanterns rising from a stand ("Time to Say Goodbye"), a mask ("Cynical") and a bunch of flowers ("Gina"). Also a tiny neon skyline (Adventure Club), a giant glowing flower (Dabin), a crystal cluster (Direct), a tree of gold leaves (Diveo), a fox (Foxes), a ring of dancing crabs (Noisestorm), a dark cube of pixels (Pixel Terror), a misty pool (Pure 100%), a crescent moon (Rogue), an orb in a stone bowl (Skrux), a potion bottle (Sound Remedy), a clock face and a coiled snake (Vexare) and a sculpture of rings (Xilent).
+
+**Happenings:** The floating islands bob and drift and rise when the music swells; the great crystal turns faster on the drop; paper lanterns rise and fall; spray lifts from the pool; motes of light drift; the runes breathe with the music. "Crab Rave" turns everything orange and the crabs dance. "Time to Say Goodbye" sends the lanterns high into the sky. "Insomnia" brings deep blue night and stars. "Bloom" brings pink petals. "The Fall" brightens the waterfalls and brings soft rain. "Days to Come" is a golden dawn. "Retro City" flickers neon pink and blue. "Nightfall" turns dark violet.
+
+**The streets and places:** Laid out on purpose: the Rune Circle and the Rune Road are the spine, and every lane to an artist branches from them.
+- **The Rune Circle:** touch the rune stone and watch the islands rise; stand by the waterfall pool.
+- **The Rune Road:** walk between the rune stones.
+- **The Sky Stair:** climb the floating steps to the lookout and look over every island.
 
 ### The Liquid Rapids
 *22 songs · 20 artists · 0.47 km² · new*

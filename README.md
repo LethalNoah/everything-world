@@ -11,10 +11,10 @@ A shared Spotify playlist of 2,166 songs (and growing), turned into a world. It 
 *November 2026*
 
 - **The world is charted.** 1,322 artists are grouped into 66 "scenes" (looser than genres: an artist's songs always stay together, and similar scenes are neighbours). Each scene is a land. The lands form 8 realms round a central Hub, 67 places in all.
-- **55 lands and the Hub are built** in Unity. The blue flags on the map mark them.
+- **56 lands and the Hub are built** in Unity. The blue flags on the map mark them.
 - **Every built land is made by hand for its own music**, not from a shared template: its own landmark, sky, light, ground and weather; an area for every artist, built from their actual songs; and things that happen when particular songs come on.
 - **Each land is laid out to be wandered.** Roads lead out from where you arrive to named places: a pizza parlour in the Punk Badlands, a summer festival in the J-Rock Isles, a flooded quarry in the Nu Metal Quarry. There are places to sit, things to use, things to pick up and throw, and small residents with something to say.
-- **Not done yet:** the other 11 lands, playing together online, and a lot of polish. So far it has only been walked by the person building it.
+- **Not done yet:** the other 10 lands, playing together online, and a lot of polish. So far it has only been walked by the person building it.
 
 There are no pictures of the game here yet, on purpose. The map has the written description of every built land: click one.
 
