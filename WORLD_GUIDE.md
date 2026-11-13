@@ -757,13 +757,20 @@ A few people sit about them, each with a tune they can't finish. The lamp benche
 - **The Control Room:** sit at the consoles; press the red button.
 
 ### The Trance Steppe
-*14 songs · 12 artists · 0.46 km²*
+*13 songs · 11 artists · built in Unity*
 
-**Arriving:** Endless open grassland and sand flats; a ring of obelisks fires lasers into the sky.
+**Arriving:** On the Sunrise Stage at dawn: a wide round stage on a low rise, rayed in gold, ringed with laser emitters throwing beams up into a pink sky, a DJ riser at the back, and a crowd with their hands in the air, all facing a sun so big it fills the horizon. Step to the front and put your hands up.
 
-**The vibe:** The minutes just before sunrise. Distant speaker towers, light pylons.
+**The vibe:** Euphoric and endless: the moment the sun comes up after a whole night of dancing. Dawn pink, gold and peach; tall gold steppe grass lit pink at the tips; laser emitters scattered out in the grass, their beams sweeping the sky; stone statues with their arms raised; lone flat-topped trees; standing stones; rows of flags; benches under gold lamps. The Long Plain runs straight at the sun, lined with raised-arm statues and lamps, to the Monolith: a tall white column striped with laser light, throwing a beam straight up into the sky.
 
-**Artist areas:** Obelisks in the grass. Above & Beyond's stands in the ring itself.
+**Artist areas:** Each artist has a round stone floor with a gold ring, a tall slim stone bearing their name with a laser line down it, a laser post for each song and one thing from their music facing the sunrise; covers on a pale stone board with a gold edge. Above & Beyond have an arch holding a sun and a moon ("Sun & Moon"), a heart of light ("Thing Called Love") and a road sign pointing away ("You Got To Go"). Also a sand tornado that spins (Darude, "Sandstorm"), a globe circled by hearts (Francesco Farfa), a black obelisk banded with gold (Gesaffelstein), a rain cloud over a lone figure (Myon, "Omen In The Rain"), a crumbling column (Primer), a ring of children holding hands (Robert Miles, "Children"), an aura of light (Soulero), a split rock with light pouring out (Velvetine, "The Great Divide"), a little cooling tower (Zombie Nation, "Kernkraft 400") and a golden blade (zts).
+
+**Happenings:** Everything follows a 138 bpm trance clock on the shared clock: lasers fan across the sky on the build and snap together over the sun on the drop, every 32 beats; the sun swells; the Monolith's beam pulses; motes of light rise from the grass. Hands up at the stage brings every beam together over the sun. "Sandstorm" brings an orange haze and blowing sand. "Children" is a dreamy pastel dawn. "Sun & Moon" turns gold, then cool blue, then gold. "Kernkraft 400" flashes green on every beat. "Omen In The Rain" brings soft rain. "Hate or Glory" turns dark red.
+
+**The streets and places:** Laid out on purpose: the Sunrise Stage and the Long Plain are the spine, and every lane to an artist branches from them.
+- **The Sunrise Stage:** put your hands up at the front.
+- **The Long Plain:** walk straight into the sunrise.
+- **The Monolith:** stand at its foot and look up the beam.
 
 ### The Electro Foundry
 *17 songs · 11 artists · built in Unity*
