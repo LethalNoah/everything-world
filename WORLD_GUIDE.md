@@ -741,13 +741,20 @@ A few people sit about them, each with a tune they can't finish. The lamp benche
 - **The Crate Walk:** walk under the rose arches to the marble machine and turn its crank.
 
 ### The Trip-Hop Undercity
-*16 songs · 12 artists · 0.45 km²*
+*16 songs · 12 artists · built in Unity*
 
-**Arriving:** A rainy harbour city that goes down into tunnels and vaults; a cathedral-like tunnel with a lit stage, water dripping from the roof.
+**Arriving:** On the Platform of an old subway station, deep underground at three in the morning: a vaulted concrete ceiling on columns lit cold blue and warning red, white tiles with a blue stripe, the station's name in red enamel on the back wall, a train standing at the platform with its windows lit, benches, a hanging clock, and a ticket machine that sells you a ticket to somewhere else.
 
-**The vibe:** Night and smoke. Umbrellas, film-noir lamps, vinyl crates.
+**The vibe:** Slow, smoky and cinematic, like a spy film after midnight: a city underground in close dark fog, lit cold blue and red. Out in the dark: pairs of concrete pillars holding up broken slabs of ceiling, stairwells going down into warm light, steam rising from vents, puddles, signal lights, abandoned carriages with lit windows and graffiti, graffiti walls, station benches under blue strip lights, weeds in the cracks. The Flooded Tunnel runs on from the platform along a walkway beside a channel of black water, under arched concrete ribs hung with red, amber and blue lamps, dripping, to the Control Room: a concrete room of consoles in an arc of screens, a map wall glowing blue with red points, and a big red button.
 
-**Artist areas:** Alcoves along the tunnels; Portishead and Massive Attack get the deepest.
+**Artist areas:** Each artist has a square of station tiles edged with a blue stripe, an old red enamel station sign on two posts with their name, a caged lamp for each song and one thing from their music; covers in a poster frame on a piece of tiled wall. Portishead have a spy-film set: a microphone on a stand under a single spotlight ("Glory Box"), a wet road under a lone street lamp ("Roads") and a little bar table with a record player and two glasses ("Sour Times"). Massive Attack have a great glass teardrop turning slowly over a dark pool ("Teardrop") and wings of light ("Angel"). Also a slow pendulum (Amon Tobin), two glowing eyes in the dark (Blue Foundation), a sunset on an old television (Glass Animals), a conductor's stand (Hidden Orchestra), a little garden under glass and a red tango spotlight (Hooverphonic), a porcelain vase (Moby), moths circling a lamp (Moth Equals), a piano with a lone chair in the rain (Rob Dougan), a candle in a window (Silent Poets) and a crown (il:lo).
+
+**Happenings:** Steam rises; water drips in the tunnel; the red and blue lights breathe to a slow beat; the lamps buzz and flicker; the teardrop turns; the pendulum swings; moths circle; the map wall pulses. Press the red button and a red alarm flashes through the control room. "Glory Box" glows warm amber. "Roads" brings rain and blue-grey. "Teardrop" is deep blue. "Angel" is cold white. "Eyes on Fire" brings drifting embers. "Heat Waves" is a hot orange haze. "Porcelain" is soft pale white. "Clubbed to Death" turns green, with rain.
+
+**The streets and places:** Laid out on purpose: the Platform and the Flooded Tunnel are the spine, and every lane to an artist branches from them.
+- **The Platform:** buy a ticket; sit and wait for a train that never leaves.
+- **The Flooded Tunnel:** walk beside the black water under the lamps.
+- **The Control Room:** sit at the consoles; press the red button.
 
 ### The Trance Steppe
 *14 songs · 12 artists · 0.46 km²*

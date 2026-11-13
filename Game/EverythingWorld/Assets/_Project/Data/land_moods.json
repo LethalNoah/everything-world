@@ -241,6 +241,13 @@
    "weather": "", "weatherAmount": 0
   },
   {
+   "land": "The Trip-Hop Undercity",
+   "sunPitch": 35, "sunYaw": 60, "sunIntensity": 0.4, "sunColor": "#7090D0",
+   "skyLight": "#24304A", "horizonLight": "#2E2034", "groundLight": "#2A2A34",
+   "fogColor": "#0A0C14", "fogStart": 40, "fogEnd": 320, "stars": 0.0, "sunShadows": false, "dailyWeather": false, "bloom": 1.4,
+   "weather": "", "weatherAmount": 0
+  },
+  {
    "land": "Discotopia",
    "sunPitch": 52, "sunYaw": 30, "sunIntensity": 0.95, "sunColor": "#D4E2FF",
    "skyLight": "#7C8CE0", "horizonLight": "#8A92D0", "groundLight": "#70748C",
