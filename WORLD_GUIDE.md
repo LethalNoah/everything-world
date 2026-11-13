@@ -668,13 +668,20 @@ A few people sit about them, each with a tune they can't finish. The lamp benche
 - **The camps:** sit on a bean bag in a chill-out corner; warm up by a campfire.
 
 ### The Dubstep Shards
-*30 songs · 17 artists · 0.49 km²*
+*30 songs · 17 artists · built in Unity*
 
-**Arriving:** Jagged crystal mountains split by deep cracks; a chasm that pulses with light.
+**Arriving:** The Drop Zone at night: a black stone floor cracked with cyan and magenta light, a crowd with their hands up, and in front of you the Speaker Cliff, a wall of speakers the size of a cliff face, its great woofers punching out on the kick and lasers sweeping from its top. Giant crystal shards jut from the ground all round. Hit the sub on the mixing desk.
 
-**The vibe:** A stormy night with lightning. Boulders shaped like subwoofers, thick cables.
+**The vibe:** Heavy, physical, a little dangerous: a shattered crystal canyon where the bass shakes the stones. Deep violet sky; dark violet rock; crystal shards everywhere in clusters, leaning at angles, glowing cyan and magenta and pulsing with a half-time wobble whose rate changes bar by bar; black rock spires veined with crystal; glowing cracks in the ground; little speaker stacks; rock seats under crystal lamps. The Rift runs between leaning black slabs veined with light to the Core: a vast crystal turning slowly in the air over a crater with a glowing violet pool, shards orbiting round it.
 
-**Artist areas:** Virtual Riot gets a hall inside the chasm. Others are crystal shards with plaques.
+**Artist areas:** Most artists have a floor of black stone ringed with small glowing shards, a slab of rock with their name cut into it and lit from inside, and a small shard for each song; covers on a black slab with a crystal edge. Virtual Riot has a crystal garden: crystal flowers ("Stargarden"), a winged figure of crystal ("Neon Angel"), a moon ("Lunar"), a great blade ("Edge"), a prism splitting a white beam into colours ("CHROMA"), a black obelisk ("Blackout"), a portal ring ("Different World") and a panel of scrolling light ("Rewrite"). Bassnectar has a tower of subwoofers that pump ("Bass Head"), a melting clock ("Timestretch"), a radio mast ("Underground Communication") and a wall of glowing graffiti ("Wildstyle Method"). Also a wrecking ball (Black Tiger Sex Machine), a crystal castle (Careless Castle), a crystal disco ball (Eccentric), glowing cracks (Freestylers), a giant teardrop (NGHTMRE), a crystal tree with prayer flags (Of The Trees), a bottle with a ship (Omnitica), a blue-and-yellow colour wheel and a scoreboard (Panda Eyes), a mint crystal (Prismatic), a mirrored double crystal (Quartzone), a jagged green creature and a summit with a flag (Skrillex), a beam of light (Skybreak), a warped grid (Subtronics), arrows (Teminite) and an iridescent sphere (ZEOL).
+
+**Happenings:** A half-time bass wobble on the shared clock drives everything: shards pulse, woofers punch, lasers sweep, the Core turns faster on the drop. Hit the sub and the whole canyon flares. "Scary Monsters and Nice Sprites" strobes lime. "Bass Head" wobbles deep purple. "CHROMA" cycles colour. "Blackout" plunges the canyon into darkness with white flashes. "Lunar" is silver. "Teardrop" is blue with rain. "Into The Light" is white. "Colorblind" flips blue and yellow. "Stargarden" brings falling stars.
+
+**The streets and places:** Laid out on purpose: the Drop Zone and the Rift are the spine, and every lane to an artist branches from them.
+- **The Drop Zone:** hit the sub on the mixing desk; stand in front of the woofers.
+- **The Rift:** walk between the humming slabs.
+- **The Core:** stand at the crater's edge under the turning crystal.
 
 ### The IDM Glitchlands
 *30 songs · 15 artists · 0.49 km²*
