@@ -20,9 +20,11 @@ namespace EverythingWorld.World
 
         public const float Grass = 220f, Small = 400f, Glow = 650f, Medium = 900f, Big = 1600f;
 
-        public void Init(Transform lands)
+        public void Init(Transform lands) { items.Clear(); lights.Clear(); Add(lands); }
+
+        /// Starts watching everything under 'lands' (a land just built), as well as what it watches already.
+        public void Add(Transform lands)
         {
-            items.Clear(); lights.Clear();
             var skip = new HashSet<Transform>();
             foreach (var cl in lands.GetComponentsInChildren<CloudLayer>(true)) skip.Add(cl.transform);   // a land's life: left alone
             // also anything under a land's life script (BayouLife, FolkLife…): its movers are often built at the origin
@@ -47,7 +49,7 @@ namespace EverythingWorld.World
                 var far = l.range + 120f;
                 lights.Add(new LightItem { l = l, p = l.transform.position, far2 = far * far });
             }
-            Debug.Log($"Land culler: watching {items.Count} meshes and {lights.Count} lights");
+            Step(items.Count, lights.Count);
         }
 
         static bool UnderAny(Transform t, HashSet<Transform> roots)

@@ -279,7 +279,7 @@ MonoBehaviour:
   toonShading: 1
   zoneFields: 1
   targetFrameRate: 60
-  auditLands: 1
+  auditLands: 0
 --- !u!4 &1517454431
 Transform:
   m_ObjectHideFlags: 0

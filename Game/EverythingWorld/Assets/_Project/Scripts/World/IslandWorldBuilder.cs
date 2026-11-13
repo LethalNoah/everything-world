@@ -29,8 +29,10 @@ namespace EverythingWorld.World
         public bool zoneFields = true;
         [Tooltip("Frames per second to aim for. Without a cap the editor runs the GPU flat out (loud fans).")]
         public int targetFrameRate = 60;
-        [Tooltip("In the editor, check each hand-built land after it's built (missing colliders, crowded or misplaced artists, empty stretches, light) and write a report and a picture to Logs/LandAudit/.")]
-        public bool auditLands = true;
+        [Tooltip("In the editor, check each hand-built land after it's built (missing colliders, crowded or misplaced artists, empty stretches, light) and write a report and a picture to Logs/LandAudit/. Slow (it about doubles the start-up), so it's off for normal play; the photo tour always runs it.")]
+        public bool auditLands = false;
+        [Tooltip("Build a land's scenery only when you come within this many metres of where you arrive in it, nearest first, one land a frame (a short pause as each one appears). 0 builds every land at the start, which takes a minute or two.")]
+        public float buildDistance = 1200f;
         [Tooltip("Hide grass, small props, glows and lights on built lands when they're far away (LandCuller). Turn off to compare.")]
         public bool cullByDistance = true;
 
@@ -40,6 +42,8 @@ namespace EverythingWorld.World
 
         LandKit[] kits;
         readonly HashSet<int> dressed = new HashSet<int>();
+        readonly List<int> pending = new List<int>();   // lands with a kit, not built yet
+        Transform landsRoot; LandCuller culler; Transform player;
 
         /// True for lands built in full (with a kit). Artist stations and rings only exist there for now,
         /// so you don't hit an invisible circle in an empty field that changes the music.
@@ -49,6 +53,10 @@ namespace EverythingWorld.World
         /// and skip the land audit, so a quick look at one place takes about a minute instead of six. The other
         /// lands stay bare ground, so far views are not to be trusted in a quick photo.
         public static HashSet<string> QuickLands;
+        /// Set by the photo tour: build every land at the start (the tour needs them all) and, unless it's a quick tour, audit them.
+        public static bool BuildEverything, ForceAudit;
+        /// True once every land with a kit has been built.
+        public bool AllBuilt => pending.Count == 0;
         static bool Wanted(string land) => QuickLands == null || QuickLands.Contains(land.StartsWith("The ") ? land.Substring(4) : land);
 
         // shared terrain colours
@@ -342,30 +350,67 @@ namespace EverythingWorld.World
         // ---------- lands with a kit: scenery and artist areas ----------
         void DressLands()
         {
-            var root = new GameObject("Lands").transform;
-            root.SetParent(transform, false);
-            for (var i = 0; i < kits.Length; i++)
-            {
-                if (kits[i] == null) continue;
-                var t0 = Time.realtimeSinceStartup;
-                try
-                {
-                    var ctx = new LandContext(Data, i, root, coverAtlas);
-                    kits[i].Dress(ctx);
-                    foreach (var a in ctx.Artists) kits[i].BuildArtist(ctx, a);
-                    kits[i].Finish(ctx);
-                    if (auditLands && Application.isEditor && QuickLands == null)
-                        try { LandAudit.Run(Data, ctx, kits[i].Land); } catch (System.Exception e) { Debug.LogException(e); }
-                    Debug.Log($"{kits[i].Land}: dressed in {(Time.realtimeSinceStartup - t0) * 1000:0} ms, {ctx.Artists.Count} artist areas");
-                }
-                catch (System.Exception e)
-                {
-                    Debug.LogException(e); // one broken land should not stop the rest of the world
-                }
-            }
+            landsRoot = new GameObject("Lands").transform;
+            landsRoot.SetParent(transform, false);
             // hide what's too far away to matter (detail, small props, glows, lights), so views across built
-            // lands stay smooth
-            if (cullByDistance) gameObject.AddComponent<LandCuller>().Init(root);
+            // lands stay smooth; each land is added to it as it's built
+            if (cullByDistance) culler = gameObject.AddComponent<LandCuller>();
+            for (var i = 0; i < kits.Length; i++) if (kits[i] != null) pending.Add(i);
+            var p = FindFirstObjectByType<EverythingWorld.Player.SimplePlayerController>();
+            player = p != null ? p.transform : null;
+            // build the lands near where you start (the spawn point, where IslandExplorer puts you on Play) now; the rest
+            // as you come near them (Update)
+            var everything = BuildEverything || buildDistance <= 0f;
+            var start = new Vector3(Data.layout.spawnX, 0f, Data.layout.spawnZ);
+            var t0 = Time.realtimeSinceStartup; var n = 0;
+            for (var k = pending.Count - 1; k >= 0; k--)
+            {
+                var i = pending[k];
+                if (!everything && Distance(i, start) > buildDistance) continue;
+                pending.RemoveAt(k); DressLand(i); n++;
+            }
+            Debug.Log($"Built {n} lands at the start in {(Time.realtimeSinceStartup - t0) * 1000:0} ms; {pending.Count} more will be built as you come near them");
+        }
+
+        float Distance(int i, Vector3 at)
+        {
+            var isl = Data.layout.islands[i]; return Vector2.Distance(new Vector2(isl.labelX, isl.labelZ), new Vector2(at.x, at.z));
+        }
+
+        /// Builds the nearest unbuilt land once you're within buildDistance of it: one land a frame.
+        void Update()
+        {
+            if (pending.Count == 0) return;
+            var at = player != null ? player.position : Camera.main != null ? Camera.main.transform.position : Vector3.zero;
+            int best = -1; var bestD = buildDistance;
+            for (var k = 0; k < pending.Count; k++) { var d = Distance(pending[k], at); if (d <= bestD) { bestD = d; best = k; } }
+            if (best < 0) return;
+            var i = pending[best]; pending.RemoveAt(best);
+            DressLand(i);
+        }
+
+        void DressLand(int i)
+        {
+            var t0 = Time.realtimeSinceStartup; var audit = 0f;
+            try
+            {
+                var ctx = new LandContext(Data, i, landsRoot, coverAtlas);
+                kits[i].Dress(ctx);
+                foreach (var a in ctx.Artists) kits[i].BuildArtist(ctx, a);
+                kits[i].Finish(ctx);
+                if ((auditLands || ForceAudit) && Application.isEditor && QuickLands == null)
+                {
+                    var a0 = Time.realtimeSinceStartup;
+                    try { LandAudit.Run(Data, ctx, kits[i].Land); } catch (System.Exception e) { Debug.LogException(e); }
+                    audit = Time.realtimeSinceStartup - a0;
+                }
+                if (culler != null) culler.Add(ctx.Root);
+                Debug.Log($"{kits[i].Land}: dressed in {(Time.realtimeSinceStartup - t0 - audit) * 1000:0} ms" + (audit > 0f ? $" (+{audit * 1000:0} ms audit)" : "") + $", {ctx.Artists.Count} artist areas");
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogException(e); // one broken land should not stop the rest of the world
+            }
         }
 
         // ---------- island name signs ----------

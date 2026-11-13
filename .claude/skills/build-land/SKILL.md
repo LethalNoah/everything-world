@@ -185,8 +185,8 @@ big change):
 2. Simulate the artist placement in Python and print distances from the arrival point and from borders.
 3. Update the land's WORLD_GUIDE.md entry (counts, arrival, vibe, artist areas, happenings) in general
    terms, and IDEAS.md for anything deferred.
-4. Ask the owner to press Ctrl+R in Unity and Play. The **land audit** runs automatically (IslandWorldBuilder
-   "Audit Lands") and writes `Game/EverythingWorld/Logs/LandAudit/<Land>.txt` and `.png`. Read both
+4. Run the full photo tour (`python build/take_shots.py "<Land>"`, Unity closed). The **land audit** runs during
+   it (it is off on normal Play, to keep start-up fast; tick IslandWorldBuilder "Audit Lands" to run it on Play) and writes `Game/EverythingWorld/Logs/LandAudit/<Land>.txt` and `.png`. Read both
    yourself (the picture with the Read tool): fix every "no collider" item that's real, every
    **overlapping surface** (two different materials in the same plane: they flicker in play; magenta on the
    picture), every artist with problems, and big empty stretches, before asking the owner to look.

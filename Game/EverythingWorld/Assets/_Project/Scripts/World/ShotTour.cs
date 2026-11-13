@@ -40,6 +40,8 @@ namespace EverythingWorld.World
                         if (args[k] == "-ewQuick") tour.quick = true;
                         if (args[k] == "-ewOnly" && k + 1 < args.Length) { tour.quick = true; tour.only = args[k + 1].ToLowerInvariant().Split(new[] { ';' }, System.StringSplitOptions.RemoveEmptyEntries); }
                     }
+                    var startup = tour.lands.Length == 1 && tour.lands[0] == "startup";   // "startup": time a normal start (lands near you only), then quit
+                    IslandWorldBuilder.BuildEverything = !startup; IslandWorldBuilder.ForceAudit = !tour.quick && !startup;
                     if (tour.quick)
                     {
                         IslandWorldBuilder.QuickLands = new HashSet<string>();
@@ -62,7 +64,13 @@ namespace EverythingWorld.World
         {
             QuietSpotify();
             // wait for the world to be built
-            while (IslandWorldBuilder.Instance == null || IslandWorldBuilder.Instance.Data == null) yield return null;
+            if (lands.Length == 1 && lands[0] == "startup")
+            {
+                while (IslandWorldBuilder.Instance == null || IslandWorldBuilder.Instance.Data == null) yield return null;
+                Debug.Log($"Startup: playing {Time.realtimeSinceStartup:0.0} s after Unity started");
+                Quit(0); yield break;
+            }
+            while (IslandWorldBuilder.Instance == null || IslandWorldBuilder.Instance.Data == null || !IslandWorldBuilder.Instance.AllBuilt) yield return null;
             for (var i = 0; i < 30; i++) yield return null;
             var data = IslandWorldBuilder.Instance.Data;
             var player = FindAnyObjectByType<SimplePlayerController>();
