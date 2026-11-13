@@ -635,13 +635,20 @@ Hay bales at the new places can be sat on.
 A few people sit about them, each with a tune they can't finish. The lamp benches can be sat on.
 
 ### The Ambient Mists
-*32 songs · 17 artists · 0.51 km²*
+*31 songs · 16 artists · built in Unity*
 
-**Arriving:** Soft low hills fading into fog around a large still lake. A lone tree on an island in the lake, an old radio tower behind it.
+**Arriving:** A meadow at dawn in fog. A lone tree with a rope swing hanging from its branch (sit on it), a checked picnic blanket in the grass with an old box television showing faded colour bars and a little radio beside it (turn the dial), and a line of electricity pylons marching away into the haze, their wires sagging between them.
 
-**The vibe:** A hazy, film-grain dawn. Tall grass, old TV sets in the fields, sheep, a rowing boat.
+**The vibe:** Soft, hazy and a little sad, like a memory of a summer on an old home video: faded teal, washed orange and muted green, low sun through fog. Long pale grass everywhere; lone trees, rows of hay bales, old wooden fences, telegraph poles, old televisions left out in the grass still flickering, sheep grazing and wandering, benches under old lamp posts. The Pylon Walk, a dirt track, follows the wires down to the Lake: still water ringed with reeds and stones, a lone tree on a tiny island, an old radio tower behind it with a slow red light, and a wooden jetty with a rowing boat to sit in.
 
-**Artist areas:** Boards of Canada and Aphex Twin get halls (a farmhouse and a radio hut). Others are TV sets and fence posts in the grass.
+**Artist areas:** Each artist has a round of mown grass in the long meadow, a wooden post with a faded enamel name plate, a little bulb on a stick for each song and one thing left out in the field from their music; covers pinned to an old cork board on legs. Boards of Canada have a radio telescope dish turned to the sky ("Prophecy At 1420 MHz"), an old camper van with its windows lit ("Dayvan Cowboy"), a faded rainbow ("Roygbiv"), a weather balloon floating on a line ("Hydrogen Helium Lithium Leviathan"), a little satellite dish, a gate standing alone in the grass ("Into The Magic Land") and a dark still pond ("Naraka"). Aphex Twin has an upright piano in the grass with a stool ("Avril 14th"), three standing stones ("Ageispolis"), a crystal ("Xtal"), an oscilloscope on a crate ("Pulsewidth"), a ring of green chalk ("Green Calx") and a box of blinking lights. Also a sphere of wire (Douglas Holmquist), a mirror on a stand (Elori Saxl), keys on a line (Express Rising), a bathtub in the grass and a spill of water (KatzPascale), balloons drifting on their strings (Marconi Union), a little house with a lit window (Mark Barrott), stairs up into nothing (Pipetka), a small stone arch (Prosecutor Archangels), a maple turning red (Rei Harakami), a giant glowing mushroom (Shpongle), a sun on a post and a paper lantern (Tycho), a silver figure and two chairs facing each other (Vegyn), a beam of light from the sky (ridgeclub) and a floating jumble of shapes.
+
+**Happenings:** The swing sways; the boat rocks; sheep wander; balloons drift; the tower light blinks slowly; the old TVs flicker and roll; low wisps of mist drift over the grass with pollen in the light; now and then the whole picture wobbles like an old tape. "Weightless" makes everything soft and slow. "Avril 14th" is a warm gold. "Roygbiv" drifts through faded rainbow colours. "Xtal" shimmers cool. "Divine Moments of Truth" swirls colour. "Japan" is soft pink and "Into The Woods" green. "I'm God" brings a great pale light. "owari no kisetsu" brings falling red leaves.
+
+**The streets and places:** Laid out on purpose: the Meadow and the Pylon Walk are the spine, and every lane to an artist branches from them.
+- **The Meadow:** sit on the swing; turn the dial on the old television.
+- **The Pylon Walk:** follow the wires down to the lake.
+- **The Lake:** sit in the rowing boat at the end of the jetty.
 
 ### The Four-on-the-Floor Steppe
 *30 songs · 22 artists · 0.49 km²*
