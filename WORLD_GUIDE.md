@@ -1012,13 +1012,21 @@ City islands joined by bridges. Dusk into night, with one sunny beach.
 - **The harbour:** the pier, cold sodas in a cooler, a towel to sit on, the containers and the crane.
 
 ### The Lo-Fi Hills
-*23 songs · 18 artists · 0.47 km²*
+*23 songs · 18 artists · 0.47 km² · built in Unity*
 
-**Arriving:** Gentle rain-soaked slopes with a few lit-up houses; a hillside study tower with one big lit window.
+**Arriving:** The Corner, on a rainy blue dusk. A late-night shop with its sign lit, two vending machines glowing beside it and a cat asleep on top of one; a bus shelter with a bench, and the night bus waiting at the kerb with its lights on. Puddles hold the lamplight. Up the hill, at the top of Lamp Lane, a tower with one enormous lit window.
 
-**The vibe:** A cosy, rainy evening. Sleeping cats, cassettes, vending machines.
+**The vibe:** For studying, for feeling safe, for being a little sad at two in the morning. It rains, steadily, always, on soft green hills gone blue in the dusk. Small houses each have one warm window with a curtain half drawn, a porch lamp and smoke from the chimney. Power lines run from pole to pole; vending machines glow at the roadside; round trees drip. There are cats on everything: windowsills, benches, porches, machines. Most of them can be stroked. Nobody is in a hurry and there is nowhere to be.
 
-**Artist areas:** Little study windows and porches with a lamp.
+**Artist areas:** Most artists have a porch of their own: a wall with one big lit window, a little roof over a wooden deck, a hanging lamp, a chair, a plant, usually a cat, and one thing from their song; covers on a cream card on a wooden board under its own small roof. Idealism has a covered wooden deck in the rain: a low table with a blanket over it and cushions round it, a rain chain running down into a bowl and a row of chimes ("waon to ame"), a small glowing machine with a lever and a little monster sitting on it ("monster gambling in tokyo"), and a reading corner under a sign that says nothing at all ("dont say a word"). digitalluc has a small car parked in the rain with its headlights on and the door open ("Driver"), a fish tank as tall as you are ("Underwater"), and a heap of pillows under a dim red lamp ("Soft Hell"). Michael Lementi has the arcade corner: two cabinets under an awning, one deep-sea green ("Aquatic Ambience") and one racing blue ("Big Blue"). Felipe Jara has an old television on a crate with a console, a castle on the screen and a beanbag in front of it. Also Bonus Points' enormous steaming cup, Doctor Do's small glowing globe, Jinsang's first sprout, Jonny Abbey's lyrebird, Stan Forebee's bed of opening flowers, The Deli's flower stall, TOKiMONSTA's lamp on a dimmer, letherette's table for two with a mug each, o k h o's letterbox, quickly, quickly's bed out in the open under a small moon, tides.' three cypresses and a postcard, Alecs DeLarge's street sign, Sleepdealer's plant under a purple lamp, and wuudlum's little bed on wheels with a nightshirt for a sail, following the moon.
+
+**Happenings:** Rain; low cloud; windows that flicker now and then like a television left on; vending machines humming; chimney smoke and steam off the mugs. "waon to ame" brings the rain harder and lights the chimes. "Underwater" and "Aquatic Ambience" turn everything deep teal and send bubbles up. "Darkest (Dim)" turns the lights low. "Awakening of the Flowers" and "Flowers" stop the rain, warm the light and send petals over. "Getsomerest/sleepwell" brings the night down and the windows go dim. "Cup of Joe" is amber. "Genesis" is a pink first light. "Big Blue" pulses blue.
+
+**The streets and places:** Laid out on purpose: the Corner, Lamp Lane and the Study are the spine, and every lane to an artist branches from them.
+- **The Corner:** go into the shop for a warm can of coffee, a bun and the yellow umbrella; sit in the bus shelter and listen to the roof.
+- **Lamp Lane:** lamps, puddles, houses with one lit window.
+- **The Study:** go in, sit at the desk under the lamp, look out of the open window at the rain; press play on the tape; take the headphones.
+- **The cats:** stroke them.
 
 ### The Neo Soul Quarter
 *23 songs · 13 artists · 0.48 km² · built in Unity*
