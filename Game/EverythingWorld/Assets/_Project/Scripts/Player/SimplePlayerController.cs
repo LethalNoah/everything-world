@@ -40,6 +40,7 @@ namespace EverythingWorld.Player
         {
             controller = GetComponent<CharacterController>();
             if (GetComponent<PlayerInteractor>() == null) gameObject.AddComponent<PlayerInteractor>();
+            if (GetComponent<Sunglasses>() == null) gameObject.AddComponent<Sunglasses>();
         }
 
         /// Sits down on the seat surface, eyes about 0.75 m above it, facing out.
