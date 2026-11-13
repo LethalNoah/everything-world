@@ -651,13 +651,21 @@ A few people sit about them, each with a tune they can't finish. The lamp benche
 - **The Lake:** sit in the rowing boat at the end of the jetty.
 
 ### The Four-on-the-Floor Steppe
-*30 songs · 22 artists · 0.49 km²*
+*34 songs · 24 artists · built in Unity*
 
-**Arriving:** Flat grassland laid out in a grid of glowing dance floors, a giant mirror ball hanging from a crane in the middle.
+**Arriving:** In the crowd at night, in front of the Main Stage: a black deck between truss towers, a huge LED wall of pink and blue squares, speaker stacks, moving lights on the roof truss sweeping coloured beams across the sky and lasers fanning out over everyone's heads, a crowd with their hands up, a barrier and a sound desk behind you. Climb the stairs to the DJ booth and drop the beat.
 
-**The vibe:** Night lit by lasers until sunrise. Speaker stacks, light towers, chrome DJ booths.
+**The vibe:** A festival on an open plain at night, everything moving to a four-on-the-floor kick drum. Black sky and stars; dry steppe grass; camps of dome tents in festival colours round campfires; rows of flags; glow sticks scattered in the grass; chill-out rugs with bean bags under a lamp; food stalls; light towers swinging beams over the plain; hay bales under festoon lights. Festival Avenue runs past coloured banners, strings of bulbs and food trucks to a big Ferris wheel turning slowly with its lights on.
 
-**Artist areas:** One dance-floor tile or DJ booth per artist.
+**Artist areas:** Most artists have a little festival stage of their own: a low black deck under a canopy on truss poles in their colour, their name in lights along the canopy, a DJ table, and one thing from their music on the deck; covers on a black board with a neon edge, and a glow stick for each song. deadmau5 has a great glowing cube on a deck with its faces lit in blocks, a banded planet floating over it ("Jupiter"), a giant snow cone ("Snowcone") and glowing headphones ("Fabienk"). Astronaut has a rocket on its launch gantry, a glowing Earth ("Earthsphere"), a trophy ("Champions"), a rain cloud ("Rain") and a war drum ("War"). Zero Eden has a pool of digital wave tiles ("Ocean Simulator"), a sign of ones and zeros ("Between Binaries") and a door of light ("Anything Is Possible"). Also a neon graveyard (+TEK), an equalizer and a sunrise (Avicii), a pool float (Barry Can't Swim), a clock (Cash Cash), a mirror ball (Chromeo), a pyramid of lights (Daft Punk), lanterns (Duke), a power-up star (Electric Joy Ride), a paper plane (Flight Facilities), drums (Francis Mercier), a wall of amps (Justice), antlers (Loukeman), a star of facets (Madeon), a disco car (Metro Area), bouncing balls (Rob Gasser), a speaker tower (Sonic Future), a hill with one star (Swedish House Mafia), a cosmic orb (TAKIO), a speedometer (Throttle), a beating heart (Vicetone) and a ring of fire (Wuki).
+
+**Happenings:** Everything moves on the shared beat: the LED wall pulses, moving lights sweep, lasers fan, light towers swing, glow sticks pulse, the Ferris wheel turns, the cube's faces flash, the wave tiles ripple, balls bounce, the heart beats, campfires spark. Drop the beat at the DJ booth and the stage goes dark for one beat, then explodes with light and confetti. "Levels" strobes rainbow. "Wake Me Up" is a golden dawn. "Don't You Worry Child" brings gold confetti. "Contact" flashes white. "Snowcone" brings snow and "Rain" rain. "Ring of Fire" is firelight and sparks. "Heartbeat" pulses pink. "Ocean Simulator" turns deep blue.
+
+**The streets and places:** Laid out on purpose: the Main Stage field and Festival Avenue are the spine, and every lane to an artist branches from them.
+- **The Main Stage:** dance in the crowd; climb up to the DJ booth and drop the beat.
+- **Festival Avenue:** walk under the bulbs past the food trucks.
+- **The Ferris wheel:** watch it turn from the bottom.
+- **The camps:** sit on a bean bag in a chill-out corner; warm up by a campfire.
 
 ### The Dubstep Shards
 *30 songs · 17 artists · 0.49 km²*
