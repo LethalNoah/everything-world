@@ -16,6 +16,8 @@ namespace EverythingWorld.World
         public System.Func<int, Rect> coverRect;
         public Dictionary<string, (string land, Vector3 at)> homeOf = new Dictionary<string, (string, Vector3)>();
         string shownId;
+        /// The land the song on the hub's radio comes from (null if none).
+        public string CurrentLand { get; private set; }
         Vector3 target;
 
         void Update()
@@ -29,6 +31,7 @@ namespace EverythingWorld.World
                 var home = homeOf.TryGetValue(t.artist ?? "", out var h) ? h : (null, Vector3.zero);
                 detail.text = Clip(t.artist, 30) + (home.land != null ? "\nfrom " + home.land : "");
                 target = home.land != null ? home.at : Vector3.zero;
+                CurrentLand = home.land;
                 if (sign != null)
                 {
                     var words = home.land != null ? $"{home.land}\n{Vector3.Distance(new Vector3(pointer.position.x, 0, pointer.position.z), home.at) / 1000f:0.0} km" : "";

@@ -494,7 +494,7 @@
    "land": "The Everything Hub",
    "sunPitch": 15, "sunYaw": -60, "sunIntensity": 1.25, "sunColor": "#FFC98A",
    "skyLight": "#A9B9D2", "horizonLight": "#E6C49A", "groundLight": "#7A6A55",
-   "fogColor": "#E3CCAA", "fogStart": 350, "fogEnd": 2400, "bloom": 0.9,
+   "fogColor": "#E3CCAA", "fogStart": 350, "fogEnd": 2400, "bloom": 1.2,
    "weather": "", "weatherAmount": 0
   }
  ]

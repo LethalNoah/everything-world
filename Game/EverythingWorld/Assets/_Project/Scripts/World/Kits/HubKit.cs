@@ -10,7 +10,7 @@ namespace EverythingWorld.World
     /// every album cover, in the order the songs were added, turns slowly. A jukebox shows what's on and
     /// where it comes from; a signpost and a map board point out to every land; a single bench sits at the
     /// water's edge for anyone who needs it. HubLife adds the clouds, gulls, song-coloured sunset and fireworks.
-    public class HubKit : LandKit
+    public partial class HubKit : LandKit
     {
         public override string Land => "The Everything Hub";
 
@@ -110,6 +110,10 @@ namespace EverythingWorld.World
 
             var mk = new MeshKit(); var solid = new MeshKit(); var halos = new GlowHalos();
             var labels = new GameObject("Hub words").transform; labels.SetParent(ctx.Root, false);
+            life = new GameObject("Hub life").AddComponent<HubLife>();
+            life.transform.SetParent(ctx.Root, false);
+            life.center = center; life.ringRadius = RingR;
+            people = new GameObject("Hub people").transform; people.SetParent(life.transform, false); prng = new System.Random(1856);
             Plaza(ctx, mk, halos);
             Dais(ctx, mk, solid, labels, halos);
             Stands(ctx, mk, solid, halos);
@@ -119,14 +123,15 @@ namespace EverythingWorld.World
             MapBoard(ctx, mk, solid, labels, halos);
             Park(ctx, mk, solid, labels);
             QuietBench(ctx, mk, solid, quietDir, halos);
+            Board(ctx, mk, solid, labels, halos);
+            Flags(ctx, mk, labels, halos);
+            Lights(ctx, mk, halos);
+            People(ctx, mk, solid);
             mk.Build("Hub", ctx.Root, false);
             solid.BuildCollider("Hub walls", ctx.Root);
             CoverRing(ctx);
             GroundCover(ctx);
             halos.Build("Hub glow", ctx.Root);
-            var life = new GameObject("Hub life").AddComponent<HubLife>();
-            life.transform.SetParent(ctx.Root, false);
-            life.center = center; life.ringRadius = RingR;
         }
 
         // ---------------------------------------------------------------- ground cover
@@ -388,7 +393,7 @@ namespace EverythingWorld.World
             ArtistBits.PointLight(ctx.Root, at + face * 2.5f + up * 2.8f, Warm, 10f, 1.4f);
 
             var root = new GameObject("Jukebox").transform; root.SetParent(ctx.Root, false);
-            var box = root.gameObject.AddComponent<Jukebox>();
+            var box = root.gameObject.AddComponent<Jukebox>(); jukebox = box;
             var coverGo = new GameObject("Cover");
             coverGo.transform.SetParent(root, false);
             var mesh = new Mesh { name = "Jukebox cover" };
@@ -721,6 +726,7 @@ namespace EverythingWorld.World
             mk.Box(stoneDark, ground + Vector3.up * plinthH / 2f, new Vector3(2.6f, plinthH, 1.6f), rot);
             mk.Box(stone, ground + Vector3.up * (plinthH + .1f), new Vector3(2.9f, .2f, 1.9f), rot);
             solid.Box(stone, ground + Vector3.up * plinthH / 2f, new Vector3(2.9f, plinthH + .2f, 1.9f), rot);
+            solid.Box(stone, ground + Vector3.up * (plinthH + 2.6f), new Vector3(2.4f, 4.8f, .6f), rot);   // the glyph itself
             var o = ground + Vector3.up * (plinthH + .2f);
             Vector3 W(Vector2 p) => o + right * p.x * scale + Vector3.up * p.y * scale;
             void Line(Vector2[] pts, float width)

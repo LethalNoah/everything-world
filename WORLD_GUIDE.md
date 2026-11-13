@@ -32,9 +32,15 @@ About 15.5 × 10.4 km. One big continent in the middle (the Old Kingdoms joined 
 - **The stands.** Curved stone tiers all round the plaza, facing the mast, for sitting together under the ring. They open where the paths come in.
 - **The jukebox.** A classic arched jukebox with rainbow light tubes round its top, showing the song on the radio, its cover, its artist and which land it belongs to. Beside it, a big wooden arrow on a post swings round to point at that land, with the land's name and distance written on it.
 - **The signpost.** One arm for every realm's tower, with the distance.
+- **The departures board.** A six-sided board hung round the mast above the dais, like a station's departures board: a row for every land, with its colour, the cover and the song its station is playing right now, and a bar filling as the song goes on. A row flips over when its song changes. The land the jukebox's song comes from lights up, row and flag.
+- **The flags.** A ring of flags round the plaza, one for every land in its own colour, each standing in the direction of its land, with the name and distance on a stone at its foot.
+- **Where next?** A little kiosk on the plaza: ask it and the board picks a land for you and tells you what it's playing.
 - **The map board.** The whole world's map on a big standing board, north up, with a glowing "you are here" dot.
-- **The park.** Past the stands, a formal park: rows of round trees and clipped dark cones, planted in rings. Between the rows, an avenue of white stone statues of music notation on plinths: treble and bass clefs, notes, a sharp, a flat, a fermata, a rest.
+- **The park.** Past the stands, a formal park: rows of round trees and clipped dark cones, planted in rings. Between the rows, an avenue of white stone statues of music notation on plinths: treble and bass clefs, notes, a sharp, a flat, a fermata, a rest. People throw balls and frisbees on the lawns; pick one up and join in.
 - **The sky.** Always golden late afternoon, but alive: clouds drift on the day's wind (some hours clear, some hours full), gulls circle the mast, and the light takes its colour from each song, bright amber for happy songs and rose and violet for sad ones. Every new song sends a golden rocket up from the dais, and some songs (more often the more energetic they are) get a fireworks show over the ring.
+- **The people.** Friends sit in the stands and argue about where to go next, crowd round the jukebox and the map, read the board, and walk laps of the flags. The stands have seats all round.
+- **The rocket launcher.** On the dais: set off a rocket over the ring whenever you like.
+- **The light.** Lanterns on tall posts round the plaza with garlands of coloured bulbs strung between them, lamps all the way down every causeway, and every statue lit from below.
 - **The quiet bench.** At the water's edge, away from the paths and the stands: one bench, one lantern, no sign.
 
 ---

@@ -52,6 +52,7 @@ namespace EverythingWorld.World
             UpdateGulls(now);
             UpdateSong(now);
             UpdateRockets(Time.deltaTime);
+            UpdateFlags((float)(now % 100000.0));
             if (Keyboard.current != null && Keyboard.current.f10Key.wasPressedThisFrame) StartShow(now, .8f, Random.Range(0, int.MaxValue));
         }
 
@@ -203,6 +204,17 @@ namespace EverythingWorld.World
             r.maxParticleSize = 3f;
             r.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             sparks.Play();
+        }
+
+        /// A rocket set off by someone at the dais.
+        public void LaunchRocket(Vector3 from) => Launch(from, 110f + Random.Range(0f, 70f), Palette[Random.Range(0, Palette.Length)], Random.Range(0, 3), .8f);
+
+        /// The flags round the plaza, swaying on the wind.
+        public readonly List<(Transform t, Quaternion home)> flags = new List<(Transform, Quaternion)>();
+
+        void UpdateFlags(float t)
+        {
+            for (var i = 0; i < flags.Count; i++) { var (f, home) = flags[i]; if (f == null) continue; f.localRotation = home * Quaternion.Euler(0, Mathf.Sin(t * 1.3f + i * .7f) * 12f, Mathf.Sin(t * 2.1f + i) * 3f); }
         }
 
         void Launch(Vector3 from, float burstHeight, Color color, int style, float power)
