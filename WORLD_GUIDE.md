@@ -806,14 +806,20 @@ Bright, saturated, everyone-knows-these. Where the world feels most like a theme
 - **The Glitter Mile:** strut it.
 - **The Sky Club:** drop a record; climb the staircase of light to the floating balcony.
 ### The Latin Coast
-*23 songs · 17 artists · 0.54 km²*
+*22 songs · 16 artists · 0.54 km² · built in Unity*
 
-**Arriving:** Colourful hillside towns running down to a warm bay; a plaza with a bandstand in front of a whitewashed church.
+**Arriving:** La Plaza, at sunset. A jacaranda in full purple flower in the middle of the square, wrapped in fairy lights, with a white tiled bench round its trunk; papel picado strung from the tree out to the lanterns; a tiled dance floor full of people dancing; a mariachi band on a little striped stage; an aguas frescas stall with cups to carry; and the church, white with a yellow bell tower and a bell you can ring.
 
-**The vibe:** A warm fiesta evening. Papel picado, piñatas, painted houses.
+**The vibe:** Warm, loud and joyful, a party that started hours ago. Houses painted every colour (pink, marigold, turquoise, cobalt, lime) with white parapets, shutters, balconies spilling flowers, a lamp by every door. Calle Mayor runs down the hill over warm cobbles under lines of papel picado, past wrought-iron lanterns, to the Harbour: a stone quay out over the water with painted fishing boats moored either side, a red-and-white striped lighthouse at the end, nets drying, and a mariscos stand. On the hills: palms, bougainvillea and jacaranda, agaves, tiled benches under lanterns, fruit carts under striped awnings.
 
-**Artist areas:** Painted doorways and balconies along the streets.
+**Artist areas:** Most artists have a little painted courtyard of their own: a bright wall with an arched doorway, bougainvillea over the top, a tiled bench, a line of papel picado, and one thing from their song; covers on a cream card on a white board with a border of painted tiles. Shakira has an open-air stage on the sand with a great golden sun behind it, a floor that glows and a belt of gold coins on a stand ("Hips Don't Lie"), a little range of mountains and a compass ("Whenever, Wherever"), and a motorbike to sit on ("Can't Remember to Forget You"). Bad Bunny has a pink wall of hearts ("Tití Me Preguntó") and giant pink sunglasses and a mirror ("Me Porto Bonito"). Also Los Lobos' guitar and a striped circus tent, Natalia Lafourcade's tree with its roots showing and a ring of flowers, Camila Cabello's pastel old car ("Havana"), Don Omar's light-up dance squares, Los Del Rio's board of Macarena steps, Los Bukis' little boat alone on the water, The Mariachis' sombrero, Shawn Mendes' café table for two, Rafa's hammock and more.
 
+**Happenings:** Lanterns glow; the lighthouse beam sweeps round; jacaranda petals drift down in the plaza; pigeons burst up from the bell tower whenever anybody rings it. "Hips Don't Lie" turns the light hot gold. "Whenever, Wherever" gets the wind up. "Danza Kuduro" and "La Bamba" bring confetti and party colours. "Macarena" flashes pink on every beat. "Havana" is a hot amber haze. "Mar De Soledad" is a lonely blue dusk. "Tití Me Preguntó" is pink. "Renacer" is a new dawn. "Ella Baila Sola" dims everything. "La Cucaracha" is marigold.
+
+**The streets and places:** Laid out on purpose: La Plaza, Calle Mayor and the Harbour are the spine, and every lane to an artist branches from them.
+- **La Plaza:** sit under the jacaranda, dance, shout a grito at the mariachis, ring the church bell, take an agua fresca.
+- **Calle Mayor:** the painted houses and the papel picado.
+- **The Harbour:** walk out along the quay to the lighthouse; eat ceviche by the boats.
 ### The Synthwave Coast
 *19 songs · 17 artists · 0.73 km² · built in Unity*
 
