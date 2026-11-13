@@ -1129,13 +1129,21 @@ Theatrical islands, closest to the hub.
 - **The Dream Mall:** sing the big number on the theatre stage; take a tray from the food court.
 - **The fields:** go through a door that's standing on its own.
 ### Studio Lot Island
-*29 songs · 24 artists · 0.49 km²*
+*34 songs · 26 artists · 0.47 km² · built in Unity*
 
-**Arriving:** A film studio back lot of sets from different films side by side; a soundstage with an Italian piazza front next to a sci-fi set.
+**Arriving:** The Front Gate of a film studio at dusk. A forecourt with a gold star set in the middle, a grand cream arch with STUDIO LOT in lights, a guard booth with its barrier up, a water tower with the studio's star, a row of director's chairs (one says YOU), a clapperboard on a stand to snap, and two searchlights sweeping the sky.
 
-**The vibe:** Warm theatrical studio lighting. Clapperboards, camera cranes. Bollywood lives here too.
+**The vibe:** The magic of the movies, every film you ever loved standing side by side. Through the arch, Backlot Avenue runs between the sound stages: great barrel-roofed hangars with their numbers painted huge, red ON AIR lights over the doors, sliding doors half open with warm light inside. At the end is the Tank: a pool of sea in front of a curved painted sky, with a pirate ship floating in it, sails up, a plank down to the edge and a wheel to take. Out on the lot: trailers (STAR, MAKEUP, WARDROBE), film lights on tripods, stacked flats, prop piles (crates, a fake rock, a column), potted palms, benches under old studio lamps, and a studio cart driving up and down the Avenue. Pink and orange clouds in a violet dusk sky.
 
-**Artist areas:** One film set per artist.
+**Artist areas:** Every artist is a film set: a wooden stage floor, a painted flat braced with scaffolding behind, a film light and a director's chair, and their film's piece in the middle; covers on a premiere-poster board with a gold rim. The Lion King has the whole savannah: sand, a rocky promontory to climb with a huge sun painted behind it, flat-topped acacias, a giraffe cut-out, a gorge with green light rising out of it ("Be Prepared"), a starry stone on the tip of the rock ("Can You Feel the Love Tonight"), a log full of glowing grubs ("Hakuna Matata"), a tower of animals ("I Just Can't Wait to Be King") and a moon over the jungle ("The Lion Sleeps Tonight"). Daniele Zandara has a scoring stage: a big screen between red curtains, rows of red seats, a projector and four film reels lit in each song's colour. Kishore Kumar, Arijit Singh, Pritam and A.R. Rahman share the look of a Bollywood palace with domes and marigold garlands (an old jeep, a microphone in a cloud of hearts, a row of diyas, a drum under saffron banners). Also coral and a giant clam ("Under the Sea"), an ice stair ("Let It Go"), a hammock in the jungle ("The Bare Necessities"), a swirl of coloured leaves ("Colors of the Wind"), the small-world boat and clock tower, a rising golden sun ("Circle of Life"), a green vision ("We Don't Talk About Bruno"), a curly hill under the moon ("Sally's Song"), a red biplane, a scythe, a red jumpsuit and stacks of money ("Bella ciao"), the blue game board with its podiums, a dojo mat and its trophy ("You're The Best"), the skeleton fondue, the fuzzy singers ("Mah nà mah nà"), a pea pod to sit on, a campfire with a ukulele, a treasure chest ("Pirates of the Caribbean"), a log in the swamp under a rainbow with a banjo ("Rainbow Connection"), and a living-room couch with a TV and a skateboard ("Do The Bartman").
+
+**Happenings:** The searchlights sweep; the studio cart drives; the ON AIR lights blink; the Tank's water shimmers; the campfire sends up sparks. "Can You Feel the Love Tonight" turns the dusk deep blue and the stars come out. "Be Prepared" turns everything a sickly green. "Let It Go" brings ice blue and snow. "Under the Sea" sends bubbles rising all around. "Circle of Life" is a golden sunrise. "Rainbow Connection" drifts through soft rainbow colours. "Pirates of the Caribbean" brings a storm, wind and lightning. "It's a Small World" cycles pastel colours. "Jai Ho" is saffron with a shower of marigold petals. Every song's own light brightens while it plays.
+
+**The streets and places:** Laid out on purpose: the Front Gate, Backlot Avenue and the Tank are the spine, and every lane to a set branches from them.
+- **The Front Gate:** snap the clapperboard; sit in the director's chairs.
+- **Backlot Avenue:** walk between the sound stages and their ON AIR lights.
+- **The Tank:** walk the plank onto the pirate ship and take the wheel.
+- **The sets:** climb the rock on the savannah; watch the screen at the scoring stage; lie in the hammock; sit round the campfire.
 
 ### The Concert Isles
 *25 songs · 21 artists · 0.49 km² · new*
