@@ -725,13 +725,20 @@ A few people sit about them, each with a tune they can't finish. The lamp benche
 **Artist areas:** Platforms on the riverbanks and islands mid-stream. High Contrast and Netsky get the best views of the falls.
 
 ### The Sample Gardens
-*18 songs · 14 artists · 0.46 km²*
+*18 songs · 14 artists · built in Unity*
 
-**Arriving:** Overgrown gardens built from collaged, mismatched pieces. A giant marble-run machine winds through them.
+**Arriving:** A round of herringbone brick in an overgrown garden in warm late-afternoon light. A turntable sits on a tree stump with a record spinning (drop the needle); crates of records stand about; old radios with glowing dials lie half-buried in the flower beds. Behind you is the Greenhouse Studio, a white iron greenhouse open on its sides with a glass roof, ferns in terracotta pots, a mixing desk with a stool, turntables and speakers growing among the plants.
 
-**The vibe:** A playful afternoon. Tape reels in the trees, wind-up toys, mismatched furniture.
+**The vibe:** Warm, curious, a little dusty: a record collector's garden gone wild, where every sound came from somewhere else first. Gold light and soft clouds; long seeding grass; fruit trees heavy with oranges and red apples; overgrown flower beds with radios in them; stacks of record crates; tape machines on garden tables; washing lines hung with records instead of clothes; clumps of sunflowers; wheelbarrows of vinyl; benches under strings of warm bulbs. Bees and seed fluff float. The Crate Walk, a brick path under arches of climbing roses with crates and potted plants either side, runs down to Wintergatan's marble machine.
 
-**Artist areas:** Garden follies, each built from a different "sample" of somewhere else in the world.
+**Artist areas:** Each artist has a round bed edged in brick, a painted wooden sign on a stake, a jam jar of light on a stake for each song and one thing from their music growing in it; covers pinned to a trellis board with roses climbing it. Bibio has a garden shed with its door open and a reel-to-reel tape machine turning on a table, a cherry tree dropping petals ("Petals"), an arch of curling vines ("Curls") and a bench with initials carved in it ("lovers' carvings"). Wintergatan has a marble machine: a wooden frame, a great wheel turning, marbles climbing a lift and running down the tracks to a little xylophone; turn the crank ("Sommarfågel"). Also an atom mobile and a dropped tray (Atoms For Peace), dark stars hanging on threads (BLARF), a blue scarf on a line (Burka Band), a silver disc turning in a tree (Caribou), a PA horn (DJ Plead), a sun of stacked colours (Dolphin Machine), a little shrine of crates and a lamp (Four Tet), a heap of records, a palm and a suitcase (The Avalanches), a tape recorder on a pile of books (The Books), a gramophone horn (Thom Yorke), a glass fountain (alyzea) and a birdhouse (tictacto).
+
+**Happenings:** Records spin; tape reels turn; the marble machine rolls, faster after you turn the crank; the radio dials glow; petals fall from the cherry tree; the glass fountain sprays; bees and fluff drift. Dropping the needle turns the whole garden up. "Since I Left You" turns a soft tropical teal. "Petals" fills the air with pink petals. "Silver" is silver light. "Sommarfågel" is bright summer gold. "Tokyo" goes neon pink. "Stars Without Light" brings a blue dusk. "Sunshine Gradient" slides from rose to gold. "Hearing Damage" goes muffled and grey.
+
+**The streets and places:** Laid out on purpose: the brick garden and the Crate Walk are the spine, and every lane to an artist branches from them.
+- **The brick garden:** drop the needle on the stump; look through the crates.
+- **The Greenhouse Studio:** sit at the mixing desk among the ferns.
+- **The Crate Walk:** walk under the rose arches to the marble machine and turn its crank.
 
 ### The Trip-Hop Undercity
 *16 songs · 12 artists · 0.45 km²*
