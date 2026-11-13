@@ -11,6 +11,8 @@ namespace EverythingWorld.World
     public class SkyDirector : MonoBehaviour
     {
         public static SkyDirector Instance { get; private set; }
+        /// Turns the bloom down (1 = as the land asks); the sunglasses lower it to cut glare.
+        public static float BloomScale = 1f;
 
         [Tooltip("Assets/_Project/Data/land_moods.json")]
         public TextAsset moodsJson;
@@ -208,7 +210,7 @@ namespace EverythingWorld.World
                 bloomFx.intensity.Override(0f);
                 bloomVolume.profile = profile;
             }
-            bloomFx.intensity.Override(bloomNow * 1.4f);
+            bloomFx.intensity.Override(bloomNow * 1.4f * BloomScale);
             var data = cam.GetComponent<UniversalAdditionalCameraData>();
             if (data != null) data.renderPostProcessing = bloomNow > .01f;
         }

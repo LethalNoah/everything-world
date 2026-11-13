@@ -7,7 +7,7 @@ namespace EverythingWorld.Player
 {
     /// Sunglasses: press G and a pair drops down from above onto your face. You see their rims blurred round the
     /// edge of your view (out of focus, as real glasses are), the lenses darken the edges a little, and the whole
-    /// picture goes darker and a touch warmer, like looking through brown lenses. Press G again to lift them off.
+    /// picture gets richer and deeper, with the brightest light and glare pulled down, like polarized lenses. Press G again to lift them off.
     /// Remembered between sessions. Handy for bright lands at night.
     public class Sunglasses : MonoBehaviour
     {
@@ -15,7 +15,7 @@ namespace EverythingWorld.Player
         public float seconds = .55f;
 
         Camera cam; Transform frame; MeshRenderer frameRenderer; Material mat;
-        Volume volume; ColorAdjustments grade;
+        Volume volume; ColorAdjustments grade; ShadowsMidtonesHighlights smh;
         bool on; float t;   // 0 = off (above your head), 1 = on your face
         float builtAspect = -1f, builtFov = -1f, builtNear = -1f, halfH;
 
@@ -26,7 +26,12 @@ namespace EverythingWorld.Player
             volume = go.AddComponent<Volume>(); volume.isGlobal = true; volume.priority = 60; volume.weight = 0f;
             var profile = ScriptableObject.CreateInstance<VolumeProfile>();
             grade = profile.Add<ColorAdjustments>(true);
-            grade.postExposure.Override(-.75f); grade.colorFilter.Override(new Color(1f, .93f, .84f)); grade.contrast.Override(14f); grade.saturation.Override(8f);
+            // polarized: colours richer and deeper, the brightest light (glare, white skies, bloom) pulled down hardest,
+            // the darks left alone; a near-neutral grey lens so colours stay true
+            grade.postExposure.Override(-.35f); grade.colorFilter.Override(new Color(.97f, .98f, 1f)); grade.contrast.Override(18f); grade.saturation.Override(32f);
+            smh = profile.Add<ShadowsMidtonesHighlights>(true);
+            smh.highlights.Override(new Vector4(1f, 1f, 1f, -.45f)); smh.midtones.Override(new Vector4(1f, 1f, 1f, -.05f));
+            smh.highlightsStart.Override(.45f); smh.highlightsEnd.Override(1f);
             volume.profile = profile;
         }
 
@@ -36,6 +41,7 @@ namespace EverythingWorld.Player
             if (kb != null && kb[key].wasPressedThisFrame) { on = !on; PlayerPrefs.SetInt("EW_Sunglasses", on ? 1 : 0); }
             t = Mathf.MoveTowards(t, on ? 1f : 0f, Time.deltaTime / seconds);
             volume.weight = Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(.55f, 1f, t));
+            EverythingWorld.World.SkyDirector.BloomScale = Mathf.Lerp(1f, .55f, volume.weight);   // polarized lenses cut the glare
         }
 
         void LateUpdate()
@@ -109,7 +115,7 @@ namespace EverythingWorld.Player
                     var bridge = Mathf.Exp(-(x * x) / (2f * .07f * .07f) - (y - 1f) * (y - 1f) / (2f * .12f * .12f)) * .45f;
                     var lens = .03f + .2f * Smooth(.45f, 1f, f);
                     var a = Mathf.Clamp01(1f - (1f - lens) * (1f - frame * .97f) * (1f - brow) * (1f - nose) * (1f - bridge));
-                    var c = new Color(.06f, .04f, .025f, a);
+                    var c = new Color(.035f, .04f, .045f, a);
                     // a faint glint across each half, the way light catches a lens
                     var lx = Mathf.Abs(x) - aspect * .45f; var g = Mathf.Exp(-Mathf.Pow((lx * .8f + y * .6f - .25f) / .045f, 2f)) * .07f * (1f - frame) * Smooth(1f, .3f, Mathf.Abs(lx + y * .5f));
                     if (g > .001f) { c = Color.Lerp(c, Color.white, g / Mathf.Max(.0001f, a + g)); c.a = Mathf.Clamp01(a + g); }
