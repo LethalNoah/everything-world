@@ -4,7 +4,7 @@ using static EverythingWorld.World.PlaceTools;
 
 namespace EverythingWorld.World
 {
-    /// The Isle of Memes & Musicals' places (part of MemeKit): the Homepage (a checkered marble plaza under a giant glossy
+    /// The Isle of Memes' places (part of MemeKit): the Homepage (a checkered marble plaza under a giant glossy
     /// orb, a pink marble bust looking out over it, an aqua fountain throwing up bubbles, a loading bar arching over the
     /// way out, a cursor as tall as a house, a hit counter); the Superhighway (a road of glass with old desktop icons
     /// floating along it); and the Dream Mall (an open atrium ringed with columns, a fountain, palms in planters, a
@@ -145,6 +145,6 @@ namespace EverythingWorld.World
         Material woodM() => Paint(new Color(.56f, .4f, .32f));
     }
 
-    /// The Isle of Memes & Musicals' holder for things you can use and carry.
+    /// The Isle of Memes' holder for things you can use and carry.
     public class MemeTownLife : MonoBehaviour { }
 }

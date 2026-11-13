@@ -8,10 +8,12 @@ namespace EverythingWorld.World
     {
         static readonly Dictionary<string, (string title, string id)[]> SongIds = new Dictionary<string, (string, string)[]>
         {
+            { "Ancient Chinese composer", new[] { ("Imperial Concubine's Tears", "2YdYOmcCptg8zWsOlE8mG0"), ("White Snow In Early Spring", "3sHcWA4z8QomPRQVOP3Exg") } },
             { "Antonio Vivaldi", new[] { ("The Four Seasons, \"La primavera\" (Spring)‚ Op. 8, No. 1", "42WsY2pXNjyzZriR7hWukl") } },
             { "Antonín Dvořák", new[] { ("Symphony No. 9 in E Minor, Op. 95, B. 178 \"From the New World\": IV. Allegro con fuoco", "6nqHzwOdGIaX57U6VU6kMO") } },
             { "Claude Debussy", new[] { ("Clair de Lune, L. 32", "5u5aVJKjSMJr4zesMPz7bL") } },
             { "Edvard Grieg", new[] { ("Morning Mood", "58qWLnRZc6McLaLQx0zU7e") } },
+            { "Ennio Morricone", new[] { ("L'Estasi Dell'Oro", "4eVaWO0viurPB3C33Rz7xi") } },
             { "Erik Satie", new[] { ("Gymnopédie No. 1", "5NGtFXVpXSvwunEIGeviY3") } },
             { "Franz Liszt", new[] { ("La campanella in G-Sharp Minor (From \"Grandes études de Paganini\", S. 141/3)", "2Hnurh1BcigGbCGFOb4Uid") } },
             { "Franz Schubert", new[] { ("Ave Maria, D. 839", "4JsMpgsep6XpuHSzKCTxCz") } },
@@ -27,6 +29,8 @@ namespace EverythingWorld.World
             { "Max Richter", new[] { ("On the Nature of Daylight", "56oReVXIfUO9xkX7pHmEU0") } },
             { "Penguin Cafe Orchestra", new[] { ("Music For A Found Harmonium - 2008 Digital Remaster", "4Nf4pScvTosqe9xz0FCBui") } },
             { "Philip Glass", new[] { ("Metamorphosis: One", "4MQjH7bUOKCZlJXtAlfzDK") } },
+            { "Pyotr Ilyich Tchaikovsky", new[] { ("Tchaikovsky: Swan Lake, Op. 20, Act 2: No. 10, Scene. Moderato", "2xizRhme7pYeITbH1NLLGt") } },
+            { "Sergei Rachmaninoff", new[] { ("Piano Concerto No. 2 in C Minor, Op. 18: 2. Adagio sostenuto", "4rrrn8OLrttq7r9RgNXalU") } },
             { "Wolfgang Amadeus Mozart", new[] { ("Eine kleine Nachtmusik, K. 525: I. Allegro", "5nVahCoRVadqiNLZ8pbmrG"), ("Mozart: Requiem - Lacrimosa - Excerpt", "25ZQZns0WZJXUlQ4c9dvWu") } },
         };
     }

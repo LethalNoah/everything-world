@@ -4,7 +4,7 @@ using static EverythingWorld.World.PlaceTools;
 
 namespace EverythingWorld.World
 {
-    /// The 8-Bit Isle (WORLD_GUIDE.md): a video-game world at a pixel sunset, where every game is its own little world.
+    /// The Game Isles (WORLD_GUIDE.md): a video-game world at a pixel sunset, where every game is its own little world.
     /// You arrive at the Arcade: a checkered floor of blue tiles, a giant arcade cabinet with a glowing screen, a ring of
     /// cabinets to sit at, PRESS START blinking in the air and gold coins spinning everywhere. The Level Road, a road of
     /// brick blocks with gold blocks floating over it and green pipes beside it, runs to the Ring: a vast silver ring rising
@@ -13,7 +13,7 @@ namespace EverythingWorld.World
     /// Laid out on purpose (the build-land standard): BitTown.cs has the places and the people.
     public partial class BitKit : LandKit
     {
-        public override string Land => "The 8-Bit Isle";
+        public override string Land => "The Game Isles";
         public override Vector3 ArtistFront(IslandWorldData data, IslandWorldData.Artist a) => facing.TryGetValue(a.name, out var f) ? f : base.ArtistFront(data, a);
 
         public static readonly Color Gold = new Color(1f, .82f, .2f), Brick = new Color(.76f, .36f, .2f), Pipe = new Color(.2f, .7f, .3f), Sky = new Color(.36f, .6f, 1f), Pink = new Color(1f, .4f, .7f), Cyan = new Color(.3f, .9f, 1f), Ink = new Color(.06f, .06f, .12f), Leaf = new Color(.24f, .62f, .26f);
@@ -114,8 +114,8 @@ namespace EverythingWorld.World
             TheRing(ctx, mk, solid);
             Paths(ctx, mk, solid);
             Wilds(ctx, mk, solid);
-            mk.Build("The 8-Bit Isle", ctx.Root, false);
-            solid.BuildCollider("The 8-Bit Isle walls", ctx.Root);
+            mk.Build("The Game Isles", ctx.Root, false);
+            solid.BuildCollider("The Game Isles walls", ctx.Root);
         }
 
         public override void Finish(LandContext ctx) { Verge(ctx); halos.Build("Bit glow", ctx.Root); }
@@ -266,7 +266,7 @@ namespace EverythingWorld.World
                 else if (roll < .8f) { Bench(ctx.Root, mk, p, f); Lamp(ctx, mk, p - f * .8f + side * 1.6f, benches % 2 == 0); Mark(p, 2.2f); benches++; }
                 else if (roll < .83f && cabs < 10) { Cabinet(ctx, mk, solid, p, f, cabs); Mark(p, 1.6f); cabs++; }
             }
-            Debug.Log($"The 8-Bit Isle: Level Road {streetL:0} m, {trees} block groves, {pipes} pipes, {blocks} rows of blocks, {coins} coin arcs, {shrooms} mushroom patches, {hills} block hills, {benches} benches, {cabs} arcade cabinets");
+            Debug.Log($"The Game Isles: Level Road {streetL:0} m, {trees} block groves, {pipes} pipes, {blocks} rows of blocks, {coins} coin arcs, {shrooms} mushroom patches, {hills} block hills, {benches} benches, {cabs} arcade cabinets");
         }
 
         static readonly Color[] CabCols = { new Color(.9f, .2f, .3f), new Color(.2f, .4f, .9f), new Color(.96f, .7f, .1f), new Color(.5f, .2f, .8f), new Color(.1f, .7f, .5f) };

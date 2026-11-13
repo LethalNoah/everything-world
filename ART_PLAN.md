@@ -134,7 +134,7 @@ Alternative, grunge, punk, emo, metalcore, prog metal and J-rock.
 
 ### 4. The Alt Rock Moors
 
-*alternative rock, rock, art rock, britpop, funk rock* · 63 songs · energy 0.70, acoustic 0.15, mood 0.42 · top artists: Radiohead, Gorillaz, The Cranberries, Weezer, Hootie & The Blowfish
+*alternative rock, rock, art rock, britpop, funk rock* · 64 songs · energy 0.71, acoustic 0.14, mood 0.42 · top artists: Radiohead, Gorillaz, The Cranberries, Weezer, Hootie & The Blowfish
 
 - **Terrain:** Grey-green moorland with dry-stone walls, low hills and scattered towns.
 - **Colours:** `#7A6C8F heather`, `#5D7350 moor green`, `#5B6670 slate`, `#E07B39 signal orange`
@@ -392,7 +392,7 @@ Every kind of electronic music, from ambient to riddim.
 
 ### 55. The Electro Foundry
 
-*electro house, dubstep, electro, complextro, nu disco* · 13 songs · energy 0.73, acoustic 0.03, mood 0.41 · top artists: Farleon, Insan3lik3, Bioblitz, Dave Era, James Egbert
+*electro house, dubstep, video game, electro, complextro* · 17 songs · energy 0.76, acoustic 0.03, mood 0.40 · top artists: Farleon, Insan3lik3, meganeko, Bioblitz, Dave Era
 
 - **Terrain:** A sprawling robot factory on an artificial island.
 - **Colours:** `#7CFF3F neon green`, `#F2742B orange`, `#5A6470 steel`, `#0E0E0E black`
@@ -520,7 +520,7 @@ Soul, funk, disco, world music and jazz.
 
 ### 40. The Far Shores
 
-*jazz, bossa nova, african, world, mpb* · 24 songs · energy 0.57, acoustic 0.51, mood 0.62 · top artists: Jorge Ben Jor, Mulatu Astatke, Tinariwen, Bossario, Dave Richmond
+*jazz, bossa nova, african, world, mpb* · 25 songs · energy 0.57, acoustic 0.52, mood 0.63 · top artists: Jorge Ben Jor, Mulatu Astatke, Tinariwen, Bossario, Dave Richmond
 
 - **Terrain:** A tropical coastline that turns into desert dunes inland.
 - **Colours:** `#2FA6A0 tropical teal`, `#D7A453 desert ochre`, `#F07B5A sunset coral`, `#4E8A3A palm green`
@@ -646,9 +646,9 @@ Hip-hop, R&B and lo-fi beats.
 
 Film scores, classical, musicals, game music and novelties.
 
-### 26. The Isle of Memes & Musicals
+### 26. The Isle of Memes
 
-*comedy, soundtrack, region:novelty, musicals, pop* · 53 songs · energy 0.70, acoustic 0.26, mood 0.65 · top artists: Phineas and Ferb, Stantough, The Little Singers, Zac Efron, 90s Classics
+*comedy, region:novelty, parody, medieval, bardcore* · 45 songs · energy 0.67, acoustic 0.28, mood 0.60 · top artists: Stantough, Captainsparklez, The Little Singers, 90s Classics, Axzured
 
 - **Terrain:** A storybook island of round hills and winding paths.
 - **Colours:** `#4A90E2 storybook blue`, `#F7A1C4 pink`, `#FFE066 candy yellow`, `#7CCB5A cartoon grass`
@@ -658,7 +658,7 @@ Film scores, classical, musicals, game music and novelties.
 
 ### 36. Studio Lot Island
 
-*soundtrack, italian, bollywood, pop, classic rock* · 34 songs · energy 0.56, acoustic 0.44, mood 0.60 · top artists: The Lion King, Daniele Zandara, Kishore Kumar, A.R. Rahman, Alan Menken
+*soundtrack, comedy, disney, pop, musicals* · 38 songs · energy 0.60, acoustic 0.38, mood 0.66 · top artists: Phineas and Ferb, The Lion King, Kishore Kumar, Zac Efron, A.R. Rahman
 
 - **Terrain:** A film studio back lot where sets from different films stand side by side.
 - **Colours:** `#D9C9A8 set beige`, `#C96A3E terracotta`, `#F2D16B spotlight yellow`, `#2E3440 soundstage black`
@@ -668,7 +668,7 @@ Film scores, classical, musicals, game music and novelties.
 
 ### 39. The Isle of Scores
 
-*soundtrack, classical, score, ballet, opera* · 24 songs · energy 0.36, acoustic 0.67, mood 0.28 · top artists: John Williams, Danny Elfman, Ancient Chinese composer, Ennio Morricone, Hollywood Studio Orchestra
+*soundtrack, classical, score, ballet, opera* · 18 songs · energy 0.36, acoustic 0.66, mood 0.26 · top artists: John Williams, Danny Elfman, Catherine O'Hara, Hollywood Studio Orchestra, Jerry Goldsmith
 
 - **Terrain:** Sweeping cliffs and plateaus under a huge sky.
 - **Colours:** `#F2EFE8 marble`, `#2E4A8C royal blue`, `#D4AF37 gold`, `#7A1F2B velvet red`
@@ -676,9 +676,9 @@ Film scores, classical, musicals, game music and novelties.
 - **Props:** Music stands, marble statues, grand pianos, a conductor's podium, banners.
 - **Light and mood:** Epic golden light with drifting clouds.
 
-### 47. The 8-Bit Isle
+### 47. The Game Isles
 
-*video game, soundtrack, ambient, parody, electronic* · 25 songs · energy 0.59, acoustic 0.34, mood 0.39 · top artists: ConcernedApe, meganeko, Captainsparklez, Martin O'Donnell, Arcade Player
+*video game, soundtrack, italian, ambient, electronic* · 24 songs · energy 0.58, acoustic 0.36, mood 0.42 · top artists: ConcernedApe, Daniele Zandara, Martin O'Donnell, Arcade Player, Big Giant Circles
 
 - **Terrain:** A blocky island of pixel-stepped hills.
 - **Colours:** `#5BBE4A pixel green`, `#E04A3A primary red`, `#3A6FE0 primary blue`, `#F5EBD0 cream`
@@ -688,7 +688,7 @@ Film scores, classical, musicals, game music and novelties.
 
 ### 59. The Concert Isles
 
-*classical, classical piano, concerto, impressionism, baroque* · 24 songs · energy 0.15, acoustic 0.90, mood 0.22 · top artists: Frédéric Chopin, Johann Sebastian Bach, Ludwig van Beethoven, Wolfgang Amadeus Mozart, Antonio Vivaldi
+*classical, classical piano, concerto, opera, orchestral* · 29 songs · energy 0.17, acoustic 0.90, mood 0.22 · top artists: Ancient Chinese composer, Frédéric Chopin, Johann Sebastian Bach, Ludwig van Beethoven, Wolfgang Amadeus Mozart
 
 - **Terrain:** Manicured hills with tiered stone terraces, like the seats of an open-air concert hall, and formal gardens with clipped hedges.
 - **Colours:** `#F2E8D5 ivory`, `#7A1F2B concert red`, `#C9A227 gilt`, `#2E3A59 evening blue`

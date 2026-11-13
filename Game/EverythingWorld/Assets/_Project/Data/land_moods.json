@@ -164,7 +164,7 @@
    "weather": "", "weatherAmount": 0
   },
   {
-   "land": "The Isle of Memes & Musicals",
+   "land": "The Isle of Memes",
    "sunPitch": 14, "sunYaw": 230, "sunIntensity": 0.9, "sunColor": "#FFB0D8",
    "skyLight": "#88C8E0", "horizonLight": "#FFB4D8", "groundLight": "#90A8A0",
    "fogColor": "#E0B8E0", "fogStart": 120, "fogEnd": 1600, "stars": 0.2, "sunShadows": false, "dailyWeather": false, "bloom": 1.2,
@@ -185,7 +185,7 @@
    "weather": "", "weatherAmount": 0
   },
   {
-   "land": "The 8-Bit Isle",
+   "land": "The Game Isles",
    "sunPitch": 8, "sunYaw": 240, "sunIntensity": 0.9, "sunColor": "#FFA868",
    "skyLight": "#5A78D8", "horizonLight": "#FF9A68", "groundLight": "#6A6A58",
    "fogColor": "#4A4290", "fogStart": 120, "fogEnd": 1500, "stars": 0.4, "sunShadows": false, "dailyWeather": false, "bloom": 1.3,

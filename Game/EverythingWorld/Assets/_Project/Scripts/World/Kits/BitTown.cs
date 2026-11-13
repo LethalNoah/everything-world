@@ -4,7 +4,7 @@ using static EverythingWorld.World.PlaceTools;
 
 namespace EverythingWorld.World
 {
-    /// The 8-Bit Isle's places (part of BitKit): the Arcade (a checkered floor of blue tiles, a giant arcade cabinet with a
+    /// The Game Isles's places (part of BitKit): the Arcade (a checkered floor of blue tiles, a giant arcade cabinet with a
     /// pixel heart on its screen, a ring of cabinets with stools, PRESS START blinking in the air, coins spinning), the Level
     /// Road (brick, with gold blocks floating over it, pipes beside it and a flagpole at the end) and the Ring (a vast silver
     /// ring rising out of the ground into the sky, lit blue inside).
@@ -59,7 +59,7 @@ namespace EverythingWorld.World
             string[] heart = { "..XX...XX..", ".XXXX.XXXX.", "XXXXXXXXXXX", "XXXXXXXXXXX", ".XXXXXXXXX.", "..XXXXXXX..", "...XXXXX...", "....XXX....", ".....X....." };
             var hm = new Material(WorldMaterials.Glow(new Color(1f, .2f, .3f), 1.6f)) { name = "Bit heart" }; life.heart = hm;
             for (var y = 0; y < heart.Length; y++) for (var x = 0; x < heart[y].Length; x++) if (heart[y][x] == 'X') mk.Box(hm, scr.o + scr.r * tilt * new Vector3((x - 5f) * .26f, (4f - y) * .26f, .03f), new Vector3(.24f, .24f, .02f), scr.r * tilt);
-            ArtistBits.Label(rootT, "THE 8-BIT ISLE", gc + up * 9.75f + D * 2.32f, D, .5f, Ink, TextAnchor.MiddleCenter);
+            ArtistBits.Label(rootT, "THE GAME ISLES", gc + up * 9.75f + D * 2.32f, D, .5f, Ink, TextAnchor.MiddleCenter);
             halos.Add(gc + up * 7.5f + D * 3f, 5f, Cyan, .25f); ArtistBits.PointLight(ctx.Root, gc + up * 6f + D * 5f, new Color(.6f, .9f, 1f), 22f, 2f);
             // a ring of cabinets with stools down both sides
             var n = 1; foreach (var e in new[] { -1f, 1f }) for (var k = -2; k <= 2; k++) { var cp = c + S * e * 11.2f + D * (k * 2.6f); Cabinet(ctx, mk, solid, cp, -S * e, n++); }
@@ -69,7 +69,7 @@ namespace EverythingWorld.World
             Spot("Press start", ps, "Press start", new Vector3(3f, 1f, 1f)).onUse = _ => { life.played = Time.time; Say(tlife.transform, ps + up * 1.2f, start[sn++ % start.Length], 4.5f); };
             for (var k = 0; k < 12; k++) Coin(ctx.Root, c + Quaternion.Euler(0, k * 30f, 0) * D * 7f + up * 2f);
             foreach (var e in new[] { -1f, 1f }) foreach (var q in new[] { -1f, 1f }) Lamp(ctx, mk, c + S * e * 12.6f + D * q * 12.6f, true);
-            Folk(c + D * 4f + S * 3f, (-D - S * .3f).normalized, Resident.Pose.Wave, new[] { "Welcome to the 8-Bit Isle! Every game you ever loved, each in its own little world.", "Grab a stool, play a cabinet. Or follow the Level Road to the flag.", "High score's yours if you want it. Nobody's beaten it. Nobody's tried." });
+            Folk(c + D * 4f + S * 3f, (-D - S * .3f).normalized, Resident.Pose.Wave, new[] { "Welcome to the Game Isles! Every game you ever loved, each in its own little world.", "Grab a stool, play a cabinet. Or follow the Level Road to the flag.", "High score's yours if you want it. Nobody's beaten it. Nobody's tried." });
             Folk(c + S * 9f + D * 1.3f, S, Resident.Pose.Sit, null, Local(), null, .68f);
             Mark(c, 18f); Mark(gc, 4f);
             Shot(ctx, "the arcade", c + D * 12f + S * 5f + up * 3f, gc + up * 6f);
@@ -114,6 +114,6 @@ namespace EverythingWorld.World
         }
     }
 
-    /// The 8-Bit Isle's holder for things you can use and carry.
+    /// The Game Isles's holder for things you can use and carry.
     public class BitTownLife : MonoBehaviour { }
 }

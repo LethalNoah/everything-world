@@ -4,7 +4,7 @@ using static EverythingWorld.World.PlaceTools;
 
 namespace EverythingWorld.World
 {
-    /// The Isle of Memes & Musicals (WORLD_GUIDE.md): a vaporwave dream of the old internet. A pastel sky going from
+    /// The Isle of Memes (WORLD_GUIDE.md): a vaporwave dream of the old internet. A pastel sky going from
     /// pink to teal, a sun like a pink coin, checkered marble floors running out across soft green hills, glossy aqua
     /// bubbles drifting up, marble busts on pedestals, Greek columns, palms, dolphins leaping out of glassy pools, old
     /// computer monitors left in the grass, and doors standing on their own in empty fields. You arrive on the Homepage
@@ -13,7 +13,7 @@ namespace EverythingWorld.World
     /// Laid out on purpose (the build-land standard): MemeTown.cs has the places and the people.
     public partial class MemeKit : LandKit
     {
-        public override string Land => "The Isle of Memes & Musicals";
+        public override string Land => "The Isle of Memes";
         public override Vector3 ArtistFront(IslandWorldData data, IslandWorldData.Artist a) => facing.TryGetValue(a.name, out var f) ? f : base.ArtistFront(data, a);
 
         public static readonly Color Pink = new Color(1f, .62f, .82f), Teal = new Color(.36f, .86f, .86f), Aqua = new Color(.4f, .8f, 1f), Lilac = new Color(.74f, .64f, 1f), Marble = new Color(.96f, .94f, .96f), Ink = new Color(.12f, .1f, .2f), Bliss = new Color(.4f, .74f, .36f), Sunny = new Color(1f, .88f, .5f);
@@ -111,8 +111,8 @@ namespace EverythingWorld.World
             DreamMall(ctx, mk, solid);
             Paths(ctx, mk, solid);
             Wilds(ctx, mk, solid);
-            mk.Build("The Isle of Memes & Musicals", ctx.Root, false);
-            solid.BuildCollider("The Isle of Memes & Musicals walls", ctx.Root);
+            mk.Build("The Isle of Memes", ctx.Root, false);
+            solid.BuildCollider("The Isle of Memes walls", ctx.Root);
         }
 
         public override void Finish(LandContext ctx) { Verge(ctx); halos.Build("Meme glow", ctx.Root); }
@@ -289,7 +289,7 @@ namespace EverythingWorld.World
                 else if (roll < .65f) { LoneDoor(ctx, mk, p, f); doors++; }
                 else if (roll < .72f) { if (Mathf.Abs(ctx.Ground(px + 4f, pz) - ctx.Ground(px - 4f, pz)) > 1.2f) continue; Checker(mk, p, Quaternion.LookRotation(f), 6, 1.4f, .03f); noGrass.Add(new Vector3(p.x, 5f, p.z)); checks++; }
             }
-            Debug.Log($"The Isle of Memes & Musicals: Superhighway {streetL:0} m, {busts} busts, {columns} column groups, {palms} palms, {bubbles} bubbles, {pools} dolphin pools, {monitors} monitors, {doors} lone doors, {checks} checker patches");
+            Debug.Log($"The Isle of Memes: Superhighway {streetL:0} m, {busts} busts, {columns} column groups, {palms} palms, {bubbles} bubbles, {pools} dolphin pools, {monitors} monitors, {doors} lone doors, {checks} checker patches");
         }
 
         /// A leaping dolphin, its body arced (built at the origin and moved by MemeLife).

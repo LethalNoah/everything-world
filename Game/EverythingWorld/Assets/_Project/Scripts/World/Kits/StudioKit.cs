@@ -15,7 +15,7 @@ namespace EverythingWorld.World
         public override string Land => "Studio Lot Island";
         public override Vector3 ArtistFront(IslandWorldData data, IslandWorldData.Artist a) => facing.TryGetValue(a.name, out var f) ? f : base.ArtistFront(data, a);
 
-        public static readonly Color Gold = new Color(1f, .8f, .3f), Red = new Color(.8f, .16f, .16f), Navy = new Color(.16f, .2f, .36f), Cream = new Color(.96f, .92f, .82f), Ink = new Color(.1f, .08f, .08f), Sky = new Color(.5f, .7f, .9f), Saffron = new Color(1f, .6f, .14f), Sea = new Color(.2f, .5f, .6f);
+        public static readonly Color Pink = new Color(1f, .5f, .7f), Gold = new Color(1f, .8f, .3f), Red = new Color(.8f, .16f, .16f), Navy = new Color(.16f, .2f, .36f), Cream = new Color(.96f, .92f, .82f), Ink = new Color(.1f, .08f, .08f), Sky = new Color(.5f, .7f, .9f), Saffron = new Color(1f, .6f, .14f), Sea = new Color(.2f, .5f, .6f);
         static readonly Color[] Stages = { new Color(.84f, .82f, .76f), new Color(.7f, .72f, .74f), new Color(.86f, .78f, .64f), new Color(.6f, .64f, .7f) };
         const float PathW = 3f, StreetW = 9f;
 
@@ -38,7 +38,7 @@ namespace EverythingWorld.World
         Material GlowM(Color c, float s = 2f) => WorldMaterials.Glow(c, s * .65f);
         Material Paint(Color c) => WorldMaterials.Glow(c, .14f);
         static bool HasStation(IslandWorldData.Artist a) => a.stationId != 0;
-        static float Foot(IslandWorldData.Artist a) => a.name == "The Lion King" ? 16f : a.name == "Daniele Zandara" ? 13f : 9f;
+        static float Foot(IslandWorldData.Artist a) => a.name == "The Lion King" ? 16f : a.name == "Daniele Zandara" ? 13f : a.name == "Phineas and Ferb" ? 15f : 9f;
 
         public override bool Ground(float height, float slope, float patch, out Color color)
         {

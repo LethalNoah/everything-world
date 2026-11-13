@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace EverythingWorld.World
 {
-    /// The Isle of Memes & Musicals, a pastel dream:
+    /// The Isle of Memes, a pastel dream:
     /// - the glossy orb turns and bobs over the Homepage; desktop icons bob along the Superhighway; dolphins leap out of
     ///   their pools; bubbles rise from the fountains and drift everywhere; the screens flicker;
     /// - "Gangnam Style": everything flashes pink on the beat. "Wellerman" and "Drunken Sailor": the light goes stormy
@@ -14,7 +14,7 @@ namespace EverythingWorld.World
     ///   light brightens while it plays.
     public class MemeLife : MonoBehaviour
     {
-        const string Land = "The Isle of Memes & Musicals";
+        const string Land = "The Isle of Memes";
         public Vector3 center, orbAt, fountain, fountain2, metronome;
         public string gangnamSong, wellerSong, sailorSong, xmasSong, axelSong, hampSong, kahootSong, fabSong, sunSong, nyeSong, gitcheeSong;
         public Material aqua, screens, bubbles, lamps; public Transform orb; public float played = -99f;

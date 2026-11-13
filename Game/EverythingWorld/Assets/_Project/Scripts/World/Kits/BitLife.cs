@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace EverythingWorld.World
 {
-    /// The 8-Bit Isle at a pixel sunset:
+    /// The Game Isles at a pixel sunset:
     /// - coins spin and bob everywhere; PRESS START blinks; the pixel heart on the giant cabinet beats; the cabinet screens
     ///   flicker; the wall of pixels on meganeko's stage shimmers; chickens hop round the farm; the flag slides down its pole
     ///   when grabbed and creeps back up; the Ring's blue light breathes;
@@ -14,7 +14,7 @@ namespace EverythingWorld.World
     ///   "Living Mice": a soft green. "Sharkatzor": the pixel wall races. Every song's own light brightens while it plays.
     public class BitLife : MonoBehaviour
     {
-        const string Land = "The 8-Bit Isle";
+        const string Land = "The Game Isles";
         public Vector3 center, flagTop, flagBottom;
         public string winterSong, springSong, summerSong, fallSong, sharkSong, sodaSong, shopSong, miceSong, haloSong, angelSong, dreamSong, bombSong, megaSong;
         public Material lamps, coins, screens, blocks, heart, ring, pixelWall, pixelWall2; public Transform flag; public float played = -99f, flagGrab = -99f;
