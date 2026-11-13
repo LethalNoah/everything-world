@@ -766,13 +766,20 @@ A few people sit about them, each with a tune they can't finish. The lamp benche
 **Artist areas:** Obelisks in the grass. Above & Beyond's stands in the ring itself.
 
 ### The Electro Foundry
-*13 songs · 9 artists · 0.44 km²*
+*17 songs · 11 artists · built in Unity*
 
-**Arriving:** A sprawling robot factory on an artificial island; robot arms play instruments on a factory stage.
+**Arriving:** On the Assembly Floor at night: a steel floor edged in hazard stripes under an open shed of girders, two conveyor belts carrying glowing crates, robot arms swinging and dropping over them on the beat, welders throwing sparks at the back, orange beacons turning, and a big lever that runs the line.
 
-**The vibe:** Industrial night. Conveyor belts, sparks, warning stripes.
+**The vibe:** Hard, driving and electric: a neon factory working the night shift in time with a 128 bpm kick. Smoggy green-black sky; cinder ground; smokestacks with blinking red lights trailing smoke; lone robot arms on their plates; stacks of girders, cable drums, oil drums in hazard yellow, red and blue, posts of neon tubes in green and blue, steel benches under caged work lamps. The Line runs from the floor along a walkway beside a long conveyor, under a hazard-yellow gantry crane travelling up and down, to the Furnace: a great steel furnace with a glowing orange mouth, a trough of molten metal and a tall chimney.
 
-**Artist areas:** Workstations along the assembly line.
+**Artist areas:** Each artist has a square steel plate edged in hazard stripes, a neon sign on a steel post with their name, a neon tube for each song and one thing from their music; covers on a steel board with a neon edge. Farleon has a giant robot being assembled in a gantry with its chest lit ("Apollo"), an arcade cabinet ("Super Game") and a signpost pointing a very long way ("Far From Home"). Insan3lik3 has a wall of modular synth racks patched with glowing cables ("You Make Me Go"), a giant pitch wheel ("Bad Pitched") and a calendar stuck on the 13th ("The Other Day"). meganeko has a neon stage with a wall of pixels and speaker stacks, a giant soda can that fizzes ("Astro Soda"), a blocky shark leaping ("Sharkatzor") and a film camera on a crane ("Lights Camera Action"). Also a pixel atom with three orbits (she, "Atomic"), a globe on a heater (Bioblitz), a ribbon of light that loops for ever (Dave Era), a neon halo on a pillar (James Egbert), a giant neon 1 and 2 (Manteeny), a tap dripping light (Mord Fustang), a pink neon rabbit (Rabbit Killer) and a beating neon heart (Ryeland).
+
+**Happenings:** Everything runs on the shared beat: robot arms swing and drop, crates ride the belts, welders and robot tools spark, the crane travels, beacons turn, stacks smoke, the furnace breathes, neon tubes and the patch lights pulse, the pixel wall shimmers. Pull the lever and the whole line runs at double time. "Atomic" flashes white on every beat. "Sharkatzor" races blue and pink. "Astro Soda" fizzes. "Apollo" glows launch orange. "Super Game" is rainbow. "Globe Warmer" is hot orange. "Halo" is white. "Imaginationland" drifts through pastel colours. "Luvu" pulses pink.
+
+**The streets and places:** Laid out on purpose: the Assembly Floor and the Line are the spine, and every lane to an artist branches from them.
+- **The Assembly Floor:** pull the lever; watch the robot arms work.
+- **The Line:** walk beside the conveyor under the crane.
+- **The Furnace:** stand at the trough of molten metal.
 
 ### Mount Virtuoso
 *12 songs · 9 artists · 0.44 km²*
