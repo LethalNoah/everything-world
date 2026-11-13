@@ -742,14 +742,21 @@ A few people sit about them, each with a tune they can't finish. The lamp benche
 Bright, saturated, everyone-knows-these. Where the world feels most like a theme park.
 
 ### The Country Plains
-*64 songs · 44 artists · 0.59 km²*
+*64 songs · 44 artists · 0.58 km² · built in Unity*
 
-**Arriving:** Endless flat wheat fields under an enormous sky, a dirt road to the horizon. A big red barn dance hall next to a water tower.
+**Arriving:** The Square in the little town of Wheatley, at golden hour. A water tower on four legs with the town's name across the tank, a flagpole, a green with benches round it, a gas pump and a pickup, a horse at a hitching rail, a lemonade stand with glasses to carry. The sun is low and gold, the shadows long, and the evening is coming on slow.
 
-**The vibe:** A wide golden-hour sunset. Pickup trucks, hay bales, a windmill, a lone gas station.
+**The vibe:** Easy, warm, a little bit wistful. Wheat stands gold in fields behind split-rail fences all the way to the edge of the land; red barns with white-trimmed doors, windmills turning, round hay bales to sit on, cottonwoods going gold at the edges, old tractors left where they stopped. Main Street runs out of the Square between false-front stores on little boardwalks: The Rusty Boot honky-tonk with a jukebox out front, the general store, the diner, the feed and seed, the post office, a little white church with a steeple. At the far end is the Bonfire Field: pickups parked in a ring with their tailgates down, string lights from pole to pole, hay bales and camp chairs round a big fire, and a guitar going round.
 
-**Artist areas:** Porches, mailboxes and grain silos along the road; Zac Brown Band and Tyler Childers get the biggest.
+**Artist areas:** Most artists have a front porch of their own: the front of a little clapboard house with its window lit, a porch with a rocking chair, a mailbox, and one thing from their song; covers on a cream card on a sign of red barn boards. Zac Brown Band has a backyard cookout: a fryer and a picnic table with a plate of fried chicken to carry ("Chicken Fried"), a patch of sand with a beach chair ("Toes"), a kiddie pool with a lawn chair in it ("Knee Deep") and a pickup in a drift of snow ("Colder Weather"). Tyler Childers has a log cabin on the hill with a stone chimney, a rocking chair and a guitar ("Lady May"), a quilt over the porch rail ("All Your'n"), a feather in the door frame ("Feathered Indians"), a fiddle to play and a road sign to Virgie. Jason Aldean has a big shiny green tractor to climb up on ("Big Green Tractor") and a party round a tailgate under string lights ("My Kinda Party"). Lady A has a little roadhouse bar with stools and a bartender ("Bartender"), beehives and a shelf of honey jars ("American Honey"), and a clock at a quarter after one ("Need You Now"). The Charlie Daniels Band has a golden fiddle on a stump to play. Also Johnny Cash's black guitar and one candle, Dolly Parton's time clock and a single rose, Darius Rucker's wagon wheel, Kenny Rogers' card table, Carrie Underwood's pickup with a smashed headlight, Alan Jackson's inner tube on the river, Zach Bryan's orange lamp and rocking chair, LeAnn Rimes' moon, Patsy Cline's street lamp and footsteps, Marty Robbins' hat and badge, Tim McGraw's barrel to ride, and road signs to Amarillo and Mobile.
 
+**Happenings:** Windmills turn; the wheat sways; the bonfire throws sparks; fireflies come up out of the grass as it gets dark. "Something in the Orange" turns the sunset deep orange. "American Honey" is honey gold. "Big Green Tractor" is green and gold. "Colder Weather" brings snow. "Rain Is A Good Thing" brings rain. "Need You Now" and "Walkin' After Midnight" bring the night. "The Night The Lights Went Out In Georgia" puts every lamp out. "The Devil Went Down to Georgia" turns the light red and makes the bonfire roar. "Can't Fight The Moonlight" is silver moonlight. "Hurt" drains the colour.
+
+**The streets and places:** Laid out on purpose: the Square, Main Street and the Bonfire Field are the spine, and every lane to an artist branches from them.
+- **The Square:** take a lemonade; sit on the green.
+- **Main Street:** drop a quarter in the jukebox at The Rusty Boot.
+- **The Bonfire Field:** sit on a tailgate or a hay bale; play the guitar by the fire.
+- **The prairie:** climb on an old tractor; sit on a hay bale and watch the windmill.
 ### The Pop Republic
 *54 songs · 30 artists · 0.71 km² · built in Unity*
 

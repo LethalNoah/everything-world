@@ -143,6 +143,13 @@
    "weather": "", "weatherAmount": 0
   },
   {
+   "land": "The Country Plains",
+   "sunPitch": 8, "sunYaw": 255, "sunIntensity": 1.2, "sunColor": "#FFB56A",
+   "skyLight": "#8EA8D0", "horizonLight": "#FFC890", "groundLight": "#9A8460",
+   "fogColor": "#D8B48C", "fogStart": 160, "fogEnd": 2200, "stars": 0.1, "sunShadows": true, "dailyWeather": false, "bloom": 1.05,
+   "weather": "", "weatherAmount": 0
+  },
+  {
    "land": "Discotopia",
    "sunPitch": 52, "sunYaw": 30, "sunIntensity": 0.95, "sunColor": "#D4E2FF",
    "skyLight": "#7C8CE0", "horizonLight": "#8A92D0", "groundLight": "#70748C",
