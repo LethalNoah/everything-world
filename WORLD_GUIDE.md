@@ -1146,13 +1146,21 @@ Theatrical islands, closest to the hub.
 - **The sets:** climb the rock on the savannah; watch the screen at the scoring stage; lie in the hammock; sit round the campfire.
 
 ### The Concert Isles
-*25 songs · 21 artists · 0.49 km² · new*
+*24 songs · 20 artists · 0.49 km² · built in Unity*
 
-**Arriving:** Manicured hills with tiered stone terraces and formal gardens; a marble concert hall with a pipe organ facing the sea.
+**Arriving:** The Moon Terrace: a round marble terrace in moonlight, a balustrade along the sea side, a tiered fountain glowing pale blue, low hedges dotted with white flowers and clipped cones in stone pots, and at the edge a black grand piano facing a huge pale moon low over the sea. Sit and play.
 
-**The vibe:** Grand and timeless. Grand pianos on lawns, chandeliers hung from old trees.
+**The vibe:** Grand and timeless: palace gardens at night, where four hundred years of music sound like tonight. Silver-teal moonlight on dark green lawns; cone topiaries, dark cypresses, rose beds, marble urns and broken columns, small fountains, benches under candle lanterns, and old trees with candle chandeliers hanging from their branches. Fireflies and pale moths drift. The Palace Walk, gravel edged in marble between rows of cone topiaries under iron arches hung with candle chandeliers, leads to the Concert Hall: a white colonnade on a stepped podium under a dome with a gold spire, rows of red chairs under three chandeliers, and a golden pipe organ at the back that you can play.
 
-**Artist areas:** A statue of each composer on a plinth. This is where the shrine idea fits most literally.
+**Artist areas:** Every composer has a garden room walled in clipped hedge, open toward their lane, with cone topiaries at the gate: a marble bust on a plinth at the back with their name cut into it, a candle on a marble stand for each song, and one thing from their music; covers on a dark board in a gold frame. Vivaldi: a tree in blossom. Dvořák: a great globe. Debussy: a round pool holding the moon. Grieg: a sunrise and a flute. Satie: a lone chair under a lamp, to sit very still in. Liszt: a golden bell on a frame. Schubert: a stand of candles. Chopin: a piano to play a nocturne and a moon lantern. Handel: a choir of little stone singers on risers. Holst: a red planet with a ring. Stravinsky: standing stones round a fire. Pachelbel: three rings of stone turning through each other. Bach: a cello and a row of golden organ pipes. The William Tell Overture: an apple on a post with an arrow through it. Beethoven: a piano under a moon and four great drums. Max Mathews: a bicycle built for two and an old computer of blinking lights. Max Richter: a window frame full of daylight. Penguin Cafe Orchestra: a harmonium and a penguin. Philip Glass: a spiral of glass panes. Mozart: a violin and a tear of light.
+
+**Happenings:** Candles flicker everywhere; fountains sparkle; fireflies drift; the organ glows when it's played and the moon breathes. "Moonlight Sonata" swells the moon and turns everything silver. "Clair de Lune" is silver-blue. "Hallelujah" brings warm gold light from above. "Mars, the Bringer of War" pulses red like drums. "Toccata and Fugue" turns deep purple and the organ blazes. "Morning Mood" is a pink-gold dawn. "Spring" brings blossom petals. "William Tell" flashes on the gallop. "The Rite of Spring" is firelight. "Lacrimosa" brings soft rain. The Fifth brings lightning. "Ave Maria" makes the candles burn brighter. "Daisy Bell" glows a soft computer green.
+
+**The streets and places:** Laid out on purpose: the Moon Terrace, the Palace Walk and the Concert Hall are the spine, and every lane to a garden room branches from them.
+- **The Moon Terrace:** play the piano under the moon; sit by the fountain.
+- **The Palace Walk:** walk under the chandeliers.
+- **The Concert Hall:** play the organ; sit and listen.
+- **The gardens:** find every composer's room; sit under a chandelier tree.
 
 ### The Isle of Scores
 *24 songs · 15 artists · 0.47 km² · built in Unity*

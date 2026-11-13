@@ -192,6 +192,13 @@
    "weather": "", "weatherAmount": 0
   },
   {
+   "land": "The Concert Isles",
+   "sunPitch": 34, "sunYaw": 160, "sunIntensity": 0.9, "sunColor": "#D4E4FF",
+   "skyLight": "#4E7894", "horizonLight": "#6C8CA4", "groundLight": "#38484C",
+   "fogColor": "#1A2C38", "fogStart": 120, "fogEnd": 1500, "stars": 0.8, "sunShadows": false, "dailyWeather": false, "bloom": 1.3,
+   "weather": "", "weatherAmount": 0
+  },
+  {
    "land": "Discotopia",
    "sunPitch": 52, "sunYaw": 30, "sunIntensity": 0.95, "sunColor": "#D4E2FF",
    "skyLight": "#7C8CE0", "horizonLight": "#8A92D0", "groundLight": "#70748C",
