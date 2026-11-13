@@ -560,7 +560,7 @@ Soul, funk, disco, world music and jazz.
 
 ### 63. The Delta Crossroads
 
-*blues, classic blues, blues rock, country blues, soul blues* · 19 songs · energy 0.53, acoustic 0.54, mood 0.64 · top artists: Muddy Waters, R.L. Burnside, Robert Johnson, Albert King, B.B. King
+*blues, classic blues, blues rock, country blues, soul blues* · 18 songs · energy 0.52, acoustic 0.57, mood 0.66 · top artists: Muddy Waters, R.L. Burnside, Robert Johnson, Albert King, B.B. King
 
 - **Terrain:** Flat river delta with cotton fields, cypress swamps and dusty roads that meet at a crossroads.
 - **Colours:** `#3B5BA5 blues blue`, `#8B5A2B delta mud`, `#D9B26F dust`, `#1C1C1C juke-joint black`
@@ -648,7 +648,7 @@ Film scores, classical, musicals, game music and novelties.
 
 ### 26. The Isle of Memes & Musicals
 
-*comedy, soundtrack, region:novelty, musicals, disney* · 46 songs · energy 0.68, acoustic 0.31, mood 0.64 · top artists: Phineas and Ferb, Stantough, Captainsparklez, The Little Singers, Zac Efron
+*comedy, soundtrack, region:novelty, musicals, disney* · 47 songs · energy 0.68, acoustic 0.30, mood 0.64 · top artists: Phineas and Ferb, Stantough, Captainsparklez, The Little Singers, Zac Efron
 
 - **Terrain:** A storybook island of round hills and winding paths.
 - **Colours:** `#4A90E2 storybook blue`, `#F7A1C4 pink`, `#FFE066 candy yellow`, `#7CCB5A cartoon grass`
