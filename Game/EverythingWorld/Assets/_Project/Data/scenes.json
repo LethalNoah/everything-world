@@ -15,8 +15,8 @@
     "bluegrass",
     "jazz ballads"
    ],
-   "x": 83.61,
-   "y": 55.43,
+   "x": 143.87,
+   "y": 64.2,
    "r": 10.44,
    "energy": 0.709,
    "acousticness": 0.337,
@@ -929,8 +929,8 @@
     "djent",
     "hardcore punk"
    ],
-   "x": 100.04,
-   "y": 26.78,
+   "x": 64.56,
+   "y": 20.73,
    "r": 9.17,
    "energy": 0.912,
    "acousticness": 0.007,
@@ -1643,8 +1643,8 @@
     "blues rock",
     "acid rock"
    ],
-   "x": 139.56,
-   "y": 63.06,
+   "x": 128.83,
+   "y": 47.83,
    "r": 9.27,
    "energy": 0.596,
    "acousticness": 0.303,
@@ -2373,8 +2373,8 @@
     "red dirt",
     "traditional country"
    ],
-   "x": 128.85,
-   "y": 133.34,
+   "x": 134.36,
+   "y": 101.05,
    "r": 8.0,
    "energy": 0.602,
    "acousticness": 0.389,
@@ -2927,8 +2927,8 @@
     "madchester",
     "sufi"
    ],
-   "x": 121.31,
-   "y": 104.62,
+   "x": 81.06,
+   "y": 53.68,
    "r": 7.94,
    "energy": 0.702,
    "acousticness": 0.146,
@@ -3473,8 +3473,8 @@
     "krautrock",
     "classic rock"
    ],
-   "x": 138.16,
-   "y": 43.39,
+   "x": 129.7,
+   "y": 27.98,
    "r": 7.62,
    "energy": 0.662,
    "acousticness": 0.209,
@@ -3979,8 +3979,8 @@
     "ska punk",
     "skate punk"
    ],
-   "x": 94.62,
-   "y": 108.83,
+   "x": 70.0,
+   "y": 40.11,
    "r": 6.93,
    "energy": 0.833,
    "acousticness": 0.082,
@@ -4405,8 +4405,8 @@
     "ambient",
     "j rock"
    ],
-   "x": 57.1,
-   "y": 39.53,
+   "x": 54.08,
+   "y": 36.06,
    "r": 6.56,
    "energy": 0.702,
    "acousticness": 0.173,
@@ -4791,8 +4791,8 @@
     "region:bedroom",
     "indie pop"
    ],
-   "x": 45.15,
-   "y": 110.43,
+   "x": 57.2,
+   "y": 95.78,
    "r": 6.48,
    "energy": 0.581,
    "acousticness": 0.18,
@@ -5169,8 +5169,8 @@
     "post punk",
     "indie electronic"
    ],
-   "x": 59.92,
-   "y": 116.9,
+   "x": 71.66,
+   "y": 103.26,
    "r": 6.86,
    "energy": 0.653,
    "acousticness": 0.194,
@@ -5587,8 +5587,8 @@
     "singer songwriter",
     "kpop"
    ],
-   "x": 109.08,
-   "y": 143.15,
+   "x": 125.61,
+   "y": 117.76,
    "r": 7.94,
    "energy": 0.701,
    "acousticness": 0.15,
@@ -6133,8 +6133,8 @@
     "uk drill",
     "the muppets"
    ],
-   "x": 119.83,
-   "y": 170.85,
+   "x": 118.73,
+   "y": 146.68,
    "r": 7.81,
    "energy": 0.666,
    "acousticness": 0.212,
@@ -6663,8 +6663,8 @@
     "alternative metal",
     "romanian"
    ],
-   "x": 113.93,
-   "y": 89.33,
+   "x": 64.42,
+   "y": 54.91,
    "r": 6.32,
    "energy": 0.757,
    "acousticness": 0.101,
@@ -7025,8 +7025,8 @@
     "piano",
     "80s"
    ],
-   "x": 122.22,
-   "y": 65.08,
+   "x": 108.09,
+   "y": 58.83,
    "r": 6.0,
    "energy": 0.626,
    "acousticness": 0.274,
@@ -7355,8 +7355,8 @@
     "chamber folk",
     "folk pop"
    ],
-   "x": 57.91,
-   "y": 101.18,
+   "x": 87.34,
+   "y": 105.04,
    "r": 6.4,
    "energy": 0.5,
    "acousticness": 0.476,
@@ -7725,14 +7725,14 @@
     "region:bedroom",
     "slowcore"
    ],
-   "x": 71.12,
-   "y": 95.37,
-   "r": 5.74,
-   "energy": 0.453,
-   "acousticness": 0.515,
-   "valence": 0.378,
-   "danceability": 0.558,
-   "tempo": 116.685,
+   "x": 94.29,
+   "y": 91.93,
+   "r": 5.66,
+   "energy": 0.439,
+   "acousticness": 0.506,
+   "valence": 0.359,
+   "danceability": 0.557,
+   "tempo": 116.316,
    "neighbours": [
     17,
     14,
@@ -7951,14 +7951,6 @@
      "valence": 0.486
     },
     {
-     "name": "Tamacún",
-     "artist": "Rodrigo y Gabriela",
-     "id": "0nNwfRyw0eY323NMkBM0y8",
-     "duration_ms": 205800,
-     "energy": 0.904,
-     "valence": 0.971
-    },
-    {
      "name": "The West Wind",
      "artist": "Ryley Walker",
      "id": "0PVpOQYr0bz7SWWsP8bNLW",
@@ -8031,8 +8023,8 @@
     "acid rock",
     "jazz fusion"
    ],
-   "x": 114.06,
-   "y": 51.79,
+   "x": 103.41,
+   "y": 37.18,
    "r": 6.08,
    "energy": 0.626,
    "acousticness": 0.24,
@@ -8369,8 +8361,8 @@
     "yacht rock",
     "piano"
    ],
-   "x": 96.8,
-   "y": 69.37,
+   "x": 111.83,
+   "y": 73.3,
    "r": 6.08,
    "energy": 0.484,
    "acousticness": 0.492,
@@ -8707,8 +8699,8 @@
     "metal",
     "metalcore"
    ],
-   "x": 73.39,
-   "y": 27.92,
+   "x": 79.77,
+   "y": 28.7,
    "r": 5.1,
    "energy": 0.797,
    "acousticness": 0.059,
@@ -8957,8 +8949,8 @@
     "melodic bass",
     "drum and bass"
    ],
-   "x": 27.11,
-   "y": 163.48,
+   "x": 35.43,
+   "y": 145.62,
    "r": 5.39,
    "energy": 0.713,
    "acousticness": 0.088,
@@ -9231,14 +9223,14 @@
     "experimental",
     "region:idm"
    ],
-   "x": 24.17,
-   "y": 127.15,
-   "r": 5.57,
-   "energy": 0.476,
-   "acousticness": 0.376,
+   "x": 31.16,
+   "y": 107.77,
+   "r": 5.66,
+   "energy": 0.463,
+   "acousticness": 0.393,
    "valence": 0.254,
-   "danceability": 0.522,
-   "tempo": 111.641,
+   "danceability": 0.523,
+   "tempo": 110.466,
    "neighbours": [
     33,
     51,
@@ -9457,6 +9449,14 @@
      "valence": 0.542
     },
     {
+     "name": "I'm God",
+     "artist": "ridgeclub",
+     "id": "5DysE4kUIUSJntpnQt993V",
+     "duration_ms": 82144,
+     "energy": 0.082,
+     "valence": 0.269
+    },
+    {
      "name": "Divine Moments of Truth",
      "artist": "Shpongle",
      "id": "5z0QLEpkbUh00SevSuYxOh",
@@ -9521,8 +9521,8 @@
     "ska",
     "crank wave"
    ],
-   "x": 108.6,
-   "y": 115.31,
+   "x": 57.95,
+   "y": 68.71,
    "r": 6.24,
    "energy": 0.694,
    "acousticness": 0.141,
@@ -9875,8 +9875,8 @@
     "future garage",
     "rock"
    ],
-   "x": 93.64,
-   "y": 147.75,
+   "x": 112.78,
+   "y": 108.17,
    "r": 5.57,
    "energy": 0.533,
    "acousticness": 0.394,
@@ -10165,8 +10165,8 @@
     "electro",
     "electro house"
    ],
-   "x": 39.98,
-   "y": 157.79,
+   "x": 33.57,
+   "y": 131.58,
    "r": 5.83,
    "energy": 0.79,
    "acousticness": 0.042,
@@ -10479,8 +10479,8 @@
     "melodic bass",
     "edm"
    ],
-   "x": 17.23,
-   "y": 153.8,
+   "x": 20.8,
+   "y": 137.81,
    "r": 5.48,
    "energy": 0.839,
    "acousticness": 0.032,
@@ -10761,8 +10761,8 @@
     "boom bap",
     "southern hip hop"
    ],
-   "x": 135.36,
-   "y": 173.91,
+   "x": 132.02,
+   "y": 155.31,
    "r": 5.1,
    "energy": 0.695,
    "acousticness": 0.157,
@@ -11011,8 +11011,8 @@
     "hard rock",
     "medieval"
    ],
-   "x": 45.91,
-   "y": 64.37,
+   "x": 34.09,
+   "y": 81.57,
    "r": 6.86,
    "energy": 0.678,
    "acousticness": 0.303,
@@ -11429,8 +11429,8 @@
     "death metal",
     "doom metal"
    ],
-   "x": 129.21,
-   "y": 29.64,
+   "x": 114.21,
+   "y": 22.68,
    "r": 5.74,
    "energy": 0.81,
    "acousticness": 0.076,
@@ -11735,8 +11735,8 @@
     "artcore",
     "japanese indie"
    ],
-   "x": 83.94,
-   "y": 19.16,
+   "x": 81.39,
+   "y": 15.08,
    "r": 5.66,
    "energy": 0.88,
    "acousticness": 0.05,
@@ -12033,8 +12033,8 @@
     "r&b",
     "northern soul"
    ],
-   "x": 154.27,
-   "y": 123.2,
+   "x": 158.92,
+   "y": 112.36,
    "r": 5.29,
    "energy": 0.557,
    "acousticness": 0.336,
@@ -12299,8 +12299,8 @@
     "jazz",
     "p funk"
    ],
-   "x": 167.47,
-   "y": 135.43,
+   "x": 165.16,
+   "y": 125.7,
    "r": 5.48,
    "energy": 0.669,
    "acousticness": 0.24,
@@ -12581,8 +12581,8 @@
     "dance",
     "art pop"
    ],
-   "x": 80.21,
-   "y": 145.61,
+   "x": 107.27,
+   "y": 120.53,
    "r": 5.2,
    "energy": 0.707,
    "acousticness": 0.119,
@@ -12839,8 +12839,8 @@
     "grunge",
     "progressive rock"
    ],
-   "x": 106.95,
-   "y": 101.38,
+   "x": 85.28,
+   "y": 68.41,
    "r": 5.1,
    "energy": 0.788,
    "acousticness": 0.033,
@@ -13089,8 +13089,8 @@
     "experimental",
     "drumstep"
    ],
-   "x": 23.01,
-   "y": 141.08,
+   "x": 24.73,
+   "y": 120.4,
    "r": 5.48,
    "energy": 0.72,
    "acousticness": 0.107,
@@ -13371,8 +13371,8 @@
     "rock",
     "hard rock"
    ],
-   "x": 109.54,
-   "y": 64.32,
+   "x": 121.64,
+   "y": 63.1,
    "r": 5.0,
    "energy": 0.664,
    "acousticness": 0.208,
@@ -13613,8 +13613,8 @@
     "folk punk",
     "anti folk"
    ],
-   "x": 96.02,
-   "y": 94.71,
+   "x": 72.31,
+   "y": 66.87,
    "r": 5.29,
    "energy": 0.649,
    "acousticness": 0.2,
@@ -13879,8 +13879,8 @@
     "comedy",
     "hindi pop"
    ],
-   "x": 58.52,
-   "y": 73.31,
+   "x": 36.48,
+   "y": 55.3,
    "r": 5.66,
    "energy": 0.6,
    "acousticness": 0.381,
@@ -14177,8 +14177,8 @@
     "hip hop",
     "region:idm"
    ],
-   "x": 92.79,
-   "y": 172.11,
+   "x": 98.74,
+   "y": 143.01,
    "r": 4.8,
    "energy": 0.458,
    "acousticness": 0.42,
@@ -14403,8 +14403,8 @@
     "hair metal",
     "80s"
    ],
-   "x": 123.2,
-   "y": 41.71,
+   "x": 116.99,
+   "y": 35.7,
    "r": 4.69,
    "energy": 0.839,
    "acousticness": 0.06,
@@ -14621,8 +14621,8 @@
     "orchestral",
     "japanese classical"
    ],
-   "x": 46.44,
-   "y": 78.84,
+   "x": 23.94,
+   "y": 60.84,
    "r": 4.8,
    "energy": 0.359,
    "acousticness": 0.668,
@@ -14845,21 +14845,21 @@
     "samba",
     "world",
     "library music",
-    "vocal jazz"
+    "exotica"
    ],
-   "x": 172.32,
-   "y": 107.21,
-   "r": 4.9,
-   "energy": 0.501,
-   "acousticness": 0.569,
-   "valence": 0.568,
-   "danceability": 0.614,
-   "tempo": 106.23,
+   "x": 171.53,
+   "y": 114.4,
+   "r": 4.58,
+   "energy": 0.545,
+   "acousticness": 0.562,
+   "valence": 0.617,
+   "danceability": 0.639,
+   "tempo": 110.261,
    "neighbours": [
     48,
     41,
     65,
-    63
+    15
    ],
    "terrain": "A tropical coastline that turns into desert dunes inland.",
    "palette": [
@@ -14953,22 +14953,6 @@
      "valence": 0.856
     },
     {
-     "name": "West End Blues",
-     "artist": "Louis Armstrong",
-     "id": "1fcHyenlOvYHnF3xMz2wDB",
-     "duration_ms": 199893,
-     "energy": 0.268,
-     "valence": 0.376
-    },
-    {
-     "name": "What A Wonderful World",
-     "artist": "Louis Armstrong",
-     "id": "29U7stRjqHU6rMiS8BfaI9",
-     "duration_ms": 139226,
-     "energy": 0.165,
-     "valence": 0.202
-    },
-    {
      "name": "Estrelar",
      "artist": "Marcos Valle",
      "id": "2koS4fD3kzizdnzWzyrxyT",
@@ -15001,28 +14985,20 @@
      "valence": 0.386
     },
     {
-     "name": "Santiago",
-     "artist": "Preservation Hall Jazz Band",
-     "id": "1P2J9E5gHkJXP8wsiOOa81",
-     "duration_ms": 241160,
-     "energy": 0.967,
-     "valence": 0.799
-    },
-    {
-     "name": "I'm God",
-     "artist": "ridgeclub",
-     "id": "5DysE4kUIUSJntpnQt993V",
-     "duration_ms": 82144,
-     "energy": 0.082,
-     "valence": 0.269
-    },
-    {
      "name": "It's All Is",
      "artist": "Robert Stillman",
      "id": "0CbQpokPLu2TrHzLjv4snw",
      "duration_ms": 158520,
      "energy": 0.458,
      "valence": 0.604
+    },
+    {
+     "name": "Tamacún",
+     "artist": "Rodrigo y Gabriela",
+     "id": "0nNwfRyw0eY323NMkBM0y8",
+     "duration_ms": 205800,
+     "energy": 0.904,
+     "valence": 0.971
     },
     {
      "name": "Sleep Walk",
@@ -15081,8 +15057,8 @@
     "experimental jazz",
     "alternative hip hop"
    ],
-   "x": 167.92,
-   "y": 121.56,
+   "x": 179.08,
+   "y": 125.03,
    "r": 5.48,
    "energy": 0.601,
    "acousticness": 0.239,
@@ -15091,8 +15067,8 @@
    "tempo": 118.771,
    "neighbours": [
     48,
-    40,
     30,
+    40,
     60
    ],
    "terrain": "A narrow strip of land between two seas, packed with tiny streets.",
@@ -15363,8 +15339,8 @@
     "blues rock",
     "experimental rock"
    ],
-   "x": 70.03,
-   "y": 107.92,
+   "x": 69.33,
+   "y": 90.14,
    "r": 4.24,
    "energy": 0.712,
    "acousticness": 0.183,
@@ -15549,7 +15525,7 @@
     "folk metal",
     "metal"
    ],
-   "x": 102.71,
+   "x": 93.54,
    "y": 10.0,
    "r": 4.47,
    "energy": 0.957,
@@ -15751,8 +15727,8 @@
     "retrowave",
     "nu disco"
    ],
-   "x": 67.27,
-   "y": 152.97,
+   "x": 66.47,
+   "y": 134.32,
    "r": 4.36,
    "energy": 0.759,
    "acousticness": 0.087,
@@ -15945,8 +15921,8 @@
     "rap",
     "east coast hip hop"
    ],
-   "x": 135.28,
-   "y": 160.39,
+   "x": 136.89,
+   "y": 142.72,
    "r": 5.39,
    "energy": 0.57,
    "acousticness": 0.253,
@@ -16219,8 +16195,8 @@
     "70s",
     "quiet storm"
    ],
-   "x": 155.0,
-   "y": 135.3,
+   "x": 151.32,
+   "y": 121.92,
    "r": 4.0,
    "energy": 0.749,
    "acousticness": 0.25,
@@ -16389,8 +16365,8 @@
     "lo fi",
     "japanese"
    ],
-   "x": 37.85,
-   "y": 86.89,
+   "x": 33.57,
+   "y": 67.78,
    "r": 4.12,
    "energy": 0.565,
    "acousticness": 0.34,
@@ -16563,18 +16539,18 @@
     "cool jazz",
     "free jazz",
     "big band",
-    "jazz ballads",
+    "swing music",
     "swing",
-    "swing music"
+    "vocal jazz"
    ],
-   "x": 159.6,
-   "y": 110.62,
-   "r": 5.29,
-   "energy": 0.402,
-   "acousticness": 0.653,
+   "x": 175.81,
+   "y": 102.03,
+   "r": 5.57,
+   "energy": 0.409,
+   "acousticness": 0.645,
    "valence": 0.459,
-   "danceability": 0.492,
-   "tempo": 110.354,
+   "danceability": 0.488,
+   "tempo": 108.981,
    "neighbours": [
     40,
     41,
@@ -16745,6 +16721,22 @@
      "valence": 0.677
     },
     {
+     "name": "West End Blues",
+     "artist": "Louis Armstrong",
+     "id": "1fcHyenlOvYHnF3xMz2wDB",
+     "duration_ms": 199893,
+     "energy": 0.268,
+     "valence": 0.376
+    },
+    {
+     "name": "What A Wonderful World",
+     "artist": "Louis Armstrong",
+     "id": "29U7stRjqHU6rMiS8BfaI9",
+     "duration_ms": 139226,
+     "energy": 0.165,
+     "valence": 0.202
+    },
+    {
      "name": "So What (feat. John Coltrane, Cannonball Adderley & Bill Evans)",
      "artist": "Miles Davis",
      "id": "4vLYewWIvqHfKtJDk8c8tq",
@@ -16775,6 +16767,14 @@
      "duration_ms": 350266,
      "energy": 0.405,
      "valence": 0.511
+    },
+    {
+     "name": "Santiago",
+     "artist": "Preservation Hall Jazz Band",
+     "id": "1P2J9E5gHkJXP8wsiOOa81",
+     "duration_ms": 241160,
+     "energy": 0.967,
+     "valence": 0.799
     },
     {
      "name": "St. Thomas",
@@ -16833,8 +16833,8 @@
     "dream pop",
     "indietronica"
    ],
-   "x": 72.81,
-   "y": 122.66,
+   "x": 81.08,
+   "y": 92.71,
    "r": 4.8,
    "energy": 0.659,
    "acousticness": 0.241,
@@ -17059,8 +17059,8 @@
     "indie pop",
     "alternative dance"
    ],
-   "x": 61.72,
-   "y": 130.92,
+   "x": 59.11,
+   "y": 109.23,
    "r": 4.24,
    "energy": 0.767,
    "acousticness": 0.144,
@@ -17245,8 +17245,8 @@
     "folktronica",
     "turntablism"
    ],
-   "x": 35.46,
-   "y": 142.5,
+   "x": 37.45,
+   "y": 119.06,
    "r": 4.24,
    "energy": 0.604,
    "acousticness": 0.491,
@@ -17431,8 +17431,8 @@
     "soft rock",
     "power pop"
    ],
-   "x": 127.22,
-   "y": 52.7,
+   "x": 112.63,
+   "y": 46.7,
    "r": 4.24,
    "energy": 0.715,
    "acousticness": 0.093,
@@ -17611,8 +17611,8 @@
     "region:bedroom",
     "region:ambient"
    ],
-   "x": 47.63,
-   "y": 123.75,
+   "x": 78.65,
+   "y": 115.47,
    "r": 4.12,
    "energy": 0.518,
    "acousticness": 0.511,
@@ -17789,8 +17789,8 @@
     "dub",
     "idm"
    ],
-   "x": 45.9,
-   "y": 146.49,
+   "x": 45.38,
+   "y": 126.89,
    "r": 4.0,
    "energy": 0.565,
    "acousticness": 0.185,
@@ -17959,8 +17959,8 @@
     "hard house",
     "swing music"
    ],
-   "x": 15.42,
-   "y": 165.67,
+   "x": 24.15,
+   "y": 149.36,
    "r": 3.61,
    "energy": 0.727,
    "acousticness": 0.032,
@@ -18105,8 +18105,8 @@
     "spanish",
     "dance"
    ],
-   "x": 93.21,
-   "y": 134.67,
+   "x": 119.32,
+   "y": 96.87,
    "r": 4.8,
    "energy": 0.577,
    "acousticness": 0.342,
@@ -18331,8 +18331,8 @@
     "contemporary classical",
     "celtic"
    ],
-   "x": 18.43,
-   "y": 96.23,
+   "x": 10.0,
+   "y": 78.06,
    "r": 3.46,
    "energy": 0.502,
    "acousticness": 0.476,
@@ -18469,8 +18469,8 @@
     "eurodance",
     "chillstep"
    ],
-   "x": 29.2,
-   "y": 151.57,
+   "x": 44.54,
+   "y": 137.6,
    "r": 3.74,
    "energy": 0.775,
    "acousticness": 0.031,
@@ -18623,8 +18623,8 @@
     "contemporary classical",
     "opera"
    ],
-   "x": 34.17,
-   "y": 75.36,
+   "x": 18.72,
+   "y": 49.14,
    "r": 5.0,
    "energy": 0.165,
    "acousticness": 0.89,
@@ -18865,8 +18865,8 @@
     "alternative rnb",
     "summer"
    ],
-   "x": 147.91,
-   "y": 156.86,
+   "x": 149.93,
+   "y": 144.62,
    "r": 4.8,
    "energy": 0.491,
    "acousticness": 0.28,
@@ -19091,8 +19091,8 @@
     "electronic",
     "neurofunk"
    ],
-   "x": 10.0,
-   "y": 142.79,
+   "x": 48.24,
+   "y": 148.41,
    "r": 4.69,
    "energy": 0.867,
    "acousticness": 0.025,
@@ -19309,8 +19309,8 @@
     "dub",
     "lovers rock"
    ],
-   "x": 104.67,
-   "y": 169.23,
+   "x": 89.18,
+   "y": 135.42,
    "r": 4.47,
    "energy": 0.615,
    "acousticness": 0.196,
@@ -19511,8 +19511,8 @@
     "delta blues",
     "chicago blues"
    ],
-   "x": 151.48,
-   "y": 101.06,
+   "x": 157.79,
+   "y": 89.35,
    "r": 4.24,
    "energy": 0.519,
    "acousticness": 0.569,
@@ -19523,7 +19523,7 @@
     29,
     2,
     48,
-    40
+    34
    ],
    "terrain": "Flat river delta with cotton fields, cypress swamps and dusty roads that meet at a crossroads.",
    "palette": [
@@ -19697,8 +19697,8 @@
     "traditional country",
     "alt country"
    ],
-   "x": 83.45,
-   "y": 73.88,
+   "x": 128.34,
+   "y": 74.53,
    "r": 5.29,
    "energy": 0.482,
    "acousticness": 0.59,
@@ -19963,8 +19963,8 @@
     "afroswing",
     "african"
    ],
-   "x": 179.87,
-   "y": 119.84,
+   "x": 182.73,
+   "y": 113.57,
    "r": 3.61,
    "energy": 0.666,
    "acousticness": 0.198,

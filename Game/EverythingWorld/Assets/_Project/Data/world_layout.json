@@ -29430,8 +29430,8 @@
   },
   {
    "name": "Louis Armstrong",
-   "sceneId": 40,
-   "x": 3824.0,
+   "sceneId": 48,
+   "x": 4416.0,
    "z": 4435.733391573665,
    "r": 18.0,
    "songs": 2,
@@ -34414,9 +34414,9 @@
   },
   {
    "name": "Preservation Hall Jazz Band",
-   "sceneId": 40,
-   "x": 3832.0,
-   "z": 4395.733391573665,
+   "sceneId": 48,
+   "x": 4368.0,
+   "z": 4491.733391573665,
    "r": 15.0,
    "songs": 1,
    "tier": "shrine",
@@ -35698,9 +35698,9 @@
   },
   {
    "name": "Rodrigo y Gabriela",
-   "sceneId": 15,
-   "x": 8656.0,
-   "z": 6683.733391573665,
+   "sceneId": 40,
+   "x": 3848.0,
+   "z": 4419.733391573665,
    "r": 15.0,
    "songs": 1,
    "tier": "shrine",
@@ -44014,9 +44014,9 @@
   },
   {
    "name": "ridgeclub",
-   "sceneId": 40,
-   "x": 3880.0,
-   "z": 4403.733391573665,
+   "sceneId": 20,
+   "x": 10792.0,
+   "z": 2499.7333915736654,
    "r": 15.0,
    "songs": 1,
    "tier": "shrine",
@@ -44802,7 +44802,7 @@
    "name": "The Bandstand Tower",
    "realm": "The Groovelands",
    "sceneId": 30,
-   "x": 4631.293359359482,
+   "x": 4637.770692729216,
    "z": 5661.189365147115
   },
   {

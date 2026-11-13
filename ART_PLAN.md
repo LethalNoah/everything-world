@@ -268,7 +268,7 @@ Indie rock, shoegaze, bedroom pop and indie folk.
 
 ### 15. The Driftwood Shore
 
-*folk, acoustic, singer songwriter, surf rock, danish* · 33 songs · energy 0.45, acoustic 0.52, mood 0.38 · top artists: Jack Johnson, Agnes Obel, Angus & Julia Stone, Shearwater, unclepat
+*folk, acoustic, singer songwriter, surf rock, danish* · 32 songs · energy 0.44, acoustic 0.51, mood 0.36 · top artists: Jack Johnson, Agnes Obel, Angus & Julia Stone, Shearwater, unclepat
 
 - **Terrain:** Sheltered beach coves, tide pools and low sea cliffs.
 - **Colours:** `#3BA3A3 sea teal`, `#B59E7E driftwood`, `#EBDDB5 sand`, `#E05A5A hibiscus`
@@ -332,7 +332,7 @@ Every kind of electronic music, from ambient to riddim.
 
 ### 20. The Ambient Mists
 
-*ambient, idm, downtempo, electronic, trip hop* · 31 songs · energy 0.48, acoustic 0.38, mood 0.25 · top artists: Boards of Canada, Aphex Twin, KatzPascale, Tycho, Vegyn
+*ambient, idm, downtempo, electronic, trip hop* · 32 songs · energy 0.46, acoustic 0.39, mood 0.25 · top artists: Boards of Canada, Aphex Twin, KatzPascale, Tycho, Vegyn
 
 - **Terrain:** Soft, low hills fading into fog around a large still lake.
 - **Colours:** `#7FA9A3 faded teal`, `#E6A57E washed orange`, `#DCD7CF haze`, `#8A9A6B muted green`
@@ -520,7 +520,7 @@ Soul, funk, disco, world music and jazz.
 
 ### 40. The Far Shores
 
-*jazz, bossa nova, african, mpb, samba* · 24 songs · energy 0.50, acoustic 0.57, mood 0.57 · top artists: Jorge Ben Jor, Mulatu Astatke, Tinariwen, Louis Armstrong, Bossario
+*jazz, bossa nova, african, mpb, samba* · 21 songs · energy 0.55, acoustic 0.56, mood 0.62 · top artists: Jorge Ben Jor, Mulatu Astatke, Tinariwen, Bossario, Dave Richmond
 
 - **Terrain:** A tropical coastline that turns into desert dunes inland.
 - **Colours:** `#2FA6A0 tropical teal`, `#D7A453 desert ochre`, `#F07B5A sunset coral`, `#4E8A3A palm green`
@@ -550,7 +550,7 @@ Soul, funk, disco, world music and jazz.
 
 ### 48. The Old Jazz Quarter
 
-*jazz, hard bop, cool jazz, free jazz, big band* · 28 songs · energy 0.40, acoustic 0.65, mood 0.46 · top artists: Alice Coltrane, Duke Ellington, Herbie Hancock, Billie Holiday, Cab Calloway
+*jazz, hard bop, cool jazz, free jazz, big band* · 31 songs · energy 0.41, acoustic 0.65, mood 0.46 · top artists: Alice Coltrane, Duke Ellington, Herbie Hancock, Louis Armstrong, Billie Holiday
 
 - **Terrain:** Smoky hill towns with cobbled squares and stone bridges.
 - **Colours:** `#1F2A44 midnight blue`, `#C9A24A brass`, `#7D7D85 smoke`, `#6E2230 oxblood`
