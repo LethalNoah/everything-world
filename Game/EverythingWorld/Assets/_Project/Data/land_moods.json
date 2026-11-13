@@ -108,6 +108,13 @@
    "weather": "", "weatherAmount": 0
   },
   {
+   "land": "The Hip-Hop Boroughs",
+   "sunPitch": 14, "sunYaw": 250, "sunIntensity": 1.3, "sunColor": "#FFD596",
+   "skyLight": "#A9CDEE", "horizonLight": "#FFE2A8", "groundLight": "#A89878",
+   "fogColor": "#BCD6EC", "fogStart": 200, "fogEnd": 2400, "stars": 0, "sunShadows": true, "dailyWeather": false, "bloom": 1.1,
+   "weather": "", "weatherAmount": 0
+  },
+  {
    "land": "Discotopia",
    "sunPitch": 52, "sunYaw": 30, "sunIntensity": 0.95, "sunColor": "#D4E2FF",
    "skyLight": "#7C8CE0", "horizonLight": "#8A92D0", "groundLight": "#70748C",

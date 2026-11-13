@@ -959,13 +959,21 @@ Warm, humid, rhythmic. River country, smoky towns and coastline.
 City islands joined by bridges. Dusk into night, with one sunny beach.
 
 ### The Hip-Hop Boroughs
-*61 songs · 49 artists · 0.57 km²*
+*55 songs · 43 artists · 0.57 km² · built in Unity*
 
-**Arriving:** Dense city blocks on mesa tops, linked by bridges across the gaps; a tower with a giant boombox on its rooftop stage.
+**Arriving:** The Block, at golden hour, on top of the mesa. A concrete square with a half court and a ball, a brick mural with the land's name on it in gold, a winners' podium with a trophy on the top step, a cypher round a boombox, a purple lowrider. The sun is low and gold and every shadow is long. Straight ahead, at the end of Victory Avenue, stands the Tower, with a boombox the size of a house on its roof.
 
-**The vibe:** Dusk into city night. Basketball courts, sneakers on wires, fire hydrants. Now with a UK grime corner.
+**The vibe:** Big, loud, triumphant. A rooftop city on the mesa tops: blocks of brick and concrete with gold in most of the windows, shops under bright awnings, water towers on the roofs, tags on the side walls, billboards that say LOUDER and YOU MADE IT. Pennants cross Victory Avenue in gold, cream and purple; sneakers hang from the wires; there is a fire hydrant on every corner and a few of them are gold. Street trees gone gold in the light, parked cars with gold rims, dry gold scrub where the paving stops. At the end of the avenue the Stage: a deck under a truss of lights, speaker stacks, a crowd at the barrier, and a microphone anybody can walk up and take.
 
-**Artist areas:** Stoops, murals and corner stages. The most crowded land in the world (49 artists), so the plots should feel like a dense neighbourhood.
+**Artist areas:** Most artists have a corner of their own: a piece of wall with a mural panel, a door and a stoop to sit on, a hydrant (the British ones get a red phone box), and one thing from their song; covers on a cream card on a concrete board with a gold rail. Kendrick Lamar has a round stage ringed with light bars under a banner ("Not Like Us"), a long white table with one gold seat in the middle ("HUMBLE."), and a street lamp twice the height of the others with a gold figure standing on top of it ("Alright"). Logic has a wall with forty-four gold tally bars, a studio desk with a puzzle cube to carry, one enormous cigarette smoking in a dish ("Nikki"), and a chain between two posts broken in the middle ("Slave II"). Eminem has a battle stage under one white light with a microphone to take, a clock stopped at one shot, a hoodie on a hook and a plate of spaghetti. Kanye West has a white floor with a white piano, one key lit, and a line of dancers in black ("Runaway"), and a heap of gold with a spade in it ("Gold Digger"). Kid Cudi has the sun and the moon on either end of one beam, a bench facing out over the edge, and a sign pointing to happiness, a bit further on. Among the rest: Public Enemy's raised fist, Nas's bridge, Missy Elliott's giant headphones, Travis Scott's loop of track, Tyler, The Creator's cracked ground with flowers growing out of it, M.I.A.'s paper planes, Madvillain's mask and accordion, Lupe Fiasco's robot made of tower blocks, Nicki Minaj's pink rocket, Megan Thee Stallion's gold horse, Fort Minor's bar chart, J. Cole's empty pedestal, Sheck Wes's seven-metre hoop, Little Simz's throne, Stormzy's crown and park bench, Dizzee Rascal's one big drum, The Streets' chip counter, Dave's white van, Loyle Carner's train seats and cookbook, KAYTRANADA's bus stop, Awkwafina's water cooler, Will Smith's lamp on a carpet.
+
+**Happenings:** The boombox on the Tower beats, and every speaker with it; the Stage's lights chase; gold dust hangs in the low sun. Take the podium, the Stage's microphone or the cypher's boombox and confetti comes down. "Not Like Us" makes the cones pound and drops confetti over everything. "Alright" turns the light warmer and gold. "HUMBLE." drains the colour to stark white. "Lose Yourself" drops the light and pulses it like a heartbeat. "Runaway" goes cool and white. Kid Cudi's songs bring the night down, the only time it comes. "Fight The Power" flashes red on the beat. "SICKO MODE" switches the light, three times. "EARFQUAKE" turns it pink and gets the wind up. "I Gotta Feeling" is confetti and party colours. "Starships" sends pink sparks up. "Paper Planes" sends paper planes over.
+
+**The streets and places:** Laid out on purpose: the Block, Victory Avenue and the Stage are the spine, and every lane to an artist branches from them.
+- **The Block:** shoot a basket, take the podium and the trophy, press play at the cypher.
+- **Victory Avenue:** walk it slow under the pennants.
+- **The Stage:** climb the steps and take the microphone.
+- **The Tower:** the boombox on the roof; you feel it in the pavement.
 
 ### The Velvet Rooftops
 *29 songs · 23 artists · 0.48 km² · built in Unity*
