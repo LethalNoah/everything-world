@@ -35,6 +35,10 @@ namespace EverythingWorld.Player
             volume.profile = profile;
         }
 
+        public bool On => on;
+        /// Puts them on or takes them off (instant = no animation; for the photo tour). Not remembered.
+        public void Wear(bool wear, bool instant = false) { on = wear; if (instant) { t = wear ? 1f : 0f; if (volume != null) volume.weight = wear ? 1f : 0f; } }
+
         void Update()
         {
             var kb = Keyboard.current;

@@ -131,6 +131,10 @@ namespace EverythingWorld.World
                 // where you arrive, looking four ways (the first one waits for the land's sky to settle)
                 string[] compass = { "north", "east", "south", "west" };
                 for (var k = 0; k < 4; k++) yield return Shot("arrival, looking " + compass[k], feetAt, k * 90f, 4f, k == 0 ? 6f : .8f);
+                // the things you carry: the paper map held up, and the sunglasses on (only with --only)
+                var hand = player != null ? player.GetComponent<EverythingWorld.Player.MapInHand>() : null; var shades = player != null ? player.GetComponent<EverythingWorld.Player.Sunglasses>() : null;
+                if (hand != null) { hand.Hold(true, true); yield return Shot("map in hand", feetAt, 0f, 14f, 1f); hand.Hold(false, true); }
+                if (shades != null) { var was = shades.On; shades.Wear(true, true); yield return Shot("with sunglasses", feetAt, 0f, 4f, 1f); shades.Wear(was, true); }
                 // in front of every artist area, looking at it
                 var kit0 = LandKit.For(isl.name);
                 foreach (var a in data.layout.artists)

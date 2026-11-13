@@ -546,7 +546,9 @@ namespace EverythingWorld.World
 
         /// A clean painted map from the world itself: each land in its own colour with a little hill shading,
         /// dark lines where one land meets another, a darker coastline and soft blue sea. North is up.
-        static Texture2D PaintMap(IslandWorldData data)
+        /// paper = true: a folded paper map to hold in your hands (see Player/MapInHand): a little grain, two
+        /// fold creases each way and edges browned with handling.
+        public static Texture2D PaintMap(IslandWorldData data, bool paper = false)
         {
             const int k = 2;                                   // one map pixel per 2 x 2 world cells
             int nx = data.Nx, nz = data.Nz, w = nx / k, h = nz / k;
@@ -585,6 +587,14 @@ namespace EverythingWorld.World
                         byte r1 = Id(col + k, row), r2 = Id(col, row - k), r3 = Id(col - k, row), r4 = Id(col, row + k);
                         if (r1 == 255 || r2 == 255 || r3 == 255 || r4 == 255) c = coast;
                         else if (r1 != id || r2 != id) c = Color.Lerp(c, border, .75f);
+                    }
+                    if (paper)
+                    {
+                        float u = x / (float)w, v = y / (float)h;
+                        var grain = 1f + (Mathf.PerlinNoise(x * .35f, y * .35f) - .5f) * .08f;
+                        var crease = 1f; foreach (var f in new[] { 1f / 3f, 2f / 3f }) { crease -= .14f * Mathf.Exp(-Mathf.Pow((u - f) * w / 1.6f, 2f)); crease -= .12f * Mathf.Exp(-Mathf.Pow((v - f) * h / 1.6f, 2f)); }
+                        var edge = Mathf.Min(Mathf.Min(u, 1f - u), Mathf.Min(v, 1f - v)); var burn = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(edge / .06f));
+                        c = Color.Lerp(new Color(.55f, .42f, .26f), c * grain * crease, .55f + .45f * burn);
                     }
                     c.a = 1f;
                     px[y * w + x] = c;
