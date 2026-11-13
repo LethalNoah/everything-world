@@ -149,6 +149,7 @@ namespace EverythingWorld.World
                 var marks = new List<Transform>();
                 var landRoot = GameObject.Find("Land: " + isl.name);
                 if (landRoot != null) foreach (var t in landRoot.GetComponentsInChildren<Transform>(true)) if (t.name.StartsWith("Shot: ")) marks.Add(t);
+                foreach (var ti in FindObjectsByType<TowerInfo>(FindObjectsSortMode.None)) if (ti.sceneId == isl.sceneId) foreach (var t in ti.GetComponentsInChildren<Transform>(true)) if (t.name.StartsWith("Shot: ")) marks.Add(t);   // the realm tower standing in this land
                 foreach (var m in marks) yield return Shot(m.name.Substring(6), m.position, m.eulerAngles.y, 6f, 1f);
                 // inside the buildings: every room the land registered (IndoorSpaces), biggest first, from just inside
                 // one end looking down its length, and from the far end looking back

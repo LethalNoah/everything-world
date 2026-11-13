@@ -303,21 +303,24 @@ namespace EverythingWorld.World
                 var tower = new GameObject("Tower: " + t.name).transform;
                 tower.SetParent(root, false);
                 tower.position = new Vector3(t.x, ground, t.z);
-                Part(tower, PrimitiveType.Cylinder, new Vector3(0, 14, 0), new Vector3(9, 14, 9), wall, true);      // 28 m shaft
-                Part(tower, PrimitiveType.Cylinder, new Vector3(0, 29, 0), new Vector3(12, 1.2f, 12), wall, false); // balcony
-                for (var k = 0; k < 8; k++)                                                                          // battlements
+                if (!TowerStyles.Build(tower, t))     // each realm's own tower; the hub's mast keeps the plain shape
                 {
-                    var ang = k * Mathf.PI / 4;
-                    Part(tower, PrimitiveType.Cube, new Vector3(Mathf.Cos(ang) * 5.4f, 31.2f, Mathf.Sin(ang) * 5.4f), new Vector3(1.6f, 2f, 1.6f), wall, false);
+                    Part(tower, PrimitiveType.Cylinder, new Vector3(0, 14, 0), new Vector3(9, 14, 9), wall, true);      // 28 m shaft
+                    Part(tower, PrimitiveType.Cylinder, new Vector3(0, 29, 0), new Vector3(12, 1.2f, 12), wall, false); // balcony
+                    for (var k = 0; k < 8; k++)                                                                          // battlements
+                    {
+                        var ang = k * Mathf.PI / 4;
+                        Part(tower, PrimitiveType.Cube, new Vector3(Mathf.Cos(ang) * 5.4f, 31.2f, Mathf.Sin(ang) * 5.4f), new Vector3(1.6f, 2f, 1.6f), wall, false);
+                    }
+                    Part(tower, PrimitiveType.Sphere, new Vector3(0, 33, 0), Vector3.one * 3.2f, beacon, false);
+                    Part(tower, PrimitiveType.Cylinder, new Vector3(0, 38, 0), new Vector3(.3f, 4, .3f), wall, false);
+                    Part(tower, PrimitiveType.Cube, new Vector3(1.6f, 40.6f, 0), new Vector3(3.2f, 1.6f, .1f), roof, false); // pennant
+                    Part(tower, PrimitiveType.Cube, new Vector3(0, 1.8f, -4.4f), new Vector3(3, 3.6f, .6f), roof, false);   // door
+                    var light = new GameObject("Beacon light").AddComponent<Light>();
+                    light.transform.SetParent(tower, false);
+                    light.transform.localPosition = new Vector3(0, 33, 0);
+                    light.type = LightType.Point; light.range = 60; light.intensity = 4; light.color = new Color(1f, .75f, .4f);
                 }
-                Part(tower, PrimitiveType.Sphere, new Vector3(0, 33, 0), Vector3.one * 3.2f, beacon, false);
-                Part(tower, PrimitiveType.Cylinder, new Vector3(0, 38, 0), new Vector3(.3f, 4, .3f), wall, false);
-                Part(tower, PrimitiveType.Cube, new Vector3(1.6f, 40.6f, 0), new Vector3(3.2f, 1.6f, .1f), roof, false); // pennant
-                Part(tower, PrimitiveType.Cube, new Vector3(0, 1.8f, -4.4f), new Vector3(3, 3.6f, .6f), roof, false);   // door
-                var light = new GameObject("Beacon light").AddComponent<Light>();
-                light.transform.SetParent(tower, false);
-                light.transform.localPosition = new Vector3(0, 33, 0);
-                light.type = LightType.Point; light.range = 60; light.intensity = 4; light.color = new Color(1f, .75f, .4f);
                 var info = tower.gameObject.AddComponent<TowerInfo>();
                 info.towerName = t.name; info.realm = t.realm; info.sceneId = t.sceneId;
                 Towers.Add(tower);
