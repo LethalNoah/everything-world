@@ -332,7 +332,7 @@ Every kind of electronic music, from ambient to riddim.
 
 ### 20. The Ambient Mists
 
-*ambient, idm, downtempo, electronic, trip hop* · 32 songs · energy 0.46, acoustic 0.39, mood 0.25 · top artists: Boards of Canada, Aphex Twin, KatzPascale, Tycho, Vegyn
+*ambient, idm, downtempo, electronic, trip hop* · 31 songs · energy 0.48, acoustic 0.38, mood 0.26 · top artists: Boards of Canada, Aphex Twin, KatzPascale, Tycho, Vegyn
 
 - **Terrain:** Soft, low hills fading into fog around a large still lake.
 - **Colours:** `#7FA9A3 faded teal`, `#E6A57E washed orange`, `#DCD7CF haze`, `#8A9A6B muted green`
@@ -412,7 +412,7 @@ Every kind of electronic music, from ambient to riddim.
 
 ### 58. The Trance Steppe
 
-*trance, progressive trance, techno, electronic, progressive house* · 14 songs · energy 0.78, acoustic 0.03, mood 0.26 · top artists: Above & Beyond, Darude, Francesco Farfa, Gesaffelstein, Jungle
+*trance, progressive trance, techno, progressive house, electronic* · 13 songs · energy 0.77, acoustic 0.02, mood 0.24 · top artists: Above & Beyond, Darude, Francesco Farfa, Gesaffelstein, Myon
 
 - **Terrain:** Endless open grassland and sand flats.
 - **Colours:** `#3A5BA0 dawn blue`, `#F2F5F7 laser white`, `#7C5CFF violet`, `#FF9F43 sunrise orange`
@@ -466,7 +466,7 @@ Pop, electropop, synthwave, country and Latin.
 
 ### 31. The Glitterlands
 
-*electropop, pop, synthpop, dance pop, hyperpop* · 27 songs · energy 0.71, acoustic 0.12, mood 0.51 · top artists: Carly Rae Jepsen, Audrey Hobert, Charli xcx, Cryalot, Magdalena Bay
+*electropop, pop, synthpop, dance pop, hyperpop* · 26 songs · energy 0.71, acoustic 0.12, mood 0.50 · top artists: Carly Rae Jepsen, Audrey Hobert, Charli xcx, Cryalot, Magdalena Bay
 
 - **Terrain:** Floating candy-and-chrome platforms joined by bouncy bridges.
 - **Colours:** `#C6F04D lime`, `#C0C6CF chrome`, `#FF3FA4 hot pink`, `#8FD8FF baby blue`
@@ -486,7 +486,7 @@ Pop, electropop, synthwave, country and Latin.
 
 ### 56. The Latin Coast
 
-*latin, reggaeton, pop, mexico, latin pop* · 23 songs · energy 0.58, acoustic 0.34, mood 0.64 · top artists: Shakira, Bad Bunny, Los Lobos, Natalia Lafourcade, Nico Play
+*latin, reggaeton, pop, mexico, latin pop* · 22 songs · energy 0.58, acoustic 0.34, mood 0.63 · top artists: Shakira, Bad Bunny, Los Lobos, Natalia Lafourcade, Nico Play
 
 - **Terrain:** Colourful hillside towns running down to a warm bay.
 - **Colours:** `#E0338C magenta`, `#2EC4B6 turquoise`, `#F5A623 marigold`, `#C96A3E terracotta`
@@ -510,7 +510,7 @@ Soul, funk, disco, world music and jazz.
 
 ### 30. The Funk Tropics
 
-*funk, soul, funk rock, jazz funk, motown* · 30 songs · energy 0.67, acoustic 0.24, mood 0.67 · top artists: The Meters, Prince, Thundercat, Commodores, Funkadelic
+*funk, soul, funk rock, jazz funk, motown* · 31 songs · energy 0.67, acoustic 0.24, mood 0.66 · top artists: The Meters, Prince, Thundercat, Commodores, Funkadelic
 
 - **Terrain:** Lush, sweaty jungle laid out entirely on the one.
 - **Colours:** `#6B2FA3 purple`, `#F2742B hot orange`, `#2F8F4A jungle green`, `#E3B341 gold`
@@ -648,7 +648,7 @@ Film scores, classical, musicals, game music and novelties.
 
 ### 26. The Isle of Memes & Musicals
 
-*comedy, soundtrack, region:novelty, disney, pop* · 60 songs · energy 0.68, acoustic 0.30, mood 0.63 · top artists: Phineas and Ferb, Stantough, Captainsparklez, The Little Singers, Zac Efron
+*comedy, soundtrack, region:novelty, musicals, pop* · 53 songs · energy 0.70, acoustic 0.26, mood 0.65 · top artists: Phineas and Ferb, Stantough, The Little Singers, Zac Efron, 90s Classics
 
 - **Terrain:** A storybook island of round hills and winding paths.
 - **Colours:** `#4A90E2 storybook blue`, `#F7A1C4 pink`, `#FFE066 candy yellow`, `#7CCB5A cartoon grass`
@@ -658,7 +658,7 @@ Film scores, classical, musicals, game music and novelties.
 
 ### 36. Studio Lot Island
 
-*soundtrack, italian, bollywood, classic rock, pop* · 32 songs · energy 0.60, acoustic 0.38, mood 0.55 · top artists: The Lion King, Daniele Zandara, Kishore Kumar, Martin O'Donnell, A.R. Rahman
+*soundtrack, italian, bollywood, pop, classic rock* · 34 songs · energy 0.56, acoustic 0.44, mood 0.60 · top artists: The Lion King, Daniele Zandara, Kishore Kumar, A.R. Rahman, Alan Menken
 
 - **Terrain:** A film studio back lot where sets from different films stand side by side.
 - **Colours:** `#D9C9A8 set beige`, `#C96A3E terracotta`, `#F2D16B spotlight yellow`, `#2E3440 soundstage black`
@@ -668,7 +668,7 @@ Film scores, classical, musicals, game music and novelties.
 
 ### 39. The Isle of Scores
 
-*soundtrack, classical, score, ballet, opera* · 23 songs · energy 0.36, acoustic 0.67, mood 0.28 · top artists: John Williams, Danny Elfman, Ancient Chinese composer, Ennio Morricone, Jerry Goldsmith
+*soundtrack, classical, score, ballet, opera* · 24 songs · energy 0.36, acoustic 0.67, mood 0.28 · top artists: John Williams, Danny Elfman, Ancient Chinese composer, Ennio Morricone, Hollywood Studio Orchestra
 
 - **Terrain:** Sweeping cliffs and plateaus under a huge sky.
 - **Colours:** `#F2EFE8 marble`, `#2E4A8C royal blue`, `#D4AF37 gold`, `#7A1F2B velvet red`
@@ -678,7 +678,7 @@ Film scores, classical, musicals, game music and novelties.
 
 ### 47. The 8-Bit Isle
 
-*video game, soundtrack, electronic, japanese vgm, 8 bit* · 17 songs · energy 0.56, acoustic 0.34, mood 0.41 · top artists: ConcernedApe, meganeko, Arcade Player, Big Giant Circles, Blue Brew Music
+*video game, soundtrack, ambient, parody, electronic* · 25 songs · energy 0.59, acoustic 0.34, mood 0.39 · top artists: ConcernedApe, meganeko, Captainsparklez, Martin O'Donnell, Arcade Player
 
 - **Terrain:** A blocky island of pixel-stepped hills.
 - **Colours:** `#5BBE4A pixel green`, `#E04A3A primary red`, `#3A6FE0 primary blue`, `#F5EBD0 cream`
@@ -688,7 +688,7 @@ Film scores, classical, musicals, game music and novelties.
 
 ### 59. The Concert Isles
 
-*classical, classical piano, concerto, impressionism, baroque* · 25 songs · energy 0.17, acoustic 0.89, mood 0.22 · top artists: Frédéric Chopin, Johann Sebastian Bach, Ludwig van Beethoven, Wolfgang Amadeus Mozart, Antonio Vivaldi
+*classical, classical piano, concerto, impressionism, baroque* · 24 songs · energy 0.15, acoustic 0.90, mood 0.22 · top artists: Frédéric Chopin, Johann Sebastian Bach, Ludwig van Beethoven, Wolfgang Amadeus Mozart, Antonio Vivaldi
 
 - **Terrain:** Manicured hills with tiered stone terraces, like the seats of an open-air concert hall, and formal gardens with clipped hedges.
 - **Colours:** `#F2E8D5 ivory`, `#7A1F2B concert red`, `#C9A227 gilt`, `#2E3A59 evening blue`
