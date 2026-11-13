@@ -446,7 +446,7 @@ Pop, electropop, synthwave, country and Latin.
 
 ### 10. The Pop Republic
 
-*pop, country, k pop, dance, crunk* · 63 songs · energy 0.70, acoustic 0.15, mood 0.54 · top artists: Taylor Swift, Katy Perry, Michael Jackson, Sabrina Carpenter, BTS
+*pop, country, k pop, crunk, dance* · 54 songs · energy 0.70, acoustic 0.14, mood 0.53 · top artists: Taylor Swift, Katy Perry, Michael Jackson, Sabrina Carpenter, BTS
 
 - **Terrain:** Candy-coloured hills around a crowded boardwalk city.
 - **Colours:** `#FF7EB9 bubblegum`, `#4FD1E8 sky cyan`, `#FFE35A lemon`, `#FFFFFF white`
@@ -520,7 +520,7 @@ Soul, funk, disco, world music and jazz.
 
 ### 40. The Far Shores
 
-*jazz, bossa nova, african, mpb, samba* · 21 songs · energy 0.55, acoustic 0.56, mood 0.62 · top artists: Jorge Ben Jor, Mulatu Astatke, Tinariwen, Bossario, Dave Richmond
+*jazz, bossa nova, african, world, mpb* · 24 songs · energy 0.57, acoustic 0.51, mood 0.62 · top artists: Jorge Ben Jor, Mulatu Astatke, Tinariwen, Bossario, Dave Richmond
 
 - **Terrain:** A tropical coastline that turns into desert dunes inland.
 - **Colours:** `#2FA6A0 tropical teal`, `#D7A453 desert ochre`, `#F07B5A sunset coral`, `#4E8A3A palm green`
@@ -648,7 +648,7 @@ Film scores, classical, musicals, game music and novelties.
 
 ### 26. The Isle of Memes & Musicals
 
-*comedy, soundtrack, region:novelty, musicals, disney* · 54 songs · energy 0.68, acoustic 0.30, mood 0.64 · top artists: Phineas and Ferb, Stantough, Captainsparklez, The Little Singers, Zac Efron
+*comedy, soundtrack, region:novelty, disney, pop* · 60 songs · energy 0.68, acoustic 0.30, mood 0.63 · top artists: Phineas and Ferb, Stantough, Captainsparklez, The Little Singers, Zac Efron
 
 - **Terrain:** A storybook island of round hills and winding paths.
 - **Colours:** `#4A90E2 storybook blue`, `#F7A1C4 pink`, `#FFE066 candy yellow`, `#7CCB5A cartoon grass`

@@ -15,8 +15,8 @@
     "bluegrass",
     "jazz ballads"
    ],
-   "x": 104.84,
-   "y": 43.8,
+   "x": 98.53,
+   "y": 45.68,
    "r": 10.44,
    "energy": 0.709,
    "acousticness": 0.337,
@@ -929,8 +929,8 @@
     "djent",
     "hardcore punk"
    ],
-   "x": 166.33,
-   "y": 45.93,
+   "x": 152.8,
+   "y": 27.87,
    "r": 9.17,
    "energy": 0.912,
    "acousticness": 0.007,
@@ -1643,8 +1643,8 @@
     "blues rock",
     "acid rock"
    ],
-   "x": 77.39,
-   "y": 24.62,
+   "x": 68.8,
+   "y": 30.95,
    "r": 9.27,
    "energy": 0.596,
    "acousticness": 0.303,
@@ -2373,8 +2373,8 @@
     "red dirt",
     "traditional country"
    ],
-   "x": 50.19,
-   "y": 56.89,
+   "x": 50.65,
+   "y": 76.05,
    "r": 8.0,
    "energy": 0.602,
    "acousticness": 0.389,
@@ -2927,8 +2927,8 @@
     "madchester",
     "sufi"
    ],
-   "x": 128.64,
-   "y": 65.68,
+   "x": 123.07,
+   "y": 66.62,
    "r": 7.94,
    "energy": 0.702,
    "acousticness": 0.146,
@@ -3473,8 +3473,8 @@
     "krautrock",
     "classic rock"
    ],
-   "x": 118.04,
-   "y": 27.54,
+   "x": 108.76,
+   "y": 27.4,
    "r": 7.62,
    "energy": 0.662,
    "acousticness": 0.209,
@@ -3979,8 +3979,8 @@
     "ska punk",
     "skate punk"
    ],
-   "x": 156.06,
-   "y": 73.93,
+   "x": 154.05,
+   "y": 59.18,
    "r": 6.93,
    "energy": 0.833,
    "acousticness": 0.082,
@@ -4405,8 +4405,8 @@
     "ambient",
     "j rock"
    ],
-   "x": 134.87,
-   "y": 49.89,
+   "x": 145.77,
+   "y": 45.05,
    "r": 6.56,
    "energy": 0.702,
    "acousticness": 0.173,
@@ -4791,8 +4791,8 @@
     "region:bedroom",
     "indie pop"
    ],
-   "x": 111.11,
-   "y": 106.58,
+   "x": 140.26,
+   "y": 110.62,
    "r": 6.48,
    "energy": 0.581,
    "acousticness": 0.18,
@@ -5169,8 +5169,8 @@
     "post punk",
     "indie electronic"
    ],
-   "x": 117.95,
-   "y": 92.26,
+   "x": 122.09,
+   "y": 106.57,
    "r": 6.86,
    "energy": 0.653,
    "acousticness": 0.194,
@@ -5581,20 +5581,20 @@
     "pop",
     "country",
     "k pop",
-    "dance",
     "crunk",
+    "dance",
     "pop rock",
     "singer songwriter",
     "kpop"
    ],
-   "x": 57.46,
-   "y": 74.11,
-   "r": 7.94,
-   "energy": 0.701,
-   "acousticness": 0.15,
-   "valence": 0.541,
-   "danceability": 0.65,
-   "tempo": 120.128,
+   "x": 72.94,
+   "y": 108.06,
+   "r": 7.35,
+   "energy": 0.7,
+   "acousticness": 0.14,
+   "valence": 0.532,
+   "danceability": 0.641,
+   "tempo": 119.168,
    "neighbours": [
     22,
     31,
@@ -5677,14 +5677,6 @@
      "valence": 0.462
     },
     {
-     "name": "I Don't Dance",
-     "artist": "CHAD",
-     "id": "6p6TjiJHc1kJQt5dXzkdrs",
-     "duration_ms": 217240,
-     "energy": 0.88,
-     "valence": 0.682
-    },
-    {
      "name": "a thousand years",
      "artist": "Christina Perri",
      "id": "6lanRgr6wXibZr8KgzXxBl",
@@ -5699,14 +5691,6 @@
      "duration_ms": 240600,
      "energy": 0.538,
      "valence": 0.284
-    },
-    {
-     "name": "Hot Problems",
-     "artist": "Double Take",
-     "id": "5lOWRR5lCnZV6eadYvbGHN",
-     "duration_ms": 183948,
-     "energy": 0.56,
-     "valence": 0.376
     },
     {
      "name": "Lights",
@@ -5725,28 +5709,12 @@
      "valence": 0.324
     },
     {
-     "name": "Ganeni",
-     "artist": "Elyanna",
-     "id": "2qXSWquHZScT6OMJARM6Ql",
-     "duration_ms": 177119,
-     "energy": 0.732,
-     "valence": 0.361
-    },
-    {
      "name": "abcdefu",
      "artist": "GAYLE",
      "id": "4fouWK6XVHhzl78KzQ1UjL",
      "duration_ms": 168601,
      "energy": 0.54,
      "valence": 0.415
-    },
-    {
-     "name": "The HampsterDance Song",
-     "artist": "Hampton The Hampster",
-     "id": "0ouSkB2t2fGeW60MPcvmXl",
-     "duration_ms": 212880,
-     "energy": 0.924,
-     "valence": 0.967
     },
     {
      "name": "Demons",
@@ -5821,14 +5789,6 @@
      "valence": 0.436
     },
     {
-     "name": "Aïcha",
-     "artist": "Khaled",
-     "id": "0iUfdffYMExkR6S3kD3mMx",
-     "duration_ms": 259000,
-     "energy": 0.628,
-     "valence": 0.472
-    },
-    {
      "name": "Love Shy - Tuff Jam Dub Mix",
      "artist": "Kristine Blond",
      "id": "31tuwNVYbXIRTGTXdjgSgM",
@@ -5883,14 +5843,6 @@
      "duration_ms": 154666,
      "energy": 0.817,
      "valence": 0.515
-    },
-    {
-     "name": "Warni Warni",
-     "artist": "Omar Souleyman",
-     "id": "3cAeVEM3e2qv2V4lVhMpdR",
-     "duration_ms": 412850,
-     "energy": 0.938,
-     "valence": 0.976
     },
     {
      "name": "Hallelujah",
@@ -5963,14 +5915,6 @@
      "duration_ms": 232066,
      "energy": 0.871,
      "valence": 0.615
-    },
-    {
-     "name": "Fabulous",
-     "artist": "Sharpay Evans",
-     "id": "6jyXQ8HGI7ikECGA0670uo",
-     "duration_ms": 180693,
-     "energy": 0.761,
-     "valence": 0.703
     },
     {
      "name": "22",
@@ -6085,22 +6029,6 @@
      "valence": 0.431
     },
     {
-     "name": "Colors Of The Wind - From \"Pocahontas\"",
-     "artist": "Tori Kelly",
-     "id": "7qgM0MdETmhd3mORTqvJRm",
-     "duration_ms": 246573,
-     "energy": 0.255,
-     "valence": 0.386
-    },
-    {
-     "name": "Bet On It",
-     "artist": "Troy",
-     "id": "4EnwhEyuVrC1CgvSur5YL4",
-     "duration_ms": 198320,
-     "energy": 0.67,
-     "valence": 0.439
-    },
-    {
      "name": "Feel Special",
      "artist": "TWICE",
      "id": "3Hz3tTQwOdM6XkA0ALB2G9",
@@ -6133,8 +6061,8 @@
     "uk drill",
     "uk grime"
    ],
-   "x": 12.6,
-   "y": 108.68,
+   "x": 20.28,
+   "y": 132.61,
    "r": 7.42,
    "energy": 0.667,
    "acousticness": 0.197,
@@ -6615,8 +6543,8 @@
     "alternative metal",
     "romanian"
    ],
-   "x": 145.16,
-   "y": 62.22,
+   "x": 138.03,
+   "y": 58.55,
    "r": 6.32,
    "energy": 0.757,
    "acousticness": 0.101,
@@ -6977,8 +6905,8 @@
     "piano",
     "80s"
    ],
-   "x": 85.39,
-   "y": 44.11,
+   "x": 79.24,
+   "y": 47.22,
    "r": 6.0,
    "energy": 0.626,
    "acousticness": 0.274,
@@ -7307,8 +7235,8 @@
     "chamber folk",
     "folk pop"
    ],
-   "x": 102.18,
-   "y": 93.71,
+   "x": 110.55,
+   "y": 91.95,
    "r": 6.4,
    "energy": 0.5,
    "acousticness": 0.476,
@@ -7677,8 +7605,8 @@
     "region:bedroom",
     "slowcore"
    ],
-   "x": 105.16,
-   "y": 79.44,
+   "x": 100.33,
+   "y": 81.87,
    "r": 5.66,
    "energy": 0.439,
    "acousticness": 0.506,
@@ -7975,8 +7903,8 @@
     "acid rock",
     "jazz fusion"
    ],
-   "x": 102.1,
-   "y": 24.78,
+   "x": 83.23,
+   "y": 19.85,
    "r": 6.08,
    "energy": 0.626,
    "acousticness": 0.24,
@@ -8313,8 +8241,8 @@
     "yacht rock",
     "piano"
    ],
-   "x": 91.44,
-   "y": 57.52,
+   "x": 86.22,
+   "y": 60.26,
    "r": 6.08,
    "energy": 0.484,
    "acousticness": 0.492,
@@ -8651,8 +8579,8 @@
     "metal",
     "metalcore"
    ],
-   "x": 142.9,
-   "y": 37.34,
+   "x": 133.58,
+   "y": 36.72,
    "r": 5.1,
    "energy": 0.797,
    "acousticness": 0.059,
@@ -8901,8 +8829,8 @@
     "melodic bass",
     "drum and bass"
    ],
-   "x": 127.35,
-   "y": 151.54,
+   "x": 130.04,
+   "y": 154.13,
    "r": 5.39,
    "energy": 0.713,
    "acousticness": 0.088,
@@ -9175,8 +9103,8 @@
     "experimental",
     "region:idm"
    ],
-   "x": 86.68,
-   "y": 152.17,
+   "x": 98.88,
+   "y": 150.13,
    "r": 5.66,
    "energy": 0.463,
    "acousticness": 0.393,
@@ -9473,8 +9401,8 @@
     "ska",
     "crank wave"
    ],
-   "x": 148.72,
-   "y": 88.3,
+   "x": 152.15,
+   "y": 75.18,
    "r": 6.24,
    "energy": 0.694,
    "acousticness": 0.141,
@@ -9827,8 +9755,8 @@
     "future garage",
     "rock"
    ],
-   "x": 80.35,
-   "y": 80.37,
+   "x": 87.94,
+   "y": 103.54,
    "r": 5.57,
    "energy": 0.533,
    "acousticness": 0.394,
@@ -10117,8 +10045,8 @@
     "electro",
     "electro house"
    ],
-   "x": 113.83,
-   "y": 147.19,
+   "x": 116.03,
+   "y": 152.12,
    "r": 5.83,
    "energy": 0.79,
    "acousticness": 0.042,
@@ -10431,8 +10359,8 @@
     "melodic bass",
     "edm"
    ],
-   "x": 113.78,
-   "y": 161.42,
+   "x": 119.38,
+   "y": 165.97,
    "r": 5.48,
    "energy": 0.839,
    "acousticness": 0.032,
@@ -10713,8 +10641,8 @@
     "boom bap",
     "southern hip hop"
    ],
-   "x": 21.42,
-   "y": 96.17,
+   "x": 15.35,
+   "y": 118.11,
    "r": 5.0,
    "energy": 0.686,
    "acousticness": 0.163,
@@ -10949,25 +10877,25 @@
     "comedy",
     "soundtrack",
     "region:novelty",
-    "musicals",
     "disney",
+    "pop",
+    "musicals",
     "parody",
-    "medieval",
-    "hard rock"
+    "medieval"
    ],
-   "x": 40.82,
-   "y": 113.87,
-   "r": 7.35,
-   "energy": 0.682,
-   "acousticness": 0.302,
-   "valence": 0.638,
-   "danceability": 0.657,
-   "tempo": 127.552,
+   "x": 46.08,
+   "y": 119.29,
+   "r": 7.75,
+   "energy": 0.681,
+   "acousticness": 0.296,
+   "valence": 0.633,
+   "danceability": 0.666,
+   "tempo": 126.762,
    "neighbours": [
     36,
     39,
-    11,
-    10
+    10,
+    11
    ],
    "terrain": "A storybook island of round hills and winding paths.",
    "palette": [
@@ -11053,6 +10981,14 @@
      "valence": 0.759
     },
     {
+     "name": "I Don't Dance",
+     "artist": "CHAD",
+     "id": "6p6TjiJHc1kJQt5dXzkdrs",
+     "duration_ms": 217240,
+     "energy": 0.88,
+     "valence": 0.682
+    },
+    {
      "name": "Temporal",
      "artist": "CUNST",
      "id": "0osarfzoMVr4udc4AMwBKJ",
@@ -11067,6 +11003,14 @@
      "duration_ms": 161189,
      "energy": 0.747,
      "valence": 0.907
+    },
+    {
+     "name": "Hot Problems",
+     "artist": "Double Take",
+     "id": "5lOWRR5lCnZV6eadYvbGHN",
+     "duration_ms": 183948,
+     "energy": 0.56,
+     "valence": 0.376
     },
     {
      "name": "How Bad Can I Be?",
@@ -11091,6 +11035,14 @@
      "duration_ms": 183060,
      "energy": 0.596,
      "valence": 0.778
+    },
+    {
+     "name": "The HampsterDance Song",
+     "artist": "Hampton The Hampster",
+     "id": "0ouSkB2t2fGeW60MPcvmXl",
+     "duration_ms": 212880,
+     "energy": 0.924,
+     "valence": 0.967
     },
     {
      "name": "Let It Go - From \"Frozen\"/Soundtrack Version",
@@ -11237,6 +11189,14 @@
      "valence": 0.749
     },
     {
+     "name": "Fabulous",
+     "artist": "Sharpay Evans",
+     "id": "6jyXQ8HGI7ikECGA0670uo",
+     "duration_ms": 180693,
+     "energy": 0.761,
+     "valence": 0.703
+    },
+    {
      "name": "Bazooka",
      "artist": "Shred Meyer",
      "id": "5mOGQyZOwtDdeW0YIHIS3p",
@@ -11357,6 +11317,22 @@
      "valence": 0.652
     },
     {
+     "name": "Colors Of The Wind - From \"Pocahontas\"",
+     "artist": "Tori Kelly",
+     "id": "7qgM0MdETmhd3mORTqvJRm",
+     "duration_ms": 246573,
+     "energy": 0.255,
+     "valence": 0.386
+    },
+    {
+     "name": "Bet On It",
+     "artist": "Troy",
+     "id": "4EnwhEyuVrC1CgvSur5YL4",
+     "duration_ms": 198320,
+     "energy": 0.67,
+     "valence": 0.439
+    },
+    {
      "name": "Fuck the Fire Department",
      "artist": "Vincent E. L.",
      "id": "4JcTqcHEH2R6brcSWy0u9V",
@@ -11429,8 +11405,8 @@
     "death metal",
     "doom metal"
    ],
-   "x": 103.8,
-   "y": 10.0,
+   "x": 97.42,
+   "y": 15.46,
    "r": 5.74,
    "energy": 0.81,
    "acousticness": 0.076,
@@ -11735,8 +11711,8 @@
     "artcore",
     "japanese indie"
    ],
-   "x": 145.19,
-   "y": 23.89,
+   "x": 135.64,
+   "y": 23.2,
    "r": 5.66,
    "energy": 0.88,
    "acousticness": 0.05,
@@ -12033,8 +12009,8 @@
     "r&b",
     "northern soul"
    ],
-   "x": 24.67,
-   "y": 47.38,
+   "x": 23.93,
+   "y": 71.46,
    "r": 5.29,
    "energy": 0.557,
    "acousticness": 0.336,
@@ -12299,8 +12275,8 @@
     "jazz",
     "p funk"
    ],
-   "x": 11.91,
-   "y": 52.69,
+   "x": 10.91,
+   "y": 75.89,
    "r": 5.48,
    "energy": 0.669,
    "acousticness": 0.24,
@@ -12581,8 +12557,8 @@
     "dance",
     "art pop"
    ],
-   "x": 76.54,
-   "y": 94.7,
+   "x": 97.29,
+   "y": 113.57,
    "r": 5.2,
    "energy": 0.707,
    "acousticness": 0.119,
@@ -12839,8 +12815,8 @@
     "grunge",
     "progressive rock"
    ],
-   "x": 149.43,
-   "y": 48.85,
+   "x": 127.88,
+   "y": 48.7,
    "r": 5.1,
    "energy": 0.788,
    "acousticness": 0.033,
@@ -13089,8 +13065,8 @@
     "experimental",
     "drumstep"
    ],
-   "x": 95.86,
-   "y": 162.83,
+   "x": 105.93,
+   "y": 162.23,
    "r": 5.48,
    "energy": 0.72,
    "acousticness": 0.107,
@@ -13371,8 +13347,8 @@
     "rock",
     "hard rock"
    ],
-   "x": 72.0,
-   "y": 40.86,
+   "x": 65.51,
+   "y": 47.84,
    "r": 5.0,
    "energy": 0.664,
    "acousticness": 0.208,
@@ -13613,8 +13589,8 @@
     "folk punk",
     "anti folk"
    ],
-   "x": 140.91,
-   "y": 75.95,
+   "x": 137.91,
+   "y": 72.8,
    "r": 5.29,
    "energy": 0.649,
    "acousticness": 0.2,
@@ -13879,8 +13855,8 @@
     "comedy",
     "hindi pop"
    ],
-   "x": 53.61,
-   "y": 104.53,
+   "x": 47.04,
+   "y": 103.07,
    "r": 5.66,
    "energy": 0.6,
    "acousticness": 0.381,
@@ -14177,8 +14153,8 @@
     "hip hop",
     "region:idm"
    ],
-   "x": 26.53,
-   "y": 135.58,
+   "x": 40.27,
+   "y": 145.17,
    "r": 4.8,
    "energy": 0.458,
    "acousticness": 0.42,
@@ -14403,8 +14379,8 @@
     "hair metal",
     "80s"
    ],
-   "x": 91.81,
-   "y": 15.94,
+   "x": 93.93,
+   "y": 28.29,
    "r": 4.69,
    "energy": 0.839,
    "acousticness": 0.06,
@@ -14621,8 +14597,8 @@
     "orchestral",
     "japanese classical"
    ],
-   "x": 55.38,
-   "y": 117.75,
+   "x": 57.74,
+   "y": 129.18,
    "r": 4.8,
    "energy": 0.359,
    "acousticness": 0.668,
@@ -14841,20 +14817,20 @@
     "jazz",
     "bossa nova",
     "african",
+    "world",
     "mpb",
     "samba",
-    "world",
     "library music",
-    "exotica"
+    "arabic"
    ],
-   "x": 32.38,
-   "y": 37.23,
-   "r": 4.58,
-   "energy": 0.545,
-   "acousticness": 0.562,
-   "valence": 0.617,
-   "danceability": 0.639,
-   "tempo": 110.261,
+   "x": 29.47,
+   "y": 59.57,
+   "r": 4.9,
+   "energy": 0.573,
+   "acousticness": 0.507,
+   "valence": 0.616,
+   "danceability": 0.637,
+   "tempo": 113.772,
    "neighbours": [
     48,
     41,
@@ -14895,6 +14871,14 @@
      "duration_ms": 214003,
      "energy": 0.517,
      "valence": 0.673
+    },
+    {
+     "name": "Ganeni",
+     "artist": "Elyanna",
+     "id": "2qXSWquHZScT6OMJARM6Ql",
+     "duration_ms": 177119,
+     "energy": 0.732,
+     "valence": 0.361
     },
     {
      "name": "Judas",
@@ -14953,6 +14937,14 @@
      "valence": 0.856
     },
     {
+     "name": "Aïcha",
+     "artist": "Khaled",
+     "id": "0iUfdffYMExkR6S3kD3mMx",
+     "duration_ms": 259000,
+     "energy": 0.628,
+     "valence": 0.472
+    },
+    {
      "name": "Estrelar",
      "artist": "Marcos Valle",
      "id": "2koS4fD3kzizdnzWzyrxyT",
@@ -14983,6 +14975,14 @@
      "duration_ms": 253386,
      "energy": 0.528,
      "valence": 0.386
+    },
+    {
+     "name": "Warni Warni",
+     "artist": "Omar Souleyman",
+     "id": "3cAeVEM3e2qv2V4lVhMpdR",
+     "duration_ms": 412850,
+     "energy": 0.938,
+     "valence": 0.976
     },
     {
      "name": "It's All Is",
@@ -15057,8 +15057,8 @@
     "experimental jazz",
     "alternative hip hop"
    ],
-   "x": 13.84,
-   "y": 38.96,
+   "x": 13.67,
+   "y": 62.34,
    "r": 5.48,
    "energy": 0.601,
    "acousticness": 0.239,
@@ -15339,8 +15339,8 @@
     "blues rock",
     "experimental rock"
    ],
-   "x": 128.3,
-   "y": 101.55,
+   "x": 135.4,
+   "y": 97.9,
    "r": 4.24,
    "energy": 0.712,
    "acousticness": 0.183,
@@ -15525,8 +15525,8 @@
     "folk metal",
     "metal"
    ],
-   "x": 138.0,
-   "y": 10.63,
+   "x": 128.36,
+   "y": 10.0,
    "r": 4.47,
    "energy": 0.957,
    "acousticness": 0.001,
@@ -15727,8 +15727,8 @@
     "retrowave",
     "nu disco"
    ],
-   "x": 95.28,
-   "y": 129.81,
+   "x": 90.56,
+   "y": 127.57,
    "r": 4.36,
    "energy": 0.759,
    "acousticness": 0.087,
@@ -15921,8 +15921,8 @@
     "rap",
     "east coast hip hop"
    ],
-   "x": 23.94,
-   "y": 83.03,
+   "x": 22.12,
+   "y": 106.6,
    "r": 5.39,
    "energy": 0.57,
    "acousticness": 0.253,
@@ -16195,8 +16195,8 @@
     "70s",
     "quiet storm"
    ],
-   "x": 24.49,
-   "y": 59.59,
+   "x": 26.04,
+   "y": 83.54,
    "r": 4.0,
    "energy": 0.749,
    "acousticness": 0.25,
@@ -16365,8 +16365,8 @@
     "lo fi",
     "japanese"
    ],
-   "x": 47.5,
-   "y": 126.6,
+   "x": 68.77,
+   "y": 132.99,
    "r": 4.12,
    "energy": 0.565,
    "acousticness": 0.34,
@@ -16543,8 +16543,8 @@
     "swing",
     "vocal jazz"
    ],
-   "x": 24.44,
-   "y": 26.77,
+   "x": 21.92,
+   "y": 48.44,
    "r": 5.57,
    "energy": 0.409,
    "acousticness": 0.645,
@@ -16833,8 +16833,8 @@
     "dream pop",
     "indietronica"
    ],
-   "x": 97.19,
-   "y": 106.73,
+   "x": 124.41,
+   "y": 93.05,
    "r": 4.8,
    "energy": 0.659,
    "acousticness": 0.241,
@@ -17059,8 +17059,8 @@
     "indie pop",
     "alternative dance"
    ],
-   "x": 115.23,
-   "y": 119.49,
+   "x": 129.36,
+   "y": 118.53,
    "r": 4.24,
    "energy": 0.767,
    "acousticness": 0.144,
@@ -17245,8 +17245,8 @@
     "folktronica",
     "turntablism"
    ],
-   "x": 101.56,
-   "y": 151.47,
+   "x": 108.26,
+   "y": 141.57,
    "r": 4.24,
    "energy": 0.604,
    "acousticness": 0.491,
@@ -17431,8 +17431,8 @@
     "soft rock",
     "power pop"
    ],
-   "x": 91.36,
-   "y": 32.5,
+   "x": 84.28,
+   "y": 35.34,
    "r": 4.24,
    "energy": 0.715,
    "acousticness": 0.093,
@@ -17611,8 +17611,8 @@
     "region:bedroom",
     "region:ambient"
    ],
-   "x": 123.61,
-   "y": 111.94,
+   "x": 146.73,
+   "y": 98.86,
    "r": 4.12,
    "energy": 0.518,
    "acousticness": 0.511,
@@ -17789,8 +17789,8 @@
     "dub",
     "idm"
    ],
-   "x": 77.67,
-   "y": 143.57,
+   "x": 86.37,
+   "y": 149.37,
    "r": 4.0,
    "energy": 0.565,
    "acousticness": 0.185,
@@ -17959,8 +17959,8 @@
     "hard house",
     "swing music"
    ],
-   "x": 125.65,
-   "y": 163.31,
+   "x": 131.43,
+   "y": 165.95,
    "r": 3.61,
    "energy": 0.727,
    "acousticness": 0.032,
@@ -18105,8 +18105,8 @@
     "spanish",
     "dance"
    ],
-   "x": 67.94,
-   "y": 84.95,
+   "x": 84.84,
+   "y": 116.92,
    "r": 4.8,
    "energy": 0.577,
    "acousticness": 0.342,
@@ -18117,7 +18117,7 @@
     10,
     22,
     31,
-    13
+    26
    ],
    "terrain": "Colourful hillside towns running down to a warm bay.",
    "palette": [
@@ -18331,8 +18331,8 @@
     "contemporary classical",
     "celtic"
    ],
-   "x": 77.58,
-   "y": 117.27,
+   "x": 111.74,
+   "y": 131.36,
    "r": 3.46,
    "energy": 0.502,
    "acousticness": 0.476,
@@ -18469,8 +18469,8 @@
     "eurodance",
     "chillstep"
    ],
-   "x": 124.0,
-   "y": 139.94,
+   "x": 130.99,
+   "y": 142.11,
    "r": 3.74,
    "energy": 0.775,
    "acousticness": 0.031,
@@ -18623,8 +18623,8 @@
     "contemporary classical",
     "opera"
    ],
-   "x": 59.01,
-   "y": 130.01,
+   "x": 63.96,
+   "y": 144.03,
    "r": 5.0,
    "energy": 0.165,
    "acousticness": 0.89,
@@ -18865,8 +18865,8 @@
     "alternative rnb",
     "summer"
    ],
-   "x": 10.0,
-   "y": 77.11,
+   "x": 10.49,
+   "y": 100.13,
    "r": 4.8,
    "energy": 0.491,
    "acousticness": 0.28,
@@ -19091,8 +19091,8 @@
     "electronic",
     "neurofunk"
    ],
-   "x": 133.52,
-   "y": 133.59,
+   "x": 119.9,
+   "y": 139.36,
    "r": 4.69,
    "energy": 0.867,
    "acousticness": 0.025,
@@ -19103,7 +19103,7 @@
     19,
     15,
     24,
-    58
+    10
    ],
    "terrain": "Fast blue rivers and waterfalls rushing through smooth rock channels, with mist over everything.",
    "palette": [
@@ -19309,8 +19309,8 @@
     "dub",
     "lovers rock"
    ],
-   "x": 35.66,
-   "y": 88.62,
+   "x": 76.14,
+   "y": 82.77,
    "r": 4.47,
    "energy": 0.615,
    "acousticness": 0.196,
@@ -19511,8 +19511,8 @@
     "delta blues",
     "chicago blues"
    ],
-   "x": 42.82,
-   "y": 31.76,
+   "x": 39.15,
+   "y": 52.33,
    "r": 4.24,
    "energy": 0.519,
    "acousticness": 0.569,
@@ -19697,8 +19697,8 @@
     "traditional country",
     "alt country"
    ],
-   "x": 77.32,
-   "y": 55.75,
+   "x": 71.98,
+   "y": 59.38,
    "r": 5.29,
    "energy": 0.482,
    "acousticness": 0.59,
@@ -19963,8 +19963,8 @@
     "afroswing",
     "african"
    ],
-   "x": 12.28,
-   "y": 27.01,
+   "x": 10.0,
+   "y": 50.85,
    "r": 3.61,
    "energy": 0.666,
    "acousticness": 0.198,
