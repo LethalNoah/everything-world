@@ -815,14 +815,20 @@ Bright, saturated, everyone-knows-these. Where the world feels most like a theme
 **Artist areas:** Painted doorways and balconies along the streets.
 
 ### The Synthwave Coast
-*19 songs · 17 artists · 0.73 km²*
+*19 songs · 17 artists · 0.73 km² · built in Unity*
 
-**Arriving:** A coastal highway with palms beside a grid-lined sea, a huge striped sun setting over it.
+**Arriving:** The Neon Diner, at night. A long chrome diner with a band of pink-lit windows and a sign on a tall pole, chrome sports cars parked nose-in out front, a glowing magenta grid laid over the lot, neon palms and cyan tube lamps round the edge. Inside: a counter with stools, booths along the window, milkshakes to carry, an arcade cabinet. Straight ahead the Coast Road runs toward a giant striped sun sitting on the sea.
 
-**The vibe:** Permanent dusk. Sports cars, cassettes, pink neon.
+**The vibe:** A night drive with the windows down, a little nostalgic for a time you never had. The sky is deep violet with a magenta band on the horizon and stars overhead. The ground is dark, with squares of glowing grid laid over it here and there; palms with neon bands round their trunks, wireframe pyramids glowing pink and cyan, black billboards edged in neon (NIGHT DRIVE, 1986, TURBO), chrome cars parked at odd angles, benches under tube lamps. The Coast Road is a dark road with pink edge lines and cyan dashes and a pink car cruising up and down it. It ends at Sunset Point on the cliff: a lookout with a chrome rail, a neon sign, two cars facing the sun, and the sun itself out over the sea.
 
-**Artist areas:** Parked cars and neon signs along the highway.
+**Artist areas:** Most artists have a roadside neon of their own: a dark panel outlined in pink or cyan neon with their name lit up, a square of glowing grid, a neon palm, and one thing from their song; covers on a cream card on a black board with a neon strip. The Midnight has a garage on the coast with its door rolled up and the name in pink script across the top: a white car inside with red racing stripes ("Days of Thunder"), a saxophone on a stand under a pink spotlight to play, a moon with a bite out of it ("Vampires") and a neon ring of a ship hung over the forecourt ("Neon Odyssey"). Also FM-84's arcade cabinet, ODESZA's ring split in two, Washed Out's hammock, Yellow Magic Orchestra's synth keyboard, Gost's street sign, Parallels' dripping red heart, Blood Orange's fruit, Cannons' glowing feather, Futurecop!'s two figures holding hands, NINA's videotape and more.
 
+**Happenings:** The striped sun breathes on the horizon; the grid pulses to a slow synth beat; the neon hums; a pink car cruises the Coast Road; shooting stars now and then. "Days of Thunder" brings lightning over the sea and rain. "Vampires" turns everything blood red. "Neon Odyssey" flares the neon cyan. "Arcade Summer" is a hot orange sunset. "Genesee Avenue" is a dark red horror glow. "A Moment Apart" brings shooting stars down everywhere. "Feel It All Around" is a warm hazy gold. "RYDEEN" sets the colours racing. "Always" is soft pink.
+
+**The streets and places:** Laid out on purpose: the Neon Diner, the Coast Road and Sunset Point are the spine, and every lane to an artist branches from them.
+- **The Neon Diner:** sit at the counter or in a booth; take a milkshake; play the arcade game.
+- **The Coast Road:** walk it toward the sun; sit in a parked car.
+- **Sunset Point:** sit in a car facing the sun at the end of the road.
 ---
 
 ## The Groovelands (west landmass)
