@@ -1,7 +1,7 @@
 {
  "_about": "Hand-written names and look briefs for the realms and scenes. Edit freely. 'tower' names each realm's fast-travel tower. 'anchors' are each scene's top artists; build/export_unity.py warns if a scene id no longer contains them (for example after scenes.py renumbers scenes).",
  "realms": [
-  {"id": 0, "name": "The Old Kingdoms", "tower": "The Old Radio Tower", "note": "Classic, jam, prog, southern, glam and heavy metal: the old heartland of rock."},
+  {"id": 0, "name": "The Old Kingdoms", "tower": "The Record Stack", "note": "Classic, jam, prog, southern, glam and heavy metal: the old heartland of rock."},
   {"id": 1, "name": "Riffland", "tower": "The Amp Stack Spire", "note": "Alternative, grunge, punk, emo, metalcore, prog metal and J-rock."},
   {"id": 2, "name": "The Indie Isles", "tower": "The Lo-Fi Lighthouse", "note": "Indie rock, shoegaze, bedroom pop and indie folk."},
   {"id": 3, "name": "The Bass Reaches", "tower": "The Subwoofer Spire", "note": "Every kind of electronic music, from ambient to riddim."},

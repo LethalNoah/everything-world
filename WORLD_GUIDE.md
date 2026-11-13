@@ -47,7 +47,7 @@ About 15.5 × 10.4 km. One big continent in the middle (the Old Kingdoms joined 
 
 ## The Old Kingdoms (centre of the continent)
 
-*Classic rock, jam bands, prog, southern rock, glam and heavy metal · tower: The Old Radio Tower*
+*Classic rock, jam bands, prog, southern rock, glam and heavy metal · tower: The Record Stack*
 
 The heartland. Old hills, long roads and the tallest mountains in the world. Most of it feels like a timeless afternoon, with darker metal country in the high peaks.
 
