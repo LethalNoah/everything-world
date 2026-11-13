@@ -784,14 +784,20 @@ Bright, saturated, everyone-knows-these. Where the world feels most like a theme
 - **The Heartbreak Motel:** lie back by the empty pool.
 - **The Pier:** look through the telescope; get a table by the rail at the Last Chance Café.
 ### The Glitterlands
-*27 songs · 21 artists · 0.54 km²*
+*26 songs · 20 artists · 0.46 km² · built in Unity*
 
-**Arriving:** Floating candy-and-chrome platforms joined by bouncy bridges; a chrome disco tower topped with a giant inflatable heart.
+**Arriving:** Under the Mirrorball, at dusk. A disco ball as big as a house turns high over a floor of glowing tiles, hung by chains from four light pillars, throwing specks of light everywhere. Round the floor: banks of pink and lilac cloud, a glitter bar with drinks to carry, a photo booth, people dancing. The sky is lilac with a pink horizon and glitter is always drifting down.
 
-**The vibe:** Late-night party light. Inflatables, glitter, trampolines, pink cowboy hats.
+**The vibe:** Dancing on your own and dancing with everyone. The ground is a soft land of lilac and pink cloud. Little light-up dance floors sit on it with a mirror ball over each, and more float up in the air on their own clouds; crystal arches, bunches of heart balloons, velvet sofas under mirror-ball lamps. The Glitter Mile runs from the Mirrorball as a runway of glowing tiles under arches of light, to the Sky Club: a round dance floor raised on cloud, a wall of light, a DJ booth with records to drop, and a staircase of light up to a floating balcony with its own little floor.
 
-**Artist areas:** Floating platforms, one per artist.
+**Artist areas:** Most artists have a little cloud stage of their own: a round floor of light on a bank of cloud, a curtain of tinsel behind it, a mirror ball overhead, and one thing from their song; covers on a cream card on a silver board edged in light. Carly Rae Jepsen has a big pastel stage with a heart of light behind it and a gold saxophone on a stand to play ("Run Away With Me"), one glowing tile out on its own with a dropped shoe ("Don't Leave Me on the Dance Floor") and a tightrope with a figure balancing on it ("On Wires"). Charli xcx has a party for one: a table, a cake, balloons and a single chair ("party 4 u"), and a lime-green box with a question mark on every side ("Guess"). Magdalena Bay has a giant old television floating on a cloud ("Image") and a sphere of liquid silver with drops round it ("Mercurial World"). Also Chappell Roan's wine glass under a pink star, Haddaway's heart with a question mark, Caramelldansen's dance tile with a pair of tall ears, O-Zone's linden tree and headphones, Ace of Base's flags and sun, Kim Petras' coconuts, Lorde's arch of film frames, Owl City's owl, Tove Lo's flowers and more.
 
+**Happenings:** The Mirrorball turns and throws light; every floor pulses four to the floor and shifts colour; glitter falls; confetti over the Sky Club when anybody plays. "Run Away With Me" turns the light pink. "Dragostea din tei" and "Caramelldansen" make every floor flash fast in every colour. "Happy Nation" is gold. "What Is Love" pulses slow red. "Red Wine Supernova" goes red-violet with bursts of stars. "Supercut" flickers like film. "Mercurial World" turns everything silver. "Good Time" brings confetti everywhere. "Image" is electric blue.
+
+**The streets and places:** Laid out on purpose: the Mirrorball, the Glitter Mile and the Sky Club are the spine, and every lane to an artist branches from them.
+- **The Mirrorball:** dance on the floor of light; take a drink from the glitter bar; take some photos.
+- **The Glitter Mile:** strut it.
+- **The Sky Club:** drop a record; climb the staircase of light to the floating balcony.
 ### The Latin Coast
 *23 songs · 17 artists · 0.54 km²*
 

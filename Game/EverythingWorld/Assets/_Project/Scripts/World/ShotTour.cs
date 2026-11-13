@@ -42,6 +42,7 @@ namespace EverythingWorld.World
                     }
                     var startup = tour.lands.Length == 1 && tour.lands[0] == "startup";   // "startup": time a normal start (lands near you only), then quit
                     IslandWorldBuilder.BuildEverything = !startup; IslandWorldBuilder.ForceAudit = !tour.quick && !startup;
+                    if (!tour.quick && !startup && !System.Array.Exists(tour.lands, l => l == "all")) { IslandWorldBuilder.AuditOnly = new HashSet<string>(); foreach (var l in tour.lands) IslandWorldBuilder.AuditOnly.Add(l.StartsWith("The ") ? l.Substring(4) : l); }
                     if (tour.quick)
                     {
                         IslandWorldBuilder.QuickLands = new HashSet<string>();

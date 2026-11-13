@@ -55,6 +55,8 @@ namespace EverythingWorld.World
         public static HashSet<string> QuickLands;
         /// Set by the photo tour: build every land at the start (the tour needs them all) and, unless it's a quick tour, audit them.
         public static bool BuildEverything, ForceAudit;
+        /// Set by the photo tour: audit only these lands (names without "The "); null audits every land built.
+        public static HashSet<string> AuditOnly;
         /// True once every land with a kit has been built.
         public bool AllBuilt => pending.Count == 0;
         static bool Wanted(string land) => QuickLands == null || QuickLands.Contains(land.StartsWith("The ") ? land.Substring(4) : land);
@@ -398,7 +400,7 @@ namespace EverythingWorld.World
                 kits[i].Dress(ctx);
                 foreach (var a in ctx.Artists) kits[i].BuildArtist(ctx, a);
                 kits[i].Finish(ctx);
-                if ((auditLands || ForceAudit) && Application.isEditor && QuickLands == null)
+                if ((auditLands || ForceAudit) && Application.isEditor && QuickLands == null && (AuditOnly == null || AuditOnly.Contains(kits[i].Land.StartsWith("The ") ? kits[i].Land.Substring(4) : kits[i].Land)))
                 {
                     var a0 = Time.realtimeSinceStartup;
                     try { LandAudit.Run(Data, ctx, kits[i].Land); } catch (System.Exception e) { Debug.LogException(e); }
