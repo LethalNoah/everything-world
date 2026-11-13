@@ -594,7 +594,7 @@ Hip-hop, R&B and lo-fi beats.
 
 ### 25. Boom Bap Harbour
 
-*hip hop, east coast hip hop, rap, old school hip hop, gangster rap* · 26 songs · energy 0.69, acoustic 0.16, mood 0.65 · top artists: Wu-Tang Clan, Outkast, The Notorious B.I.G., JAŸ-Z, A Tribe Called Quest
+*hip hop, east coast hip hop, rap, old school hip hop, gangster rap* · 25 songs · energy 0.69, acoustic 0.16, mood 0.65 · top artists: Wu-Tang Clan, Outkast, The Notorious B.I.G., JAŸ-Z, A Tribe Called Quest
 
 - **Terrain:** Brownstone streets running down to a sunny harbour beach.
 - **Colours:** `#7A4B33 brownstone`, `#E3B341 gold`, `#2F8F4A reggae green`, `#C8372D reggae red`
@@ -648,7 +648,7 @@ Film scores, classical, musicals, game music and novelties.
 
 ### 26. The Isle of Memes & Musicals
 
-*comedy, soundtrack, region:novelty, musicals, disney* · 47 songs · energy 0.68, acoustic 0.30, mood 0.64 · top artists: Phineas and Ferb, Stantough, Captainsparklez, The Little Singers, Zac Efron
+*comedy, soundtrack, region:novelty, musicals, disney* · 48 songs · energy 0.68, acoustic 0.30, mood 0.64 · top artists: Phineas and Ferb, Stantough, Captainsparklez, The Little Singers, Zac Efron
 
 - **Terrain:** A storybook island of round hills and winding paths.
 - **Colours:** `#4A90E2 storybook blue`, `#F7A1C4 pink`, `#FFE066 candy yellow`, `#7CCB5A cartoon grass`
