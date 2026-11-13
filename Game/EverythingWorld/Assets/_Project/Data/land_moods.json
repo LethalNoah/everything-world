@@ -178,6 +178,13 @@
    "weather": "", "weatherAmount": 0
   },
   {
+   "land": "The Isle of Scores",
+   "sunPitch": 40, "sunYaw": 200, "sunIntensity": 0.8, "sunColor": "#C8D4FF",
+   "skyLight": "#5A6CC0", "horizonLight": "#4E5AA0", "groundLight": "#3C4660",
+   "fogColor": "#141C40", "fogStart": 120, "fogEnd": 1500, "stars": 1.0, "sunShadows": false, "dailyWeather": false, "bloom": 1.35,
+   "weather": "", "weatherAmount": 0
+  },
+  {
    "land": "Discotopia",
    "sunPitch": 52, "sunYaw": 30, "sunIntensity": 0.95, "sunColor": "#D4E2FF",
    "skyLight": "#7C8CE0", "horizonLight": "#8A92D0", "groundLight": "#70748C",

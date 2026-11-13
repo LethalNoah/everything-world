@@ -1155,13 +1155,21 @@ Theatrical islands, closest to the hub.
 **Artist areas:** A statue of each composer on a plinth. This is where the shrine idea fits most literally.
 
 ### The Isle of Scores
-*21 songs · 13 artists · 0.47 km²*
+*24 songs · 15 artists · 0.47 km² · built in Unity*
 
-**Arriving:** Sweeping cliffs and plateaus under a huge sky; an orchestra amphitheatre carved into a cliff.
+**Arriving:** An open-air amphitheatre at night. You stand on the orchestra floor, a round of dark stone with a gold ring and a compass star set in it; stone tiers rise in a horseshoe all round you, braziers burning at their ends; in front of you a great quarter-dome shell of royal blue with gold ribs and little lights, an orchestra of black chairs and music stands with gold lamps waiting under it, and the conductor's podium in velvet and gold, the baton on its stand.
 
-**The vibe:** Epic golden light with drifting clouds.
+**The vibe:** An orchestra under the stars: the feeling of every film score you ever loved swelling up at once. A deep royal-blue night full of stars with shooting stars crossing it; long blue-green grass with fireflies; dark cypresses, marble statues on gold-rimmed plinths, red-and-gold banners, music stands left out on the grass, benches under gold lanterns and the odd black grand piano with its lid up. The Star Road, dark stone set with glowing stars and lit by tall lanterns topped with stars, runs out of the aisle between the tiers all the way to the desert where a starship has landed. A lake with swans gliding round it.
 
-**Artist areas:** John Williams gets a hall. Others are conductor's podiums along the cliffs.
+**Artist areas:** Most composers stand on a round dark-stone dais with a gold rim and a music stand bearing their name; covers on a royal-blue board in a gold frame. John Williams has the end of the Star Road: a desert under two suns on tall poles, a starship on its legs with its ramp down and its engines glowing blue, a little droid to carry, and a piece for every song: a slab of gold text tilting up into the stars ("Star Wars"), a black stair edged in red between black banners ("The Imperial March"), a lava pool with a red blade and a blue blade crossed over it ("Duel of the Fates", "Anakin vs. Obi-Wan"), a domed cantina with three stools and horns ("Cantina Band"), a gun turret ("Imperial Attack") and a podium of three medals ("Finale"). Danny Elfman has a Halloween town under a huge moon: a curly hill to climb, crooked houses with orange windows, an iron gate with a curl, pumpkins, gravestones and a bare twisted tree, a little snowy pine wound with lights ("What's This?") and a bathtub on clawed legs ("Kidnap the Sandy Claws"); the Citizens of Halloween have the pumpkin patch and scarecrow next door. Also a red pavilion with a zither and a tree of white blossom (Ancient Chinese composer), a circle of grave markers in the sand round a gold glow (Ennio Morricone), a stone temple door with a golden idol, a boulder and a fedora to carry (the Indiana Jones theme), a hang glider (Jerry Goldsmith), a little red bridge over a stream between lanterns (Joe Hisaishi), a floodlight mast with lasers (Mark Governor), a flying saucer with its beam (Mark Snow), a white mountain of spires (Michael Giacchino), a tutu, a barre and a swan (Tchaikovsky), winged helmets on spears (Wagner), a grand piano under a lamp (Rachmaninoff), and striped tufty trees round a seed in a pot (The Lorax Singers).
+
+**Happenings:** Shooting stars cross the sky; the flying saucer bobs and turns; swans glide round the lake; fireflies drift; the braziers send up sparks; the music stands and the shell breathe with the music. "The Imperial March" turns everything red, pulsing like a march. "Star Wars" makes the stars blaze, with more shooting stars. "Duel of the Fates" flickers red and blue. "This Is Halloween" goes orange and sickly green with embers drifting up. "What's This?" brings snow. "Ride of the Valkyries" brings a storm with lightning. "Swan Lake" is silver moonlight on the lake. "L'Estasi Dell'Oro" is a blaze of gold. "Let It Grow" turns green. The X-Files theme pulses the saucer's green. "Soarin'" brings a bright windy sky.
+
+**The streets and places:** Laid out on purpose: the Amphitheatre with a ring walk round its tiers, and the Star Road out of its aisle, are the spine; every lane to an artist branches from them.
+- **The Amphitheatre:** step up to the podium and conduct the orchestra; take a seat in the orchestra or on the tiers.
+- **The Star Road:** walk the road of stars to the starship.
+- **The lake of swans:** sit on a bench by the water.
+- **Out on the hills:** sit at a grand piano; climb the curly hill in the Halloween town.
 
 ### The 8-Bit Isle
 *17 songs · 12 artists · 0.45 km²*
