@@ -716,13 +716,20 @@ A few people sit about them, each with a tune they can't finish. The lamp benche
 - **The Sky Stair:** climb the floating steps to the lookout and look over every island.
 
 ### The Liquid Rapids
-*22 songs · 20 artists · 0.47 km² · new*
+*22 songs · 20 artists · built in Unity*
 
-**Arriving:** Fast blue rivers and waterfalls rushing through smooth rock channels, mist over everything. A glass-floored rave stage is built over the biggest waterfall.
+**Arriving:** At the Falls on a summer evening: a round terrace of warm stone beside a rock face, where a waterfall pours into a glowing blue pool, spray rising gold in the low sun. Stepping stones lead across the stream, an old tree leans over the pool with a rope swing hanging from it, and benches face the water under lanterns.
 
-**The vibe:** Fast but floating. Light poles pulsing at 174 bpm, rope bridges, glowing buoys.
+**The vibe:** Fast but floating, like liquid drum and bass: rushing water and a slow, warm evening at the same time. Cool blue water and white foam against gold lantern light; deep green riverbanks; weeping willows, reed beds, little cascades spilling over stone steps, river stones, canoes pulled up on the grass, picnic benches under lanterns, wildflowers, fireflies. The River Walk follows a long river of rapids and rocks, crossed by arched wooden footbridges, down to the Weir, where the river drops over three stone steps beside a mill with a turning water wheel and a lit window.
 
-**Artist areas:** Platforms on the riverbanks and islands mid-stream. High Contrast and Netsky get the best views of the falls.
+**Artist areas:** Each artist has a floor of flat river stones round a little stone basin of glowing water, a wooden signpost with their name, a glowing float on a reed for each song and one thing from their music; covers on a wooden board under a lantern. Netsky has a sun turning over a green sugarloaf hill, with benches facing it ("Everybody Loves The Sunshine", "Rio"). High Contrast has a black-and-white disc and a turning loop of light ("If We Ever", "Return Of Forever"). Also a mirror pool (B-complex), a pair of white wings (Birdy), a stag with glowing antlers (Calibre), a giant volume knob (Camo & Krooked), a little skyline with gold windows (Goldie, "Inner City Life"), two hands almost touching (Hybrid Minds, "Touch"), a panda (LAOS), an open book (Lenzman, "Open Page"), a striped beach hut on sand (Logistics, "Hayling"), a bunch of balloons (London Elektricity, "Life Is Beautiful"), a fire bowl (Melano, "On Fire"), a ball of energy (Metrik), a swinging pendulum (Pendulum, "Witchcraft"), a brown paper bag (Roni Size), a glowing red rose (Sub Focus, "Desire"), a wall of speakers (Uk Apache), a disc of afterglow (Wilkinson) and a rainbow prism tree (jungle wizard, "Peace Within Colors").
+
+**Happenings:** Everything follows a 174 bpm drum-and-bass clock on the shared clock: lamps and water breathe on the beat, foam drifts down the river, spray rises at every fall and cascade, fireflies come out over the grass, the mill wheel turns, the pendulum swings. "Everybody Loves The Sunshine" turns the evening deep gold. "Witchcraft" brings a purple storm with rain. "Afterglow" turns the sky orange and pink. "Inner City Life" turns it city gold. "Life Is Beautiful" brings soft pastels. "On Fire" turns it orange with sparks. "Peace Within Colors" cycles through the rainbow. "Desire" turns it deep red.
+
+**The streets and places:** Laid out on purpose: the Falls and the River Walk are the spine, and every lane to an artist branches from them.
+- **The Falls:** sit by the pool, or take the rope swing out over the water and jump.
+- **The River Walk:** follow the rapids and count the footbridges.
+- **The Weir:** the river drops over stone steps beside the mill and its turning wheel.
 
 ### The Sample Gardens
 *18 songs · 14 artists · built in Unity*

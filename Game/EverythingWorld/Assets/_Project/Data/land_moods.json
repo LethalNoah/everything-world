@@ -269,6 +269,13 @@
    "weather": "", "weatherAmount": 0
   },
   {
+   "land": "The Liquid Rapids",
+   "sunPitch": 10, "sunYaw": 250, "sunIntensity": 0.95, "sunColor": "#FFC080",
+   "skyLight": "#7090C0", "horizonLight": "#FFB088", "groundLight": "#606858",
+   "fogColor": "#90A0B8", "fogStart": 140, "fogEnd": 1600, "stars": 0.2, "sunShadows": false, "dailyWeather": false, "bloom": 1.25,
+   "weather": "", "weatherAmount": 0
+  },
+  {
    "land": "Discotopia",
    "sunPitch": 52, "sunYaw": 30, "sunIntensity": 0.95, "sunColor": "#D4E2FF",
    "skyLight": "#7C8CE0", "horizonLight": "#8A92D0", "groundLight": "#70748C",
