@@ -9,7 +9,7 @@ namespace EverythingWorld.World
     ///   club; the red marquee flickers now and then and its bulbs chase; notes drift up from the saxophone on the
     ///   bridge; the lamps and their pools of light breathe a little with the music;
     /// - Alice Coltrane's songs: the rain stops, gold comes into the sky and the stars come out over the hill.
-    ///   "Astral Traveling": the stars come out too. "Strange Fruit": every lamp, window and sign in town goes down
+    ///   "What a Wonderful World": the rain stops and the sky lightens. "Astral Traveling": the stars come out too. "Strange Fruit": every lamp, window and sign in town goes down
     ///   low, and one light is left. "So What": the town turns blue. "Take the "A" Train": the train's windows flash
     ///   by. "In the Mood": the bulbs chase fast. "'Tis Autumn": leaves fall. "Blue Rondo à la Turk": the nine stones
     ///   light in twos and threes. Every song's own light brightens while it plays.
@@ -17,7 +17,7 @@ namespace EverythingWorld.World
     {
         const string Land = "The Old Jazz Quarter";
         public Vector3 center, aliceAt, leavesAt;
-        public string billieSong, soWhatSong, trainSong, moodSong, autumnSong, astralSong, rondoSong;
+        public string wonderSong, billieSong, soWhatSong, trainSong, moodSong, autumnSong, astralSong, rondoSong;
         public HashSet<string> aliceSongs = new HashSet<string>();
         public Material lamps, pools, windows, neon, blue, gold, stars, train; public Material[] bulbs, rondo;
         public float played = -99f;
@@ -27,7 +27,7 @@ namespace EverythingWorld.World
 
         CloudLayer clouds; ParticleSystem mist, leaves, noteDots;
         Color lampBase, poolBase, windowBase, neonBase, blueBase, goldBase, bulbBase, trainBase;
-        float alice, astral, billie, soWhat, aTrain, mood, autumn, rondoOn, nextSteam, nextLeaf, nextNote, flickerUntil, nextFlicker;
+        float wonder, alice, astral, billie, soWhat, aTrain, mood, autumn, rondoOn, nextSteam, nextLeaf, nextNote, flickerUntil, nextFlicker;
         static readonly int[] RondoBeat = { 0, 2, 4, 6 };
 
         void Start()
@@ -80,6 +80,7 @@ namespace EverythingWorld.World
             bool On(string song) => here && song != null && id == song;
 
             alice = Mathf.MoveTowards(alice, here && id != null && aliceSongs.Contains(id) ? 1f : 0f, dt / 6f);
+            wonder = Mathf.MoveTowards(wonder, On(wonderSong) ? 1f : 0f, dt / 5f);
             astral = Mathf.MoveTowards(astral, On(astralSong) ? 1f : 0f, dt / 5f);
             billie = Mathf.MoveTowards(billie, On(billieSong) ? 1f : 0f, dt / 6f);
             soWhat = Mathf.MoveTowards(soWhat, On(soWhatSong) ? 1f : 0f, dt / 4f);
@@ -116,11 +117,12 @@ namespace EverythingWorld.World
             }
 
             // the sky and the rain: it always rains, except over Alice Coltrane's songs
-            SkyDirector.SetSongRain(Land, .55f * (1f - alice));
+            SkyDirector.SetSongRain(Land, .55f * (1f - Mathf.Max(alice, wonder)));
             var tint = new Color(.5f, .52f, .58f); var amount = 0f;
             if (soWhat > 0f) { tint = Color.Lerp(tint, new Color(.25f, .45f, 1f), soWhat); amount = Mathf.Lerp(amount, .4f, soWhat); }
             if (autumn > 0f) { tint = Color.Lerp(tint, new Color(1f, .75f, .45f), autumn); amount = Mathf.Lerp(amount, .16f, autumn); }
             if (astral > 0f) { tint = Color.Lerp(tint, new Color(.45f, .4f, .9f), astral); amount = Mathf.Lerp(amount, .3f, astral); }
+            if (wonder > 0f) { tint = Color.Lerp(tint, new Color(.7f, .85f, 1f), wonder); amount = Mathf.Lerp(amount, .3f, wonder); }
             if (alice > 0f) { tint = Color.Lerp(tint, new Color(1f, .72f, .35f), alice); amount = Mathf.Lerp(amount, .34f, alice); }
             if (billie > 0f) { tint = Color.Lerp(tint, new Color(.02f, .02f, .03f), billie); amount = Mathf.Lerp(amount, .6f, billie); }
             SkyDirector.SetSongTint(Land, tint, amount);

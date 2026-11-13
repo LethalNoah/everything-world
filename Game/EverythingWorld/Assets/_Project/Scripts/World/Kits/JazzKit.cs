@@ -62,6 +62,7 @@ namespace EverythingWorld.World
                 case "Miles Davis": return 15f;
                 case "Duke Ellington": return 14f;
                 case "Herbie Hancock": case "Billie Holiday": case "Chet Baker": return 11f;
+                case "Louis Armstrong": return 12f;
                 default: return HasStation(a) ? 12f : 8.5f;
             }
         }
@@ -117,6 +118,7 @@ namespace EverythingWorld.World
             Put("Miles Davis", 0f, 42f, 30f); Put("Herbie Hancock", 4f, -44f, 28f); Put("Moondog", -40f, -30f, 24f);
             // downhill: the swing era
             Put("Duke Ellington", -66f, 8f, 30f); Put("Glenn Miller", -70f, 58f, 26f); Put("Cab Calloway", -106f, -22f, 26f); Put("Ella Fitzgerald", -114f, 26f, 26f); Put("Frank Sinatra", -74f, -70f, 26f); Put("Nat King Cole", -152f, -2f, 26f);
+            Put("Louis Armstrong", -118f, 86f, 28f); Put("Preservation Hall Jazz Band", -156f, 46f, 24f);
             // east: soul jazz. west: the travellers
             Put("Cannonball Adderley", 6f, 94f, 26f); Put("Jimmy Smith", -34f, 102f, 26f); Put("Les McCann", 30f, 140f, 26f); Put("Donald Byrd", -20f, 148f, 26f);
             Put("Django Reinhardt", 10f, -96f, 26f); Put("The Dave Brubeck Quartet", -34f, -106f, 26f); Put("Stan Getz", 26f, -144f, 26f);

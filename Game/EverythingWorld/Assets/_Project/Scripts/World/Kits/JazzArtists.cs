@@ -84,6 +84,7 @@ namespace EverythingWorld.World
                 case "Chet Baker": ChetBaker(z); break;
                 case "Herbie Hancock": HerbieHancock(z); break;
                 case "Django Reinhardt": Django(z); break;
+                case "Louis Armstrong": LouisArmstrong(z); break;
                 default: Doorway(z); Others(z); break;
             }
             SongLamps(z);
@@ -329,6 +330,34 @@ namespace EverythingWorld.World
             z.mk.Prism(iron, sw + up * 2.34f - z.side * 1f, z.side, .05f, 2f, 5); z.mk.Box(SongGlow(s, Brass, .8f), sw + up * .5f, new Vector3(.7f, .05f, .26f), rot); Interact.Seat(tlife.transform, sw + up * .56f, z.front, "Sit on the small swing").seatHeight = .5f;
         }
 
+        // ---------------------------------------------------------------- Louis Armstrong: What a Wonderful World
+        /// The one garden in town that is in colour: trees of green, red roses, a patch of blue sky and white clouds
+        /// on poles, a rainbow over a bench; a trumpet and a white handkerchief; a wind-up gramophone.
+        void LouisArmstrong(Plot z)
+        {
+            var up = Vector3.up; var rot = z.Rot; var rng = new System.Random(68); var ww = Song(z, "What A Wonderful World"); var we = Song(z, "West End Blues"); life.wonderSong = ww; var c = z.At(-2f, 0);
+            var lawn = SongGlow(ww, new Color(.25f, .7f, .3f), .5f); z.mk.Prism(lawn, c + up * .09f, up, 6.4f, .02f, 26); z.mk.Prism(white, c + up * .08f, up, 6.7f, .015f, 26);
+            // trees of green, red roses too
+            var green = SongGlow(ww, new Color(.2f, .75f, .3f), .7f); var green2 = SongGlow(ww, new Color(.35f, .8f, .25f), .7f); var bark = WorldMaterials.Solid(new Color(.45f, .3f, .2f));
+            foreach (var (fw, rt) in new[] { (-3.6f, -3.4f), (-4.4f, 2.6f), (.6f, 5f) }) { var t = c + z.front * fw + z.side * rt; t.y = z.ctx.Ground(t.x, t.z); z.mk.Prism(bark, t - up * .2f, up, .22f, 2.6f, 7, .7f); ArtistBits.PostCollider(z.root, t, 2.6f, .24f); for (var k = 0; k < 3; k++) z.mk.Blob(k % 2 == 0 ? green : green2, t + up * (3.2f + k * .5f) + Quaternion.Euler(0, k * 120f, 0) * Vector3.forward * .8f, new Vector3(1.5f, 1.1f, 1.5f), rng, .25f); }
+            var red = SongGlow(ww, new Color(1f, .15f, .2f), 1.3f); for (var b = 0; b < 4; b++) { var bp = c + Quaternion.Euler(0, b * 80f + 200f, 0) * z.front * 4.6f; bp.y = z.ctx.Ground(bp.x, bp.z); z.mk.Blob(green2, bp + up * .5f, new Vector3(.7f, .5f, .7f), rng, .3f); for (var k = 0; k < 6; k++) z.mk.Blob(red, bp + up * (.6f + (k % 3) * .2f) + Quaternion.Euler(0, k * 60f, 0) * Vector3.forward * .55f, Vector3.one * .1f, rng, .3f); }
+            // skies of blue, clouds of white, and the colours of the rainbow over the bench
+            var sky = c - z.front * 5f; z.mk.Prism(iron, sky - up * .2f, up, .07f, 5.4f, 6); ArtistBits.PostCollider(z.root, sky, 5f, .1f); z.mk.Box(SongGlow(ww, new Color(.3f, .6f, 1f), 1f), sky + up * 5.6f, new Vector3(4.4f, 2.4f, .1f), rot); for (var k = 0; k < 2; k++) for (var q = 0; q < 3; q++) z.mk.Blob(SongGlow(ww, new Color(1f, 1f, 1f), .8f), sky + up * (5.3f + k * .7f) + z.side * (-1.3f + k * 2f + q * .4f) + z.front * .2f, new Vector3(.5f, .3f, .2f), rng, .2f);
+            var arc = c + z.front * 1f; var bands = new[] { new Color(1f, .2f, .2f), new Color(1f, .6f, .1f), new Color(1f, .9f, .2f), new Color(.2f, .8f, .3f), new Color(.2f, .5f, 1f), new Color(.6f, .3f, .9f) };
+            for (var b = 0; b < bands.Length; b++) { var m = SongGlow(ww, bands[b], 1.1f); var r = 3.6f - b * .22f; var prev = arc - z.side * r; for (var k = 1; k <= 16; k++) { var a = k / 16f * Mathf.PI; var p = arc - z.side * Mathf.Cos(a) * r + up * Mathf.Sin(a) * r; z.mk.Prism(m, prev, (p - prev).normalized, .1f, Vector3.Distance(prev, p) + .02f, 5); prev = p; } }
+            foreach (var e in new[] { -1f, 1f }) ArtistBits.PostCollider(z.root, arc + z.side * e * 3.3f, 1.2f, .5f); halos.Add(arc + up * 2.6f, 4f, Paper, .25f); Bench(z.mk, arc - z.front * .4f + up * .1f, z.front, 2.2f);
+            z.area.glowLight = ArtistBits.PointLight(z.root, c + up * 4f + z.front * 2f, new Color(1f, .95f, .85f), 24f, 3f);
+            // his trumpet on a stand, a white handkerchief over it
+            var tp = z.At(3.6f, -3f); z.mk.Prism(iron, tp, up, .16f, .03f, 8); z.mk.Prism(iron, tp, up, .015f, 1f, 4); Trumpet(z.mk, tp + up * 1.06f, Quaternion.LookRotation(z.side), brassM); z.mk.Box(white, tp + up * 1.02f - z.side * .1f, new Vector3(.26f, .3f, .02f), rot * Quaternion.Euler(0, 0, 20f)); ArtistBits.PostCollider(z.root, tp, 1.1f, .1f);
+            string[] play = { "A few bright notes, round as oranges. The roses turn their heads.", "You play it plain and warm, and for a moment the rain over the town sounds like applause.", "One high note, held, with a smile in it. You can hear the smile.", "\"Oh yeah,\" says nobody at all, in a voice like gravel and honey." }; var pn = 0;
+            Spot("The trumpet", tp + up * 1.2f, "Play a few notes", new Vector3(1f, 1.6f, 1f)).onUse = _ => { life.played = Time.time; Say1(tp + up * 2.6f, play[pn++ % play.Length]); };
+            // "West End Blues": a wind-up gramophone
+            var gp = z.At(3.6f, 3.6f); z.mk.Box(grey, gp + up * .36f, new Vector3(.7f, .72f, .7f), rot); z.mk.Box(dark, gp + up * .8f, new Vector3(.5f, .16f, .5f), rot); z.mk.Prism(dark, gp + up * .89f, up, .2f, .01f, 14); z.mk.Prism(SongGlow(we, Brass, 1.1f), gp + up * .95f - z.side * .2f, (up + z.side * .5f + z.front * .3f).normalized, .03f, .7f, 8, 9f); z.mk.Prism(brassM, gp + up * .8f + z.side * .26f, z.side, .012f, .16f, 4); BoxCol(z.root, gp + up * .45f, new Vector3(.7f, .9f, .7f), rot);
+            string[] wind = { "You wind it. A trumpet climbs out of the horn alone, unhurried, and changes everything that comes after it.", "Crackle, hiss, and then that opening run. The year is nineteen twenty-eight for exactly fifteen seconds.", "The needle drops. Even the rain leans in." }; var wn = 0;
+            Spot("The gramophone", gp + up * 1.2f, "Wind the gramophone", new Vector3(.9f, 1.4f, .9f)).onUse = _ => Say1(gp + up * 2.4f, wind[wn++ % wind.Length]);
+            Shot(z.ctx, "the garden in colour", z.At(10f, 4f) + up * 2.2f, c + up * 2.4f);
+        }
+
         // ---------------------------------------------------------------- everyone else
         void Others(Plot z)
         {
@@ -383,6 +412,11 @@ namespace EverythingWorld.World
                     var wa = p - z.side * 3.2f + up * 3.4f; var wb = p + z.side * 3.2f + up * 3.4f; foreach (var e in new[] { -3.2f, 3.2f }) { z.mk.Prism(iron, p + z.side * e - up * .2f, up, .06f, 3.7f, 5); ArtistBits.PostCollider(z.root, p + z.side * e, 3.4f, .08f); } z.mk.Prism(dark, wa, (wb - wa).normalized, .012f, (wb - wa).magnitude, 3);
                     var bird = SongGlow(s, new Color(1f, 1f, .95f), 1.2f); for (var k = 0; k < 7; k++) { var bp = Vector3.Lerp(wa, wb, .1f + k * .13f) + up * .09f; z.mk.Blob(bird, bp, new Vector3(.07f, .08f, .13f), rng, 0f); z.mk.Blob(bird, bp + up * .1f + z.front * .08f, Vector3.one * .045f, rng, 0f); } var gb = p + z.front * 1.5f - z.side * .5f; z.mk.Blob(bird, gb + up * .09f, new Vector3(.07f, .08f, .13f), rng, 0f); z.mk.Blob(bird, gb + up * .19f + z.front * .08f, Vector3.one * .045f, rng, 0f);
                     Spot("Moondog's corner", p + up * 1.2f + z.front * .6f, "Stand with him", new Vector3(1.4f, 2f, 1.4f)).onUse = _ => Say1(p + up * 3f, "He says nothing. He stands at his corner with his spear while the town goes round him, and the birds stay."); break;
+                case "Preservation Hall Jazz Band":
+                    s = Song(z, "Santiago"); var pb = SongGlow(s, new Color(.95f, .72f, .28f), .5f); z.mk.Prism(pb, p + up * .3f, (up + z.front * .15f).normalized, .1f, 1f, 8, .6f); z.mk.Prism(pb, p + up * 1.2f + z.front * .14f, (up + z.front * .6f).normalized, .12f, .5f, 10, 3.4f); z.mk.Blob(pb, p + up * .5f, new Vector3(.26f, .3f, .2f), rng, .05f); z.mk.Prism(iron, p, up, .2f, .04f, 8); ArtistBits.PostCollider(z.root, p, 1.6f, .3f);
+                    var bd = p + z.side * 1.5f + up * .5f; z.mk.Prism(white, bd - z.front * .2f, z.front, .5f, .4f, 16); z.mk.Prism(grey, bd - z.front * .22f, z.front, .54f, .06f, 16); z.mk.Prism(grey, bd + z.front * .16f, z.front, .54f, .06f, 16); ArtistBits.Label(z.labels, "HALL", bd + z.front * .22f, z.front, .22f, Ink, TextAnchor.MiddleCenter); BoxCol(z.root, bd, new Vector3(1.1f, 1f, .5f), rot);
+                    var tb2 = p - z.side * 1.4f; z.mk.Prism(iron, tb2, up, .015f, 1.2f, 4); var td2 = (z.front + up * .25f).normalized; z.mk.Prism(pb, tb2 + up * 1.2f - z.front * .5f, td2, .02f, 1.3f, 5); z.mk.Prism(pb, tb2 + up * 1.28f - z.front * .5f, td2, .02f, .9f, 5); z.mk.Prism(pb, tb2 + up * 1.2f - z.front * .5f + td2 * 1.3f, td2, .03f, .22f, 8, 4f);
+                    z.mk.Prism(dark, p - z.side * 2f + z.front * .5f + up * .1f, (up + z.side * .2f).normalized, .025f, .9f, 6); Bench(z.mk, z.At(4.6f, 1f), -z.front); break;
                 case "Nat King Cole":
                     s = Song(z, "Unforgettable"); Grand(z.root, z.mk, p, rot * Quaternion.Euler(0, 180f, 0), dark, white); var fr2 = p + up * 1.03f - z.side * .3f - z.front * .2f; z.mk.Box(WorldMaterials.Solid(Silver, .8f), fr2 + up * .18f, new Vector3(.3f, .36f, .03f), rot * Quaternion.Euler(-10f, 0, 0)); z.mk.Box(SongGlow(s, new Color(1f, .96f, .86f), 1f), fr2 + up * .18f + z.front * .02f, new Vector3(.24f, .3f, .02f), rot * Quaternion.Euler(-10f, 0, 0)); halos.Add(fr2 + up * .2f + z.front * .3f, .7f, Paper, .5f);
                     var vs = p + up * 1.03f + z.side * .35f - z.front * .1f; z.mk.Prism(WorldMaterials.Solid(Silver, .9f), vs, up, .04f, .2f, 6); z.mk.Prism(leafDark, vs + up * .2f, up, .008f, .22f, 3); z.mk.Blob(SongGlow(s, new Color(1f, .2f, .25f), 1.6f), vs + up * .44f, Vector3.one * .05f, rng, .2f);
