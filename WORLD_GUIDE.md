@@ -926,13 +926,21 @@ Warm, humid, rhythmic. River country, smoky towns and coastline.
 - **The Belvedere:** up the grand stair: little tables to sit at, a champagne tower to pour, glasses to carry, a waiter, and the view back over the Floor.
 
 ### The Afrobeat Coast
-*13 songs · 12 artists · 0.45 km² · new*
+*13 songs · 12 artists · 0.45 km² · built in Unity*
 
-**Arriving:** A lively coastal city of colourful markets, bright beaches and red-earth roads; an open-air shrine-club with a horn section on stage.
+**Arriving:** The roundabout on the hilltop at sunset, among bright painted houses. Beside you is the Big Drum, three times your height. A yellow bus waits at the kerb with its door open and a conductor shouting "Beach! Beach!". To the west, Market Road runs straight downhill to the sea, and at the end of it a huge orange sun is going into the water under a purple sky.
 
-**The vibe:** Joyful and rhythmic. Printed-fabric stalls, danfo buses, talking drums, beach bonfires.
+**The vibe:** A joyful street party turning into a beach party. Red-earth roads, strings of orange, gold and pink bulbs chasing down the hill, stalls on both sides of Market Road selling printed cloth, fruit, talking drums, grilled suya, cold drinks and records, a yellow bus going up and down, goats who have seen it all. Houses in yellow, turquoise, pink and green with adverts painted on the walls. At the bottom the road runs out onto the sand: three bonfires with logs to sit on, a circle of drummers, painted canoes, a football pitch scratched in the beach, and the sun's road of light across the water.
 
-**Artist areas:** Market stalls. Fela Kuti at the shrine-club.
+**Artist areas:** Most artists have a market stall of their own, bigger than the rest, with their name painted on the board over it, a bench, and one thing from their song beside it; covers on a cream card in a painted frame. Fela Kuti has the Shrine, the open-air club by the roundabout: a tin roof on tall poles over a painted stage with three horns on stands, an organ and congas to play, a shekere to carry, a floor of people dancing, and a round fountain out front. Burna Boy: a wall of painted speakers with YE in lights on top, a microphone, a giant's footprints across the yard, and a heart broken in two over a plastic table with breakfast on it. Wizkid: a rooftop lounge on a deck facing the sun, with a sofa, a tall glowing bottle of ESSENCE and a gold star on a pole. William Onyeabor: a wall of synthesisers to play, a white hat on a stand, and a mirror that says FANTASTIC. Also CKay's three hearts in lights and a little keyboard, Ayra Starr's star and a motorbike with speed lines, Davido's banana plant and a crate of bananas (two hands to carry), Diamond Platnumz' arch of greetings under a diamond, I Hate My Village's plank skate ramp and a skateboard, Letta Mbulu's radio under a baobab, Manu Dibango's great golden saxophone, and Nomo's stall, which is built upside down.
+
+**Happenings:** The bulbs chase down the hill, faster with the music, and jump when the Big Drum is hit; the bonfires flicker and throw sparks; smoke rises from the grills; fireflies come out; the bus stops for anyone standing in the road. "Water No Get Enemy" makes the Shrine's fountain leap and turns the evening sea-blue. "Last Last" sends the bonfires roaring up. "Essence" turns the sky rose and warms every window. "Fantastic Man" runs every bulb through every colour. "Rush" sends the bus tearing up and down. "Fall" rains bananas on Davido's stall. "love nwantiti" floats hearts up from CKay's.
+
+**The streets and places:** Laid out on purpose: the roundabout, Market Road and the beach are the spine, and every lane to an artist branches from them. There are people everywhere and all of them want to talk.
+- **The roundabout:** the Big Drum to beat, the parked bus to sit in, a drummer who will translate.
+- **The Shrine:** go in under the roof and play the organ riff or the congas; it has been the same song since yesterday.
+- **Market Road:** the stalls (tap a drum, take an orange, a stick of suya, a cold malt, a record with no label), the bus, the goats.
+- **The beach:** sit on a log by a bonfire, join the drum circle, sit in a canoe, kick the football about, watch the sun.
 
 ---
 
