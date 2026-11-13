@@ -584,7 +584,7 @@ Hip-hop, R&B and lo-fi beats.
 
 ### 11. The Hip-Hop Boroughs
 
-*hip hop, rap, trap, grime, neo soul* · 61 songs · energy 0.67, acoustic 0.21, mood 0.54 · top artists: Kendrick Lamar, Logic, Black Eyed Peas, Eminem, Kanye West
+*hip hop, rap, trap, grime, r&b* · 55 songs · energy 0.67, acoustic 0.20, mood 0.53 · top artists: Kendrick Lamar, Logic, Black Eyed Peas, Eminem, Kanye West
 
 - **Terrain:** Dense city blocks on mesa tops, linked by bridges across the gaps.
 - **Colours:** `#7D7D7D concrete`, `#E3B341 gold`, `#3C2C5E night purple`, `#9E3B2E red brick`
@@ -648,7 +648,7 @@ Film scores, classical, musicals, game music and novelties.
 
 ### 26. The Isle of Memes & Musicals
 
-*comedy, soundtrack, region:novelty, musicals, disney* · 48 songs · energy 0.68, acoustic 0.30, mood 0.64 · top artists: Phineas and Ferb, Stantough, Captainsparklez, The Little Singers, Zac Efron
+*comedy, soundtrack, region:novelty, musicals, disney* · 54 songs · energy 0.68, acoustic 0.30, mood 0.64 · top artists: Phineas and Ferb, Stantough, Captainsparklez, The Little Singers, Zac Efron
 
 - **Terrain:** A storybook island of round hills and winding paths.
 - **Colours:** `#4A90E2 storybook blue`, `#F7A1C4 pink`, `#FFE066 candy yellow`, `#7CCB5A cartoon grass`
