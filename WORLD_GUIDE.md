@@ -1172,13 +1172,21 @@ Theatrical islands, closest to the hub.
 - **Out on the hills:** sit at a grand piano; climb the curly hill in the Halloween town.
 
 ### The 8-Bit Isle
-*17 songs · 12 artists · 0.45 km²*
+*25 songs · 18 artists · 0.45 km² · built in Unity*
 
-**Arriving:** A blocky island of pixel-stepped hills; a pixel castle with a glowing save-point crystal at the gate.
+**Arriving:** The Arcade, at a pixel sunset. A checkered floor of blue tiles; a giant arcade cabinet, taller than a house, with a beating pixel heart on its screen and THE 8-BIT ISLE across its marquee; a row of cabinets down each side with red stools to sit and play; PRESS START blinking in the air (press it); gold coins spinning in a ring.
 
-**The vibe:** Bright and cheerful. Coins, farm plots, treasure chests, arcade cabinets.
+**The vibe:** Every game you ever loved, each in its own little world, and everything made of blocks. A violet sky with an orange horizon and pink pixel clouds; grass in flat steps of green; block trees (green, cherry pink and autumn orange), green pipes, rows of brick and gold blocks floating in the air, arcs of spinning coins, red mushrooms with white spots, stepped block hills, benches under pixel lamps and the odd lone arcade cabinet. The Level Road, brick with gold blocks floating over it and pipes beside it, runs to a flagpole you can grab, and beyond it the Ring: a vast silver ring rising out of the ground into the sky, lit blue inside.
 
-**Artist areas:** Arcade cabinets; ConcernedApe gets a farm plot.
+**Artist areas:** Each game is a raised square of grass blocks with the artist's name on a wooden block sign and a floating gold block for every song; covers on a board shaped like a game cartridge. ConcernedApe has a farm in all four seasons at once behind a wooden fence: a farmhouse with a red roof, a chicken coop with chickens hopping about, a scarecrow and a shipping bin, a blossom tree and green shoots ("Spring"), sunflowers and melons ("Summer"), an orange tree and pumpkins ("Fall"), and snow with a snowman and a frozen pond ("Winter"). meganeko has a neon stage: a wall of blinking pixels, pixel speaker stacks, a giant soda can ("Astro Soda"), a blocky shark leaping ("Sharkatzor") and a film camera on a crane ("Lights Camera Action"). The blocky hillside: a block house and tree (C418), steps of stone up toward a sunrise (Lena Raine), a ruined block castle with a crown and a red block with a fuse (Captainsparklez), a mine with torches (Brad Knauber). By the Ring: a silver monolith lined with blue light (Martin O'Donnell), a purple alien spire (Halo), snakeskin boots on a crate (Jack Wall). Also a crystal cave with a barrel (Arcade Player), a sword in a stone under a tree (Big Giant Circles), a calm white shop counter with a bag to carry (Blue Brew Music), paper flowers (Kenneth C M Young), a black single wing and a long sword (Nobuo Uematsu), a gothic lamp among white flowers (SIE Sound Team), a stepped grassy hill with a bomb and a star (Super Mario 64), a hall of golden pillars with a little red pixel heart (Toby Fox) and a pixel atom (she).
+
+**Happenings:** Coins spin and bob everywhere; PRESS START blinks; the pixel heart beats; screens flicker; the pixel wall shimmers; chickens hop; the flag slides down when you grab it and creeps back up; the Ring's light breathes. "MEGALOVANIA" flashes blue and white on the beat. "One-Winged Angel" turns everything red and black. "Wii Shop Channel" is calm pastel blue. The farm's seasons bring snow, pink petals, warm gold and falling orange leaves. The Halo theme glows green-gold and the Ring blazes. "Hunter's Dream" is a pale silver mist. "Bob-Omb Battlefield" is bright sun. "Living Mice" is a soft green. "Sharkatzor" sets the pixel wall racing.
+
+**The streets and places:** Laid out on purpose: the Arcade and the Level Road are the spine, and every lane to a game branches from them.
+- **The Arcade:** press start; sit at a cabinet and play.
+- **The Level Road:** walk under the floating blocks; grab the flag at the end.
+- **The Ring:** stand under it at the end of the road.
+- **The farm:** visit all four seasons at once; ship something in the bin.
 
 ---
 
