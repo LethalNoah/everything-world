@@ -1022,13 +1022,22 @@ City islands joined by bridges. Dusk into night, with one sunny beach.
 **Artist areas:** Maxwell gets the largest. Lauryn Hill, Solange and Erykah Badu get courtyards.
 
 ### The Roots Bay
-*20 songs · 16 artists · 0.46 km² · new*
+*20 songs · 16 artists · 0.46 km² · built in Unity*
 
-**Arriving:** A sunny bay of palm-fringed beaches and green hills; a hand-painted sound system on the beach as tall as a house.
+**Arriving:** The Yard, on a bright morning just after rain. A great spreading tree with a bench all the way round its trunk, a standpipe, washing on a line, a dominoes table, a fruit stall under a red, gold and green awning. The hills are wet and very green with mist still lying in them, the red-earth road is full of puddles the colour of the sky, and over the bay stands a rainbow.
 
-**The vibe:** Easy and uplifting. Painted shacks, hammocks, a ska dance hall.
+**The vibe:** Easy and uplifting, and proud. Bay Road runs from the Yard down to the beach between board houses painted red, gold, green, blue and pink, each on short stilts with a zinc roof and a little verandah, flags on poles, people leaning on the rails saying good morning. Palms along the shore; shade trees, banana and hibiscus on the hills; hammocks; goats. At the bottom the sand: painted canoes, a net drying, fishing huts on stilts over the water. And the Sound System.
 
-**Artist areas:** Painted shacks; Bob Marley at the sound system.
+**Artist areas:** Most artists have a painted board house of their own with a stool on the verandah and one thing from their song beside it; covers on a cream card on a red, gold and green board. Bob Marley & The Wailers have the Sound System on the beach: speaker boxes stacked as tall as a house, hand-painted, ONE LOVE SOUND across the top; a selector's table with a turntable to play; a yard fire with a pot on it and logs to sit on ("No Woman, No Cry"); a line painted on a zinc fence ("Trenchtown Rock"); a sheriff's star nailed to a post. Toots & The Maytals have the dance hall: an open-sided hall under a zinc roof with a chequered floor, a stage with an organ to play and drums, people dancing, a cell door numbered 54-46 standing open, and a rain barrel under a dripping gutter ("Pressure Drop"). The Specials have the one grey street on the island: three shut shops (TO LET, CLOSED DOWN, ALL MUST GO), black and white paving, a lamp that doesn't work, a small grey car, a pork-pie hat on a stand, and a message chalked on a board for Rudy. Jimmy Cliff: a tall leaning tower of painted crates and a film projector. Desmond Dekker: a breakfast table with a loaf to carry, a torn shirt on a line, a spade. Peter Tosh: a herb garden behind a painted gate, a unicycle, a guitar. Burning Spear: a spear with a flame for a point, a black star, a small ship in red, black and green. Lee "Scratch" Perry: a house covered in painted handprints, a mixing desk to dub on, an iron shirt on a pole and a small red devil running away from it. Also Gregory Isaacs' blue night lamp and a hammock, Damian Marley's road sign, Chronixx's sugar cane, Koffee's three cups raised in thanks, Shabba Ranks' gold chain, Shaggy's alibi board, the Baha Men's three dogs, and Major Lazer's lightning bolt.
+
+**Happenings:** Mist drifts and burns off; white clouds move away; butterflies; the Sound System's cones beat slowly like a heart. Bob Marley's songs make the cones beat hard. "No Woman, No Cry" makes the rainbow blaze and turns the morning gold. "Ghost Town" drains the colour from the whole island and brings the mist down thick. "Pressure Drop" brings the rain back for a while. "Chase the Devil" flickers red in the mist. "Night Nurse" turns the light dusk-blue. "Legalize It" lays a green haze. "Israelites" is a hard gold sunrise.
+
+**The streets and places:** Laid out on purpose: the Yard, Bay Road and the beach are the spine, and every lane to an artist branches from them.
+- **The Yard:** sit under the tree, slam a domino, take a mango or a jelly coconut.
+- **Bay Road:** the painted houses and the puddles.
+- **The beach:** sit in a canoe, walk the plank out to the fishing hut, kick the football.
+- **The Sound System:** drop the needle; sit by the fire.
+- **The dance hall:** play the off-beat.
 
 ---
 
