@@ -751,13 +751,21 @@ Bright, saturated, everyone-knows-these. Where the world feels most like a theme
 **Artist areas:** Porches, mailboxes and grain silos along the road; Zac Brown Band and Tyler Childers get the biggest.
 
 ### The Pop Republic
-*64 songs · 40 artists · 0.72 km²*
+*54 songs · 30 artists · 0.71 km² · built in Unity*
 
-**Arriving:** Candy-coloured hills round a crowded boardwalk city; a glittering stage-palace with a ferris wheel behind it.
+**Arriving:** The Plaza, on a bright day under a deep blue sky. A great white fountain throwing up spray, billboards all round (SING IT!, ENCORE, SOLD OUT), confetti cannons, strings of pink, lemon and cyan bulbs, a giant gold photo frame to strike a pose in, an ice-cream cart. Straight ahead the Red Carpet runs to the Palace, and behind the Palace a ferris wheel turns.
 
-**The vibe:** Perpetual bright day. Billboards, fountains, a red carpet. Now home to K-pop too, so add some idol-stage shine.
+**The vibe:** Joyful, everybody singing along, a big show. White paving and candy-coloured townhouses with striped awnings; lollipop trees on the hills; fountains; billboards; benches under star-topped lamps; confetti in the air. The Red Carpet runs between velvet ropes on gold posts, with a star in the pavement for every artist and photographers flashing away behind the ropes. At its end the Palace: a white stage-palace with pink domes, an arch of bulbs, a crowd at the barrier and a microphone anybody can take. Off to one side, K-Pop Square: an idol stage with a screen of light and six sweeping beams, a table of light sticks, fans doing the choreography.
 
-**Artist areas:** Billboards and pop-up stages. Taylor Swift (12 songs, moved here from country) gets a hall: a stadium stage with a staircase of era costumes. Katy Perry gets the next biggest.
+**Artist areas:** Most artists have a pop-up stage of their own: a small round stage under an arch of bulbs, a candy-coloured backdrop, a microphone, and one thing from their song; covers on a cream card on a white board with a row of bulbs on top. The K-pop groups have booths round K-Pop Square. Taylor Swift has the Eras Hall: a long stage with a runway out into the crowd, an arch of sunset over its end ("Cruel Summer"), and behind it a staircase of eras with a dress on every step; round it a red scarf on a hook and a red maple ("All Too Well", "Red"), a birthday table ("22"), a tiny town you're too big for ("Anti-Hero"), a long white wall to write a name on ("Blank Space"), a lilac cat to stroke ("Karma"), a bed of lavender ("Lavender Haze"), a banjo on a chair ("Mean"), a paper ring on a cushion ("Paper Rings"), an old film screen ("Wildest Dreams"), a shovel in fresh earth ("no body, no crime"), and a friendship-bracelet stall. Sabrina Carpenter has a pink heart-shaped stage edged with bulbs, a playpen of blocks ("Manchild"), a heap of giant letters ("Nonsense") and a pink telephone ("Juno"). Katy Perry has firework tubes, a gold tiger ("Roar"), a black horse on a gold plinth ("Dark Horse"), a party's aftermath ("Last Friday Night") and two giant cherries. Michael Jackson has a floor of tiles that light up ("Billie Jean"), a graveyard gate ("Thriller"), a red jacket ("Beat It") and one sparkling glove. Also BTS's disco ball and blossom tree, TWICE's heart, BLACKPINK's pink-and-black hammer, IVE's diving board, NewJeans' bunny, aespa's supernova, Adele's fallen pieces of sky, Christina Perri's hourglass, Dido's white flag, GAYLE's alphabet blocks, Imagine Dragons' glowing barrel, Pentatonix's five microphones, Rick Astley's prize button, The Proclaimers' milestone and more.
+
+**Happenings:** The ferris wheel turns; the fountains spray; confetti drifts over the Plaza and bursts from the cannons whenever anybody plays; photographers' flashes; strings of bulbs chasing; the K-Pop Square beams sweeping. "Firework" sets off fireworks over the whole land. "Cruel Summer" is a pink-orange sunset. "Lavender Haze" lays a lavender haze. "Red" and "All Too Well" turn the light red and drop red leaves. "Blank Space" turns everything white. "Thriller" brings a green night. "Dynamite" is disco colours and confetti. "Skyfall" darkens the sky and brings gold down. "Snow Angel" brings snow. "Supernova" flashes white. "Roar" is gold, "Juno" pink, and the K-pop songs light up the square.
+
+**The streets and places:** Laid out on purpose: the Plaza, the Red Carpet and the Palace are the spine, with a lane to K-Pop Square; every lane to an artist branches from them.
+- **The Plaza:** strike a pose in the gold frame, take an ice cream, sit by the fountain.
+- **The Red Carpet:** find your favourite's star; wave at the photographers.
+- **The Palace:** climb the steps and take the mic; watch the ferris wheel turn behind you.
+- **K-Pop Square:** take a light stick, do the choreography.
 
 ### The Heartbreak Boardwalk
 *31 songs · 14 artists · 0.71 km²*
