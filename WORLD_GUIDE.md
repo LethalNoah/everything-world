@@ -1113,14 +1113,21 @@ City islands joined by bridges. Dusk into night, with one sunny beach.
 Theatrical islands, closest to the hub.
 
 ### The Isle of Memes & Musicals
-*35 songs · 26 artists · 0.50 km²*
+*53 songs · 42 artists · 0.58 km² · built in Unity*
 
-**Arriving:** A storybook island of round hills and winding paths; a castle with a theatre curtain for a front gate.
+**Arriving:** The Homepage, in a pastel dream of the old internet. A plaza of checkered pink and violet marble under a giant glossy orb that hovers and turns; a pink-haired marble bust on a tall plinth in the middle of an aqua fountain throwing up bubbles; a cursor as tall as a house; a hit counter that says you are visitor 000001; and over the way out, a loading bar stuck at 99%.
 
-**The vibe:** Bright cartoon daylight. Singing flowers, rubber chickens, and a suspicious duck (now with its own song). Home of Phineas and Ferb, the Kahoot lobby music and Axel F.
+**The vibe:** Silly, strange and a bit nostalgic: everything you ever laughed at with your friends, in one place, the way the internet looked in a dream. A sky going from pink to teal with soft pink clouds; soft green desktop-wallpaper hills; squares of checkered marble out in the grass; marble busts on pedestals, Greek columns standing or broken, palms, glossy bubbles drifting up, dolphins leaping out of glassy pools, old beige computer monitors left in the fields with their screens on, and doors standing on their own in empty meadows with light behind them. The Superhighway, a road of glass, runs from the Homepage past old desktop icons (a folder, a letter, an hourglass, a recycle bin) bobbing in the air, to the Dream Mall: an open atrium ringed with columns under a pink lintel, a fountain, palms in planters, a food court, and a little theatre with red curtains where the musicals are always on tonight.
 
-**Artist areas:** Phineas and Ferb gets a hall (a backyard with an absurd invention). Others are prop-sized oddities.
+**Artist areas:** Most artists have a window of their own: a pastel window from an old operating system standing in the grass, its title bar with their name and three little buttons, a sky-and-hill wallpaper inside, a square of checkered marble in front, and one thing from their song; covers on a cream card on a glossy teal board. Phineas and Ferb have a whole summer backyard behind a wooden fence: a big shady tree with a bench round it, half a rollercoaster loop rising over the fence, a band stage with a spotlight ("Gitchee Gitchee Goo"), a squirrel statue ("S.I.M.P."), a metronome ("Ain't Got Rhythm"), a pink spotlight and microphone ("I'm Lindana"), a heart balloon, a glittering crown on a pedestal, a sun over a little globe ("Summer Belongs to You") and a big dial turned up a notch. Stantough and Beedle the Bardcore have a bard's corner with a lute to strum. Also The Duck's lemonade stand and the duck himself (he wants grapes), HampsterDance's hamster wheel, Kahoot!'s four coloured answer squares, Wellerman's whaling boat and barrels, PSY's horse, Sharpay's poolside lounger, Burl Ives' snowman, DJ Chipman's peanut butter and a banana to carry, a basketball for Troy, a barbershop quartet's four boaters, a burger for Wesley Willis and more.
 
+**Happenings:** The orb bobs and turns; icons bob along the Superhighway; dolphins leap; bubbles rise from the fountains and drift everywhere; the screens flicker. "Gangnam Style" flashes everything pink on the beat. "Wellerman" and "Drunken Sailor" turn the light stormy sea-blue and get the wind up. "A Holly Jolly Christmas" brings snow. "Axel F" flashes green. "The HampsterDance Song" sets the colours racing. Kahoot!'s lobby music cycles blue and purple. "Fabulous" is pink glitter. "Everybody's Free (To Wear Sunscreen)" is bright sun. "Bill Nye The Science Guy" glows lab-blue. "Gitchee Gitchee Goo" brings confetti.
+
+**The streets and places:** Laid out on purpose: the Homepage, the Superhighway and the Dream Mall are the spine, and every lane to an artist branches from them.
+- **The Homepage:** click the hit counter; sit by the fountain.
+- **The Superhighway:** walk the glass road past the floating icons.
+- **The Dream Mall:** sing the big number on the theatre stage; take a tray from the food court.
+- **The fields:** go through a door that's standing on its own.
 ### Studio Lot Island
 *29 songs · 24 artists · 0.49 km²*
 
