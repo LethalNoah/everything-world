@@ -684,13 +684,20 @@ A few people sit about them, each with a tune they can't finish. The lamp benche
 - **The Core:** stand at the crater's edge under the turning crystal.
 
 ### The IDM Glitchlands
-*30 songs · 15 artists · 0.49 km²*
+*30 songs · 15 artists · built in Unity*
 
-**Arriving:** Unstable ground that splits and rearranges itself. A broken floating island that keeps reassembling.
+**Arriving:** The Kernel: a square plaza of dark tiles laced with glowing green grid lines, a tall black monolith whose face is pixel-sorted into running columns of colour with slices of it hanging displaced in the air, a terminal where you can corrupt the data, lines of code drifting up out of the floor, and blocks hanging overhead that keep jumping to new places.
 
-**The vibe:** Artificial and strobing. Wireframe trees, corrupted cubes, flickering pixels.
+**The vibe:** Clever, restless and broken on purpose: a computer world that never quite renders right. Dark slate ground in hard low-resolution steps under a black-green sky; wireframe cubes, groups of floating blocks that jump on an uneven clock, slabs of corrupted striped colour, patches of glowing grid, giant mouse cursors, half-loaded trees made of cubes, block benches under floating cube lamps. Now and then the whole world tears with a flash of wrong colour. The Bus, a road of glowing circuit traces with pulses of data racing along it, runs to the Stack: a crooked tower of floating blocks outlined in green, slipping in and out of line.
 
-**Artist areas:** Mr. Bill gets a hall (13 songs). Others are glitching cubes.
+**Artist areas:** Each artist has a square pad of dark tiles with a glowing grid, their name floating in terminal green inside a wireframe frame, a floating block for each song and one thing from their music; covers on a black panel with a green edge. Mr. Bill has a sprawling workstation of monitors on a long desk with a chair to sit at, a giant coffee mug ("Caffeine"), a planet turning over the pad ("Corot-7b"), a ladder climbing into nothing ("Ladder Anxiety"), a scatter of debris ("Ejecta"), a glowing monitor of memory ("Cryptomnesia") and a flag ("IDM Anthem"). Also a block of lava capped with snow (Ametsub), a wireframe bicycle (Autechre), a circuit board (Circuit Bent), a glowing banana and arrows (Iglooghost), a pixel desert with a cactus (Igorrr), a return key (Kyegi), a green cloud raining (Lorn), a speech bubble (Memo Boy), a red car and a bass guitar (Squarepusher), a broken stair (Tim Koch), a black cat under a grey cloud (Venetian Snares), a cube of water (Woulg), a pulsing blob (Zebbler Encanti Experience) and glowing roots (diaphane).
+
+**Happenings:** On a fast, uneven shared clock: floating blocks jump and return, the Stack slips, the monolith's columns flicker, code drifts up and resets, data races along the Bus, monitors flicker, and the world tears now and then. Corrupt the data at the terminal and everything jumps at once. "Acid Rain" brings green rain. "Snowy Lava" glows orange with snow. "The Water" turns deep blue. "Öngyilkos Vasárnap" goes grey with rain. "My Red Hot Car" turns red. "IDM Anthem" tears with white glitches. "Corot-7b" is hot orange. "Caffeine" makes everything glitch twice as fast.
+
+**The streets and places:** Laid out on purpose: the Kernel and the Bus are the spine, and every lane to an artist branches from them.
+- **The Kernel:** corrupt the data at the terminal; stand under the jumping blocks.
+- **The Bus:** walk with the data pulses.
+- **The Stack:** watch the tower slip out of line.
 
 ### The Melodic Bass Highlands
 *29 songs · 15 artists · built in Unity*
