@@ -782,13 +782,20 @@ A few people sit about them, each with a tune they can't finish. The lamp benche
 - **The Furnace:** stand at the trough of molten metal.
 
 ### Mount Virtuoso
-*12 songs · 9 artists · 0.44 km²*
+*12 songs · 9 artists · built in Unity*
 
-**Arriving:** Misty Celtic hills around one impossibly thin, tall peak with a tiny chapel on top, under an aurora.
+**Arriving:** A terrace of flat stones in misty northern foothills, among birches and purple heather, with a black grand piano looking out to the sea (sit and play to it), a cairn, benches, lanterns on crooked posts, and a signpost pointing up the mountain: THE SUMMIT.
 
-**The vibe:** Misty dawn. Standing stones, harps, mist pools, and a mysterious bucket shrine (Buckethead).
+**The vibe:** One mountain, calm below and wild on top. The foothills are quiet, cool and silver-blue: birch groves, mossy boulders, cairns, heather, a few turf-roofed cabins with smoking chimneys, soft mist drifting low over moor grass. A path cut into the mountain spirals up past ledges where the guitar heroes play, a rope rail on the drop side, lanterns on the uphill side; the higher you climb the darker the sky, the stronger the wind and rain and the more often lightning flashes. Above the snow line it's bare slate, snow and dead trees, up to the Summit: a bare rock top with a wall of amps, a lightning rod that keeps getting struck, and a guitar on a stand to play the summit riff into the storm.
 
-**Artist areas:** Standing stones, each with a harp or guitar carved in. Ólafur Arnalds gets the largest, nearest the peak.
+**Artist areas:** In the foothills, artists have a round of mossy flat stones with a carved standing stone bearing their name; on the mountain, the guitar heroes each have a ledge of the climb with an amp stack, a giant guitar and a spotlight. Covers on a slab of slate in a wooden frame. Ólafur Arnalds has an upright piano under a little wooden shelter, a window with a lamp in it ("Near Light"), two chairs side by side ("saman") and a curl of stones like a breaking wave ("Öldurót"). Enya has a ring of standing stones lit sea-blue ("Caribbean Blue") and an hourglass ("Only Time"); Vangelis a running track's white lanes and starting blocks ("Titles"); Pat's Soundhouse a giant egg in a nest. Up the climb: white cliffs with birds wheeling round them (Eric Johnson, "Cliffs Of Dover"), two streaks of light chasing each other (Nili Brosh, "The Chase"), a chrome guitar and a rocket trail (Joe Satriani), a dragon carved in the rock with ember eyes (Richie Kotzen, "Chase the Dragon") and, highest of all, a white bucket on a pole and a drifting ghost of light (Buckethead, "Ghost").
+
+**Happenings:** Mist drifts in the foothills; chimneys smoke; birds wheel round the cliffs; streaks chase; the ghost drifts. The storm grows as you climb: rain, wind, lightning, and the rod struck every so often. Play the summit riff and lightning strikes the rod. "Cliffs Of Dover" parts the storm and lets gold light through. "Ghost" is a cold pale light. "Near Light" is warm lamplight. "Caribbean Blue" is a soft sea-blue. "Titles" is a bright slow-motion gold.
+
+**The streets and places:** Laid out on purpose: the Terrace, the Climb and the Summit are the spine; the foothill artists branch from the terrace, the guitar heroes sit on the climb itself.
+- **The Terrace:** play the piano to the sea.
+- **The Climb:** walk the spiral path up past every ledge.
+- **The Summit:** play the summit riff into the storm.
 
 ---
 
