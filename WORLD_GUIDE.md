@@ -977,13 +977,22 @@ City islands joined by bridges. Dusk into night, with one sunny beach.
 **Artist areas:** Rooftop terraces, one per artist.
 
 ### Boom Bap Harbour
-*26 songs · 17 artists · 0.47 km²*
+*25 songs · 16 artists · 0.47 km² · built in Unity*
 
-**Arriving:** Brownstone streets running down to a sunny harbour beach; an elevated train over a block-party stage.
+**Arriving:** The top of the Block on a hot summer afternoon, your back to a brick wall with the island's name sprayed across it. A boombox on a milk crate, a hot-dog cart under a yellow umbrella, an old-timer on the next crate along. In front of you a street of brownstones with stoops runs downhill to the harbour, and half way down a train rumbles over it on rusted green iron.
 
-**The vibe:** A summer afternoon. Boomboxes, turntables, stoops.
+**The vibe:** A block party, and a hard place too. Asphalt, sidewalks, brownstones in five browns with tall windows and stone lintels, fire escapes, air conditioners, people on the steps. Under the El the street is shut with police-blue sawhorses: a DJ on a flatbed between speaker stacks, bunting, a hydrant throwing an arc of water across the street, a kid breaking on cardboard, an ice-cream truck. At the bottom the Block runs out onto a scrap of beach: a pier with a man fishing off the end, a lifeguard chair, towels, stacked shipping containers, a yellow crane. Out in the vacant lots: chain-link, graffiti walls, cars on blocks, tyre piles, hoops. The Boroughs' one sunny island.
 
-**Artist areas:** Stoops and block-party stages; Wu-Tang Clan gets the largest.
+**Artist areas:** Most artists have a stoop of their own (a slice of brownstone front with steps to sit on) and one thing from their song beside it; covers pasted on a piece of brick wall like posters. Wu-Tang Clan have the largest, at the harbour: the Chamber, a hall made of black and yellow shipping containers with 36 CHAMBERS across the top, and in it a boxing ring whose floor is a chessboard ("Da Mystery of Chessboxin'", gloves to carry), wooden training dummies, a door numbered 7, a scarf on a hook ("Protect Ya Neck"), a hive ("Method Man"); out front a cash register with its drawer open ("C.R.E.A.M."), and across the yard the orange Shaolin ferry at its slip. The Notorious B.I.G.: a brownstone stoop with IT WAS ALL A DREAM in bulbs over the door, a gold crown on a velvet cushion, a TV and a games console on a milk crate, a rack of rap magazines, a red and black jacket with a hat to match, and a table for two with champagne ("Big Poppa"). Outkast: a green and purple stage with a long green car parked on it, an instant camera on a tripod to shake pictures out of ("Hey Ya!"), a porch swing under its own small rain cloud with roses that say sorry ("Ms. Jackson"), and a drum machine going very fast ("B.O.B."). JAŸ-Z: a model skyline on a concrete table with a little yellow cab to carry, and a wall of exactly ninety-nine tally marks. Kurtis Blow: a basketball court with two hoops and balls to throw. Also A Tribe Called Quest's can (you can kick it), the Fugees' guitar and letter, Grandmaster Flash's two turntables and a wall that says DON'T PUSH ME, the Beastie Boys' patrol car and a moustache on a stand, AZ's chess table and briefcase, Cannibal Ox's iron galaxy and iron pigeons, Diddy's candles, RZA's projector and clapperboard, Shabazz Palaces' black arch of gold stars, T La Rock's gift box, and Ceren Yaldız' payphone.
+
+**Happenings:** The train goes over the Block every minute; the hydrant sprays; the boombox plays. "C.R.E.A.M." brings dollar bills down over the Block, and any Wu-Tang song brings out the killer bees. "Empire State of Mind" turns the afternoon to evening and lights every window on the island. "Juicy" sends gold sparkles up at Biggie's stoop. "Ms. Jackson" brings a summer shower. "Hey Ya!" flashes the whole block like a camera. "B.O.B." strobes the lights. "Sabotage" spins the patrol car's lights. "The Message" drains the colour to concrete.
+
+**The streets and places:** Laid out on purpose: the Block is the spine from the wall to the water, the El crosses it, and every lane to an artist branches from them.
+- **The top of the Block:** press play on the boombox, sit on a crate, take a hot dog.
+- **The Block:** sit on any stoop.
+- **The block party:** under the El. Scratch on the decks, stand in the hydrant, take an ice pop.
+- **The El:** the Harbour Line, a silver train covered in graffiti, and a little station.
+- **The harbour:** the pier, cold sodas in a cooler, a towel to sit on, the containers and the crane.
 
 ### The Lo-Fi Hills
 *23 songs · 18 artists · 0.47 km²*

@@ -80,6 +80,13 @@
    "weather": "", "weatherAmount": 0
   },
   {
+   "land": "Boom Bap Harbour",
+   "sunPitch": 50, "sunYaw": 200, "sunIntensity": 1.25, "sunColor": "#FFF0D0",
+   "skyLight": "#C8DCF0", "horizonLight": "#F0E2C4", "groundLight": "#A8927A",
+   "fogColor": "#B4CFE2", "fogStart": 140, "fogEnd": 1700, "stars": 0, "sunShadows": true, "dailyWeather": false, "bloom": 0.9,
+   "weather": "", "weatherAmount": 0
+  },
+  {
    "land": "Discotopia",
    "sunPitch": 52, "sunYaw": 30, "sunIntensity": 0.95, "sunColor": "#D4E2FF",
    "skyLight": "#7C8CE0", "horizonLight": "#8A92D0", "groundLight": "#70748C",
