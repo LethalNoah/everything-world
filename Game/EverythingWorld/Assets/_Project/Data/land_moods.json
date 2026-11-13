@@ -129,6 +129,13 @@
    "weather": "", "weatherAmount": 0
   },
   {
+   "land": "The Heartbreak Boardwalk",
+   "sunPitch": 4, "sunYaw": 290, "sunIntensity": 0.8, "sunColor": "#FF9C88",
+   "skyLight": "#8C78B0", "horizonLight": "#FFA88C", "groundLight": "#7A6070",
+   "fogColor": "#C88A98", "fogStart": 120, "fogEnd": 1600, "stars": 0.25, "sunShadows": false, "dailyWeather": false, "bloom": 1.2,
+   "weather": "", "weatherAmount": 0
+  },
+  {
    "land": "Discotopia",
    "sunPitch": 52, "sunYaw": 30, "sunIntensity": 0.95, "sunColor": "#D4E2FF",
    "skyLight": "#7C8CE0", "horizonLight": "#8A92D0", "groundLight": "#70748C",

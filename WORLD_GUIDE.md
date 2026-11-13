@@ -768,14 +768,21 @@ Bright, saturated, everyone-knows-these. Where the world feels most like a theme
 - **K-Pop Square:** take a light stick, do the choreography.
 
 ### The Heartbreak Boardwalk
-*31 songs · 14 artists · 0.71 km²*
+*31 songs · 14 artists · 0.47 km² · built in Unity*
 
-**Arriving:** A faded seaside boardwalk with motels and a long pier, a half-lit ferris wheel at the end.
+**Arriving:** The Promenade, at dusk. A circle of weathered boards round an old white bandstand with a striped roof and one lamp lit, benches turned to face the sunset, a payphone, a fortune-teller machine, a shuttered stall. The sun sits low and pink over the sea and the sky goes violet above it. The Boardwalk runs from here all the way down to the water and out along the Pier.
 
-**The vibe:** Melancholy twilight. Vintage cars, motel signs, prom balloons, payphones.
+**The vibe:** Sad and glamorous, the end of the season. Faded clapboard beach houses on short stilts with porch swings, one window lit; palms leaning toward the sea; dune grass and dune fences; globe lamps on curly iron posts coming on one by one. Down the Boardwalk: shuttered stalls (SALTWATER TAFFY, FORTUNES, PRIZES), a carousel standing still, a wooden rollercoaster with a single car left at the top. The Heartbreak Motel has half its sign lit, VACANCY in pink neon, and an empty pool. Out on the Pier: people fishing, a telescope, and the Last Chance Café with its light still on.
 
-**Artist areas:** Lana Del Rey gets a hall (an old motel with a pool). Others are motel rooms and pier booths.
+**Artist areas:** Most artists have a beach hut of their own: a faded hut with its window lit, a deck chair under a striped umbrella, and one thing from their song; covers on a cream card on a weathered board under a striped awning. Lana Del Rey has a white seaside bungalow with a deep porch and a porch swing, and a piece for every song: a white convertible ("West Coast"), a painter's easel ("Norman fucking Rockwell"), a lemon tree ("Salvatore"), a white arch of flowers ("Say Yes To Heaven"), a butterfly as big as a door ("Happiness is a butterfly"), a black rose ("Black Beauty"), a ship's lantern on a mast ("Mariners Apartment Complex"), a record player on the step ("Brooklyn Baby"), a cinnamon candle on the rail ("Cinnamon Girl"), a lawn chair in the heat ("Summertime Sadness") and a vintage microphone in violet light ("Ultraviolence"). Olivia Rodrigo has a row of purple school lockers, a purple car with the door flung open ("good 4 u"), a smoking ashtray ("cigarette smoke"), an upright piano ("All I Want") and a picnic with an apple pie ("all-american bitch"). Ashe has a wedding aisle with a veil dropped on the boards ("Stop The Wedding!"), a moon on a pole with a lasso round it ("Lasso The Moon") and a dramatic little wreath ("Funeral"). Billie Eilish has a pool of glowing sea-blue ("ocean eyes"), a car parked with its headlights on and a guitar on the roof ("Happier Than Ever"), and one dark spotlight ("No Time To Die"). Also Avril Lavigne's skate ramp and a board to carry, Maroon 5's red payphone box, Harry Styles' clock on a lamp post, OneRepublic's telescope, Tal Bachman's ladder to a star, Holly Humberstone's pageant crown, Halsey's heavy suitcase, Suki Waterhouse's hand mirror and more.
 
+**Happenings:** The neon buzzes and drops out; the lamps breathe; gulls glide over; the sea glimmers; the carousel lights up when anybody plays. "Summertime Sadness" brings a hot gold haze. "Ultraviolence" turns it deep violet. "West Coast" is pink and gold. "ocean eyes" turns everything sea-blue and lights the water. "Happiness is a butterfly" brings butterflies. "Lasso The Moon" is cool silver moonlight. "good 4 u" flickers purple. "Happier Than Ever" gathers a storm and brings the rain. "No Time To Die" goes dark. "Counting Stars" brings the night. "Stop The Wedding!" scatters white petals.
+
+**The streets and places:** Laid out on purpose: the Promenade, the Boardwalk and the Pier are the spine, and every lane to an artist branches from them.
+- **The Promenade:** sit in the bandstand, make a call from the payphone, ask the machine for your fortune.
+- **The Boardwalk:** sit on a carousel horse; look up at the rollercoaster.
+- **The Heartbreak Motel:** lie back by the empty pool.
+- **The Pier:** look through the telescope; get a table by the rail at the Last Chance Café.
 ### The Glitterlands
 *27 songs · 21 artists · 0.54 km²*
 
