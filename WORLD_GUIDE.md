@@ -968,13 +968,22 @@ City islands joined by bridges. Dusk into night, with one sunny beach.
 **Artist areas:** Stoops, murals and corner stages. The most crowded land in the world (49 artists), so the plots should feel like a dense neighbourhood.
 
 ### The Velvet Rooftops
-*29 songs · 23 artists · 0.48 km²*
+*29 songs · 23 artists · 0.48 km² · built in Unity*
 
-**Arriving:** City rooftops at night joined by sky bridges; a rooftop pool lounge on a glowing tower.
+**Arriving:** Beside the Pool, on the tallest roof of a drowned city, late at night. The water came up long ago; the island is the tops of towers standing out of a dark, still sea, and all round it more towers rise from the water with their windows still lit in bands, a red light blinking on each. The pool glows turquoise. Behind the bar, VELVET in tall pink neon.
 
-**The vibe:** A lush night. Lounge chairs, neon, a skyline. Also where the Punjabi songs landed for now.
+**The vibe:** Late and lush: deep red, velvet purple, gold and night blue, nothing in a hurry. The Pool roof has loungers, a bar, sofas round a fire bowl, a small DJ booth, palms in pots and a telescope trained on the drowned city. From it, walks of lit glass with a row of small lights down each side run out to every other roof. Out on the roofs: wooden water towers, skylights glowing from below, banks of air-conditioners, antenna masts, stair huts with a lamp over the door, roof gardens, neon billboards (SLOW DOWN, LATE CHECK-OUT, STAY), a helipad.
 
-**Artist areas:** Rooftop terraces, one per artist.
+**Artist areas:** Each artist has a roof terrace: a deck edged with a line of light, a low parapet, a velvet sofa, their name in neon, and one thing from their song; covers in a lit glass case. Rihanna: a great black umbrella with rain falling all round its edge and none under it; a diamond as tall as you on a black plinth; a signal lamp on a mast with a key to tap. Frank Ocean: a low white sports car parked on the roof with its lamps on and the passenger door open; a cabana in pink and white stripes with clouds painted inside and a daybed; a bed with no room round it and a small whirlwind of paper. The Weeknd: a wall of white lights too bright to look at, a red jacket on a stand, and one star on a very tall mast. SZA: a garden swing among flowers under a small sun on a pole; a sword on a stand in front of a black board with one yellow stripe. The Punjabi terrace, together on the east side: Diljit Dosanjh's golden goat and dhol drums to play, Karan Aujla's tumbi and silk cushions, Prabh Singh's clock stopped at 9:45, all under garlands of marigolds. Also TLC's waterfall running off a water tank, Ginuwine's carousel pony, GIVĒON's cake with one candle and a calendar with a date marked, Jay Sean's lift going down, Steve Lacy's striped amp and guitar, Daniel Caesar's two chairs under an arch of lights, H.E.R.'s dark glasses, Brent Faiyaz' chalk footsteps, 070 Shake's driving seat, Jason Derulo's speech bubble, Sean Kingston's mirror, Mike Posner's boarding pass, blackbear's flickering sign, J Rice's safe of diamonds, Danny Madden's stack of books, and a pair of white wings on a post ("I Believe I Can Fly").
+
+**Happenings:** The pool shimmers; the neon breathes slowly and lifts when anybody plays; the red lights blink on every mast and drowned tower. "Umbrella" makes it rain on the whole city. "Diamonds" lets diamonds of light fall slowly out of the sky. "SOS" makes every red light in the city blink three short, three long, three short. "Blinding Lights" turns the night white and red. "Pink + White" turns the sky pink. "Good Days" brings up a soft dawn colour. "Kill Bill" turns the city red. "I Believe I Can Fly" sends white feathers up.
+
+**The streets and places:** Laid out on purpose: the Pool roof is the middle and every glass walk to an artist's roof branches from it.
+- **The Pool:** stand in it; lie on a lounger; take a drink.
+- **The bar:** three stools, a barman, the sign.
+- **The fire bowl:** three sofas round it.
+- **The decks:** play the next one, slowly.
+- **The telescope:** look down into the drowned city.
 
 ### Boom Bap Harbour
 *25 songs · 16 artists · 0.47 km² · built in Unity*
