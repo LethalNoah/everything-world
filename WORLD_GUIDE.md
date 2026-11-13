@@ -890,13 +890,23 @@ Warm, humid, rhythmic. River country, smoky towns and coastline.
 **Artist areas:** Beach bars on the coast (Jorge Ben Jor) and tents inland (Tinariwen, Mulatu Astatke).
 
 ### The Delta Crossroads
-*19 songs · 16 artists · 0.47 km² · new*
+*18 songs · 15 artists · 0.47 km² · built in Unity*
 
-**Arriving:** Flat river delta, cotton fields, cypress swamps, dusty roads meeting at a crossroads; a tin-roofed juke joint lit by one bulb and a neon guitar.
+**Arriving:** Where two dirt roads cross in flat cotton country, on a hot, white, dusty afternoon. A four-armed signpost: THE RAILROAD, DOWN SOUTH, THE RIVER, THE FIELDS. A rusting pickup on one corner, an old man on a crate on another. Out west a storm is stacked up dark on the horizon, flickering, and it does not come. A long shadow of a man in a hat lies down the west road, and nobody is casting it.
 
-**The vibe:** Weathered and soulful. Guitars on porches, a railroad, a river steamboat.
+**The vibe:** Raw and haunted. Full daylight and nowhere to hide in it: pale dust, dry grass, cotton in white rows, telegraph poles marching up the Highway with crows on the wires. Scarecrows stand in the fields, bottle trees hung with blue glass catch whatever walks at night, and empty shacks lean under rusted tin. The Highway runs north over the railroad and south into the fields; the cross road runs east down to the river landing and west past the graveyard. The only blue in the land is the neon guitar on the juke joint and the glass in the trees.
 
-**Artist areas:** Porches and shacks along the roads; Robert Johnson at the crossroads itself.
+**Artist areas:** Most artists have a porch of their own: a small plank shack with a tin roof, a rocking chair, a guitar by the door, and one thing from their song beside it; covers on a cream card in a plank frame; a bare bulb on a pole. Robert Johnson is at the crossroads itself: two plank walls meeting in a corner with a chair facing into it and a guitar, knee prints in the dust, and a door standing on its own to knock on. Muddy Waters has the juke joint: a blue neon guitar on the roof, one bare bulb over the door, and inside a little stage with a guitar to play, a bar on barrels with jars to carry, crates round a cable drum, a shelf of mojo. Howlin' Wolf: a steam locomotive standing on the line with its stack glowing, a wolf howling against a white disc, a big chair and a microphone to howl into. John Lee Hooker: a porch, a big amp, and a board to stomp. B.B. King: an empty stage with a faded curtain, a black guitar alone on a stand under one bulb, empty seats, and a sign whose first half has gone out. Etta James: a rocking chair turned to the road, two figures walking away down it, a blue ribbon tied round the porch post. Albert King: a crooked sign with 13 on it, a ladder, a black cat, a cracked mirror, and a small black cloud that rains on him alone. Lead Belly: a stand of black pines where it is cold and blue, a bedroll, a twelve-string. Also Big Mama Thornton's sleeping hound dog, Fats Domino's blueberry hill (a basket to carry), Gary Clark Jr.'s board of bright lights, Sister Rosetta Tharpe's railway platform with a white guitar and an umbrella, Stevie Ray Vaughan's hat on an amp, R.L. Burnside's couch and jug, and Junior Kimbrough's place with the city painted on a board.
+
+**Happenings:** Dust drifts across the roads; the storm in the west flickers with silent lightning now and then; the bottles glint; the windpump turns; the engine idles smoke. When a Robert Johnson song plays, the afternoon goes dark as midnight, the bulbs gutter, pairs of red eyes open low in the cotton, and at the head of the shadow on the west road something tall stands up. "Smokestack Lightnin'" brings the lightning close and often and the engine pours smoke. "Didn't It Rain" finally breaks the storm over the whole land. "The Thrill Is Gone" takes the colour out of the day. "Boom Boom" and Muddy Waters' songs make every bulb stomp in time, and so does the stomp board.
+
+**The roads and places:** Laid out on purpose: the two roads and the railroad are the spine, and every lane to an artist branches from them. There are few people here, and they talk like it.
+- **The crossroads:** the signpost, the pickup's tailgate to sit on, the old man, the shadow. Stand in the middle if you like.
+- **The juke joint:** on the north-east corner. Go in and play the riff.
+- **The railroad:** the crossing with its crossbucks, a water tower, a handcar to sit on, the engine.
+- **The landing:** a jetty over the water, cotton bales nobody is collecting, the ferryman fishing, and out past him the wreck of the steamboat Evening Star, aground and listing, one window still lit.
+- **The graveyard:** leaning wooden crosses inside a picket fence, a shut white church, a bell to ring.
+- **The general store:** rocking chairs on the porch, cold drinks in the ice chest, checkers on a barrel.
 
 ### Discotopia
 *16 songs · 12 artists · 0.53 km² · built in Unity*
