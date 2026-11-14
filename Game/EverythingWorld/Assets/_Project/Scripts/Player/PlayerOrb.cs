@@ -27,6 +27,9 @@ namespace EverythingWorld.Player
         public float radius = .24f;
 
         public static PlayerOrb Local { get; private set; }
+        /// Other players' orbs: the way they're looking (degrees, like a compass) and whether their sunglasses are on.
+        public float facing; public bool shades;
+        Transform glasses; float shadesT, shownFacing; bool facingSet;
         public Color Color { get; private set; } = new Color(.92f, .94f, 1f);
         /// Which palette colour (shared with other players as one small number).
         public int Index { get; private set; }
@@ -62,6 +65,7 @@ namespace EverythingWorld.Player
             beamMat = Additive("Orb beam", BeamTexture()); discMat = Additive("Orb glow", DiscTexture());
             beam = Quad("Beam", beamMat, root.parent == null ? null : root.parent); glowDisc = Quad("Ground glow", discMat, root.parent == null ? null : root.parent);
             if (display) { lamp.enabled = false; beam.gameObject.SetActive(false); glowDisc.gameObject.SetActive(false); }
+            if (!isLocal) glasses = Glasses(root.parent);
             SetColor(isLocal ? Load() : Color);
         }
 
@@ -143,6 +147,7 @@ namespace EverythingWorld.Player
             orb.position = p; orb.rotation = Quaternion.Euler(0, t * 20f, 0);
             if (pattern != null) { pattern.localRotation = Quaternion.Euler(18f, t * 14f, 8f); pattern2.localRotation = Quaternion.Euler(-24f, -t * 23f, -12f); }
             var pulse = 1f + Mathf.Sin(t * 2.2f) * .04f; orb.localScale = Vector3.one * pulse;
+            if (glasses != null) PlaceGlasses(p);
             // the beam: from just under the orb to the ground (or 30 m down), always turned to the camera
             var ground = p - Vector3.up * 30f; var hitSomething = false;
             foreach (var h in Physics.RaycastAll(p - Vector3.up * (radius + .02f), Vector3.down, 30f, ~0, QueryTriggerInteraction.Ignore))
@@ -155,6 +160,44 @@ namespace EverythingWorld.Player
             beam.SetPositionAndRotation((top + ground) / 2f, Quaternion.LookRotation(face.normalized)); beam.localScale = new Vector3(.12f, len, 1f);
             glowDisc.gameObject.SetActive(hitSomething);
             if (hitSomething) { glowDisc.SetPositionAndRotation(ground + Vector3.up * .03f, Quaternion.Euler(90f, 0, 0)); glowDisc.localScale = Vector3.one * (.9f + Mathf.Sin(t * 2.2f) * .05f); }
+        }
+
+        // ---------------------------------------------------------------- sunglasses on other players' orbs
+        /// When a friend puts their sunglasses on, a pair drops onto the front of their orb (the side they're
+        /// looking toward), dark lenses with a bright glint; when they take them off, the pair lifts away.
+        void PlaceGlasses(Vector3 p)
+        {
+            shadesT = Mathf.MoveTowards(shadesT, shades ? 1f : 0f, Time.deltaTime / .45f);
+            glasses.gameObject.SetActive(shadesT > 0f);
+            if (shadesT <= 0f) return;
+            shownFacing = facingSet ? Mathf.LerpAngle(shownFacing, facing, 1f - Mathf.Exp(-10f * Time.deltaTime)) : facing; facingSet = true;
+            var turn = Quaternion.Euler(0f, shownFacing, 0f); var e = Mathf.SmoothStep(0f, 1f, shadesT);
+            glasses.SetPositionAndRotation(p + turn * new Vector3(0f, radius * .18f + (1f - e) * .35f, radius * .93f), turn * Quaternion.Euler((1f - e) * -40f, 0f, 0f));
+            glasses.localScale = Vector3.one * Mathf.Lerp(.6f, 1f, e);
+        }
+
+        static Transform Glasses(Transform parent)
+        {
+            var g = new GameObject("Sunglasses").transform; g.SetParent(parent, false);
+            var lens = EverythingWorld.World.WorldMaterials.Solid(new Color(.04f, .04f, .06f));
+            var frame = EverythingWorld.World.WorldMaterials.Solid(new Color(.1f, .1f, .12f));
+            var glint = EverythingWorld.World.WorldMaterials.Glow(new Color(.75f, .9f, 1f), 1.2f);
+            void Bit(Material m, Vector3 at, Vector3 size, float tilt = 0f)
+            {
+                var b = GameObject.CreatePrimitive(PrimitiveType.Cube); Destroy(b.GetComponent<Collider>());
+                b.transform.SetParent(g, false); b.transform.localPosition = at; b.transform.localScale = size; b.transform.localRotation = Quaternion.Euler(0, 0, tilt);
+                var r = b.GetComponent<MeshRenderer>(); r.sharedMaterial = m; r.shadowCastingMode = ShadowCastingMode.Off;
+            }
+            foreach (var s in new[] { -1f, 1f })
+            {
+                Bit(lens, new Vector3(s * .085f, 0f, 0f), new Vector3(.15f, .095f, .02f), s * -4f);              // a lens
+                Bit(frame, new Vector3(s * .085f, .052f, 0f), new Vector3(.16f, .018f, .026f));                   // its top rim
+                Bit(glint, new Vector3(s * .085f - .03f, .022f, -.012f), new Vector3(.045f, .01f, .004f), 28f);   // a glint
+                Bit(frame, new Vector3(s * .16f, .035f, -.09f), new Vector3(.014f, .014f, .18f));                  // an arm back to the "ear"
+            }
+            Bit(frame, new Vector3(0f, .03f, 0f), new Vector3(.03f, .014f, .018f));   // the bridge
+            g.gameObject.SetActive(false);
+            return g;
         }
 
         // ---------------------------------------------------------------- pieces

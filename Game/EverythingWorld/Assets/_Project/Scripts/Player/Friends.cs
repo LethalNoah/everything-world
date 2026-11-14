@@ -43,9 +43,9 @@ namespace EverythingWorld.Player
         const float Delay = .2f;
 
         ISession session; NetworkManager net; bool handlers; float nextSend;
-        SimplePlayerController walker;
+        SimplePlayerController walker; Sunglasses shades;
 
-        class State { public Vector3 eye; public byte colour; public string name; public float seen, stamp; }   // stamp: the sender's clock when they sent it
+        class State { public Vector3 eye; public byte colour, shades; public string name; public float seen, stamp, yaw; }   // stamp: the sender's clock when they sent it
         readonly Dictionary<ulong, State> everyone = new Dictionary<ulong, State>();   // the host's table
         class Remote
         {
@@ -100,7 +100,7 @@ namespace EverythingWorld.Player
                 var box = new Rect(at.x - size / 2f, at.y - size / 2f, size, size);
                 GUI.color = new Color(c.r, c.g, c.b, .95f); GUI.DrawTexture(box, dot); GUI.color = Color.white; GUI.DrawTexture(box, rim);
                 GUI.color = Color.white;
-                var text = $"{r.label.text}  \u00b7  {(dist < 1000f ? $"{dist:0} m" : $"{dist / 1000f:0.0} km")}";
+                var text = $"{r.label.text}{(r.orb.shades ? "  \u00b7  shades on" : "")}  \u00b7  {(dist < 1000f ? $"{dist:0} m" : $"{dist / 1000f:0.0} km")}";
                 var tw = tagStyle.CalcSize(new GUIContent(text)).x;
                 var lx = Mathf.Clamp(at.x - tw / 2f, 6f, Screen.width - tw - 6f); var ly = at.y + size / 2f + 3f; if (ly > Screen.height - 34f) ly = at.y - size / 2f - 30f;
                 GUI.Label(new Rect(lx, ly, tw, 26f), text, tagStyle);
@@ -229,7 +229,7 @@ namespace EverythingWorld.Player
                     using (var w = new FastBufferWriter(64 + everyone.Count * 80, Allocator.Temp, 4096))
                     {
                         w.WriteValueSafe(everyone.Count);
-                        foreach (var kv in everyone) { w.WriteValueSafe(kv.Key); w.WriteValueSafe(kv.Value.eye); w.WriteValueSafe(kv.Value.stamp); w.WriteValueSafe(kv.Value.colour); w.WriteValueSafe(kv.Value.name); }
+                        foreach (var kv in everyone) { w.WriteValueSafe(kv.Key); w.WriteValueSafe(kv.Value.eye); w.WriteValueSafe(kv.Value.stamp); w.WriteValueSafe(kv.Value.yaw); w.WriteValueSafe(kv.Value.shades); w.WriteValueSafe(kv.Value.colour); w.WriteValueSafe(kv.Value.name); }
                         net.CustomMessagingManager.SendNamedMessageToAll(MsgAll, w, NetworkDelivery.UnreliableSequenced);
                     }
                     foreach (var kv in everyone) if (kv.Key != net.LocalClientId) Show(kv.Key, kv.Value);
@@ -238,7 +238,7 @@ namespace EverythingWorld.Player
                 {
                     using (var w = new FastBufferWriter(96, Allocator.Temp, 512))
                     {
-                        w.WriteValueSafe(me.eye); w.WriteValueSafe(me.stamp); w.WriteValueSafe(me.colour); w.WriteValueSafe(me.name);
+                        w.WriteValueSafe(me.eye); w.WriteValueSafe(me.stamp); w.WriteValueSafe(me.yaw); w.WriteValueSafe(me.shades); w.WriteValueSafe(me.colour); w.WriteValueSafe(me.name);
                         net.CustomMessagingManager.SendNamedMessage(MsgMine, NetworkManager.ServerClientId, w, NetworkDelivery.UnreliableSequenced);
                     }
                 }
@@ -256,7 +256,10 @@ namespace EverythingWorld.Player
         State MyState()
         {
             var eye = walker != null && walker.cameraPivot != null ? walker.cameraPivot.position : transform.position + Vector3.up * .7f;
-            return new State { eye = eye, stamp = Time.realtimeSinceStartup, colour = (byte)(PlayerOrb.Local != null ? PlayerOrb.Local.Index : 0), name = PlayerName };
+            var look = Camera.main != null ? Camera.main.transform.forward : transform.forward;
+            if (shades == null) shades = GetComponent<Sunglasses>();
+            return new State { eye = eye, stamp = Time.realtimeSinceStartup, yaw = Mathf.Atan2(look.x, look.z) * Mathf.Rad2Deg, shades = (byte)(shades != null && shades.On ? 1 : 0),
+                               colour = (byte)(PlayerOrb.Local != null ? PlayerOrb.Local.Index : 0), name = PlayerName };
         }
 
         /// Where to draw a friend now: their clock runs alongside ours, Delay behind the newest thing they sent, and
@@ -284,8 +287,8 @@ namespace EverythingWorld.Player
 
         void OnMine(ulong sender, FastBufferReader r)
         {
-            r.ReadValueSafe(out Vector3 eye); r.ReadValueSafe(out float stamp); r.ReadValueSafe(out byte colour); r.ReadValueSafe(out string name);
-            everyone[sender] = new State { eye = eye, stamp = stamp, colour = colour, name = name, seen = Time.time };
+            r.ReadValueSafe(out Vector3 eye); r.ReadValueSafe(out float stamp); r.ReadValueSafe(out float yaw); r.ReadValueSafe(out byte shades); r.ReadValueSafe(out byte colour); r.ReadValueSafe(out string name);
+            everyone[sender] = new State { eye = eye, stamp = stamp, yaw = yaw, shades = shades, colour = colour, name = name, seen = Time.time };
         }
 
         void OnAll(ulong sender, FastBufferReader r)
@@ -294,9 +297,9 @@ namespace EverythingWorld.Player
             r.ReadValueSafe(out int n);
             for (var i = 0; i < n && i < 32; i++)
             {
-                r.ReadValueSafe(out ulong id); r.ReadValueSafe(out Vector3 eye); r.ReadValueSafe(out float stamp); r.ReadValueSafe(out byte colour); r.ReadValueSafe(out string name);
+                r.ReadValueSafe(out ulong id); r.ReadValueSafe(out Vector3 eye); r.ReadValueSafe(out float stamp); r.ReadValueSafe(out float yaw); r.ReadValueSafe(out byte shades); r.ReadValueSafe(out byte colour); r.ReadValueSafe(out string name);
                 if (id == net.LocalClientId) continue;
-                Show(id, new State { eye = eye, stamp = stamp, colour = colour, name = name });
+                Show(id, new State { eye = eye, stamp = stamp, yaw = yaw, shades = shades, colour = colour, name = name });
             }
         }
 
@@ -315,6 +318,7 @@ namespace EverythingWorld.Player
             if (path.Count > 0 && s.stamp < path[path.Count - 1].t - 5f) path.Clear();   // their clock restarted
             if (path.Count == 0 || s.stamp > path[path.Count - 1].t) { path.Add((s.stamp, s.eye)); if (path.Count > 40) path.RemoveAt(0); r.seen = Time.time; }
             if (r.orb.Index != s.colour) r.orb.Choose(s.colour);
+            r.orb.facing = s.yaw; r.orb.shades = s.shades != 0;
             if (r.label.text != s.name) r.label.text = s.name;
         }
 
