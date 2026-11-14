@@ -99,7 +99,7 @@ namespace EverythingWorld.World
             if (c.Length == 0) return;
             if (riddle)
             {
-                if (c.Replace(" ", "").StartsWith("EVERYTHING")) { Print("YES."); Print("THE GATES OPEN."); Print("> (you stand up)"); End(); onAnswer?.Invoke(); }
+                if (RiddleAnswered(c)) { Print("YES."); Print("THE GATES OPEN."); Print("> (you stand up)"); End(); onAnswer?.Invoke(); }
                 else { Print("NO. LISTEN AGAIN:"); foreach (var l in Riddle) Print(l); }
                 return;
             }
@@ -132,6 +132,15 @@ namespace EverythingWorld.World
                 case "HELLO": case "HI": Print("HELLO. WELCOME TO THE HUB."); break;
                 default: Print("UNKNOWN COMMAND. TYPE HELP."); break;
             }
+        }
+
+        /// The riddle's answer, said any of the ways people say it: EVERYTHING, EVERYTHING PLAYLIST or THE EVERYTHING
+        /// PLAYLIST (spaces and a leading THE don't matter).
+        static bool RiddleAnswered(string c)
+        {
+            var a = c.Replace(" ", "").Replace(".", "").Replace("!", "");
+            if (a.StartsWith("THE")) a = a.Substring(3);
+            return a == "EVERYTHING" || a == "EVERYTHINGPLAYLIST";
         }
 
         static string Code => flyHash ??= Hash(Secret());
