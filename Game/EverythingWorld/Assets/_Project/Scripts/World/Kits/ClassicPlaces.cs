@@ -87,7 +87,7 @@ namespace EverythingWorld.World
             for (var i = 6; i < pts.Count; i += 14)
             {
                 var d = pts[i] - pts[i - 1]; d.y = 0; if (d.sqrMagnitude < .01f) continue; d.Normalize(); var side = Vector3.Cross(up, d) * (n % 2 == 0 ? 1f : -1f); var lp = pts[i] + side * (RoadW / 2f + .8f);
-                if (ctx.IsLand(lp.x, lp.z, 2f) && !InFootprint(ctx, lp.x, lp.z, 3f)) { if (n % 3 == 2) Banner(ctx, mk, ctx.OnGround(lp.x, lp.z), n % 2 == 0); else Lamp(ctx, mk, ctx.Root, ctx.OnGround(lp.x, lp.z)); }
+                if (ctx.IsLand(lp.x, lp.z, 2f) && !InFootprint(ctx, lp.x, lp.z, 3f)) { var lg = ctx.OnGround(lp.x, lp.z); var crimson = n % 2 == 0; if (n % 3 == 2) roadside.Add((new[] { lg }, 700, .4f, () => Banner(ctx, mk, lg, crimson))); else roadside.Add((new[] { lg }, 700, .4f, () => Lamp(ctx, mk, ctx.Root, lg))); }
                 n++;
             }
             foreach (var p in pts) Remember(p, 700);

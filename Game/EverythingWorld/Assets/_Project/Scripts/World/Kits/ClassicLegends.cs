@@ -61,8 +61,7 @@ namespace EverythingWorld.World
 
         Vector3 PlaceWay(LandContext ctx, MeshKit mk, Vector3 c, float clear, string sign, string mark)
         {
-            Vector3 join = default; var best = float.MaxValue;
-            foreach (var (p, w) in walkPoints) { if (w >= 400) continue; var d = Vector2.Distance(new Vector2(p.x, p.z), new Vector2(c.x, c.z)); if (d < best) { best = d; join = p; } }
+            if (!JoinFor(ctx, c, 400, out var join, out var best)) best = float.MaxValue;
             var face = best < float.MaxValue ? new Vector3(join.x - c.x, 0, join.z - c.z).normalized : new Vector3(center.x - c.x, 0, center.z - c.z).normalized;
             if (face.sqrMagnitude < .1f) face = Vector3.forward;
             var stop = clear - 1f;
@@ -368,7 +367,7 @@ namespace EverythingWorld.World
             ArtistBits.PointLight(ctx.Root, g + face * 4f + up * 5f, new Color(1f, .85f, .6f), 20f, 1.4f);
             noGrass.Add(new Vector3(c.x, R + 4f, c.z));
             // a road from the nearest walk up to the gate
-            Vector3 join = default; var bd = float.MaxValue; foreach (var (p, w) in walkPoints) { if (w >= 400) continue; var dd = Vector2.Distance(new Vector2(p.x, p.z), new Vector2(g.x, g.z)); if (dd < bd) { bd = dd; join = p; } }
+            if (!JoinFor(ctx, g, 400, out var join, out var bd)) bd = float.MaxValue;
             if (bd < 200f) { var pts = new List<Vector3>(); var dir = new Vector3(g.x - join.x, 0, g.z - join.z).normalized; for (var d = RoadW / 2f; d < bd - 1f; d += 2f) { var q = join + dir * d; pts.Add(ctx.OnGround(q.x, q.z)); } if (pts.Count > 1) { Strip(mk, pts, WorldMaterials.Solid(new Color(.66f, .6f, .48f)), 3f, .12f); foreach (var p in pts) Remember(p, 351); } }
             var mark = new GameObject("Shot: the castle").transform; mark.SetParent(ctx.Root, false);
             var cam = g + face * 34f + side * 10f; cam = ctx.OnGround(cam.x, cam.z) + up * 1.5f; mark.SetPositionAndRotation(cam, Quaternion.LookRotation((c + up * 6f - cam - up * 1.6f).normalized));

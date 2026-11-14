@@ -31,6 +31,10 @@ namespace EverythingWorld.World
         readonly List<(Vector3 p, int w)> walkPoints = new List<(Vector3, int)>();
         readonly Dictionary<string, Vector3> facing = new Dictionary<string, Vector3>();
         readonly List<Vector3> noGrass = new List<Vector3>();
+        // walls, lamps and banners by a road wait until every road, trail and lane is laid, then go up only where no
+        // other path runs (a road branching off mid-way used to run straight through its parent's wall and lamps)
+        readonly List<(Vector3[] at, int own, float pad, System.Action build)> roadside = new List<(Vector3[], int, float, System.Action)>();
+        readonly Dictionary<(int, int), List<(Vector3 a, Vector3 b, int w)>> segCells = new Dictionary<(int, int), List<(Vector3, Vector3, int)>>();
         ClassicLife life;
         MeshKit soft;
         // the pond by the Beatles (ShapeGround)
@@ -127,7 +131,7 @@ namespace EverythingWorld.World
         {
             MakeMaterials();
             halos = new GlowHalos();
-            pathCells.Clear(); walkPoints.Clear(); facing.Clear(); noGrass.Clear(); hasCastle = false;
+            pathCells.Clear(); walkPoints.Clear(); facing.Clear(); noGrass.Clear(); roadside.Clear(); hasCastle = false;
             center = ctx.Plaza;
             life = new GameObject("Classic life").AddComponent<ClassicLife>();
             life.transform.SetParent(ctx.Root, false);
@@ -141,6 +145,7 @@ namespace EverythingWorld.World
             Castle(ctx, mk, solid);
             Legends(ctx, mk, solid);
             KingdomPlaces(ctx, mk, solid);   // after everything that was here, before the scatter (which then keeps clear)
+            Roadside();                      // now every path is down
             Country(ctx, mk, solid);
             mk.Build("Kingdom", ctx.Root, false);
             solid.BuildCollider("Kingdom walls", ctx.Root);
@@ -170,6 +175,82 @@ namespace EverythingWorld.World
                 if (pathCells.TryGetValue((cx + i, cz + j), out var l))
                     foreach (var p in l) { float dx = p.x - x, dz = p.z - z; if (dx * dx + dz * dz < within * within) return true; }
             return false;
+        }
+
+        static float Half(int w) => w == 350 ? 1.2f : w == 351 ? 1.5f : w == 900 ? 1.3f : RoadW / 2f;
+
+        /// Puts up the walls, lamps and banners held back by the roads, skipping any that would stand on another path.
+        void Roadside()
+        {
+            segCells.Clear();
+            for (var i = 1; i < walkPoints.Count; i++)
+            {
+                var (a, wa) = walkPoints[i - 1]; var (b, wb) = walkPoints[i];
+                if (wa != wb || new Vector2(a.x - b.x, a.z - b.z).sqrMagnitude > 4.5f * 4.5f) continue;   // consecutive points of one path
+                var key = (Mathf.FloorToInt((a.x + b.x) / 16f), Mathf.FloorToInt((a.z + b.z) / 16f));
+                if (!segCells.TryGetValue(key, out var l)) segCells[key] = l = new List<(Vector3, Vector3, int)>();
+                l.Add((a, b, wa));
+            }
+            var skipped = 0;
+            foreach (var (at, own, pad, build) in roadside)
+            {
+                var hit = false; foreach (var q in at) if (OnOtherPath(q, own, pad)) { hit = true; break; }
+                if (hit) { skipped++; continue; }
+                build();
+            }
+            if (skipped > 0) Debug.Log($"Kingdom of Classic Rock: {skipped} roadside walls, lamps and banners left out where another path runs");
+        }
+
+        bool OnOtherPath(Vector3 q, int own, float pad)
+        {
+            int cx = Mathf.FloorToInt(q.x / 8f), cz = Mathf.FloorToInt(q.z / 8f); var p = new Vector2(q.x, q.z);
+            for (var i = -1; i <= 1; i++)
+            for (var j = -1; j <= 1; j++)
+                if (segCells.TryGetValue((cx + i, cz + j), out var l))
+                    foreach (var (a, b, w) in l)
+                    {
+                        if (w == own) continue;
+                        Vector2 a2 = new Vector2(a.x, a.z), ab = new Vector2(b.x - a.x, b.z - a.z);
+                        var t = ab.sqrMagnitude < 1e-6f ? 0f : Mathf.Clamp01(Vector2.Dot(p - a2, ab) / ab.sqrMagnitude);
+                        if (Vector2.Distance(p, a2 + ab * t) < Half(w) + pad) return true;
+                    }
+            return false;
+        }
+
+        /// Whether a straight way from a to b keeps out of the pond, other artists' grounds and the places already
+        /// standing (the circles it starts or ends in don't count).
+        bool ClearLine(LandContext ctx, Vector3 a, Vector3 b, IslandWorldData.Artist target = null)
+        {
+            var A = new Vector2(a.x, a.z); var B = new Vector2(b.x, b.z); var len = Vector2.Distance(A, B);
+            for (var d = 1f; d < len - 1f; d += 2f)
+            {
+                var q = Vector2.Lerp(A, B, d / len);
+                if (InPond(q.x, q.y, 2f)) return false;
+                foreach (var ar in ctx.Artists)
+                {
+                    if (ar == target) continue; var c = new Vector2(ar.x, ar.z); var r = Foot(ar) + 1f;
+                    if (Vector2.Distance(q, c) < r && Vector2.Distance(A, c) > r) return false;
+                }
+                foreach (var c in noGrass)
+                {
+                    if (c.y < 4f) continue; var cc = new Vector2(c.x, c.z); var r = c.y + 1f;
+                    if (Vector2.Distance(q, cc) < r && Vector2.Distance(A, cc) > r && Vector2.Distance(B, cc) > r) return false;
+                }
+            }
+            return true;
+        }
+
+        /// The point on the walks (below 'below') to set off from for b: the nearest with a clear way, else the nearest.
+        bool JoinFor(LandContext ctx, Vector3 b, int below, out Vector3 join, out float dist)
+        {
+            var cands = new List<(float d, Vector3 p)>();
+            foreach (var (p, w) in walkPoints) { if (w >= below) continue; cands.Add((Vector2.Distance(new Vector2(p.x, p.z), new Vector2(b.x, b.z)), p)); }
+            join = default; dist = float.MaxValue; if (cands.Count == 0) return false;
+            cands.Sort((x, y) => x.d.CompareTo(y.d));
+            join = cands[0].p; dist = cands[0].d;
+            for (var i = 0; i < cands.Count && cands[i].d < cands[0].d * 1.6f + 25f; i += 2)
+                if (ClearLine(ctx, cands[i].p, b)) { join = cands[i].p; dist = cands[i].d; break; }
+            return true;
         }
 
         bool InNoGrass(float x, float z, float pad)
@@ -260,6 +341,8 @@ namespace EverythingWorld.World
                     foreach (var (p, _) in walkPoints)
                     {
                         var d = Vector2.Distance(new Vector2(p.x, p.z), new Vector2(a.x, a.z)) - Foot(a);
+                        if (d >= best) continue;
+                        if (!ClearLine(ctx, p, new Vector3(a.x, 0, a.z), a)) d += 60f;   // through another artist's ground or the pond: only if nothing else will do
                         if (d < best) { best = d; next = a; join = p; }
                     }
                 if (next == null) break;
@@ -295,13 +378,17 @@ namespace EverythingWorld.World
                             var cross = false; foreach (var w in walls) if ((w.road != road || w.side != s) && WallGap(w.a, w.b, a, b) < 3f) cross = true;   // segment to segment, so two walls can't cross mid-stretch either (their tops met in one plane and flickered)
                             if (cross) continue;
                             walls.Add((a, b, road, s));
-                            var mid = (a + b) / 2f + Vector3.up * .45f;
-                            mk.Box(wallM, mid, new Vector3(.7f, .9f, Vector3.Distance(a, b) + .05f), Quaternion.LookRotation(b - a));
-                            // the coping sits along the wall's own up (on a slope, world up slid it along the wall until its
-                            // ends met the wall's ends in one plane) and overhangs each end by 6 cm
-                            var wr = Quaternion.LookRotation(b - a);
-                            mk.Box(stoneM, mid + wr * Vector3.up * .5f, new Vector3(.8f, .12f, Vector3.Distance(a, b) + .17f), wr);
-                            solid.Box(wallM, mid + Vector3.up * .1f, new Vector3(.7f, 1.1f, Vector3.Distance(a, b) + .05f), Quaternion.LookRotation(b - a));
+                            var (wa, wb) = (a, b);
+                            roadside.Add((new[] { a, (a + b) / 2f, b }, walk, .6f, () =>
+                            {
+                                var mid = (wa + wb) / 2f + Vector3.up * .45f;
+                                mk.Box(wallM, mid, new Vector3(.7f, .9f, Vector3.Distance(wa, wb) + .05f), Quaternion.LookRotation(wb - wa));
+                                // the coping sits along the wall's own up (on a slope, world up slid it along the wall until its
+                                // ends met the wall's ends in one plane) and overhangs each end by 6 cm
+                                var wr = Quaternion.LookRotation(wb - wa);
+                                mk.Box(stoneM, mid + wr * Vector3.up * .5f, new Vector3(.8f, .12f, Vector3.Distance(wa, wb) + .17f), wr);
+                                solid.Box(wallM, mid + Vector3.up * .1f, new Vector3(.7f, 1.1f, Vector3.Distance(wa, wb) + .05f), Quaternion.LookRotation(wb - wa));
+                            }));
                         }
                 for (var i = 4; i < pts.Count; i += 9)
                 {
@@ -309,12 +396,12 @@ namespace EverythingWorld.World
                     var near = false; foreach (var o in lamps) if ((o - lp).sqrMagnitude < 30f * 30f) near = true;
                     if (near) continue;
                     lamps.Add(lp);
-                    Lamp(ctx, mk, ctx.Root, ctx.OnGround(lp.x, lp.z));
+                    var lg = ctx.OnGround(lp.x, lp.z); roadside.Add((new[] { lg }, walk, .4f, () => Lamp(ctx, mk, ctx.Root, lg)));
                 }
                 for (var i = 8; i < pts.Count - 3; i += 9)
                 {
                     var bp = pts[i] + side * ((i / 9) % 2 == 0 ? -1f : 1f) * (RoadW / 2f + 1f);
-                    Banner(ctx, mk, ctx.OnGround(bp.x, bp.z), (i / 9 + walk) % 2 == 0);
+                    var bg = ctx.OnGround(bp.x, bp.z); var crimson = (i / 9 + walk) % 2 == 0; roadside.Add((new[] { bg }, walk, .4f, () => Banner(ctx, mk, bg, crimson)));
                 }
                 walk++;
             }
@@ -404,8 +491,7 @@ namespace EverythingWorld.World
             var marble = WorldMaterials.Solid(new Color(.95f, .93f, .88f), .5f); var gilt = WorldMaterials.Solid(new Color(.95f, .76f, .3f), .85f);
             var bronze = WorldMaterials.Solid(new Color(.55f, .38f, .2f), .7f);
             // the road up, with banners
-            Vector3 from = center; var bd = float.MaxValue;
-            foreach (var (p, w) in walkPoints) { if (w >= 990) continue; var d = (p.x - c.x) * (p.x - c.x) + (p.z - c.z) * (p.z - c.z); if (d < bd) { bd = d; from = p; } }
+            if (!JoinFor(ctx, c, 990, out var from, out _)) from = center;
             var face = new Vector3(from.x - c.x, 0, from.z - c.z).normalized; if (face.sqrMagnitude < .1f) face = Vector3.forward;
             var pts = new List<Vector3>(); var total = Vector3.Distance(new Vector3(from.x, 0, from.z), new Vector3(c.x, 0, c.z)) - R - 3.5f;
             for (var d = RoadW / 2f; d < total; d += 3f) { var q = from - face * d; pts.Add(ctx.OnGround(q.x, q.z)); }
@@ -414,7 +500,7 @@ namespace EverythingWorld.World
                 Strip(mk, pts, asphalt, RoadW, .06f);
                 foreach (var p in pts) Remember(p, 990);
                 var sd = Vector3.Cross(up, face);
-                for (var k = 3; k < pts.Count; k += 5) foreach (var s in new[] { -1f, 1f }) Banner(ctx, mk, ctx.OnGround(pts[k].x + sd.x * s * (RoadW / 2f + 1f), pts[k].z + sd.z * s * (RoadW / 2f + 1f)), k / 5 % 2 == 0);
+                for (var k = 3; k < pts.Count; k += 5) foreach (var s in new[] { -1f, 1f }) { var bg = ctx.OnGround(pts[k].x + sd.x * s * (RoadW / 2f + 1f), pts[k].z + sd.z * s * (RoadW / 2f + 1f)); var crimson = k / 5 % 2 == 0; roadside.Add((new[] { bg }, 990, .4f, () => Banner(ctx, mk, bg, crimson))); }
             }
             // three marble steps all round
             for (var t = 0; t < 3; t++) { mk.Prism(marble, c - up * 1f, up, R + 3.2f - t * .9f, 1.2f + t * .3f, 24); }
