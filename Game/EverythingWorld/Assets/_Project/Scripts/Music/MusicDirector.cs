@@ -97,9 +97,15 @@ namespace EverythingWorld.Music
             TuneIn(CurrentScene, continuation: false);
         }
 
+        /// Set while the title screen and the loading screen are up: nothing plays until you're in the world.
+        public static bool Silent;
+
+        /// Starts the radio where you are (when you come into the world).
+        public void Wake() { Silent = false; TuneIn(CurrentScene, continuation: false); }
+
         void TuneIn(SceneInfo scene, bool continuation)
         {
-            if (scene == null) return;
+            if (scene == null || Silent) return;
             var now = RadioSchedule.NowSeconds;
             var slot = RadioSchedule.At(scene, now);
             if (!slot.IsValid) return;

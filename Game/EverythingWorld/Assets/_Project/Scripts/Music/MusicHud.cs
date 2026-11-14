@@ -13,9 +13,13 @@ namespace EverythingWorld.Music
 
         GUIStyle style;
 
+        bool show;
+        void Update() { var kb = UnityEngine.InputSystem.Keyboard.current; if (kb != null && kb.f1Key.wasPressedThisFrame) show = !show; }
+
+        /// The music details (for checking Spotify): F1 shows and hides them.
         void OnGUI()
         {
-            if (director == null) return;
+            if (director == null || !show || EverythingWorld.Player.MainMenu.Showing) return;
             style ??= EverythingWorld.World.GameFonts.Box(17, TextAnchor.UpperLeft, true);
 
             var useSpotify = outputSwitch != null && outputSwitch.useSpotify;
@@ -42,7 +46,7 @@ namespace EverythingWorld.Music
                 text += "\n\nDRY RUN: Spotify is not being controlled.";
                 if (spotify != null) text += $"\nSpotify login: {spotify.Status}";
             }
-            text += "\nWASD move, Space jumps, mouse look, Esc frees the cursor, L logs in to Spotify.";
+            text += "\nF1 hides this. L logs in to Spotify; - and = change its volume.";
 
             GUI.Box(new Rect(12, 12, 620, 200), text, style);
         }

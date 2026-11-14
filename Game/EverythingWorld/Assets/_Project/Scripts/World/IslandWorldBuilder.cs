@@ -434,6 +434,7 @@ namespace EverythingWorld.World
             // build the lands near where you start (the spawn point, where IslandExplorer puts you on Play) now; the rest
             // as you come near them (Update)
             var everything = BuildEverything || buildDistance <= 0f;
+            if (!BuildEverything && !EverythingWorld.Player.MainMenu.Skip && player != null) DeferLoading = true;   // the title screen comes first: just the hub under it
             var start = new Vector3(Data.layout.spawnX, 0f, Data.layout.spawnZ);
             var t0 = Time.realtimeSinceStartup; var n = 0;
             for (var k = pending.Count - 1; k >= 0; k--)

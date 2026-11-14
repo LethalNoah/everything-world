@@ -27,7 +27,7 @@ namespace EverythingWorld.Player
         {
             instance = this;
             walker = GetComponent<SimplePlayerController>(); hands = GetComponent<PlayerInteractor>();
-            if (!Skip) IslandWorldBuilder.DeferLoading = true;   // just the hub while the menu is up; the rest on Enter
+            if (!Skip) { IslandWorldBuilder.DeferLoading = true; MusicDirector.Silent = true; }   // just the hub while the menu is up, and no music, until you Enter
             if (walker != null) walker.mouseSensitivity = PlayerPrefs.GetFloat("EW_MouseSensitivity", walker.mouseSensitivity);
         }
 
@@ -86,6 +86,8 @@ namespace EverythingWorld.Player
         {
             yield return null; Hold(false);
             var w = IslandWorldBuilder.Instance; if (w != null) w.BeginLoading(walker);
+            while (w != null && w.Loading) yield return null;
+            if (MusicDirector.Instance != null) MusicDirector.Instance.Wake();   // the music starts as you step out
         }
 
         void Enter()
@@ -114,7 +116,7 @@ namespace EverythingWorld.Player
         {
             if (title != null) return;
             panel = Solid(new Color(.04f, .035f, .05f, .82f)); gold = Solid(new Color(1f, .8f, .45f)); faint = Solid(new Color(1f, 1f, 1f, .14f)); white = Solid(Color.white);
-            title = new GUIStyle { font = GameFonts.Sign, fontSize = 50, wordWrap = true, normal = { textColor = new Color(1f, .86f, .58f) } };
+            title = new GUIStyle { font = GameFonts.Sign, fontSize = 44, wordWrap = false, normal = { textColor = new Color(1f, .86f, .58f) } };
             sub = new GUIStyle { font = GameFonts.Speech, fontSize = 17, wordWrap = true, normal = { textColor = new Color(.86f, .84f, .8f) } };
             button = new GUIStyle { font = GameFonts.Sign, fontSize = 26, alignment = TextAnchor.MiddleLeft, padding = new RectOffset(16, 8, 4, 4), normal = { textColor = new Color(.95f, .93f, .9f) }, hover = { textColor = new Color(1f, .8f, .45f), background = Solid(new Color(1f, 1f, 1f, .06f)) } };
             buttonOff = new GUIStyle(button) { normal = { textColor = new Color(.5f, .48f, .46f) }, hover = { textColor = new Color(.5f, .48f, .46f) } };
@@ -127,10 +129,10 @@ namespace EverythingWorld.Player
             if (!open || Skip) return;
             Styles(); GUI.depth = -50;
             var w = IslandWorldBuilder.Instance; var lay = w != null ? w.Data.layout : null;
-            const float W = 470f; var left = new Rect(0, 0, W, Screen.height);
+            const float W = 500f; var left = new Rect(0, 0, W, Screen.height);
             GUI.DrawTexture(left, panel); GUI.DrawTexture(new Rect(W - 2f, 0, 2f, Screen.height), gold);
             float x = 44f, y = Screen.height * .12f;
-            GUI.Label(new Rect(x, y, W - 70f, 130f), "THE EVERYTHING WORLD", title); y += 128f;
+            var tt = new GUIContent("THE EVERYTHING\nWORLD"); var th = title.CalcHeight(tt, W - 60f); GUI.Label(new Rect(x, y, W - 60f, th), tt, title); y += th + 10f;
             GUI.Label(new Rect(x, y, W - 70f, 24f), "A world built from one shared playlist.", sub); y += 26f;
             if (lay != null) GUI.Label(new Rect(x, y, W - 70f, 24f), $"{lay.hubSongs:N0} songs  ·  {lay.hubArtists:N0} artists  ·  {lay.islands.Length - 1} lands", small);
             y += 54f;
