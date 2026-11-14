@@ -92,8 +92,14 @@ namespace EverythingWorld.World
         /// Returns the way the place faces (toward the path it hangs off).
         Vector3 PlaceWay(LandContext ctx, MeshKit mk, Vector3 c, float clearR, string sign, string mark, Color col, bool onIce)
         {
-            Vector3 join = default; var best = float.MaxValue;
-            foreach (var p in pathPoints) { var d = Vector2.Distance(new Vector2(p.x, p.z), new Vector2(c.x, c.z)); if (d < best) { best = d; join = p; } }
+            Vector3 join = default; var best = float.MaxValue; var bestScore = float.MaxValue;
+            foreach (var p in pathPoints)
+            {
+                var d = Vector2.Distance(new Vector2(p.x, p.z), new Vector2(c.x, c.z));
+                var score = d;
+                foreach (var lp in lanternPosts) if ((lp.x - p.x) * (lp.x - p.x) + (lp.z - p.z) * (lp.z - p.z) < 3f * 3f) { score += 6f; break; }   // not where a lantern post stands (the side path ran into it)
+                if (score < bestScore) { bestScore = score; best = d; join = p; }
+            }
             var face = best < float.MaxValue ? new Vector3(join.x - c.x, 0, join.z - c.z).normalized : new Vector3(ctx.Plaza.x - c.x, 0, ctx.Plaza.z - c.z).normalized;
             if (face.sqrMagnitude < .1f) face = Vector3.forward;
             var side = Vector3.Cross(Vector3.up, face);

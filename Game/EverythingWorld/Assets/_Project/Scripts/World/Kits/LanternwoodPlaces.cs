@@ -377,6 +377,7 @@ namespace EverythingWorld.World
                 var side = new Vector3(R(-1, 1), 0, R(-1, 1)).normalized * R(4f, 7f);
                 var at = p + side;
                 if (!ctx.IsLand(at.x, at.z, 3f) || !ctx.IsFree(at.x, at.z, 2f) || OnLake(at, 2f)) continue;
+                if (NearClear(at.x, at.z)) continue;      // off every path (side paths too), the places and the other snowmen
                 at.y = ctx.Ground(at.x, at.z);
                 var facing = Quaternion.LookRotation(new Vector3(p.x - at.x, 0, p.z - at.z));
                 var big = R(.85f, 1.1f);

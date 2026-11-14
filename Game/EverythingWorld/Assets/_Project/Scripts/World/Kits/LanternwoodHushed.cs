@@ -196,7 +196,7 @@ namespace EverythingWorld.World
                 var go = il.BuildSingle("Ice lantern", life.transform, false); go.transform.position = p; var bc = go.AddComponent<BoxCollider>(); bc.center = new Vector3(0, .4f, 0); bc.size = new Vector3(.7f, .8f, .7f);
                 var t = go.AddComponent<Toy>(); t.kind = Toy.Kind.Glow; t.verb = "Light the lantern"; t.glow = glow; t.glowColor = (k % 3 == 0 ? Frost : Warm) * .9f;
             }
-            Bench(ctx, mk, solid, c + face * 5f, -face);
+            Bench(ctx, mk, solid, c + face * 5.2f - Vector3.Cross(up, face) * 2.4f, -face);   // beside the end of the path, not across it
             ArtistBits.PointLight(ctx.Root, c + up * 2.5f, new Color(.75f, .85f, 1f), 10f, .9f);
         }
 

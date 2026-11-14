@@ -51,6 +51,7 @@ namespace EverythingWorld.World
         // ---------------------------------------------------------------- scenery
         readonly List<Vector3> clear = new List<Vector3>(); // x, z = point, y = radius: no trees here (creek, paths)
         readonly List<Vector3> pathPoints = new List<Vector3>();
+        readonly List<Vector3> lanternPosts = new List<Vector3>();   // the lantern posts along the paths: side paths don't join right beside one
         bool treehouseBuilt;
 
         bool NearClear(float x, float z)
@@ -67,7 +68,7 @@ namespace EverythingWorld.World
         {
             MakeMaterials();
             clear.Clear();
-            pathPoints.Clear();
+            pathPoints.Clear(); lanternPosts.Clear();
             treehouseBuilt = false; hasFireCircle = false;
             halos = new GlowHalos();
             var mk = new MeshKit(); var solid = new MeshKit();
@@ -80,10 +81,10 @@ namespace EverythingWorld.World
             life.hasLake = hasLake; life.lakeCenter = new Vector3(lakeC.x, lakeLevel, lakeC.z); life.lakeRadius = lakeR;
             SongPlaces(ctx, mk, solid);
             Props(ctx, mk, solid, chapelFront, creek);
-            Snowmen(ctx, mk, solid);
             FireCircle(ctx, mk, solid, chapelFront);
             Overlook(ctx, mk, solid);
-            Hushed(ctx, mk, solid, chapelFront);   // last, so nothing that was already here moves
+            Hushed(ctx, mk, solid, chapelFront);   // nothing that was already here moves
+            Snowmen(ctx, mk, solid);               // after everything else, so a snowman never stands on a side path laid later
             mk.Build("Lanternwood scenery", ctx.Root, false);
             solid.BuildCollider("Lanternwood walls", ctx.Root);
             Forest(ctx);
@@ -268,6 +269,18 @@ namespace EverythingWorld.World
                 if (pts.Count < 2) continue;
                 pathPoints.AddRange(pts);
                 Ribbon(ctx, mk, trodden, pts, 1.7f, .07f);
+                // a small area's clearing is smaller than where the path stops: carry the path on to its edge, so it
+                // doesn't end in the snow a few metres short (not part of the network, so nothing else moves)
+                var clearingR = next.tier == "shrine" ? 7f : next.tier == "monument" ? 9f : 15f;
+                var endD = Vector3.Distance(new Vector3(pts[pts.Count - 1].x, 0, pts[pts.Count - 1].z), to);
+                if (len > 0 && endD > clearingR + 1f && endD < clearingR + 16f && Vector3.Distance(new Vector3(join.x, 0, join.z) + dir * len, new Vector3(pts[pts.Count - 1].x, 0, pts[pts.Count - 1].z)) < 4.5f)
+                {
+                    var tail = new List<Vector3> { pts[pts.Count - 1] };
+                    var back = (new Vector3(pts[pts.Count - 1].x, 0, pts[pts.Count - 1].z) - to).normalized;
+                    for (var e = endD - 2f; e > clearingR - .5f; e -= 2f) { var q = to + back * e; tail.Add(ctx.OnGround(q.x, q.z)); }
+                    var last = to + back * (clearingR - .5f); tail.Add(ctx.OnGround(last.x, last.z));
+                    Ribbon(ctx, mk, trodden, tail, 1.7f, .07f);
+                }
                 network.AddRange(pts);
                 for (var i = 0; i < pts.Count; i++)
                 {
@@ -277,7 +290,7 @@ namespace EverythingWorld.World
                     var tooClose = false;
                     foreach (var o in posts) if ((o - post).sqrMagnitude < 9f * 9f) { tooClose = true; break; }
                     if (tooClose || !ctx.IsFree(post.x, post.z, 1f) && Vector3.Distance(post, to) > next.r) continue;
-                    posts.Add(post);
+                    posts.Add(post); lanternPosts.Add(post);
                     post.y = ctx.Ground(post.x, post.z);
                     var arm = (pts[i] - post); arm.y = 0; arm.Normalize();      // the lantern hangs over the path
                     // tall enough that the lantern hangs over the path above head height
@@ -294,22 +307,25 @@ namespace EverythingWorld.World
             }
         }
 
-        /// A disc of packed snow, the clearing an artist area stands in.
-        static void Clearing(LandContext ctx, MeshKit mk, Material m, Vector3 center, float radius)
+        /// A disc of packed snow, the clearing an artist area stands in. Rings about 2 m apart, so it lies on sloping
+        /// ground instead of cutting across it in big flat facets; none of it on the frozen lake (it ran down the bank
+        /// under the ice by the boathouse).
+        void Clearing(LandContext ctx, MeshKit mk, Material m, Vector3 center, float radius)
         {
-            const int rings = 4, spokes = 24;
+            var rings = Mathf.Max(4, Mathf.CeilToInt(radius / 2f)); const int spokes = 36;
             Vector3 P(int ring, int spoke)
             {
                 var a = spoke * Mathf.PI * 2f / spokes; var rr = radius * ring / rings;
                 var x = center.x + Mathf.Cos(a) * rr; var z = center.z + Mathf.Sin(a) * rr;
                 return new Vector3(x, ctx.Ground(x, z) + .03f, z);   // below paths (.07), so the two never flicker
             }
+            bool Ice(Vector3 p) => OnLake(p, 1.5f);   // where the ice sheet reaches
             for (var ring = 0; ring < rings; ring++)
             for (var s = 0; s < spokes; s++)
             {
                 var below = new Vector3(center.x, ctx.Ground(center.x, center.z) - 5f, center.z);
-                if (ring == 0) mk.Tri(m, P(0, 0), P(1, s), P(1, s + 1), below);
-                else mk.Quad(m, P(ring, s), P(ring, s + 1), P(ring + 1, s + 1), P(ring + 1, s), below);
+                if (ring == 0) { Vector3 a = P(0, 0), b = P(1, s), c = P(1, s + 1); if (!Ice(a) && !Ice(b) && !Ice(c)) mk.Tri(m, a, b, c, below); }
+                else { Vector3 a = P(ring, s), b = P(ring, s + 1), c = P(ring + 1, s + 1), d = P(ring + 1, s); if (!Ice(a) && !Ice(b) && !Ice(c) && !Ice(d)) mk.Quad(m, a, b, c, d, below); }
             }
         }
 
