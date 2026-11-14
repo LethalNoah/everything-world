@@ -232,48 +232,94 @@ namespace EverythingWorld.World
         }
 
         // ---------- bridges and causeways ----------
+        /// The deck of a crossing, as points along its middle (on the deck's surface), every few metres from the
+        /// first land to the second. Each end walks inland from the planned landing until it reaches solid ground
+        /// above the water, so no crossing stops short in the sea; over land the deck follows the ground (never
+        /// under a rise, and flush with the ground where you step off); over water it runs straight between the
+        /// shores, at least a metre above the sea. Shared with the bridge check in the photo tour.
+        public static List<Vector3> BridgePath(IslandWorldData data, IslandWorldData.Bridge b)
+        {
+            var a = new Vector3(b.ax, 0, b.az); var e = new Vector3(b.bx, 0, b.bz);
+            var along = e - a; along.y = 0; along.Normalize();
+            bool Dry(Vector3 q, int island) { var isl = data.IslandAt(q.x, q.z); return isl != null && isl.sceneId == island && data.HeightAt(q.x, q.z) > .3f; }
+            Vector3 Land(Vector3 p, Vector3 outward, int island)
+            {
+                // straight on along the crossing until it's dry ground on the right land (with dry ground beyond)
+                for (var s = 0f; s <= 40f; s += 1f) { var q = p + outward * s; if (Dry(q, island) && Dry(q + outward * 2f, island)) return q + outward * 1.5f; }
+                // else the nearest dry ground of that land, searching outward in rings (the crossing bends a little)
+                for (var r = 2f; r <= 90f; r += 2f)
+                {
+                    Vector3 best = Vector3.zero; var bd = float.MaxValue;
+                    for (var k = 0; k < 48; k++) { var ang = k * Mathf.PI / 24f; var q = p + new Vector3(Mathf.Cos(ang), 0, Mathf.Sin(ang)) * r; if (!Dry(q, island)) continue; var dd = Vector3.Dot(q - p, outward); if (dd < -2f) continue; var score = (q - p).sqrMagnitude - dd * 2f; if (score < bd) { bd = score; best = q; } }
+                    if (bd < float.MaxValue) { var o = (best - p); o.y = 0; o.Normalize(); return best + o * 1.5f; }
+                }
+                return p;
+            }
+            a = Land(a, -along, b.a); e = Land(e, along, b.b);
+            var len = Vector3.Distance(new Vector3(a.x, 0, a.z), new Vector3(e.x, 0, e.z));
+            var n = Mathf.Max(2, Mathf.CeilToInt(len / 3f));
+            float ya = Mathf.Max(data.HeightAt(a.x, a.z), 1f) + .15f, ye = Mathf.Max(data.HeightAt(e.x, e.z), 1f) + .15f;
+            var pts = new List<Vector3>();
+            for (var k = 0; k <= n; k++)
+            {
+                var t = k / (float)n; var p = Vector3.Lerp(a, e, t);
+                var ground = data.HeightAt(p.x, p.z);
+                var y = Mathf.Max(Mathf.Lerp(ya, ye, t), ground + .15f, 1f);
+                pts.Add(new Vector3(p.x, y, p.z));
+            }
+            // soften: a deck can't kink sharply from one plank to the next (but never sink into the ground)
+            for (var pass = 0; pass < 3; pass++)
+                for (var k = 1; k < pts.Count - 1; k++)
+                {
+                    var p = pts[k]; var avg = (pts[k - 1].y + pts[k + 1].y) / 2f;
+                    p.y = Mathf.Max(avg, data.HeightAt(p.x, p.z) + .15f, 1f); pts[k] = p;
+                }
+            return pts;
+        }
+
         void BuildBridges()
         {
             var root = new GameObject("Bridges").transform;
             root.SetParent(transform, false);
             var wood = Mat(new Color32(140, 98, 62, 255));
             var stone = Mat(new Color32(196, 184, 160, 255));
+            var up = Vector3.up;
             foreach (var b in Data.layout.bridges)
             {
-                var a = new Vector3(b.ax, 0, b.az); var e = new Vector3(b.bx, 0, b.bz);
-                a.y = Mathf.Max(Data.HeightAt(a.x, a.z), 1f) + .15f;
-                e.y = Mathf.Max(Data.HeightAt(e.x, e.z), 1f) + .15f;
-                var dir = e - a; var len = dir.magnitude;
-                var rot = Quaternion.LookRotation(dir.normalized, Vector3.up);
-                var width = b.causeway ? 6f : 3.5f;
-                var go = new GameObject((b.causeway ? "Causeway " : "Bridge ") + b.a + "-" + b.b).transform;
-                go.SetParent(root, false);
-
-                Box(go, "Deck", (a + e) / 2 - Vector3.up * .2f, rot, new Vector3(width, .4f, len + 1f), b.causeway ? stone : wood, true);
-                // railings with posts
-                for (var side = -1; side <= 1; side += 2)
+                var pts = BridgePath(Data, b);
+                var width = b.causeway ? 6f : 3.5f; var mat = b.causeway ? stone : wood;
+                var mk = new MeshKit(); var walls = new MeshKit();
+                var go = new GameObject((b.causeway ? "Causeway " : "Bridge ") + b.a + "-" + b.b).transform; go.SetParent(root, false);
+                var post = 0f; var pier = 8f; var run = 0f;
+                for (var k = 0; k + 1 < pts.Count; k++)
                 {
-                    var off = rot * Vector3.right * (width / 2 - .15f) * side;
-                    Box(go, "Rail", (a + e) / 2 + off + Vector3.up * .9f, rot, new Vector3(.18f, .12f, len), b.causeway ? stone : wood, false);
-                    for (var t = 0f; t <= len; t += b.causeway ? 6f : 3f)
+                    Vector3 p = pts[k], q = pts[k + 1]; var d = q - p; var len = d.magnitude; if (len < .01f) continue;
+                    var rot = Quaternion.LookRotation(d / len, up); var side = rot * Vector3.right; var mid = (p + q) / 2f;
+                    mk.Box(mat, mid - rot * Vector3.up * .2f, new Vector3(width, .4f, len + .12f), rot);
+                    walls.Box(mat, mid - rot * Vector3.up * .2f, new Vector3(width, .4f, len + .12f), rot);
+                    foreach (var s in new[] { -1f, 1f })
                     {
-                        var p = Vector3.Lerp(a, e, t / len) + off;
-                        Box(go, "Post", p + Vector3.up * .45f, rot, new Vector3(.25f, .9f, .25f), b.causeway ? stone : wood, false);
+                        var off = side * (width / 2f - .15f) * s;
+                        mk.Box(mat, mid + off + up * .9f, new Vector3(.18f, .12f, len + .05f), rot);
+                        walls.Box(mat, mid + side * (width / 2f) * s + up * 1f, new Vector3(.2f, 2.2f, len + .05f), rot);   // keeps people from falling off
                     }
-                }
-                // causeways stand on stone piers
-                if (b.causeway)
-                    for (var t = 8f; t < len - 4f; t += 14f)
+                    for (; post <= run + len; post += b.causeway ? 6f : 3f)
                     {
-                        var p = Vector3.Lerp(a, e, t / len); var depth = p.y + 10f;
-                        Box(go, "Pier", p - Vector3.up * (depth / 2 + .4f), rot, new Vector3(width * .8f, depth, 2.4f), stone, false);
+                        var t = (post - run) / len; var pp = Vector3.Lerp(p, q, t);
+                        foreach (var s in new[] { -1f, 1f }) mk.Box(mat, pp + side * (width / 2f - .15f) * s + up * .45f, new Vector3(.25f, .9f, .25f), rot);
                     }
-                // invisible side walls keep people from falling off
-                for (var side = -1; side <= 1; side += 2)
-                {
-                    var wall = Box(go, "Edge", (a + e) / 2 + rot * Vector3.right * (width / 2) * side + Vector3.up * 1f, rot, new Vector3(.2f, 2.2f, len), null, true);
-                    wall.GetComponent<Renderer>().enabled = false;
+                    if (b.causeway)
+                        for (; pier <= run + len; pier += 14f)
+                        {
+                            var pp = Vector3.Lerp(p, q, (pier - run) / len); var ground = Data.HeightAt(pp.x, pp.z);
+                            if (ground > pp.y - 1.5f) continue;   // on land the deck sits on the ground
+                            var depth = pp.y - Mathf.Min(ground, 0f) + 10f;
+                            mk.Box(stone, pp - up * (depth / 2f + .4f), new Vector3(width * .8f, depth, 2.4f), Quaternion.LookRotation(new Vector3(d.x, 0, d.z)));
+                        }
+                    run += len;
                 }
+                var deck = mk.Build("Deck", go, false); if (deck != null) deck.isStatic = true;
+                walls.BuildCollider("Deck and edges", go);
             }
         }
 

@@ -182,8 +182,10 @@ namespace EverythingWorld.World
         void Lights(LandContext ctx, MeshKit mk, GlowHalos halos)
         {
             var up = Vector3.up; var bulbCols = new[] { Warm, new Color(1f, .55f, .5f), new Color(.6f, .8f, 1f), new Color(1f, .9f, .6f) };
-            // lamps down every causeway path
-            var lampN = 0;
+            // lamps down every causeway path, kept clear of the bridge decks where the paths meet them
+            var lampN = 0; var decks = new List<Vector3>();
+            var ends = new List<Vector3>(); foreach (var br in ctx.Data.layout.bridges) if (br.a == 1000 || br.b == 1000) { var bp = IslandWorldBuilder.BridgePath(ctx.Data, br); decks.AddRange(bp); ends.Add(bp[0]); ends.Add(bp[bp.Count - 1]); }
+            bool OnDeck(Vector3 p) { foreach (var d in ends) if ((new Vector2(d.x - p.x, d.z - p.z)).sqrMagnitude < 14f * 14f) return true; foreach (var d in decks) if ((new Vector2(d.x - p.x, d.z - p.z)).sqrMagnitude < 5.5f * 5.5f) return true; return false; }
             foreach (var o in openings)
             {
                 var side = Vector3.Cross(up, o);
@@ -191,6 +193,7 @@ namespace EverythingWorld.World
                 {
                     var q = center + o * d; if (!ctx.IsLand(q.x, q.z, 3f)) break;
                     var s = (lampN % 2 == 0 ? 1f : -1f); var p = q + side * s * 3.4f; p.y = ctx.Ground(p.x, p.z);
+                    if (OnDeck(p)) { lampN++; continue; }
                     mk.Prism(iron, p, up, .09f, 3.6f, 6); mk.Blob(WorldMaterials.Glow(Warm, 2f), p + up * 3.8f, new Vector3(.28f, .36f, .28f), ctx.Rng, .05f); ArtistBits.PostCollider(ctx.Root, p, 3.6f, .12f);
                     halos.Add(p + up * 3.8f, 1.6f, Warm, .7f); if (lampN % 2 == 0) ArtistBits.PointLight(ctx.Root, p + up * 3.6f, Warm, 12f, 1.2f);
                     lampN++;

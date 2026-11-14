@@ -84,6 +84,7 @@ namespace EverythingWorld.World
             Cursor.lockState = CursorLockMode.None;
 
             if (lands.Length == 1 && lands[0] == "perf") { yield return Perf(data, player, pivot, cam); Quit(0); yield break; }
+            if (lands.Length == 1 && lands[0] == "bridges") { yield return Bridges(data, player, pivot, cam); Quit(0); yield break; }
             var wanted = new List<string>();
             foreach (var l in lands)
             {
@@ -339,6 +340,70 @@ namespace EverythingWorld.World
             foreach (var isl in data.layout.islands) if (isl.name == name) return isl;
             return null;
         }
+
+        /// "bridges": checks every bridge and causeway with the whole world built, and photographs each one from both
+        /// ends, looking off the deck onto the land. For each end it reports the step between the deck and the ground
+        /// (a step up or a drop), water where you step off, and anything solid in the way within 12 m (a wall, a
+        /// tree, a building); along the span, any ground poking up through the deck. Report: Logs/BridgeAudit.txt;
+        /// photos: Logs/Shots/Bridges/.
+        IEnumerator Bridges(IslandWorldData data, SimplePlayerController player, Transform pivot, Camera cam)
+        {
+            var dir = Path.Combine(Application.dataPath, "..", "Logs", "Shots", "Bridges");
+            if (Directory.Exists(dir)) foreach (var f in Directory.GetFiles(dir, "*.png")) File.Delete(f);
+            Directory.CreateDirectory(dir);
+            var names = new Dictionary<int, string>(); foreach (var isl in data.layout.islands) names[isl.sceneId] = isl.name;
+            var bridgesRoot = GameObject.Find("Bridges");
+            var report = new StringBuilder(); var bad = 0; var n = 0;
+            for (var k = 0; k < data.layout.bridges.Length; k++)
+            {
+                var b = data.layout.bridges[k];
+                var path = IslandWorldBuilder.BridgePath(data, b); var a = path[0]; var e = path[path.Count - 1];
+                var along = e - a; along.y = 0; var len = along.magnitude; along /= len;
+                var issues = new List<string>();
+                Vector3 Out(Vector3 from, Vector3 to) { var o = to - from; o.y = 0; return o.normalized; }
+                var outA = Out(path[1], path[0]); var outE = Out(path[path.Count - 2], path[path.Count - 1]);
+                foreach (var (end, outward, land) in new[] { (a, outA, b.a), (e, outE, b.b) })
+                {
+                    var who = names.TryGetValue(land, out var nm) ? nm : land.ToString();
+                    // the landing: where you step off, half a metre past the deck's end
+                    var off = end + outward * 1f; var g = data.HeightAt(off.x, off.z); var step = g - end.y;
+                    if (g < .2f) issues.Add($"{who} end: steps off into the water (ground {g:0.0} m)");
+                    else if (step > .45f) issues.Add($"{who} end: a step UP of {step:0.0} m onto the land");
+                    else if (step < -.6f) issues.Add($"{who} end: a DROP of {-step:0.0} m onto the land");
+                    for (var s = 2f; s <= 12f; s += 2f) { var q = end + outward * s; if (data.HeightAt(q.x, q.z) < .2f) { issues.Add($"{who} end: water again {s:0} m in"); break; } }
+                    // anything solid in the way of walking off (ignoring the bridge itself and walkable ground)
+                    foreach (var hit in Physics.SphereCastAll(end + Vector3.up * 1.1f, .45f, outward, 12f, ~0, QueryTriggerInteraction.Ignore))
+                    {
+                        if (hit.normal.y > .6f) continue;
+                        if (bridgesRoot != null && hit.transform.IsChildOf(bridgesRoot.transform)) continue;
+                        if (hit.distance <= 0f) continue;
+                        issues.Add($"{who} end: blocked {hit.distance:0} m in by {Path2(hit.transform)} at ({hit.point.x:0}, {hit.point.z:0})"); break;
+                    }
+                }
+                var buried = 0f; var steep = 0f;
+                for (var k2 = 0; k2 < path.Count; k2++) { var q = path[k2]; if (data.HeightAt(q.x, q.z) > q.y + .3f) buried += 3f; if (k2 > 0) { var d2 = path[k2] - path[k2 - 1]; var flat = new Vector2(d2.x, d2.z).magnitude; if (Mathf.Abs(d2.y) > flat * .7f) steep += flat; } }
+                if (steep > 1f) issues.Add($"too steep to walk for {steep:0} m");
+                if (buried > 1f) issues.Add($"ground comes up through the deck for {buried:0} m");
+                var title = $"{(b.causeway ? "Causeway" : "Bridge")} {k}: {names.GetValueOrDefault(b.a)} to {names.GetValueOrDefault(b.b)}, {len:0} m";
+                report.AppendLine(title + (issues.Count == 0 ? "  ok" : ""));
+                foreach (var i in issues) report.AppendLine("    " + i);
+                if (issues.Count > 0) bad++;
+                // the photos: standing on the deck near each end, looking off it onto the land
+                foreach (var (end, outward, land) in new[] { (a, outA, b.a), (e, outE, b.b) })
+                {
+                    var near = end == a ? path[Mathf.Min(3, path.Count - 1)] : path[Mathf.Max(0, path.Count - 4)]; var stand = near + Vector3.up * .95f;
+                    player.transform.SetPositionAndRotation(stand, Quaternion.LookRotation(outward)); if (pivot != null) pivot.localEulerAngles = new Vector3(6f, 0f, 0f);
+                    var culler = FindAnyObjectByType<LandCuller>(); if (culler != null) culler.Refresh();
+                    var until = Time.realtimeSinceStartup + (n == 0 ? 5f : .7f); while (Time.realtimeSinceStartup < until) yield return null;
+                    Capture(cam, Path.Combine(dir, $"{n:000}_{k:00}_{Safe(names.GetValueOrDefault(land))}.png")); n++;
+                }
+            }
+            report.Insert(0, $"Bridge audit: {data.layout.bridges.Length} crossings, {bad} with problems" + System.Environment.NewLine + System.Environment.NewLine);
+            File.WriteAllText(Path.Combine(Application.dataPath, "..", "Logs", "BridgeAudit.txt"), report.ToString());
+            Debug.Log($"Bridge audit: {data.layout.bridges.Length} crossings, {bad} with problems. Report: Logs/BridgeAudit.txt");
+        }
+
+        static string Path2(Transform t) { var s = t.name; for (var p = t.parent; p != null && s.Length < 90; p = p.parent) s = p.name + " / " + s; return s; }
 
         /// Where the player's feet go: on whatever is solid there (a deck, a floor, the ground).
         static Vector3 Feet(Vector3 p)

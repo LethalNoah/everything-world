@@ -363,12 +363,43 @@ for a in range(K):
     for nb in SCN[a]['neighbours'][:2]:
         b = index_of_id[nb]
         if realm_of[a] == realm_of[b] and GAP[a, b] < 70: links.add((min(a, b), max(a, b)))
+base_links = set(links)   # towers are placed by these, so new crossings never move a tower
+# More ways across (added 2026-11-13): every island gets at least two ways in, and close shores that are far
+# apart on foot (four or more crossings) get a shortcut, so walks can loop instead of doubling back.
+# two islands count as joined on foot only along a real stretch of shared border (a corner or a few cells
+# isn't enough: on the game's coarser grid that can turn into a strip of water)
+BORDER = np.zeros((K, K), int)
+for A_, B_, LA, LB in ((L[:, :-1], L[:, 1:], land[:, :-1], land[:, 1:]), (L[:-1, :], L[1:, :], land[:-1, :], land[1:, :])):
+    mm = (A_ != B_) & LA & LB
+    np.add.at(BORDER, (A_[mm], B_[mm]), 1); np.add.at(BORDER, (B_[mm], A_[mm]), 1)
+def touching(a, b): return GAP[a, b] < 6 and group[a] == group[b] and BORDER[a, b] >= 6
+def hops(src):
+    dist = {src: 0}; q = [src]
+    while q:
+        u = q.pop(0)
+        for v in range(K):
+            if v not in dist and ((min(u, v), max(u, v)) in links or touching(u, v)): dist[v] = dist[u] + 1; q.append(v)
+    return dist
+added = []
+for a in range(K):
+    ways = sum(1 for b in range(K) if b != a and ((min(a, b), max(a, b)) in links or touching(a, b)))
+    if ways >= 2: continue
+    for b in np.argsort(GAP[a]):
+        b = int(b)
+        if b == a or not np.isfinite(GAP[a, b]) or GAP[a, b] > 260: break
+        if (min(a, b), max(a, b)) in links or touching(a, b): continue
+        links.add((min(a, b), max(a, b))); added.append((a, b, 'second way in')); break
+pairs = sorted(((GAP[a, b], a, b) for a in range(K) for b in range(a + 1, K) if np.isfinite(GAP[a, b]) and 6 <= GAP[a, b] < 120))
+for g, a, b in pairs:
+    if (a, b) in links: continue
+    if hops(a).get(b, 99) >= 4: links.add((a, b)); added.append((a, b, 'shortcut'))
+for a, b, why in added: print('extra crossing:', ART[SCN[a]['id']]['name'], '<->', ART[SCN[b]['id']]['name'], f'{GAP[a, b]:.0f} m', why)
 bridges = []
 for a, b in sorted(links):
     p, q = ENDS[(a, b)]
     # land the bridge a little way onto each shore
     u = (q - p) / (np.hypot(*(q - p)) + 1e-9); p2, q2 = p - u * 7, q + u * 7
-    if GAP[a, b] < 6 and group[a] == group[b]: continue   # neighbours on one landmass: cross on land
+    if touching(a, b): continue   # neighbours on one landmass with a real shared border: cross on land
     kind = 'causeway' if realm_of[a] != realm_of[b] or GAP[a, b] > 120 else 'bridge'
     bridges.append(dict(a=a, b=b, k=kind, p=[round(float(v), 1) for v in (*p2, *q2)]))
 hub_c = np.array([hub_x, hub_y])
@@ -382,7 +413,7 @@ print('bridges', collections.Counter(b['k'] for b in bridges))
 assert len(links) >= K - 1
 
 # towers: one per realm, on its best-connected island, toward the middle of the realm
-deg = collections.Counter(); [deg.update(l) for l in links]
+deg = collections.Counter(); [deg.update(l) for l in base_links]
 towers = []
 for r in range(len(RLM)):
     mem = [i for i in range(K) if realm_of[i] == r]
