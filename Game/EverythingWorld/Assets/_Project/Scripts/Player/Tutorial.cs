@@ -142,8 +142,7 @@ namespace EverythingWorld.Player
             var labels = new GameObject("Labels").transform; labels.SetParent(t, false);
             if (artist != null) Mark(P(-2.4f, 0, 74f), 1.3f, 2.1f);
             if (artist != null) ArtistBits.Plaque(mk, solid, labels, artist, P(-2.4f, 0, 74f), Vector3.right, wood, WorldMaterials.Solid(new Color(.9f, .86f, .78f)), new Color(.12f, .1f, .08f));
-            Sign(80f, 1.8f, "M shows your map.\nJ opens your passport: a stamp for every land\nyou visit, every artist you read about,\nand every song you hear for 30 seconds.
-N shows the song playing right now.");
+            Sign(80f, 1.8f, "M shows your map.\nJ opens your passport: a stamp for every land\nyou visit, every artist you read about,\nand every song you hear for 30 seconds.\nN shows the song playing right now.");
             // the blinding stretch
             Sign(100f, 1.8f, "Some places are very bright.\nPress G for sunglasses.\nG again takes them off.");
             var dazzle = WorldMaterials.Glow(new Color(1f, .96f, .86f), 1.6f); var dazzleB = WorldMaterials.Glow(new Color(1f, .86f, .55f), 1.6f);
