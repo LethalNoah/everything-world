@@ -62,7 +62,7 @@ namespace EverythingWorld.World
             }
 
             // ---------------------------------------------------------------- read what was built
-            var surf = new float[N]; var low = new float[N]; var body = new int[N];
+            var surf = new float[N]; var low = new float[N]; var body = new int[N]; var roof = new bool[N];   // roof: something built 2.2-9 m over the ground (a roof, a canopy)
             for (var k = 0; k < N; k++) { surf[k] = float.NegativeInfinity; low[k] = float.PositiveInfinity; body[k] = -1; }
             var names = new List<string>(); var nameIx = new Dictionary<string, int>();
             int Name(string s) { if (!nameIx.TryGetValue(s, out var i)) { i = names.Count; names.Add(s); nameIx[s] = i; } return i; }
@@ -115,7 +115,7 @@ namespace EverythingWorld.World
             void Mark(int k, float y)
             {
                 var g = Mathf.Max(gnd[k], wet[k]);
-                low[k] = Mathf.Min(low[k], y - g);
+                low[k] = Mathf.Min(low[k], y - g); if (y - gnd[k] > 2.2f && y - gnd[k] < 9f) roof[k] = true;
                 var h = y - gnd[k];
                 if (h >= WalkLow && h <= WalkHigh && y > wet[k] + .05f) surf[k] = Mathf.Max(surf[k], y);
             }
@@ -129,7 +129,7 @@ namespace EverythingWorld.World
                 {
                     var p = a + (b - a) * ((float)u / m) + (c - a) * ((float)v / m);
                     var k = Cell(p.x, p.z); if (k < 0) continue;
-                    low[k] = Mathf.Min(low[k], p.y - Mathf.Max(gnd[k], wet[k]));
+                    low[k] = Mathf.Min(low[k], p.y - Mathf.Max(gnd[k], wet[k])); { var hr = p.y - gnd[k]; if (hr > 2.2f && hr < 9f) roof[k] = true; }
                     var h = p.y - gnd[k];
                     if (h >= BodyLow && h <= BodyHigh) body[k] = what;
                 }
@@ -155,11 +155,20 @@ namespace EverythingWorld.World
                 return s / (float)((2 * R + 1) * (2 * R + 1));
             }
             var path = new bool[N]; var fill = new float[N]; int pathCells = 0, walkCells = 0;
+            for (var k = 0; k < N; k++) if (walk[k]) fill[k] = Fill(k);
+            // near a plaza or a round pad (somewhere mostly walkable), its rim isn't a path either
+            var wide = new int[(nx + 1) * (nz + 1)];
+            for (var j = 0; j < nz; j++) { var row = 0; for (var i = 0; i < nx; i++) { row += walk[i + j * nx] && fill[i + j * nx] >= .72f ? 1 : 0; wide[(i + 1) + (j + 1) * (nx + 1)] = wide[(i + 1) + j * (nx + 1)] + row; } }
+            bool NearWide(int k)
+            {
+                const int W = 6; int i = k % nx, j = k / nx, a0 = Mathf.Max(0, i - W), b0 = Mathf.Max(0, j - W), a1 = Mathf.Min(nx, i + W + 1), b1 = Mathf.Min(nz, j + W + 1);
+                return wide[a1 + b1 * (nx + 1)] - wide[a0 + b1 * (nx + 1)] - wide[a1 + b0 * (nx + 1)] + wide[a0 + b0 * (nx + 1)] > 0;
+            }
             for (var k = 0; k < N; k++)
             {
                 if (!walk[k]) continue; walkCells++;
-                fill[k] = Fill(k);
-                path[k] = fill[k] < PathFill && walkSize[walkComp[k]] >= 60;   // a strip, and more than a rug
+                // a strip, more than a rug, not the rim of a plaza or pad, and not under a roof (a house's floor or foundation)
+                path[k] = fill[k] < PathFill && walkSize[walkComp[k]] >= 60 && !NearWide(k) && !roof[k];
                 if (path[k]) pathCells++;
             }
 
@@ -291,7 +300,7 @@ namespace EverythingWorld.World
                             var stand = walk[k] ? surf[k] : gnd[k];
                             var eye = new Vector3(q.x, stand + 1.6f, q.z); var to = aim - eye;
                             if (Physics.CheckSphere(eye, .3f, ~0, QueryTriggerInteraction.Ignore) || Physics.Raycast(eye, Vector3.up, 6f, ~0, QueryTriggerInteraction.Ignore)) continue;
-                            if (low[k] < 1.9f && low[k] > .3f) continue;     // something built over where you'd stand
+                            if ((low[k] < 1.9f && low[k] > .3f) || roof[k]) continue;     // something built over where you'd stand
                             if (Physics.Linecast(eye, aim - to.normalized * Mathf.Min(2.5f, to.magnitude * .4f), ~0, QueryTriggerInteraction.Ignore)) continue;
                             feet = new Vector3(q.x, stand + .95f, q.z); look = to; return true;
                         }
