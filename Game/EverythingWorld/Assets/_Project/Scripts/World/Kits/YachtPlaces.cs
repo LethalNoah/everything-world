@@ -77,7 +77,7 @@ namespace EverythingWorld.World
             Vector2 near = way[0]; var bd = 160f * 160f; foreach (var (p, _) in walkPoints) { var d = (p.x - way[0].x) * (p.x - way[0].x) + (p.z - way[0].y) * (p.z - way[0].y); if (d < bd) { bd = d; near = new Vector2(p.x, p.z); } }
             var full = new List<Vector2> { near }; full.AddRange(way);
             var pts = Smooth(ctx, full, false, 2f); PlaceBend(ctx, pts); pts.RemoveAll(p => InBay(p.x, p.z, 4f)); if (pts.Count < 2) return pts;
-            Strip(mk, pts, stone, 3.4f, .06f);
+            Strip(ctx, mk, pts, stone, 3.4f, .06f);
             var up = Vector3.up; var n = 0;
             for (var i = 6; i < pts.Count; i += 11)
             {
@@ -96,7 +96,7 @@ namespace EverythingWorld.World
             var from = Nearest(roadPts, to); var d = new Vector2(to.x - from.x, to.z - from.z); var len = d.magnitude; if (len < stopShort + 3f) return; d /= len;
             var a = new Vector2(from.x, from.z) + d * 1.8f; var b = new Vector2(from.x, from.z) + d * (len - stopShort);
             var pts = Smooth(ctx, new[] { a, Vector2.Lerp(a, b, .5f), b }, false, 2f, 1f); if (pts.Count < 2) return;
-            Strip(mk, pts, stone, 2.4f, .055f); foreach (var p in pts) Remember(p, 900);
+            Strip(ctx, mk, pts, stone, 2.4f, .055f); foreach (var p in pts) Remember(p, 900);
         }
 
         void RivieraPlaces(LandContext ctx, MeshKit mk, MeshKit solid)
