@@ -14,12 +14,57 @@ namespace EverythingWorld.Music
         GUIStyle style;
 
         bool show;
-        void Update() { var kb = UnityEngine.InputSystem.Keyboard.current; if (kb != null && kb.f1Key.wasPressedThisFrame && !EverythingWorld.World.GameKeys.Off) show = !show; }
+        float card = -99f;   // when N was last pressed
+        const float CardSeconds = 6f;
+        void Update()
+        {
+            var kb = UnityEngine.InputSystem.Keyboard.current; if (kb == null || EverythingWorld.World.GameKeys.Off) return;
+            if (kb.f1Key.wasPressedThisFrame) show = !show;
+            if (kb.nKey.wasPressedThisFrame) card = UnityEngine.Time.unscaledTime > card + CardSeconds - .6f ? UnityEngine.Time.unscaledTime : -99f;   // N again hides it
+        }
+
+        GUIStyle small, title, artist; static Texture2D white;
+        /// Now playing: N shows a small card in the corner for a few seconds (the song, the artist, the station and
+        /// how far through it is), then it fades away.
+        void NowPlayingCard()
+        {
+            var age = UnityEngine.Time.unscaledTime - card; if (age < 0f || age > CardSeconds) return;
+            var a = Mathf.Clamp01(age / .25f) * Mathf.Clamp01((CardSeconds - age) / .8f);
+            var fonts = EverythingWorld.World.GameFonts.Box(15, TextAnchor.UpperLeft);
+            small ??= new GUIStyle(fonts) { normal = { background = null, textColor = new Color(1f, .82f, .4f) }, padding = new RectOffset(0, 0, 0, 0) };
+            title ??= new GUIStyle(EverythingWorld.World.GameFonts.Box(26, TextAnchor.UpperLeft, false, true)) { normal = { background = null, textColor = Color.white }, padding = new RectOffset(0, 0, 0, 0), clipping = TextClipping.Clip };
+            artist ??= new GUIStyle(fonts) { fontSize = 19, normal = { background = null, textColor = new Color(.85f, .88f, 1f) }, padding = new RectOffset(0, 0, 0, 0), clipping = TextClipping.Clip };
+            if (white == null) { white = new Texture2D(1, 1); white.SetPixel(0, 0, Color.white); white.Apply(); }
+
+            var slot = director != null ? director.CurrentSlot : default;
+            var playing = director != null && director.PlayingScene != null && slot.IsValid && !MusicDirector.Silent;
+            var box = new Rect(24, Screen.height - 148, 460, 124);
+            var keep = GUI.color; GUI.color = new Color(1f, 1f, 1f, a);
+            GUI.Box(box, "", fonts);
+            if (!playing) GUI.Label(new Rect(box.x + 18, box.y + 46, 420, 30), "No music here", artist);
+            else
+            {
+                GUI.Label(new Rect(box.x + 18, box.y + 12, 424, 22), "NOW PLAYING  \u00b7  " + director.PlayingScene.DisplayName.ToUpperInvariant(), small);
+                GUI.Label(new Rect(box.x + 18, box.y + 36, 424, 36), slot.track.name, title);
+                GUI.Label(new Rect(box.x + 18, box.y + 72, 424, 26), slot.track.artist, artist);
+                // how far through: a thin gold bar, and the times
+                var pos = slot.PositionMsAt(RadioSchedule.NowSeconds); var length = (int)((slot.endsAt - slot.startsAt) * 1000);
+                var f = length > 0 ? Mathf.Clamp01(pos / (float)length) : 0f;
+                var bar = new Rect(box.x + 18, box.y + 106, 330, 4);
+                GUI.color = new Color(1f, 1f, 1f, .18f * a); GUI.DrawTexture(bar, white);
+                GUI.color = new Color(1f, .8f, .35f, a); GUI.DrawTexture(new Rect(bar.x, bar.y, bar.width * f, bar.height), white);
+                GUI.color = new Color(1f, 1f, 1f, a);
+                GUI.Label(new Rect(bar.xMax + 12, box.y + 97, 100, 22), Time(Mathf.Min(pos, length)) + " / " + Time(length), small);
+            }
+            GUI.color = keep;
+        }
 
         /// The music details (for checking Spotify): F1 shows and hides them.
         void OnGUI()
         {
-            if (director == null || !show || EverythingWorld.Player.MainMenu.Showing) return;
+            if (director == null || EverythingWorld.Player.MainMenu.Showing) return;
+            NowPlayingCard();
+            if (!show) return;
             style ??= EverythingWorld.World.GameFonts.Box(17, TextAnchor.UpperLeft, true);
 
             var useSpotify = outputSwitch != null && outputSwitch.useSpotify;

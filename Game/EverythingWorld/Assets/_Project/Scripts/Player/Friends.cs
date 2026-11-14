@@ -37,14 +37,22 @@ namespace EverythingWorld.Player
         }
 
         const string MsgMine = "ew/me", MsgAll = "ew/all";
-        const float SendEvery = .1f, Forget = 4f;
+        const float SendEvery = .05f, Forget = 4f;
+        // friends are drawn a moment in the past, gliding between positions they've already sent, so their path is
+        // smooth however unevenly the messages arrive (through the host and the relay); without this they jolt and slingshot
+        const float Delay = .2f;
 
         ISession session; NetworkManager net; bool handlers; float nextSend;
         SimplePlayerController walker;
 
-        class State { public Vector3 eye; public byte colour; public string name; public float seen; }
+        class State { public Vector3 eye; public byte colour; public string name; public float seen, stamp; }   // stamp: the sender's clock when they sent it
         readonly Dictionary<ulong, State> everyone = new Dictionary<ulong, State>();   // the host's table
-        class Remote { public GameObject go; public PlayerOrb orb; public TextMesh label; public Vector3 target, shown; public float seen; }
+        class Remote
+        {
+            public GameObject go; public PlayerOrb orb; public TextMesh label; public Vector3 shown; public float seen;
+            public readonly List<(float t, Vector3 p)> path = new List<(float, Vector3)>();   // what they sent, oldest first, by their clock
+            public float clock; public bool started;                                          // where on their clock we're showing them
+        }
         readonly Dictionary<ulong, Remote> remotes = new Dictionary<ulong, Remote>();
 
         void Awake() { Instance = this; walker = GetComponent<SimplePlayerController>(); }
@@ -156,7 +164,7 @@ namespace EverythingWorld.Player
                     using (var w = new FastBufferWriter(64 + everyone.Count * 80, Allocator.Temp, 4096))
                     {
                         w.WriteValueSafe(everyone.Count);
-                        foreach (var kv in everyone) { w.WriteValueSafe(kv.Key); w.WriteValueSafe(kv.Value.eye); w.WriteValueSafe(kv.Value.colour); w.WriteValueSafe(kv.Value.name); }
+                        foreach (var kv in everyone) { w.WriteValueSafe(kv.Key); w.WriteValueSafe(kv.Value.eye); w.WriteValueSafe(kv.Value.stamp); w.WriteValueSafe(kv.Value.colour); w.WriteValueSafe(kv.Value.name); }
                         net.CustomMessagingManager.SendNamedMessageToAll(MsgAll, w, NetworkDelivery.UnreliableSequenced);
                     }
                     foreach (var kv in everyone) if (kv.Key != net.LocalClientId) Show(kv.Key, kv.Value);
@@ -165,18 +173,17 @@ namespace EverythingWorld.Player
                 {
                     using (var w = new FastBufferWriter(96, Allocator.Temp, 512))
                     {
-                        w.WriteValueSafe(me.eye); w.WriteValueSafe(me.colour); w.WriteValueSafe(me.name);
+                        w.WriteValueSafe(me.eye); w.WriteValueSafe(me.stamp); w.WriteValueSafe(me.colour); w.WriteValueSafe(me.name);
                         net.CustomMessagingManager.SendNamedMessage(MsgMine, NetworkManager.ServerClientId, w, NetworkDelivery.UnreliableSequenced);
                     }
                 }
             }
-            // drift each orb smoothly toward where it was last heard to be; forget the silent ones
+            // glide each orb along the path it sent, a moment behind; forget the silent ones
             var stale = new List<ulong>();
             foreach (var kv in remotes)
             {
                 var r = kv.Value; if (Time.time - r.seen > Forget) { stale.Add(kv.Key); continue; }
-                r.shown = Vector3.Distance(r.shown, r.target) > 30f ? r.target : Vector3.Lerp(r.shown, r.target, 1f - Mathf.Exp(-10f * Time.deltaTime));
-                r.orb.Place(r.shown); r.label.transform.position = r.shown + Vector3.up * .55f;
+                r.shown = Glide(r); r.orb.Place(r.shown); r.label.transform.position = r.shown + Vector3.up * .55f;
             }
             foreach (var k in stale) { Destroy(remotes[k].go); remotes.Remove(k); }
         }
@@ -184,13 +191,36 @@ namespace EverythingWorld.Player
         State MyState()
         {
             var eye = walker != null && walker.cameraPivot != null ? walker.cameraPivot.position : transform.position + Vector3.up * .7f;
-            return new State { eye = eye, colour = (byte)(PlayerOrb.Local != null ? PlayerOrb.Local.Index : 0), name = PlayerName };
+            return new State { eye = eye, stamp = Time.realtimeSinceStartup, colour = (byte)(PlayerOrb.Local != null ? PlayerOrb.Local.Index : 0), name = PlayerName };
+        }
+
+        /// Where to draw a friend now: their clock runs alongside ours, Delay behind the newest thing they sent, and
+        /// we draw them between the two positions either side of it. If messages stop for a moment they carry on
+        /// briefly the way they were going, then wait; a big jump (a tower, H) is a jump, not a slingshot.
+        static Vector3 Glide(Remote r)
+        {
+            var path = r.path; if (path.Count == 0) return r.shown;
+            var newest = path[path.Count - 1].t; var want = newest - Delay;
+            if (!r.started || Mathf.Abs(r.clock - want) > 1f) { r.clock = want; r.started = true; }
+            else r.clock += Time.unscaledDeltaTime + (want - r.clock) * Mathf.Min(1f, Time.unscaledDeltaTime * 1.5f);   // keep pace, ease out drift
+            while (path.Count > 2 && path[1].t <= r.clock) path.RemoveAt(0);   // drop what's behind us
+            var a = path[0];
+            if (r.clock <= a.t || path.Count == 1) return a.p;
+            var b = path[1];
+            if (r.clock <= b.t)
+            {
+                if ((b.p - a.p).sqrMagnitude > 30f * 30f) return b.p;   // they jumped
+                return Vector3.Lerp(a.p, b.p, (r.clock - a.t) / Mathf.Max(.0001f, b.t - a.t));
+            }
+            // past the newest: keep going the same way for up to a quarter of a second, then hold
+            var v = (b.p - a.p) / Mathf.Max(.0001f, b.t - a.t);
+            return v.sqrMagnitude > 900f ? b.p : b.p + v * Mathf.Min(r.clock - b.t, .25f);
         }
 
         void OnMine(ulong sender, FastBufferReader r)
         {
-            r.ReadValueSafe(out Vector3 eye); r.ReadValueSafe(out byte colour); r.ReadValueSafe(out string name);
-            everyone[sender] = new State { eye = eye, colour = colour, name = name, seen = Time.time };
+            r.ReadValueSafe(out Vector3 eye); r.ReadValueSafe(out float stamp); r.ReadValueSafe(out byte colour); r.ReadValueSafe(out string name);
+            everyone[sender] = new State { eye = eye, stamp = stamp, colour = colour, name = name, seen = Time.time };
         }
 
         void OnAll(ulong sender, FastBufferReader r)
@@ -199,9 +229,9 @@ namespace EverythingWorld.Player
             r.ReadValueSafe(out int n);
             for (var i = 0; i < n && i < 32; i++)
             {
-                r.ReadValueSafe(out ulong id); r.ReadValueSafe(out Vector3 eye); r.ReadValueSafe(out byte colour); r.ReadValueSafe(out string name);
+                r.ReadValueSafe(out ulong id); r.ReadValueSafe(out Vector3 eye); r.ReadValueSafe(out float stamp); r.ReadValueSafe(out byte colour); r.ReadValueSafe(out string name);
                 if (id == net.LocalClientId) continue;
-                Show(id, new State { eye = eye, colour = colour, name = name });
+                Show(id, new State { eye = eye, stamp = stamp, colour = colour, name = name });
             }
         }
 
@@ -213,9 +243,12 @@ namespace EverythingWorld.Player
                 var orb = go.AddComponent<PlayerOrb>(); orb.isLocal = false; go.SetActive(true);
                 var label = ArtistBits.Plain(ArtistBits.Label(go.transform, "", s.eye + Vector3.up * .55f, Vector3.forward, .13f, new Color(1f, .97f, .9f), TextAnchor.LowerCenter));
                 label.gameObject.AddComponent<Billboard>();
-                r = new Remote { go = go, orb = orb, label = label, shown = s.eye, target = s.eye }; remotes[id] = r;
+                r = new Remote { go = go, orb = orb, label = label, shown = s.eye }; remotes[id] = r;
             }
-            r.target = s.eye; r.seen = Time.time;
+            // only new positions go on the path (the host passes the table on every time, sometimes with nothing new)
+            var path = r.path;
+            if (path.Count > 0 && s.stamp < path[path.Count - 1].t - 5f) path.Clear();   // their clock restarted
+            if (path.Count == 0 || s.stamp > path[path.Count - 1].t) { path.Add((s.stamp, s.eye)); if (path.Count > 40) path.RemoveAt(0); r.seen = Time.time; }
             if (r.orb.Index != s.colour) r.orb.Choose(s.colour);
             if (r.label.text != s.name) r.label.text = s.name;
         }
