@@ -191,6 +191,7 @@ namespace EverythingWorld.World
         public override void Dress(LandContext ctx)
         {
             MakeMaterials();
+            ctx0 = ctx;   // the trails (Strip) read the ground through it
             halos = new GlowHalos();
             pathCells.Clear(); walkPoints.Clear(); facing.Clear(); noGrass.Clear();
             center = ctx.Plaza;
@@ -480,7 +481,18 @@ namespace EverythingWorld.World
                 var miter = 1f / Mathf.Max(.6f, Vector3.Dot(side, Vector3.Cross(Vector3.up, b)));
                 L[i] = pts[i] + Vector3.up * lift - side * (w / 2f * miter); R[i] = pts[i] + Vector3.up * lift + side * (w / 2f * miter);
             }
-            for (var i = 0; i + 1 < n; i++) mk.Quad(m, L[i], R[i], R[i + 1], L[i + 1], (pts[i] + pts[i + 1]) / 2f - Vector3.up);
+            // laid in narrow bands across too, every vertex on the ground under it, so a trail across a hillside tilts
+            // with the hill (it used to stay level across, burying its high edge and standing up off the low side)
+            const int mc = 3; var V = new Vector3[n, mc + 1];
+            for (var i = 0; i < n; i++)
+                for (var j = 0; j <= mc; j++)
+                {
+                    var v = Vector3.Lerp(L[i], R[i], j / (float)mc);
+                    if (ctx0 != null) v.y = ctx0.Ground(v.x, v.z) + lift;
+                    V[i, j] = v;
+                }
+            for (var i = 0; i + 1 < n; i++)
+                for (var j = 0; j < mc; j++) mk.Quad(m, V[i, j], V[i, j + 1], V[i + 1, j + 1], V[i + 1, j], (V[i, j] + V[i + 1, j + 1]) / 2f - Vector3.up);
         }
 
         // ---------------------------------------------------------------- ground cover

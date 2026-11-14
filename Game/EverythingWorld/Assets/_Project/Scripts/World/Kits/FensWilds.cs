@@ -129,6 +129,7 @@ namespace EverythingWorld.World
                     }
                     if (ctx.Chance(.5f)) { var col = Glows[things % Glows.Length]; mk.Blob(GlowM(col, 3f), p + Vector3.up * .4f, Vector3.one * .15f, ctx.Rng, 0f); halos.Add(p + Vector3.up * .5f, 1f, col, .9f); }
                 }
+                else if (roll < .72f && Tilt(ctx, px, pz, 2f) > .8f) continue;   // the bench and the fallen cabinet only on gentle ground
                 else if (roll < .68f)
                 {
                     // a bench with a lamp, facing the fen
@@ -237,6 +238,14 @@ namespace EverythingWorld.World
             Debug.Log($"The Shoegaze Fens: {lilies} lily pads, {pillars} pillars, {sunk} sunken amps, {willows} willows, {things} things on the hills");
         }
 
+        /// The ground's tilt round a spot: the biggest height difference across a circle of radius r.
+        static float Tilt(LandContext ctx, float x, float z, float r)
+        {
+            float lo = float.MaxValue, hi = float.MinValue;
+            for (var k = 0; k < 8; k++) { var a = k * Mathf.PI / 4f; var h = ctx.Ground(x + Mathf.Cos(a) * r, z + Mathf.Sin(a) * r); lo = Mathf.Min(lo, h); hi = Mathf.Max(hi, h); }
+            return hi - lo;
+        }
+
         static Vector3 Random3(LandContext ctx) => new Vector3(ctx.Range(-1f, 1f), ctx.Range(-.3f, 1f), ctx.Range(-1f, 1f)).normalized;
 
         /// A weeping willow: a dark leaning trunk splitting into limbs that arch up and out and droop at their ends,
@@ -300,6 +309,8 @@ namespace EverythingWorld.World
             {
                 var p = at + rot * new Vector3(sx * 1.6f, 0, sz * 1.6f);
                 var h = H - (sx > 0 && sz > 0 ? 3.5f : ctx.Range(0f, 1f));
+                // each leg reaches down to the ground under it (on a hillside the downhill legs hung in the air)
+                var low = Mathf.Max(0f, at.y - ctx.Ground(p.x, p.z)); h += low; p -= up * low;
                 mk.Box(stoneM, p + up * (h / 2f - .5f), new Vector3(1f, h, 1f), rot);
                 solid.Box(stoneM, p + up * (h / 2f - .5f), new Vector3(1f, h, 1f), rot);
             }
