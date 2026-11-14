@@ -295,6 +295,16 @@ namespace EverythingWorld.World
                 term.screen = ArtistBits.Plain(ArtistBits.Label(tgo.transform, "", f.P(.39f, 1.52f, .25f), f.Fwd, .046f, new Color(.45f, 1f, .55f), TextAnchor.UpperLeft));
                 Interact.Toy(tgo, Toy.Kind.Custom, "Use the terminal", new Vector3(1.1f, 1.1f, .5f)).onUse = _ => term.Begin(Object.FindAnyObjectByType<EverythingWorld.Player.PlayerInteractor>());
                 Shot(ctx, "the terminal", f.P(.25f, .95f, 1.75f), f.P(0, 1.25f, .2f));
+                // the slate beside it: a riddle chalked on a dark board on two posts (its answer goes into the terminal)
+                {
+                    var sc = f.P(2.05f, 0, .1f); var slate = WorldMaterials.Solid(new Color(.1f, .11f, .12f)); var wood = WorldMaterials.Solid(new Color(.36f, .25f, .16f));
+                    foreach (var e in new[] { -.72f, .72f }) { var pp = sc + f.Right * e; mk.Prism(wood, pp, Vector3.up, .045f, 2f, 6); ArtistBits.PostCollider(ctx.Root, pp, 2f, .06f); }
+                    mk.Box(wood, sc + Vector3.up * 1.45f, new Vector3(1.62f, .98f, .06f), f.r); mk.Box(slate, sc + Vector3.up * 1.45f + f.Fwd * .035f, new Vector3(1.5f, .86f, .02f), f.r);
+                    solid.Box(wood, sc + Vector3.up * 1.45f, new Vector3(1.62f, .98f, .12f), f.r);
+                    ArtistBits.Label(people, "A RIDDLE", sc + Vector3.up * 1.82f + f.Fwd * .05f, f.Fwd, .06f, new Color(1f, .85f, .45f), TextAnchor.MiddleCenter);
+                    ArtistBits.Label(people, string.Join("\n", HubTerminal.HubRiddle), sc + Vector3.up * 1.4f + f.Fwd * .05f, f.Fwd, .055f, new Color(.93f, .93f, .9f), TextAnchor.MiddleCenter);
+                    ArtistBits.PointLight(ctx.Root, sc + Vector3.up * 2.2f + f.Fwd * .8f, new Color(1f, .9f, .7f), 4f, .8f);
+                }
             }
             // the colour station: a ring of pedestals, each with a floating orb of one colour; E takes that colour
             {

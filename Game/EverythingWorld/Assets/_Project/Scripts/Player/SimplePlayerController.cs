@@ -31,6 +31,8 @@ namespace EverythingWorld.Player
         /// Flying is locked until someone types the code into the hub's terminal (HubTerminal); it stays unlocked
         /// until the game closes.
         public static bool FlightUnlocked;
+        /// The Hub riddle's gift (HubTerminal): higher jumps and a slow, drifting fall. Until the game closes.
+        public static bool Drifting;
         float lockedNote = -9f;
         float lastGrounded = -9f, jumpWanted = -9f;
 
@@ -113,13 +115,14 @@ namespace EverythingWorld.Player
             if (keyboard.spaceKey.wasPressedThisFrame) jumpWanted = Time.time;
             if (Time.time - jumpWanted < .15f && Time.time - lastGrounded < .2f && verticalVelocity <= 0f)
             {
-                verticalVelocity = Mathf.Sqrt(2f * jumpHeight * -gravity); jumpWanted = -9f; lastGrounded = -9f;
+                verticalVelocity = Mathf.Sqrt(2f * jumpHeight * (Drifting ? 2.5f : 1f) * -gravity); jumpWanted = -9f; lastGrounded = -9f;
             }
             else if (controller.isGrounded && verticalVelocity <= 0f) verticalVelocity = -6f;
             else
             {
                 if ((controller.collisionFlags & CollisionFlags.Above) != 0 && verticalVelocity > 0f) verticalVelocity = 0f;   // bumped your head
-                verticalVelocity += gravity * Time.deltaTime;
+                verticalVelocity += gravity * (Drifting && verticalVelocity < 0f ? .2f : 1f) * Time.deltaTime;
+                if (Drifting) verticalVelocity = Mathf.Max(verticalVelocity, -2.4f);   // drifting down, never dropping
             }
             move.y = verticalVelocity;
 

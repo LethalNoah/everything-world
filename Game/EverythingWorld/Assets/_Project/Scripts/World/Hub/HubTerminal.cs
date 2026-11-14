@@ -27,6 +27,12 @@ namespace EverythingWorld.World
 
         /// The gates' terminal (the tutorial's end) asks a riddle instead: its answer opens the gates.
         public bool riddle; public System.Action onAnswer;
+        /// The Hub's own riddle, carved on the slate beside the terminal. Its answer is a song in the playlist,
+        /// typed here; it gives a small gift until the game closes (typed again, takes it back). Only its hash is
+        /// kept, so reading this won't spoil it.
+        public static readonly string[] HubRiddle = { "A BIRD LETS ME FALL", "AND NEVER FEELS ME GO.", "A PILLOW HOLDS A THOUSAND.", "SAY HOW HEAVY YOU WOULD BE", "IF YOU WERE ME,", "AND SAY IT AS A SONG." };
+        const string HubRiddleHash = "2520e34fc0449caef1d67ecd3652d6b9726c3922af28896ba767072f3e051872";
+        static string Letters(string s) { var sb = new StringBuilder(); foreach (var ch in s) if (char.IsLetter(ch)) sb.Append(ch); return sb.ToString(); }
         public static readonly string[] Riddle = { "I AM EVERY SONG YOU HAVE LOVED", "AND EVERY ONE YOU HAVE NOT HEARD.", "PUT ME BEFORE A WORLD", "AND IT HOLDS ALL OF YOU.", "WHAT AM I?" };
 
         void Start()
@@ -112,10 +118,17 @@ namespace EverythingWorld.World
                 return;
             }
             if (Hash(c) == ResetCode) { confirmReset = true; Print("THIS WILL ERASE EVERY STAMP"); Print("IN YOUR PASSPORT. TYPE YES TO"); Print("CONFIRM, ANYTHING ELSE TO CANCEL."); return; }
+            if (Hash(Letters(c)) == HubRiddleHash)
+            {
+                SimplePlayerController.Drifting = !SimplePlayerController.Drifting;
+                if (SimplePlayerController.Drifting) { Print("THE SLATE WAS RIGHT."); Print("YOU FEEL DIFFERENT. GO AND JUMP."); Print("(until the game closes; type it again to undo)"); }
+                else { Print("YOU FEEL YOUR WEIGHT COME BACK."); }
+                return;
+            }
             if (Hash(c) == Code) { SimplePlayerController.FlightUnlocked = true; Print("ACCESS GRANTED. FLIGHT UNLOCKED."); Print("Press F to fly (until the game closes)."); return; }
             switch (c)
             {
-                case "HELP": Print("HELP    this list"); Print("SONG    what the hub is playing"); Print("LANDS   how big the world is"); Print("TIME    the time"); Print("LOCK    lock flight again"); Print("CLEAR   clear the screen"); Print("EXIT    stand up (or Esc)"); break;
+                case "HELP": Print("HELP    this list"); Print("SONG    what the hub is playing"); Print("LANDS   how big the world is"); Print("TIME    the time"); Print("RIDDLE  the slate's riddle"); Print("LOCK    lock flight again"); Print("CLEAR   clear the screen"); Print("EXIT    stand up (or Esc)"); break;
                 case "CLEAR": case "CLS": lines.Clear(); break;
                 case "EXIT": case "QUIT": case "BYE": Print("> (you stand up)"); End(); break;
                 case "TIME": Print(System.DateTime.Now.ToString("dddd d MMMM yyyy, HH:mm")); break;
@@ -130,6 +143,7 @@ namespace EverythingWorld.World
                 case "LOCK": SimplePlayerController.FlightUnlocked = false; Print("FLIGHT LOCKED."); break;
                 case "FLY": case "FLIGHT": Print(SimplePlayerController.FlightUnlocked ? "FLIGHT IS UNLOCKED. PRESS F." : "FLIGHT IS LOCKED. ENTER THE CODE."); break;
                 case "HELLO": case "HI": Print("HELLO. WELCOME TO THE HUB."); break;
+                case "RIDDLE": foreach (var l in HubRiddle) Print(l); break;
                 default: Print("UNKNOWN COMMAND. TYPE HELP."); break;
             }
         }
