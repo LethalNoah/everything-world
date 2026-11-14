@@ -63,6 +63,19 @@ namespace EverythingWorld.World
         public bool Loading { get; private set; }
         /// How far the start-up building has got: lands built, lands to build, and the one being built.
         public (int done, int total, string name) LoadProgress => (loadDone, loadTotal, loadName);
+        /// Set by the title screen: build only the hub at first (so the menu runs smoothly over it), and the rest
+        /// once you press Enter the World (BeginLoading).
+        public static bool DeferLoading;
+
+        /// Builds every remaining land behind the loading screen, holding the player still until it's done
+        /// (or, with loadAllAtStart off, lets lands build as you come near them).
+        public void BeginLoading(EverythingWorld.Player.SimplePlayerController who)
+        {
+            DeferLoading = false;
+            if (!loadAllAtStart || pending.Count == 0) { if (who != null) who.enabled = true; return; }
+            Loading = true; loadTotal = pending.Count; loadDone = 0; loadStarted = Time.realtimeSinceStartup;
+            heldPlayer = who; if (heldPlayer != null) heldPlayer.enabled = false;
+        }
         int loadTotal, loadDone; string loadName; float loadStarted;
         EverythingWorld.Player.SimplePlayerController heldPlayer;
 
@@ -426,13 +439,13 @@ namespace EverythingWorld.World
             for (var k = pending.Count - 1; k >= 0; k--)
             {
                 var i = pending[k];
-                if (!everything && Distance(i, start) > buildDistance) continue;
+                if (DeferLoading ? Data.layout.islands[i].sceneId != 1000 : !everything && Distance(i, start) > buildDistance) continue;   // (the title screen: just the hub for now)
                 pending.RemoveAt(k); DressLand(i); n++;
             }
             Debug.Log($"Built {n} lands at the start in {(Time.realtimeSinceStartup - t0) * 1000:0} ms; {pending.Count} more " + (loadAllAtStart && !everything && pending.Count > 0 ? "behind the loading screen" : "will be built as you come near them"));
             // the rest behind the loading screen, nearest first, one a frame (so the screen can show progress); you
             // stay put until it's done
-            if (loadAllAtStart && !everything && pending.Count > 0)
+            if (loadAllAtStart && !everything && !DeferLoading && pending.Count > 0)
             {
                 Loading = true; loadTotal = pending.Count; loadDone = 0; loadStarted = Time.realtimeSinceStartup;
                 heldPlayer = p; if (heldPlayer != null) heldPlayer.enabled = false;
@@ -447,7 +460,7 @@ namespace EverythingWorld.World
         /// Builds the nearest unbuilt land once you're within buildDistance of it: one land a frame.
         void Update()
         {
-            if (pending.Count == 0) return;
+            if (pending.Count == 0 || DeferLoading) return;
             var at = player != null ? player.position : Camera.main != null ? Camera.main.transform.position : Vector3.zero;
             if (Loading)
             {

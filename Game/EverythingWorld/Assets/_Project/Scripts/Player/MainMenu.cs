@@ -27,6 +27,7 @@ namespace EverythingWorld.Player
         {
             instance = this;
             walker = GetComponent<SimplePlayerController>(); hands = GetComponent<PlayerInteractor>();
+            if (!Skip) IslandWorldBuilder.DeferLoading = true;   // just the hub while the menu is up; the rest on Enter
             if (walker != null) walker.mouseSensitivity = PlayerPrefs.GetFloat("EW_MouseSensitivity", walker.mouseSensitivity);
         }
 
@@ -80,12 +81,19 @@ namespace EverythingWorld.Player
 
         System.Collections.IEnumerator GiveBack() { yield return null; Hold(false); }
 
+        /// Into the world: the loading screen builds every other land, then lets you go.
+        System.Collections.IEnumerator EnterWorld()
+        {
+            yield return null; Hold(false);
+            var w = IslandWorldBuilder.Instance; if (w != null) w.BeginLoading(walker);
+        }
+
         void Enter()
         {
             entered = true; open = false;
             if (hub != null) { Put(hub.position - Vector3.forward * 10f); transform.rotation = Quaternion.Euler(0, 180f, 0); }
             if (walker != null && walker.cameraPivot != null) walker.cameraPivot.localEulerAngles = Vector3.zero;
-            StartCoroutine(GiveBack());
+            StartCoroutine(EnterWorld());
         }
 
         static void Quit()
@@ -126,7 +134,7 @@ namespace EverythingWorld.Player
             GUI.Label(new Rect(x, y, W - 70f, 24f), "A world built from one shared playlist.", sub); y += 26f;
             if (lay != null) GUI.Label(new Rect(x, y, W - 70f, 24f), $"{lay.hubSongs:N0} songs  ·  {lay.hubArtists:N0} artists  ·  {lay.islands.Length - 1} lands", small);
             y += 54f;
-            var ready = w != null && !w.Loading;
+            var ready = true;   // the world builds after you press Enter
             if (page == Page.Main)
             {
                 if (entered) { if (GUI.Button(new Rect(x - 16f, y, W - 60f, 44f), "Resume", button)) Resume(); y += 50f; }
