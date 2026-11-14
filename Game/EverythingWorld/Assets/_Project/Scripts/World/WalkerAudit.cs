@@ -82,7 +82,7 @@ namespace EverythingWorld.World
                     var mat = s < mats.Length ? mats[s] : null;
                     if (mat == null || mat.renderQueue >= 3000 || (mat.shader != null && mat.shader.name.Contains("Particles"))) continue;   // glass, water, glows
                     var what = Name(objName + " (" + mat.name.Replace(" (Instance)", "") + ")");
-                    var glowing = mat.IsKeywordEnabled("_EMISSION") && mat.HasProperty("_EmissionColor") && mat.GetColor("_EmissionColor").maxColorComponent > .3f;   // lava, neon streams, glowing cracks: never a path (a faint sheen on steel still can be); neon signs never a floating wall
+                    var glowing = mat.IsKeywordEnabled("_EMISSION") && mat.HasProperty("_EmissionColor") && mat.GetColor("_EmissionColor").maxColorComponent > .15f;   // lava, neon streams, glowing cracks: never a path (a faint sheen on steel still can be); neon signs never a floating wall
                     var tris = mesh.GetTriangles(s);
                     for (var t = 0; t < tris.Length; t += 3)
                     {
