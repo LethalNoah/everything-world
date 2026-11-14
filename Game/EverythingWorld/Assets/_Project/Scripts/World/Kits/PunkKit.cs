@@ -403,7 +403,7 @@ namespace EverythingWorld.World
                 }
                 if (pts.Count < 2) return;
                 Strip(mk, pts, concrete, PathW, .14f, ctx);
-                for (var i = 2; i < pts.Count; i += 2) { var a = pts[i] - pts[i - 1]; a.y = 0; if (a.sqrMagnitude < .01f) continue; var sdd = Vector3.Cross(Vector3.up, a.normalized); float gl = ctx.Ground(pts[i].x - sdd.x * PathW / 2f, pts[i].z - sdd.z * PathW / 2f), gr = ctx.Ground(pts[i].x + sdd.x * PathW / 2f, pts[i].z + sdd.z * PathW / 2f); mk.Box(concreteDark, new Vector3(pts[i].x, (gl + gr) / 2f + Mathf.Clamp(pts[i].y - (gl + gr) / 2f, 0f, .3f) + .16f, pts[i].z), new Vector3(PathW, .02f, .06f), Quaternion.LookRotation(a)); }
+                for (var i = 2; i < pts.Count; i += 2) { var a = pts[i] - pts[i - 1]; a.y = 0; if (a.sqrMagnitude < .01f) continue; var sdd = Vector3.Cross(Vector3.up, a.normalized); float gl = ctx.Ground(pts[i].x - sdd.x * PathW / 2f, pts[i].z - sdd.z * PathW / 2f), gr = ctx.Ground(pts[i].x + sdd.x * PathW / 2f, pts[i].z + sdd.z * PathW / 2f); var bl = Mathf.Clamp(pts[i].y - (gl + gr) / 2f, 0f, .3f) + .16f; var jl = new Vector3(pts[i].x - sdd.x * PathW / 2f, gl + bl, pts[i].z - sdd.z * PathW / 2f); var jr = new Vector3(pts[i].x + sdd.x * PathW / 2f, gr + bl, pts[i].z + sdd.z * PathW / 2f); mk.Box(concreteDark, (jl + jr) / 2f, new Vector3(.06f, .02f, PathW), Quaternion.LookRotation(jr - jl)); }   // the joint tilts with the slab
                 foreach (var p in pts) Remember(p, walk);
                 for (var i = 9; i < pts.Count; i += 16)
                 {
@@ -444,15 +444,19 @@ namespace EverythingWorld.World
                 if (!Open(ctx, px, pz, 3f)) continue;
                 var p = ctx.OnGround(px, pz); var roll = ctx.Range(0f, 1f); var face = Quaternion.Euler(0, ctx.Range(0, 360f), 0) * Vector3.forward;
                 var mesa = OnMesa(px, pz, 0f);
-                if (roll < .06f && !mesa && bowlN < 12) { if (Bowl(ctx, mk, solid, p)) bowlN++; }
-                else if (roll < .13f && !mesa) { Ramp(ctx, mk, solid, p, face); ramps++; }
-                else if (roll < .19f && !mesa) { if (HouseShell(ctx, mk, solid, p, face, shells)) shells++; }
-                else if (roll < .25f) { GraffitiWall(ctx, mk, p, face, ctx.Range(4f, 8f), walls + 7); walls++; }
+                // the bigger pieces keep their whole width off the paths (a bowl's rim or a house shell's wall used to
+                // cut across a sidewalk), and the ones that stand on legs or wheels only go on gentle ground
+                bool Clear(float r) => !NearPath(px, pz, r + PathW / 2f + 1.5f);
+                bool Gentle(float r) { float lo = p.y, hi = p.y; for (var k = 0; k < 8; k++) { var a = k * Mathf.PI / 4f; var h = ctx.Ground(px + Mathf.Cos(a) * r, pz + Mathf.Sin(a) * r); lo = Mathf.Min(lo, h); hi = Mathf.Max(hi, h); } return hi - lo < .7f; }
+                if (roll < .06f && !mesa && bowlN < 12) { if (Clear(7.6f) && Bowl(ctx, mk, solid, p)) bowlN++; }
+                else if (roll < .13f && !mesa) { if (Clear(2.6f)) { Ramp(ctx, mk, solid, p, face); ramps++; } }
+                else if (roll < .19f && !mesa) { if (Clear(6f) && HouseShell(ctx, mk, solid, p, face, shells)) shells++; }
+                else if (roll < .25f) { var w = ctx.Range(4f, 8f); if (Clear(w / 2f + .3f)) { GraffitiWall(ctx, mk, p, face, w, walls + 7); walls++; } }
                 else if (roll < .28f) { Couch(ctx, mk, p, face, couches); couches++; }
-                else if (roll < .3f && !mesa) { SwingSet(ctx, mk, p, face); swings++; }
-                else if (roll < .32f && !mesa) { Trampoline(ctx, mk, p); trampolines++; }
-                else if (roll < .35f) { CarOnBlocks(ctx, mk, p, face, cars); cars++; }
-                else if (roll < .37f && !truck && !mesa) { IceCreamTruck(ctx, mk, p, face); truck = true; }
+                else if (roll < .3f && !mesa) { if (Gentle(2.2f)) { SwingSet(ctx, mk, p, face); swings++; } }
+                else if (roll < .32f && !mesa) { if (Gentle(2f)) { Trampoline(ctx, mk, p); trampolines++; } }
+                else if (roll < .35f) { if (Clear(2.4f) && Gentle(2.2f)) { CarOnBlocks(ctx, mk, p, face, cars); cars++; } }
+                else if (roll < .37f && !truck && !mesa) { if (Clear(3f) && Gentle(2.8f)) { IceCreamTruck(ctx, mk, p, face); truck = true; } }
                 else if (roll < .41f) { Cart(ctx, mk, p, ctx.Range(0, 360f), ctx.Chance(.4f)); carts++; }
                 else if (roll < .55f) { for (var k = 0; k < 3; k++) { var q = ctx.OnGround(px + ctx.Range(-3f, 3f), pz + ctx.Range(-3f, 3f)); mk.Blob(scrub, q + Vector3.up * .08f, new Vector3(ctx.Range(.5f, 1.1f), ctx.Range(.18f, .3f), ctx.Range(.5f, 1.1f)), ctx.Rng, .3f); } }
                 else if (roll < .65f)
