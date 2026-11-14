@@ -331,18 +331,28 @@ namespace EverythingWorld.World
         void Paths(LandContext ctx, MeshKit mk)
         {
             var paving = WorldMaterials.Solid(new Color(.74f, .7f, .62f));
+            // where each crossing's deck meets the hub: a path stops there and joins the deck, instead of running
+            // on beside (and under) the bridge into the sea
+            var landings = new List<Vector3>();
+            foreach (var br in ctx.Data.layout.bridges)
+                if (br.a == 1000 || br.b == 1000) { var bp = IslandWorldBuilder.BridgePath(ctx.Data, br); landings.Add(br.a == 1000 ? bp[0] : bp[bp.Count - 1]); }
             foreach (var o in openings)
             {
+                Vector3? landing = null; var bestAng = 12f;
+                foreach (var l in landings) { var ang = Vector3.Angle(o, new Vector3(l.x - center.x, 0, l.z - center.z)); if (ang < bestAng) { bestAng = ang; landing = l; } }
+                var stop = landing.HasValue ? Vector3.Dot(new Vector3(landing.Value.x - center.x, 0, landing.Value.z - center.z), o) : 400f;
                 var pts = new List<Vector3>();
                 for (var d = PlazaR; d < 400f; d += 4f)
                 {
                     var p = center + o * d;
-                    if (!ctx.IsLand(p.x, p.z, 0f)) break;
+                    if (!ctx.IsLand(p.x, p.z, 0f) || d > stop - 2f) break;
                     pts.Add(ctx.OnGround(p.x, p.z));
                 }
+                if (landing.HasValue) pts.Add(ctx.OnGround(landing.Value.x, landing.Value.z));   // the last stretch runs onto the deck's end
                 for (var i = 0; i + 1 < pts.Count; i++)
                 {
-                    var side = Vector3.Cross(Vector3.up, o) * 2.4f;
+                    var run = pts[i + 1] - pts[i]; run.y = 0;
+                    var side = Vector3.Cross(Vector3.up, run.sqrMagnitude > .01f ? run.normalized : o) * 2.4f;
                     Vector3 a = pts[i] - side, b = pts[i] + side, c = pts[i + 1] + side, e = pts[i + 1] - side;
                     a.y = ctx.Ground(a.x, a.z) + .08f; b.y = ctx.Ground(b.x, b.z) + .08f; c.y = ctx.Ground(c.x, c.z) + .08f; e.y = ctx.Ground(e.x, e.z) + .08f;
                     mk.Quad(paving, a, b, c, e, (a + c) / 2f - Vector3.up);
