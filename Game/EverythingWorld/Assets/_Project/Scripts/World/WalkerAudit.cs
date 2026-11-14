@@ -178,6 +178,8 @@ namespace EverythingWorld.World
             for (var k = 0; k < N; k++)
             {
                 if (!path[k]) continue;
+                { int ei = k % nx, ej = k / nx;                       // the outermost strip of a path: a rail or a kerb along its edge is part of it
+                  if (ei == 0 || ej == 0 || ei == nx - 1 || ej == nz - 1 || !walk[k - 1] || !walk[k + 1] || !walk[k - nx] || !walk[k + nx]) continue; }
                 blockWhat[k] = body[k];
                 if (body[k] >= 0) { blocked[k] = true; continue; }
                 var c = Centre(k); const float r = .25f;
