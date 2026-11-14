@@ -41,7 +41,7 @@ namespace EverythingWorld.World
                         if (args[k] == "-ewOnly" && k + 1 < args.Length) { tour.quick = true; tour.only = args[k + 1].ToLowerInvariant().Split(new[] { ';' }, System.StringSplitOptions.RemoveEmptyEntries); }
                     }
                     var startup = tour.lands.Length == 1 && tour.lands[0] == "startup";   // "startup": time a normal start (lands near you only), then quit
-                    var special = tour.lands.Length == 1 && (tour.lands[0] == "perf" || tour.lands[0] == "bridges" || tour.lands[0] == "about");   // checks that build everything but need no land audit
+                    var special = tour.lands.Length == 1 && (tour.lands[0] == "perf" || tour.lands[0] == "bridges" || tour.lands[0] == "about" || tour.lands[0] == "tutorial");   // checks that build everything but need no land audit
                     IslandWorldBuilder.BuildEverything = !startup; IslandWorldBuilder.ForceAudit = !tour.quick && !startup && !special;
                     if (!tour.quick && !startup && !System.Array.Exists(tour.lands, l => l == "all")) { IslandWorldBuilder.AuditOnly = new HashSet<string>(); foreach (var l in tour.lands) IslandWorldBuilder.AuditOnly.Add(l.StartsWith("The ") ? l.Substring(4) : l); }
                     if (tour.quick)
@@ -102,6 +102,26 @@ namespace EverythingWorld.World
                 Quit(0); yield break;
             }
             if (lands.Length == 1 && lands[0] == "bridges") { yield return Bridges(data, player, pivot, cam); Quit(0); yield break; }
+            if (lands.Length == 1 && lands[0] == "tutorial")
+            {
+                // photographs the tutorial walk and the pearly gates at each stop (no menu, no fades)
+                var tu = player.GetComponent<EverythingWorld.Player.Tutorial>(); tu.Begin(null); tu.Stop();
+                var dir = Path.Combine(Application.dataPath, "..", "Logs", "Shots", "Tutorial"); Directory.CreateDirectory(dir); foreach (var f in Directory.GetFiles(dir, "*.png")) File.Delete(f);
+                var walk = new Vector3(-4000f, 300f, 2000f); var gates = new Vector3(-4000f, 700f, 2700f);
+                var stops = new (string name, Vector3 at, float yaw, float pitch)[] { ("start", walk + new Vector3(0, .95f, 0), 0, 5), ("the jump", walk + new Vector3(0, .95f, 14), 0, 8), ("the bench and ball", walk + new Vector3(0, .95f, 43), 10, 10),
+                    ("the lamp and plaque", walk + new Vector3(0, .95f, 61), -5, 8), ("the colours", walk + new Vector3(0, .95f, 84), 0, 8), ("the bright stretch", walk + new Vector3(0, .95f, 110), 0, 4), ("the bright stretch with sunglasses", walk + new Vector3(0, .95f, 110), 0, 4),
+                    ("the cliff", walk + new Vector3(0, .95f, 166), 0, 6), ("the gates", gates + new Vector3(0, .95f, -14), 0, -4) };
+                var shades = player.GetComponent<EverythingWorld.Player.Sunglasses>(); var k = 0;
+                foreach (var st in stops)
+                {
+                    var sky = SkyDirector.Instance; if (sky != null) { sky.SetLand(st.name == "the gates" ? "The Pearly Gates" : "The Tutorial Walk"); sky.Snap(); }
+                    if (shades != null) shades.Wear(st.name.Contains("sunglasses"), true);
+                    player.transform.SetPositionAndRotation(st.at, Quaternion.Euler(0, st.yaw, 0)); if (pivot != null) pivot.localEulerAngles = new Vector3(st.pitch, 0, 0);
+                    var until = Time.realtimeSinceStartup + (k == 0 ? 4f : 1.5f); while (Time.realtimeSinceStartup < until) yield return null;
+                    Capture(cam, Path.Combine(dir, $"{k:00}_{Safe(st.name)}.png")); k++;
+                }
+                Quit(0); yield break;
+            }
             var wanted = new List<string>();
             foreach (var l in lands)
             {

@@ -25,8 +25,13 @@ namespace EverythingWorld.World
         string typing = ""; bool active; float caret; int lockedFrames;
         SimplePlayerController player; PlayerInteractor hands;
 
+        /// The gates' terminal (the tutorial's end) asks a riddle instead: its answer opens the gates.
+        public bool riddle; public System.Action onAnswer;
+        public static readonly string[] Riddle = { "I AM EVERY SONG YOU HAVE LOVED", "AND EVERY ONE YOU HAVE NOT HEARD.", "PUT ME BEFORE A WORLD", "AND IT HOLDS ALL OF YOU.", "WHAT AM I?" };
+
         void Start()
         {
+            if (riddle) { Print("THE GATES ARE CLOSED."); foreach (var l in Riddle) Print(l); Show(); return; }
             Print("EVERYTHING WORLD TERMINAL  v1.0");
             Print("Type HELP and press Enter.");
             Show();
@@ -92,6 +97,12 @@ namespace EverythingWorld.World
         {
             var c = cmd.Trim().ToUpperInvariant();
             if (c.Length == 0) return;
+            if (riddle)
+            {
+                if (c.Replace(" ", "").StartsWith("EVERYTHING")) { Print("YES."); Print("THE GATES OPEN."); Print("> (you stand up)"); End(); onAnswer?.Invoke(); }
+                else { Print("NO. LISTEN AGAIN:"); foreach (var l in Riddle) Print(l); }
+                return;
+            }
             // the reset code (not in HELP) asks first
             if (confirmReset)
             {

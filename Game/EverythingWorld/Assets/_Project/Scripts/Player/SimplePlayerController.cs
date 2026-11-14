@@ -49,6 +49,7 @@ namespace EverythingWorld.Player
             if (GetComponent<MapInHand>() == null) gameObject.AddComponent<MapInHand>();
             if (GetComponent<Passport>() == null) gameObject.AddComponent<Passport>();
             if (GetComponent<Friends>() == null) gameObject.AddComponent<Friends>();   // playing together
+            if (GetComponent<Tutorial>() == null) gameObject.AddComponent<Tutorial>();   // the walk, the cliff and the gates
             if (GetComponent<MainMenu>() == null) gameObject.AddComponent<MainMenu>();   // the title screen and pause menu
             if (GetComponent<PlayerOrb>() == null) gameObject.AddComponent<PlayerOrb>().eye = cameraPivot;   // your body: a floating orb
         }
