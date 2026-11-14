@@ -82,14 +82,14 @@ namespace EverythingWorld.World
                     var mat = s < mats.Length ? mats[s] : null;
                     if (mat == null || mat.renderQueue >= 3000 || (mat.shader != null && mat.shader.name.Contains("Particles"))) continue;   // glass, water, glows
                     var what = Name(objName + " (" + mat.name.Replace(" (Instance)", "") + ")");
-                    var glowing = mat.IsKeywordEnabled("_EMISSION");   // lava, neon streams, glowing cracks: never a path
+                    var glowing = mat.IsKeywordEnabled("_EMISSION") && mat.HasProperty("_EmissionColor") && mat.GetColor("_EmissionColor").maxColorComponent > .3f;   // lava, neon streams, glowing cracks: never a path (a faint sheen on steel still can be); neon signs never a floating wall
                     var tris = mesh.GetTriangles(s);
                     for (var t = 0; t < tris.Length; t += 3)
                     {
                         Vector3 a = tf.TransformPoint(verts[tris[t]]), b = tf.TransformPoint(verts[tris[t + 1]]), c = tf.TransformPoint(verts[tris[t + 2]]);
                         var n = Vector3.Cross(b - a, c - a); if (n.sqrMagnitude < 1e-8f) continue; n.Normalize();
                         if (Mathf.Abs(n.y) > .9f) Flat(a, b, c, glowing);
-                        else Sloped(a, b, c, n, what);
+                        else Sloped(a, b, c, n, what, glowing);
                     }
                 }
             }
@@ -121,7 +121,7 @@ namespace EverythingWorld.World
                 if (!glowing && h >= WalkLow && h <= WalkHigh && y > wet[k] + .05f) surf[k] = Mathf.Max(surf[k], y);
             }
             // anything else: body height marks the cell; the bottom edge of a tall wall is checked for hanging
-            void Sloped(Vector3 a, Vector3 b, Vector3 c, Vector3 n, int what)
+            void Sloped(Vector3 a, Vector3 b, Vector3 c, Vector3 n, int what, bool glowing)
             {
                 var longest = Mathf.Max((b - a).magnitude, Mathf.Max((c - b).magnitude, (a - c).magnitude));
                 var m = Mathf.Clamp(Mathf.CeilToInt(longest / .35f), 1, 80);
@@ -134,7 +134,7 @@ namespace EverythingWorld.World
                     var h = p.y - gnd[k];
                     if (h >= BodyLow && h <= BodyHigh) body[k] = what;
                 }
-                if (Mathf.Abs(n.y) > .1f) return;                    // only upright walls
+                if (Mathf.Abs(n.y) > .1f || glowing) return;         // only upright walls (not neon signs)
                 Vector3 p0 = a, p1 = b, p2 = c;                       // sort by height: p0, p1 the bottom edge
                 if (p1.y < p0.y) (p0, p1) = (p1, p0); if (p2.y < p0.y) (p0, p2) = (p2, p0); if (p2.y < p1.y) (p1, p2) = (p2, p1);
                 if (p1.y - p0.y > .05f || p2.y - p0.y < 1.2f) return;  // a level bottom edge under a wall at least 1.2 m tall
