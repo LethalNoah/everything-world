@@ -15,10 +15,10 @@ namespace EverythingWorld.World
 
         static Texture2D panel;
         /// A box for text on the screen: Nunito on a dark, slightly see-through panel with room round the words.
-        public static GUIStyle Box(int size, TextAnchor anchor, bool wrap = false)
+        public static GUIStyle Box(int size, TextAnchor anchor, bool wrap = false, bool signFont = false)
         {
             if (panel == null) { panel = new Texture2D(1, 1) { name = "Panel" }; panel.SetPixel(0, 0, new Color(.05f, .05f, .07f, .78f)); panel.Apply(); }
-            var s = new GUIStyle(GUI.skin.box) { font = Speech, fontSize = size, alignment = anchor, wordWrap = wrap, padding = new RectOffset(14, 14, 8, 8) };
+            var s = new GUIStyle(GUI.skin.box) { font = signFont ? Sign : Speech, fontSize = size, alignment = anchor, wordWrap = wrap, padding = new RectOffset(14, 14, 8, 8) };
             s.normal.background = panel; s.normal.textColor = new Color(.96f, .95f, .92f);
             return s;
         }

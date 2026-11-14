@@ -15,7 +15,7 @@ namespace EverythingWorld.Player
         public float seconds = .55f;
 
         Camera cam; Transform frame; MeshRenderer frameRenderer; Material mat;
-        Volume volume; ColorAdjustments grade; ShadowsMidtonesHighlights smh;
+        Volume volume; ColorAdjustments grade; ShadowsMidtonesHighlights smh; Tonemapping tone;
         bool on; float t;   // 0 = off (above your head), 1 = on your face
         float builtAspect = -1f, builtFov = -1f, builtNear = -1f, dist, halfH;
 
@@ -28,10 +28,13 @@ namespace EverythingWorld.Player
             grade = profile.Add<ColorAdjustments>(true);
             // polarized: colours richer and deeper, the brightest light (glare, white skies, bloom) pulled down hardest,
             // the darks left alone; a near-neutral grey lens so colours stay true
-            grade.postExposure.Override(-1.05f); grade.colorFilter.Override(new Color(.97f, .98f, 1f)); grade.contrast.Override(18f); grade.saturation.Override(32f);
+            grade.postExposure.Override(-1.5f); grade.colorFilter.Override(new Color(.97f, .98f, 1f)); grade.contrast.Override(18f); grade.saturation.Override(32f);
             smh = profile.Add<ShadowsMidtonesHighlights>(true);
             smh.highlights.Override(new Vector4(1f, 1f, 1f, -.9f)); smh.midtones.Override(new Vector4(1f, 1f, 1f, -.22f));
             smh.highlightsStart.Override(.3f); smh.highlightsEnd.Override(1f);
+            // the big one: instead of clipping bright light to flat white, squeeze it into a filmic curve, so glare
+            // turns back into detail you can see (light beyond white is kept until here; HDR is on)
+            tone = profile.Add<Tonemapping>(true); tone.mode.Override(TonemappingMode.ACES);
             volume.profile = profile;
         }
 

@@ -103,10 +103,11 @@ namespace EverythingWorld.Player
             void Sign(float z, float x, string text)
             {
                 var g = P(x, 0, z); mk.Prism(wood, g, up, .07f, 1.7f, 6); ArtistBits.PostCollider(t, g, 1.7f, .1f);
-                var lines = text.Split('\n').Length; var h = .3f + lines * .2f;
-                mk.Box(wood, g + up * (1.6f + h / 2f), new Vector3(2.6f, h, .08f)); mk.Box(WorldMaterials.Solid(new Color(.86f, .8f, .68f)), g + up * (1.6f + h / 2f) - Vector3.forward * .045f, new Vector3(2.45f, h - .12f, .02f));
+                var rows = text.Split('\n'); var lines = rows.Length; var h = .3f + lines * .2f; var longest = 0; foreach (var r in rows) longest = Mathf.Max(longest, r.Length);
+                var w = Mathf.Max(2.6f, longest * .088f + .5f);   // (about 9 cm a letter at this size)
+                mk.Box(wood, g + up * (1.6f + h / 2f), new Vector3(w, h, .08f)); mk.Box(WorldMaterials.Solid(new Color(.86f, .8f, .68f)), g + up * (1.6f + h / 2f) - Vector3.forward * .045f, new Vector3(w - .15f, h - .12f, .02f));
                 ArtistBits.Label(t, text, g + up * (1.6f + h / 2f) - Vector3.forward * .06f, Vector3.back, .15f, new Color(.18f, .12f, .08f), TextAnchor.MiddleCenter);
-                PlaceTools.BoxCol(t, g + up * (1.6f + h / 2f), new Vector3(2.6f, h, .25f), Quaternion.identity);   // solid, not a ghost
+                PlaceTools.BoxCol(t, g + up * (1.6f + h / 2f), new Vector3(w, h, .25f), Quaternion.identity);   // solid, not a ghost
                 ArtistBits.PointLight(t, g + up * 2.7f - Vector3.forward * 1.2f, warm, 5f, 1.6f);
             }
             Sign(4f, -1.8f, "Move the mouse to look around.");
@@ -209,13 +210,12 @@ namespace EverythingWorld.Player
             // the terminal before the gates, and its sign
             var tp = c + Vector3.forward * 1.5f; var f = new PlaceFrame(tp, Vector3.back);
             mk.Box(marble, f.P(0, .5f, 0), new Vector3(1.4f, 1f, .8f), f.r); solid.Box(marble, f.P(0, .5f, 0), new Vector3(1.4f, 1f, .8f), f.r);
-            mk.Box(gold, f.P(0, 1.45f, -.1f), new Vector3(1f, .9f, .25f), f.r * Quaternion.Euler(-12f, 0, 0));
+            mk.Box(gold, f.P(0, 1.45f, -.1f), new Vector3(1f, .9f, .25f), f.r);
             var scr = new Material(WorldMaterials.Glow(new Color(.08f, .07f, .05f), .2f)) { name = "Gate screen" };
-            mk.Box(scr, f.P(0, 1.47f, .05f), new Vector3(.86f, .74f, .02f), f.r * Quaternion.Euler(-12f, 0, 0));
+            mk.Box(scr, f.P(0, 1.45f, .04f), new Vector3(.86f, .74f, .02f), f.r);
             var tgo = new GameObject("Gate terminal"); tgo.SetActive(false); tgo.transform.SetParent(t, false); tgo.transform.position = f.P(0, 1.45f, .2f);
             var term = tgo.AddComponent<HubTerminal>(); term.riddle = true; term.glow = scr; term.glowColor = scr.GetColor("_EmissionColor");
-            term.screen = ArtistBits.Plain(ArtistBits.Label(tgo.transform, "", f.P(.4f, 1.76f, .07f), f.Fwd, .034f, new Color(1f, .85f, .5f), TextAnchor.UpperLeft));
-            term.screen.transform.rotation = f.r * Quaternion.Euler(-12f, 180f, 0);
+            term.screen = ArtistBits.Plain(ArtistBits.Label(tgo.transform, "", f.P(.39f, 1.78f, .065f), f.Fwd, .034f, new Color(1f, .85f, .5f), TextAnchor.UpperLeft));
             term.onAnswer = () => gatesOpenAt = Time.time;
             tgo.SetActive(true);
             Interact.Toy(tgo, Toy.Kind.Custom, "Use the terminal", new Vector3(1.1f, 1.1f, .6f)).onUse = _ => term.Begin(FindAnyObjectByType<PlayerInteractor>());
