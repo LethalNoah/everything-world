@@ -190,6 +190,11 @@ big change):
    yourself (the picture with the Read tool): fix every "no collider" item that's real, every
    **overlapping surface** (two different materials in the same plane: they flicker in play; magenta on the
    picture), every artist with problems, and big empty stretches, before asking the owner to look.
+   Its WALKER'S EYE section (WalkerAudit.cs) reads the land as a walker sees it: paths blocked or split by
+   something, buildings floating off a slope, ledges and steep bits on paths, big things standing on paths.
+   The full photo tour (`build/take_shots.py`, not --quick) photographs the worst of each from eye height
+   ("walker N") and eight plain views along the paths ("walker view N"); `<Land>_walk.png` maps them. Look
+   at those photos: they're the closest thing to walking it yourself.
    The audit also photographs the land from above (`<Land>_top.png`); run `python build/land_map.py "<Land>"`
    to label it (`<Land>_map.png`) and look at it: every artist scene, path and landmark should be visible.
    **Look at it yourself from eye level** before the owner does: with the Unity editor closed (ask the owner

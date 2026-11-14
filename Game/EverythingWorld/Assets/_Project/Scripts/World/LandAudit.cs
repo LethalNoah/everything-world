@@ -30,7 +30,7 @@ namespace EverythingWorld.World
         /// Each piece of water: x, z, radius (0 = the whole land), and its surface height.
         public static readonly Dictionary<string, List<Vector4>> InlandWater = new Dictionary<string, List<Vector4>>();
         public static void AddWater(string land, float x, float z, float radius, float y) { if (!InlandWater.TryGetValue(land, out var l)) InlandWater[land] = l = new List<Vector4>(); l.Add(new Vector4(x, z, radius, y)); }
-        static float WaterAt(string land, float x, float z) { var best = float.MinValue; if (InlandWater.TryGetValue(land, out var l)) foreach (var w in l) if (w.z <= 0f || (x - w.x) * (x - w.x) + (z - w.y) * (z - w.y) < w.z * w.z) best = Mathf.Max(best, w.w); return best; }
+        internal static float WaterAt(string land, float x, float z) { var best = float.MinValue; if (InlandWater.TryGetValue(land, out var l)) foreach (var w in l) if (w.z <= 0f || (x - w.x) * (x - w.x) + (z - w.y) * (z - w.y) < w.z * w.z) best = Mathf.Max(best, w.w); return best; }
 
         public static void Run(IslandWorldData data, LandContext ctx, string land)
         {
@@ -230,11 +230,14 @@ namespace EverythingWorld.World
             var dir = Path.Combine(Application.dataPath, "..", "Logs", "LandAudit");
             Directory.CreateDirectory(dir);
             var file = land.Replace("The ", "").Replace(" ", "_").Replace("&", "and");
+            // the land as someone walking round it sees it: blocked paths, floating buildings, ledges (WalkerAudit)
+            var walker = "";
+            try { walker = ", " + WalkerAudit.Run(data, ctx, land, sb, Where, Path.Combine(dir, file + "_walk.png")); } catch (System.Exception e) { Debug.LogException(e); }
             File.WriteAllText(Path.Combine(dir, file + ".txt"), sb.ToString());
             if (collidersAll != null) File.WriteAllText(Path.Combine(dir, file + "_colliders.txt"), collidersAll);
             Picture(data, ctx, scenery, empty, cell, lightAt, clusters, overlaps, problems, Path.Combine(dir, file + ".png"));
             try { Photo(ctx, dir, file); } catch (System.Exception e) { Debug.LogWarning("Land audit photo failed: " + e.Message); }
-            var summary = $"Land audit, {land}: {clusters.Count} things without a collider, {overlaps.Count} overlapping surfaces, {problems.Count} artists with problems, {emptyPct:0}% empty, {lights} lights. Report: Logs/LandAudit/{file}.txt";
+            var summary = $"Land audit, {land}: {clusters.Count} things without a collider, {overlaps.Count} overlapping surfaces, {problems.Count} artists with problems, {emptyPct:0}% empty, {lights} lights{walker}. Report: Logs/LandAudit/{file}.txt";
             if (clusters.Count > 0 || problems.Count > 0 || emptyPct > 25f) Debug.LogWarning(summary); else Debug.Log(summary);
         }
 

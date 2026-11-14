@@ -2,6 +2,13 @@
 
 Things to remember that aren't built or decided yet. Newest first.
 
+## Owner's notes after a long two-player playtest, 2026-11-14
+
+- **The biggest issue: placement that doesn't make sense to a person walking around.** Examples: a large obstacle in the middle of a path, a house on a hillside half floating in the air, paths that go nowhere sensible. The photo tour shoots from flattering spots (arrival, artist fronts, high view) and the audit has no path or grounding checks, so these slip through. Some colliders are still missing too.
+- **Local audio instead of (or alongside) Spotify:** the owner is collecting local copies of the songs, buying some, so the game can play the audio itself. This would reverse the "sound only from Spotify" decision, so plan it with the owner first. Audio files must never go in the public repo. The song display pieces wait until this is done.
+- **A richer low-poly look, in the spirit of Valheim:** simple shapes with rich light. That means fog and atmosphere, soft long shadows, light shafts, dense swaying grass and strong colour grading. Use the techniques only, not its look or assets.
+- **What worked best:** visual interpretations of songs (the Zero Eden visualizer, Metalcore Caldera, the electro area, the arena, the Phish and Radiohead displays, the Velvet city). Sometimes the reference wasn't findable, so give each one a small clue such as the song title somewhere nearby.
+
 ## Designed lands, residents and things to do (2026-11-12, first version on the Oddball Backroads)
 
 - **Every land laid out on purpose**, not scattered: a road network over the whole land, a string of places made to stop at (each with somewhere to sit, something to play with, a view, its people), and the countryside between them designed too (fields, hedgerows, lone trees on hilltops, dark hollows). Strong contrast by brightness and blue/yellow. The Oddball Backroads is the first; it becomes the standard for new lands, then a pass over the built ones.
