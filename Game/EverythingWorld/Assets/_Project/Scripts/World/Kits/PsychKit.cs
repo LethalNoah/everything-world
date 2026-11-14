@@ -36,6 +36,7 @@ namespace EverythingWorld.World
         readonly List<Vector3> noGrass = new List<Vector3>();
         readonly List<(Vector3 c, float r, float[] ys)> plates = new List<(Vector3, float, float[])>();   // flat mushroom plates placed so far, to keep neighbours' faces apart
         Material[] capGlow;
+        LandContext groundCtx;   // what Strip drapes paths over
 
         void MakeMaterials()
         {
@@ -135,7 +136,7 @@ namespace EverythingWorld.World
 
         public override void Dress(LandContext ctx)
         {
-            MakeMaterials();
+            MakeMaterials(); groundCtx = ctx;
             halos = new GlowHalos(); soft = new MeshKit();
             pathCells.Clear(); walkPoints.Clear(); facing.Clear(); noGrass.Clear(); plates.Clear();
             center = ctx.Plaza;
@@ -224,8 +225,23 @@ namespace EverythingWorld.World
                 var miter = 1f / Mathf.Max(.6f, Vector3.Dot(side, Vector3.Cross(Vector3.up, b)));
                 L[i] = pts[i] + Vector3.up * lift - side * (w / 2f * miter); R[i] = pts[i] + Vector3.up * lift + side * (w / 2f * miter);
             }
+            // laid in strips across too, every vertex on the ground under it, so a path across a slope tilts with it
+            // and a fold in the ground between its edges can't rise through it (half the Rainbow Road vanished under
+            // side slopes when it was one flat quad edge to edge)
+            var m = groundCtx != null ? Mathf.Max(1, Mathf.CeilToInt(w / 1.2f)) : 1; var V = new Vector3[n, m + 1];
+            for (var i = 0; i < n; i++)
+                for (var j = 0; j <= m; j++)
+                {
+                    var v = Vector3.Lerp(L[i], R[i], j / (float)m);
+                    if (groundCtx != null) v.y = groundCtx.Ground(v.x, v.z) + lift;
+                    V[i, j] = v;
+                }
             // painted in bands of colour, a few metres each, cycling through the rainbow
-            for (var i = 0; i + 1 < n; i++) mk.Quad(WorldMaterials.Solid(Color.Lerp(Rainbow[(startColour + i / 2) % Rainbow.Length], Color.white, .25f), .2f), L[i], R[i], R[i + 1], L[i + 1], (pts[i] + pts[i + 1]) / 2f - Vector3.up);
+            for (var i = 0; i + 1 < n; i++)
+            {
+                var mat = WorldMaterials.Solid(Color.Lerp(Rainbow[(startColour + i / 2) % Rainbow.Length], Color.white, .25f), .2f);
+                for (var j = 0; j < m; j++) mk.Quad(mat, V[i, j], V[i, j + 1], V[i + 1, j + 1], V[i + 1, j], (V[i, j] + V[i + 1, j + 1]) / 2f - Vector3.up);
+            }
         }
 
         // ---------------------------------------------------------------- where you arrive
