@@ -84,6 +84,20 @@ namespace EverythingWorld.World
             Cursor.lockState = CursorLockMode.None;
 
             if (lands.Length == 1 && lands[0] == "perf") { yield return Perf(data, player, pivot, cam); Quit(0); yield break; }
+            if (lands.Length == 1 && lands[0] == "about")
+            {
+                // opens a few artists' about cards and logs what each shows (cards are drawn on the screen, so photos can't show them)
+                foreach (var nm in new[] { "Radiohead", "Netsky", "Cream", "+TEK", "Bush", "First of October", "Phish" })
+                {
+                    IslandWorldData.Artist art = null; foreach (var x in data.layout.artists) if (x.name == nm) art = x;
+                    if (art == null) continue;
+                    AboutCard.Toggle(art, cam.transform.position);
+                    var until = Time.realtimeSinceStartup + 12f; while (AboutCard.Showing == null && Time.realtimeSinceStartup < until) yield return null;
+                    var s = AboutCard.Showing ?? "(nothing after 12 s)"; Debug.Log("About card, " + nm + ": " + (s.Length > 220 ? s.Substring(0, 220) + "..." : s));
+                    AboutCard.Toggle(art, cam.transform.position);
+                }
+                Quit(0); yield break;
+            }
             if (lands.Length == 1 && lands[0] == "bridges") { yield return Bridges(data, player, pivot, cam); Quit(0); yield break; }
             var wanted = new List<string>();
             foreach (var l in lands)

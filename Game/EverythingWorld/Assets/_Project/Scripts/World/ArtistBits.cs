@@ -98,6 +98,9 @@ namespace EverythingWorld.World
             var face = center + front * .045f;
             Label(labels, Clip(a.name, 26), face + Vector3.up * (h / 2f - .1f), front, .15f, ink);
             Label(labels, Details(a), face + Vector3.up * (h / 2f - .32f), front, .075f, ink);
+            // press E at the plaque to read about them (AboutCard)
+            var about = new GameObject("About " + a.name); about.transform.SetParent(labels, false); about.transform.SetPositionAndRotation(center + front * .14f, rot);
+            Interact.Toy(about, Toy.Kind.Custom, "About " + Clip(a.name, 24), new Vector3(width, h, .2f)).onUse = _ => AboutCard.Toggle(a, center);
         }
 
         /// Album covers in a grid on a wall. 'normal' is the way the wall faces; titles go under each cover.
