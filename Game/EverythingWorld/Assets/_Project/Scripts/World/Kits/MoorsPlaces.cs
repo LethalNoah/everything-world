@@ -439,6 +439,9 @@ namespace EverythingWorld.World
                     for (var k = 0; k < n; k++)
                     {
                         var bp = p + new Vector3(ctx.Range(-2f, 2f), .8f + k * .7f, ctx.Range(-2f, 2f)); var bs = new Vector3(ctx.Range(2f, 3.6f), ctx.Range(1f, 1.8f), ctx.Range(1.8f, 3f)); var br = Quaternion.Euler(0, ctx.Range(0, 90f), ctx.Range(-6f, 6f));
+                        // every block reaches down to the ground (stacked with random offsets, the upper ones overhung thin air)
+                        var top = bp.y + bs.y / 2f; var bot = Mathf.Min(bp.y - bs.y / 2f, p.y - .3f);
+                        foreach (var (sx, sz) in new[] { (-1f, -1f), (1f, -1f), (1f, 1f), (-1f, 1f) }) { var q = bp + br * new Vector3(sx * bs.x / 2f, 0, sz * bs.z / 2f); bot = Mathf.Min(bot, ctx.Ground(q.x, q.z) - .3f); } bp.y = (top + bot) / 2f; bs.y = top - bot;
                         mk.Box(paleStone, bp, bs, br); solid.Box(paleStone, bp, bs, br);
                     }
                     Ring(p, 4f); count++;

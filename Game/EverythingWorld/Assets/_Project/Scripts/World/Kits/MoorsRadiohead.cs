@@ -154,22 +154,40 @@ namespace EverythingWorld.World
             var up = Vector3.up; var face = new Vector3(center.x - c.x, 0, center.z - c.z).normalized; var rot = Quaternion.LookRotation(face); var side = Vector3.Cross(up, face);
             Color[] cols = { new Color(.95f, .45f, .15f), new Color(.9f, .15f, .15f), new Color(.15f, .4f, .85f), new Color(.95f, .8f, .2f), new Color(.25f, .65f, .35f), new Color(.9f, .9f, .85f), new Color(.1f, .1f, .12f) };
             string[] words = { "2 + 2 = 5", "GO TO SLEEP", "WHERE I END", "A WOLF", "SAIL TO THE MOON", "BACKDRIFTS", "THE GLOOM", "MYXOMATOSIS", "SCATTERBRAIN", "A PUNCHUP", "I WILL", "THERE THERE" };
+            // the square sits level on a stone plinth as high as the highest ground under it (on a slope the flat square
+            // and its blocks hung in the air on the downhill side), with steps down from each street's end
+            float lo = float.MaxValue, hi = float.MinValue;
+            for (var u = -12.5f; u <= 12.6f; u += 12.5f / 3f) for (var v = -12.5f; v <= 12.6f; v += 12.5f / 3f) { var q = c + side * u + face * v; var h = ctx.Ground(q.x, q.z); lo = Mathf.Min(lo, h); hi = Mathf.Max(hi, h); }
+            var baseY = Mathf.Max(c.y, hi); var T = baseY + .08f; var plinthM = stone;   // mid-grey stone sides under the pale square
+            mk.Box(plinthM, new Vector3(c.x, (T - .1f + lo - .4f) / 2f, c.z), new Vector3(25f, T - .1f - lo + .4f, 25f), rot); solid.Box(plinthM, new Vector3(c.x, (T + lo - .4f) / 2f, c.z), new Vector3(25f, T - lo + .4f, 25f), rot);
+            mk.Box(WorldMaterials.Solid(new Color(.85f, .84f, .8f)), new Vector3(c.x, T - .05f, c.z), new Vector3(25f, .1f, 25f), rot);
+            foreach (var d in new[] { side, -side, face, -face })
+            {
+                var e = c + d * 12.5f; var g = ctx.Ground(e.x + d.x, e.z + d.z); var drop = T - g; if (drop < .3f) continue;
+                var n = Mathf.CeilToInt(drop / .28f); var rise = drop / (n + 1);
+                for (var s = 0; s < n; s++)
+                {
+                    var sc = e + d * (.225f + s * .45f); var top = T - rise * (s + 1); var gb = Mathf.Min(ctx.Ground(sc.x, sc.z), top) - .3f;
+                    var srot = Quaternion.LookRotation(d); var sp = new Vector3(sc.x, (top + gb) / 2f, sc.z); var ss = new Vector3(3.2f, top - gb, .46f);
+                    mk.Box(plinthM, sp, ss, srot); solid.Box(plinthM, sp, ss, srot);
+                }
+            }
             var w = 0;
             for (var i = 0; i < 5; i++) for (var j = 0; j < 5; j++)
             {
                 if ((i == 2) || (j == 2)) continue;   // the streets
                 var bw = ctx.Range(3.2f, 4.2f); var bd = ctx.Range(3.2f, 4.2f); var bh = ctx.Range(1.6f, 6.5f);
-                var p = c + side * ((i - 2f) * 5f) + face * ((j - 2f) * 5f) + up * (bh / 2f);
+                var p = new Vector3(c.x, baseY, c.z) + side * ((i - 2f) * 5f) + face * ((j - 2f) * 5f) + up * (bh / 2f);
                 var m = WorldMaterials.Solid(cols[(i * 3 + j * 5) % cols.Length], .3f);
                 mk.Box(m, p, new Vector3(bw, bh, bd), rot); solid.Box(m, p, new Vector3(bw, bh, bd), rot);
                 var ci = (i * 3 + j * 5) % cols.Length; var ink = ci == 3 || ci == 5 ? new Color(.08f, .08f, .08f) : Color.white;
                 if (w < words.Length) { var wf = j < 2 ? -face : face; var sd = i < 2 ? -side : side; var wd = (i + j) % 2 == 0 ? wf : sd; var depth = wd == wf ? bd : bw; var text = words[w++]; ArtistBits.Label(ctx.Root, text, p + wd * (depth / 2f + .03f) + up * Mathf.Min(bh * .2f, 1f), wd, Mathf.Min(.42f, 3.4f / (text.Length * .62f + 1f)), ink, TextAnchor.MiddleCenter); }
             }
             noGrass.Add(new Vector3(c.x, 20f, c.z));   // the whole square, corners too: no hawthorns through the blocks
-            mk.Box(WorldMaterials.Solid(new Color(.85f, .84f, .8f)), c + up * .03f, new Vector3(25f, .1f, 25f), rot);
-            mk.Box(WorldMaterials.Solid(new Color(.3f, .3f, .32f)), c + up * .1f, new Vector3(2.4f, .04f, 25f), rot); mk.Box(WorldMaterials.Solid(new Color(.3f, .3f, .32f)), c + up * .1f + side * 0f, new Vector3(25f, .04f, 2.4f), rot);
-            ArtistBits.PointLight(ctx.Root, c + up * 7f, new Color(1f, .9f, .8f), 18f, 1f);
-            Mark(ctx, "the word city", c + up * 1f, 22f, -.15f);
+            var cb = new Vector3(c.x, baseY, c.z);
+            mk.Box(WorldMaterials.Solid(new Color(.3f, .3f, .32f)), cb + up * .1f, new Vector3(2.4f, .04f, 25f), rot); mk.Box(WorldMaterials.Solid(new Color(.3f, .3f, .32f)), cb + up * .1f, new Vector3(25f, .04f, 2.4f), rot);
+            ArtistBits.PointLight(ctx.Root, cb + up * 7f, new Color(1f, .9f, .8f), 18f, 1f);
+            Mark(ctx, "the word city", cb + up * 1f, 22f, -.15f);
         }
 
         /// The ice peaks: a cluster of sharp, pale-blue icy peaks, faintly glowing (red while "Everything In Its Right

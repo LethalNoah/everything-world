@@ -285,7 +285,10 @@ namespace EverythingWorld.World
         void Cottage(LandContext ctx, MeshKit mk, MeshKit solid, Vector3 at, Vector3 face)
         {
             var up = Vector3.up; var rot = Quaternion.LookRotation(face); var side = Vector3.Cross(up, face);
-            var w = ctx.Range(6f, 8f); mk.Box(stone, at + up * 1.6f, new Vector3(w, 3.2f, 4.6f), rot); solid.Box(stone, at + up * 1.6f, new Vector3(w, 3.2f, 4.6f), rot);
+            var w = ctx.Range(6f, 8f);
+            // the walls reach down to the lowest ground under the cottage (on a slope its downhill side hung in the air)
+            var lo = at.y; foreach (var (sx, sz) in new[] { (-1f, -1f), (1f, -1f), (1f, 1f), (-1f, 1f) }) { var q = at + side * sx * w / 2f + face * sz * 2.3f; lo = Mathf.Min(lo, ctx.Ground(q.x, q.z)); }
+            var bot = lo - .3f; mk.Box(stone, new Vector3(at.x, (bot + at.y + 3.2f) / 2f, at.z), new Vector3(w, at.y + 3.2f - bot, 4.6f), rot); solid.Box(stone, new Vector3(at.x, (bot + at.y + 3.2f) / 2f, at.z), new Vector3(w, at.y + 3.2f - bot, 4.6f), rot);
             mk.GableRoof(slate, at + up * 3.2f, new Vector3(5.2f, 0, w + .6f), 1.8f, Quaternion.LookRotation(side));
             mk.Box(dark, at + up * 1f + face * 2.31f, new Vector3(.9f, 2f, .04f), rot);
             foreach (var s in new[] { -1f, 1f }) mk.Box(ctx.Chance(.7f) ? GlowM(Lamp, 1.4f) : dark, at + up * 1.7f + face * 2.31f + side * s * (w / 2f - 1.2f), new Vector3(.9f, .8f, .04f), rot);
@@ -369,6 +372,7 @@ namespace EverythingWorld.World
                     for (var d = leg == 0 ? ((new Vector2(join.x - center.x, join.z - center.z)).sqrMagnitude < 4f ? 9f : RoadW / 2f + .1f) : 1.5f; ; d += 1.5f)
                     {
                         var dd = Mathf.Min(d, len); var q = a0 + ld * dd + ls * Mathf.Sin(dd / 17f) * Mathf.Min(3f, len * .05f) * Mathf.Sin(Mathf.PI * dd / len);
+                        q = KeepClear(ctx, q, next, a0, ld);
                         if (!ctx.IsLand(q.x, q.z, 0f)) { broken = true; break; }
                         pts.Add(ctx.OnGround(q.x, q.z)); if (dd >= len) break;
                     }
@@ -393,6 +397,27 @@ namespace EverythingWorld.World
                 var m = longest[longest.Count / 2]; var d2 = longest[longest.Count / 2 + 1] - m; d2.y = 0; d2.Normalize(); var sd = Vector3.Cross(Vector3.up, d2);
                 var mark = new GameObject("Shot: the lonely road").transform; mark.SetParent(ctx.Root, false); var cam = ctx.OnGround(m.x + sd.x * 9f, m.z + sd.z * 9f); mark.SetPositionAndRotation(cam, Quaternion.LookRotation((d2 - sd * .5f).normalized));
             }
+        }
+
+        /// A trail goes round the other artists' grounds and the sunken pool instead of through them (one ran straight
+        /// through OUT IN FRONT's capsule on its way to a neighbour).
+        /// Sideways (across the leg from a0 along ld), always to the same side of each circle, so the trail bends round it.
+        Vector3 KeepClear(LandContext ctx, Vector3 q, IslandWorldData.Artist to, Vector3 a0, Vector3 ld)
+        {
+            var ls = Vector3.Cross(Vector3.up, ld);
+            void Round(float cx, float cz, float r)
+            {
+                var c = new Vector3(cx, 0, cz); var v = q - c; v.y = 0; if (v.sqrMagnitude >= r * r) return;
+                var along = Vector3.Dot(v, ld); var across = Vector3.Dot(v, ls); var toC = Vector3.Dot(c - a0, ls);
+                var sgn = toC > 0f ? -1f : 1f; var want = sgn * Mathf.Sqrt(Mathf.Max(0f, r * r - along * along));
+                if (Mathf.Abs(across) < Mathf.Abs(want) || Mathf.Sign(across) != sgn) q += ls * (want - across);
+            }
+            for (var pass = 0; pass < 2; pass++)
+            {
+                foreach (var a in ctx.Artists) { if (a == to || (a.name == "Radiohead" && hasDistrict)) continue; Round(a.x, a.z, Foot(a) + 4f); }
+                if (hasPool) Round(pool2.x, pool2.y, PoolR * 1.42f + 3f);
+            }
+            return q;
         }
 
         Vector3 Goal(IslandWorldData.Artist a) => a.name == "Radiohead" && hasDistrict ? DistrictDoor : new Vector3(a.x, 0, a.z);
