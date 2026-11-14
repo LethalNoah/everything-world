@@ -33,6 +33,11 @@ Scene names and look briefs live in `build/scene_art.json` (readable version: `A
 - Spotify is controlled through the Web API (`SpotifyMusicOutput.cs`), off by default behind "Use Spotify" on the Music object. Songs start "from their album" because the desktop app ignored plain track plays in testing. The game re-syncs if Spotify drifts more than 1 s from the station.
 - Spotify development mode: max 5 users per app (owner needs Premium); users must be added in the dashboard's User Management.
 
+## Multiplayer
+
+- Unity Netcode for GameObjects 2.14 + Unity Multiplayer Services 2.4 (sessions with join codes over Relay), from the Package Manager, so friends get it by opening the project. The project is linked to Unity Cloud; Relay may need enabling in the dashboard. (Photon Fusion is owned but not used: it's Asset Store content.)
+- `Player/Friends.cs`: host or join by code from the menu (Play with Friends). Only orb position, colour and name are shared (named messages, 10 Hz, host relays); the world, the radio clock and each player's Spotify are already the same or personal. Passport, sunglasses and settings stay per player.
+
 ## Secrets and private data (never commit)
 
 - `build/lastfm_key.txt` — Last.fm API key.
