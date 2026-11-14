@@ -21,13 +21,15 @@ namespace EverythingWorld.Player
         };
 
         public bool isLocal = true;
+        /// A showcase orb (the hub's colour station): just the orb, its pattern and wisps; no beam, glow or light.
+        public bool display;
         public Transform eye;                       // the local player's camera pivot (the orb sits there)
         public float radius = .24f;
 
         public static PlayerOrb Local { get; private set; }
         public Color Color { get; private set; } = new Color(.92f, .94f, 1f);
 
-        Transform orb, beam, glowDisc; Material orbMat, coreMat, beamMat, discMat; Light lamp; MeshRenderer orbR, coreR;
+        Transform orb, beam, glowDisc, pattern, pattern2; Material orbMat, coreMat, beamMat, discMat, lineMat, lineMat2; Light lamp; MeshRenderer orbR, coreR; ParticleSystem wisps;
         Vector3 at; float seed;
 
         void Awake()
@@ -40,18 +42,65 @@ namespace EverythingWorld.Player
             // the orb: a soft outer shell and a brighter core
             var shell = GameObject.CreatePrimitive(PrimitiveType.Sphere); Destroy(shell.GetComponent<Collider>()); shell.name = "Shell"; shell.transform.SetParent(orb, false); shell.transform.localScale = Vector3.one * radius * 2f;
             var core = GameObject.CreatePrimitive(PrimitiveType.Sphere); Destroy(core.GetComponent<Collider>()); core.name = "Core"; core.transform.SetParent(orb, false); core.transform.localScale = Vector3.one * radius * 1.1f;
-            orbMat = new Material(EverythingWorld.World.WorldMaterials.Glow(Color, 1.2f)) { name = "Orb shell" };
+            orbMat = new Material(EverythingWorld.World.WorldMaterials.Glow(Color, .9f)) { name = "Orb shell" };
             coreMat = new Material(EverythingWorld.World.WorldMaterials.Glow(Color, 3f)) { name = "Orb core" };
             orbR = shell.GetComponent<MeshRenderer>(); orbR.sharedMaterial = orbMat; coreR = core.GetComponent<MeshRenderer>(); coreR.sharedMaterial = coreMat;
             // your own orb is round your eyes: you only see its shadow
             if (isLocal) { orbR.shadowCastingMode = ShadowCastingMode.ShadowsOnly; coreR.shadowCastingMode = ShadowCastingMode.Off; coreR.enabled = false; }
             else { orbR.shadowCastingMode = ShadowCastingMode.On; coreR.shadowCastingMode = ShadowCastingMode.Off; }
+            // the pattern: thin flowing lines in a deeper, more saturated shade, on two shells turning different ways
+            lineMat = Blended("Orb lines", LinesTexture(7, 0)); lineMat2 = Blended("Orb lines 2", LinesTexture(4, 1));
+            pattern = Shell("Lines", lineMat, radius * 2.06f); pattern2 = Shell("Lines 2", lineMat2, radius * 2.12f);
+            if (isLocal) { pattern.gameObject.SetActive(false); pattern2.gameObject.SetActive(false); }
+            // the wisps: threads of light that rise and curl off the orb and trail behind it (never on your own orb)
+            if (!isLocal) wisps = Wisps();
             lamp = new GameObject("Orb light").AddComponent<Light>(); lamp.transform.SetParent(orb, false); lamp.type = LightType.Point; lamp.range = 5f; lamp.intensity = .7f; lamp.shadows = LightShadows.None;
             if (isLocal) lamp.transform.localPosition = new Vector3(0, .2f, .3f);
             // the faint beam to the ground, and the glow where it lands
             beamMat = Additive("Orb beam", BeamTexture()); discMat = Additive("Orb glow", DiscTexture());
             beam = Quad("Beam", beamMat, root.parent == null ? null : root.parent); glowDisc = Quad("Ground glow", discMat, root.parent == null ? null : root.parent);
+            if (display) { lamp.enabled = false; beam.gameObject.SetActive(false); glowDisc.gameObject.SetActive(false); }
             SetColor(isLocal ? Load() : Color);
+        }
+
+        Transform Shell(string name, Material m, float size)
+        {
+            var s = GameObject.CreatePrimitive(PrimitiveType.Sphere); Destroy(s.GetComponent<Collider>()); s.name = name; s.transform.SetParent(orb, false); s.transform.localScale = Vector3.one * size;
+            var r = s.GetComponent<MeshRenderer>(); r.sharedMaterial = m; r.shadowCastingMode = ShadowCastingMode.Off; r.receiveShadows = false; return s.transform;
+        }
+
+        /// A deeper, richer version of a colour for the lines (pale colours get a deep tint of their own).
+        static Color Deep(Color c)
+        {
+            Color.RGBToHSV(c, out var h, out var s, out var v);
+            if (s < .15f) return new Color(.32f, .38f, .78f);
+            return Color.HSVToRGB(h, Mathf.Min(1f, s + .35f), Mathf.Min(v, .85f));
+        }
+
+        ParticleSystem Wisps()
+        {
+            var go = new GameObject("Wisps"); go.transform.SetParent(orb, false);
+            var ps = go.AddComponent<ParticleSystem>(); ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            var main = ps.main; main.loop = true; main.playOnAwake = true; main.simulationSpace = ParticleSystemSimulationSpace.World; main.maxParticles = 200;
+            main.startLifetime = new ParticleSystem.MinMaxCurve(1f, 1.8f); main.startSpeed = new ParticleSystem.MinMaxCurve(.02f, .08f); main.startSize = new ParticleSystem.MinMaxCurve(.012f, .03f);
+            var em = ps.emission; em.rateOverTime = 18f;
+            var sh = ps.shape; sh.shapeType = ParticleSystemShapeType.Sphere; sh.radius = radius * .9f; sh.radiusThickness = .1f;
+            var vel = ps.velocityOverLifetime; vel.enabled = true; vel.space = ParticleSystemSimulationSpace.Local;
+            vel.x = new ParticleSystem.MinMaxCurve(0f, 0f); vel.z = new ParticleSystem.MinMaxCurve(0f, 0f);
+            vel.y = new ParticleSystem.MinMaxCurve(.18f, .38f); vel.orbitalX = new ParticleSystem.MinMaxCurve(0f, 0f); vel.orbitalY = new ParticleSystem.MinMaxCurve(.9f, 1.6f); vel.orbitalZ = new ParticleSystem.MinMaxCurve(0f, 0f); vel.radial = new ParticleSystem.MinMaxCurve(.02f, .08f);
+            var noise = ps.noise; noise.enabled = true; noise.strength = .25f; noise.frequency = 1.2f; noise.scrollSpeed = .4f;
+            var col = ps.colorOverLifetime; col.enabled = true; var g = new Gradient();
+            g.SetKeys(new[] { new GradientColorKey(Color.white, 0f), new GradientColorKey(Color.white, 1f) }, new[] { new GradientAlphaKey(0f, 0f), new GradientAlphaKey(.7f, .2f), new GradientAlphaKey(.3f, .6f), new GradientAlphaKey(0f, 1f) });
+            col.color = g;
+            var size = ps.sizeOverLifetime; size.enabled = true; size.size = new ParticleSystem.MinMaxCurve(1f, AnimationCurve.EaseInOut(0f, .6f, 1f, 1.4f));
+            // each mote leaves a thin ribbon that fades, so they read as threads of light curling away
+            var tr = ps.trails; tr.enabled = true; tr.ratio = 1f; tr.lifetime = new ParticleSystem.MinMaxCurve(.35f, .6f); tr.minVertexDistance = .015f;
+            tr.widthOverTrail = new ParticleSystem.MinMaxCurve(1f, AnimationCurve.EaseInOut(0f, 1f, 1f, 0f)); tr.inheritParticleColor = true; tr.dieWithParticles = true; tr.sizeAffectsWidth = true;
+            var tg = new Gradient(); tg.SetKeys(new[] { new GradientColorKey(Color.white, 0f), new GradientColorKey(Color.white, 1f) }, new[] { new GradientAlphaKey(.95f, 0f), new GradientAlphaKey(0f, 1f) }); tr.colorOverTrail = tg;
+            var r = go.GetComponent<ParticleSystemRenderer>(); r.renderMode = ParticleSystemRenderMode.Billboard;
+            r.sharedMaterial = Additive("Orb wisps", DiscTexture()); r.trailMaterial = Additive("Orb wisp trails", RibbonTexture()); r.shadowCastingMode = ShadowCastingMode.Off;
+            ps.Play();
+            return ps;
         }
 
         void OnDestroy() { if (orb != null) Destroy(orb.gameObject); if (beam != null) Destroy(beam.gameObject); if (glowDisc != null) Destroy(glowDisc.gameObject); }
@@ -77,6 +126,8 @@ namespace EverythingWorld.Player
             coreMat.SetColor("_BaseColor", c); coreMat.SetColor("_EmissionColor", Color.Lerp(c, Color.white, .35f) * 3f * .65f);
             lamp.color = c;
             beamMat.SetColor("_BaseColor", new Color(c.r, c.g, c.b, .16f)); discMat.SetColor("_BaseColor", new Color(c.r, c.g, c.b, .5f));
+            var d = Deep(c); lineMat.SetColor("_BaseColor", new Color(d.r, d.g, d.b, .95f)); lineMat2.SetColor("_BaseColor", new Color(d.r, d.g, d.b, .6f));
+            if (wisps != null) { var m = wisps.main; m.startColor = new ParticleSystem.MinMaxGradient(Color.Lerp(c, Color.white, .4f), Color.Lerp(c, d, .5f)); }
         }
 
         /// Puts the orb at an eye position (for other players' orbs; your own follows your eyes).
@@ -88,6 +139,7 @@ namespace EverythingWorld.Player
             var t = Time.time + seed;
             var p = at + Vector3.up * (isLocal ? 0f : Mathf.Sin(t * 1.6f) * .06f);
             orb.position = p; orb.rotation = Quaternion.Euler(0, t * 20f, 0);
+            if (pattern != null) { pattern.localRotation = Quaternion.Euler(18f, t * 14f, 8f); pattern2.localRotation = Quaternion.Euler(-24f, -t * 23f, -12f); }
             var pulse = 1f + Mathf.Sin(t * 2.2f) * .04f; orb.localScale = Vector3.one * pulse;
             // the beam: from just under the orb to the ground (or 30 m down), always turned to the camera
             var ground = p - Vector3.up * 30f; var hitSomething = false;
@@ -111,6 +163,34 @@ namespace EverythingWorld.Player
             return q.transform;
         }
 
+        static Material Blended(string name, Texture2D tex)
+        {
+            var m = new Material(Shader.Find("Universal Render Pipeline/Unlit")) { name = name };
+            m.SetTexture("_BaseMap", tex); m.SetFloat("_Surface", 1f); m.SetFloat("_Blend", 0f);
+            m.SetFloat("_SrcBlend", (float)BlendMode.SrcAlpha); m.SetFloat("_DstBlend", (float)BlendMode.OneMinusSrcAlpha);
+            m.SetFloat("_ZWrite", 0f); m.SetFloat("_Cull", 2f); m.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
+            m.renderQueue = (int)RenderQueue.Transparent + 5;
+            return m;
+        }
+
+        /// Thin flowing lines round a sphere (its UVs: around and up): wavy bands that drift like currents.
+        /// 'bands' sets how many; 'kind' 1 gives a second, looser pattern.
+        static Texture2D LinesTexture(int bands, int kind)
+        {
+            const int w = 256, h = 128; var t = new Texture2D(w, h, TextureFormat.RGBA32, true) { wrapMode = TextureWrapMode.Repeat };
+            for (var y = 0; y < h; y++) for (var x = 0; x < w; x++)
+            {
+                float u = (x + .5f) / w, v = (y + .5f) / h; var a2 = u * Mathf.PI * 2f;
+                var wave = kind == 0 ? Mathf.Sin(a2 * 2f + v * 9f) * .09f + Mathf.Sin(a2 * 5f) * .025f : Mathf.Sin(a2 * 3f - v * 6f) * .14f;
+                var f = (v + wave) * bands; var d = Mathf.Abs(f - Mathf.Round(f));
+                var line = Mathf.Clamp01(1f - d / (kind == 0 ? .07f : .05f));
+                var pole = Mathf.Clamp01(Mathf.Sin(v * Mathf.PI) * 3f);
+                var a = line * line * pole * (kind == 0 ? 1f : .8f + .2f * Mathf.Sin(a2 * 7f));
+                t.SetPixel(x, y, new Color(1, 1, 1, a));
+            }
+            t.Apply(); return t;
+        }
+
         static Material Additive(string name, Texture2D tex)
         {
             var m = new Material(Shader.Find("Universal Render Pipeline/Particles/Unlit")) { name = name };
@@ -131,6 +211,14 @@ namespace EverythingWorld.Player
                 var a = across * across * Mathf.Lerp(.25f, 1f, v) * Mathf.Clamp01((1f - v) * 12f);
                 t.SetPixel(x, y, new Color(1, 1, 1, a));
             }
+            t.Apply(); return t;
+        }
+
+        /// Soft across the ribbon, so a trail reads as a thin glowing thread.
+        static Texture2D RibbonTexture()
+        {
+            const int w = 8, h = 32; var t = new Texture2D(w, h, TextureFormat.RGBA32, false) { wrapMode = TextureWrapMode.Clamp };
+            for (var y = 0; y < h; y++) for (var x = 0; x < w; x++) { var across = 1f - Mathf.Abs((y + .5f) / h * 2f - 1f); t.SetPixel(x, y, new Color(1, 1, 1, across * across)); }
             t.Apply(); return t;
         }
 

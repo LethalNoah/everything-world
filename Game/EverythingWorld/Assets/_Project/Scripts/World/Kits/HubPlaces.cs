@@ -305,10 +305,11 @@ namespace EverythingWorld.World
                     var a = Mathf.Lerp(-80f, 80f, i / (float)(palette.Length - 1)); var d = Quaternion.Euler(0, a, 0) * cd; var pp = cc + d * 2.8f;
                     mk.Prism(stoneP, pp, Vector3.up, .2f, 1.05f, 10); mk.Prism(bronze, pp + Vector3.up * 1.05f, Vector3.up, .26f, .06f, 12); ArtistBits.PostCollider(ctx.Root, pp, 1.1f, .22f);
                     var col = palette[i].color; var ob = pp + Vector3.up * 1.45f;
-                    mk.Blob(WorldMaterials.Glow(col, 1.1f), ob, Vector3.one * .17f, rng, 0f);
-                    var go = new GameObject("Colour: " + palette[i].name); go.transform.SetParent(people, false); go.transform.position = ob;
+                    var go = new GameObject("Colour: " + palette[i].name); go.SetActive(false); go.transform.SetParent(people, false); go.transform.position = ob;
+                    var show = go.AddComponent<EverythingWorld.Player.PlayerOrb>(); show.isLocal = false; show.display = true; show.radius = .17f; go.SetActive(true); show.Choose(i); show.Place(ob);
                     var idx = i; var nm = palette[i].name;
-                    Interact.Toy(go, Toy.Kind.Custom, "Glow " + nm, new Vector3(.5f, .9f, .5f)).onUse = _ => { if (EverythingWorld.Player.PlayerOrb.Local != null) EverythingWorld.Player.PlayerOrb.Local.Choose(idx); PlaceTools.Say(people, ob + Vector3.up * .5f, "You glow " + nm + " now.", 2.5f); };
+                    var pick = new GameObject("Pick " + nm); pick.transform.SetParent(people, false); pick.transform.position = ob;   // the E spot on its own, so the use highlight doesn't tint the orb
+                    Interact.Toy(pick, Toy.Kind.Custom, "Glow " + nm, new Vector3(.5f, .9f, .5f)).onUse = _ => { if (EverythingWorld.Player.PlayerOrb.Local != null) EverythingWorld.Player.PlayerOrb.Local.Choose(idx); PlaceTools.Say(people, ob + Vector3.up * .5f, "You glow " + nm + " now.", 2.5f); };
                 }
                 var sp = cc - cd * .6f; mk.Prism(iron, sp, Vector3.up, .05f, 2.6f, 6); ArtistBits.PostCollider(ctx.Root, sp, 2.6f, .08f);
                 mk.Box(WorldMaterials.Solid(new Color(.06f, .06f, .07f)), sp + Vector3.up * 2.45f + cd * .05f, new Vector3(2.4f, .34f, .04f), Quaternion.LookRotation(cd));
