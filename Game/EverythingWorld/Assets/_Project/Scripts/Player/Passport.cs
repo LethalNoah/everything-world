@@ -7,11 +7,11 @@ using UnityEngine.InputSystem;
 
 namespace EverythingWorld.Player
 {
-    /// The passport: press P to open it. A stamp for every land you visit (in the land's colour, with the date),
+    /// The passport: press J to open it. A stamp for every land you visit (in the land's colour, with the date),
     /// a stamp for every artist whose about card you read (E at their plaque), and a stamp for every song you listen
     /// to for 30 seconds, wherever you hear it. The left page lists the lands by realm with how much of each you've
     /// collected; the right page shows one land: its stamp, its artists and their songs. Saved on this computer
-    /// (passport.json in the game's data folder). P or Esc closes it.
+    /// (passport.json in the game's data folder). J or Esc closes it.
     public class Passport : MonoBehaviour
     {
         [System.Serializable] class Save { public List<string> lands = new List<string>(), landDates = new List<string>(), artists = new List<string>(), songs = new List<string>(); }
@@ -22,7 +22,7 @@ namespace EverythingWorld.Player
         public static Passport Instance { get; private set; }
         /// Set by the photo tour, so test runs never touch the real passport.
         public static bool NoSave;
-        public Key key = Key.P;
+        public Key key = Key.J;
 
         Save save = new Save();
         readonly HashSet<string> lands = new HashSet<string>(), artists = new HashSet<string>(), songs = new HashSet<string>();
@@ -101,7 +101,7 @@ namespace EverythingWorld.Player
                 lastListen = Time.time;
             }
             var kb = Keyboard.current; if (kb == null) return;
-            if (kb[key].wasPressedThisFrame && !Typing()) Toggle();
+            if (kb[key].wasPressedThisFrame && !Typing() && !GameKeys.Off) Toggle();
             else if (open && kb.escapeKey.wasPressedThisFrame) Toggle();
             if (showing == null || Time.time > showUntil) { showing = news.Count > 0 ? news.Dequeue() : null; showUntil = Time.time + 3f; }
         }
@@ -250,7 +250,7 @@ namespace EverythingWorld.Player
                 y += 26f;
             }
             GUI.EndScrollView();
-            GUI.Label(new Rect(left.x + pad, left.yMax - 24f, left.width - 2 * pad, 20f), "P or Esc to close", small);
+            GUI.Label(new Rect(left.x + pad, left.yMax - 24f, left.width - 2 * pad, 20f), "J or Esc to close", small);
             // right page: one land
             var land = book[Mathf.Clamp(selected, 0, book.Count - 1)];
             int ra = 0, rs = 0; foreach (var a in land.artists) { if (artists.Contains(a.name)) ra++; foreach (var s in a.songs) if (songs.Contains(s.id)) rs++; }

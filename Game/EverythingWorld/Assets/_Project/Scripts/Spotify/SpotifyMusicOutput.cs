@@ -86,9 +86,9 @@ namespace EverythingWorld.Spotify
         void Update()
         {
             var keyboard = Keyboard.current;
-            if (keyboard != null && keyboard.lKey.wasPressedThisFrame) Login();
+            if (keyboard != null && keyboard.lKey.wasPressedThisFrame && !EverythingWorld.World.GameKeys.Off) Login();
             // - and = (or the number pad's - and +) turn Spotify down and up, ten percent a press
-            if (keyboard != null)
+            if (keyboard != null && !EverythingWorld.World.GameKeys.Off)
             {
                 if (keyboard.minusKey.wasPressedThisFrame || keyboard.numpadMinusKey.wasPressedThisFrame) ChangeVolume(-10);
                 if (keyboard.equalsKey.wasPressedThisFrame || keyboard.numpadPlusKey.wasPressedThisFrame) ChangeVolume(10);

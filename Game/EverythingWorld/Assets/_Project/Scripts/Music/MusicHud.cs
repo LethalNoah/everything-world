@@ -14,7 +14,7 @@ namespace EverythingWorld.Music
         GUIStyle style;
 
         bool show;
-        void Update() { var kb = UnityEngine.InputSystem.Keyboard.current; if (kb != null && kb.f1Key.wasPressedThisFrame) show = !show; }
+        void Update() { var kb = UnityEngine.InputSystem.Keyboard.current; if (kb != null && kb.f1Key.wasPressedThisFrame && !EverythingWorld.World.GameKeys.Off) show = !show; }
 
         /// The music details (for checking Spotify): F1 shows and hides them.
         void OnGUI()

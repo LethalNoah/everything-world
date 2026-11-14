@@ -24,7 +24,7 @@ namespace EverythingWorld.Player
         void Update()
         {
             var kb = Keyboard.current;
-            if (kb != null && kb[key].wasPressedThisFrame) up = !up;
+            if (kb != null && kb[key].wasPressedThisFrame && !GameKeys.Off) up = !up;
             t = Mathf.MoveTowards(t, up ? 1f : 0f, Time.deltaTime / seconds);
         }
 

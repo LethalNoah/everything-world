@@ -105,13 +105,13 @@ namespace EverythingWorld.World
 
             var keyboard = Keyboard.current;
             // H at any tower: straight back to the hub
-            if (nearTower != null && keyboard != null && keyboard.hKey.wasPressedThisFrame && nearTower.sceneId != 1000)
+            if (nearTower != null && keyboard != null && !GameKeys.Off && keyboard.hKey.wasPressedThisFrame && nearTower.sceneId != 1000)
                 foreach (var ht in world.Towers)
                     if (ht.GetComponent<TowerInfo>().sceneId == 1000)
                     {
                         PlaceAt(ht.position - Vector3.forward * 10f); snapSky = true; transform.rotation = Quaternion.Euler(0, 180, 0); break;
                     }
-            if (nearTower != null && keyboard != null)
+            if (nearTower != null && keyboard != null && !GameKeys.Off)
                 for (var i = 0; i < world.Towers.Count && i < 9; i++)
                     if (keyboard[(Key)((int)Key.Digit1 + i)].wasPressedThisFrame && world.Towers[i].GetComponent<TowerInfo>() != nearTower)
                     {

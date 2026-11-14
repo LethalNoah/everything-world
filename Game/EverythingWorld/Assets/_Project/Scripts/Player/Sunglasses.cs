@@ -42,7 +42,7 @@ namespace EverythingWorld.Player
         void Update()
         {
             var kb = Keyboard.current;
-            if (kb != null && kb[key].wasPressedThisFrame) { on = !on; PlayerPrefs.SetInt("EW_Sunglasses", on ? 1 : 0); }
+            if (kb != null && kb[key].wasPressedThisFrame && !EverythingWorld.World.GameKeys.Off) { on = !on; PlayerPrefs.SetInt("EW_Sunglasses", on ? 1 : 0); }
             t = Mathf.MoveTowards(t, on ? 1f : 0f, Time.deltaTime / seconds);
             volume.weight = Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(.55f, 1f, t));
             EverythingWorld.World.SkyDirector.BloomScale = Mathf.Lerp(1f, .25f, volume.weight);   // polarized lenses cut the glare

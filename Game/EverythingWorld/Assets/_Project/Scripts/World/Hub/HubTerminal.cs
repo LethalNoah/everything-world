@@ -20,6 +20,8 @@ namespace EverythingWorld.World
         static string flyHash;   // the flying code's hash (see Code)
 
         readonly List<string> lines = new List<string>(); bool confirmReset;
+        /// True while someone is typing at a terminal (GameKeys: the shortcut keys are off).
+        public static bool Active { get; private set; }
         string typing = ""; bool active; float caret; int lockedFrames;
         SimplePlayerController player; PlayerInteractor hands;
 
@@ -47,13 +49,13 @@ namespace EverythingWorld.World
             if (player != null) player.enabled = false;
             if (hands != null) hands.enabled = false;
             var kb = Keyboard.current; if (kb != null) kb.onTextInput += OnChar;
-            active = true; lockedFrames = 2; typing = "";
+            active = true; Active = true; lockedFrames = 2; typing = "";
             Print("> (you sit down at the terminal)"); Show();
         }
 
         void End()
         {
-            active = false; var kb = Keyboard.current; if (kb != null) kb.onTextInput -= OnChar;
+            active = false; Active = false; var kb = Keyboard.current; if (kb != null) kb.onTextInput -= OnChar;
             StartCoroutine(GiveBack());
             Show();
         }
