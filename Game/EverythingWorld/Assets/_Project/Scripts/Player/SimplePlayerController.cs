@@ -47,6 +47,7 @@ namespace EverythingWorld.Player
             if (GetComponent<Sunglasses>() == null) gameObject.AddComponent<Sunglasses>();
             if (GetComponent<MapInHand>() == null) gameObject.AddComponent<MapInHand>();
             if (GetComponent<Passport>() == null) gameObject.AddComponent<Passport>();
+            if (GetComponent<PlayerOrb>() == null) gameObject.AddComponent<PlayerOrb>().eye = cameraPivot;   // your body: a floating orb
         }
 
         /// Sits down on the seat surface, eyes about 0.75 m above it, facing out.

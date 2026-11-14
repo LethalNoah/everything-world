@@ -295,6 +295,27 @@ namespace EverythingWorld.World
                 Interact.Toy(tgo, Toy.Kind.Custom, "Use the terminal", new Vector3(1.1f, 1.1f, .5f)).onUse = _ => term.Begin(Object.FindAnyObjectByType<EverythingWorld.Player.PlayerInteractor>());
                 Shot(ctx, "the terminal", f.P(.25f, .95f, 1.75f), f.P(0, 1.25f, .2f));
             }
+            // the colour station: a ring of pedestals, each with a floating orb of one colour; E takes that colour
+            {
+                var cd = Quaternion.Euler(0, 28f, 0) * Vector3.forward; var cc = center + cd * 26.5f; cc.y = groundY;
+                var palette = EverythingWorld.Player.PlayerOrb.Palette; var stoneP = WorldMaterials.Solid(new Color(.6f, .57f, .52f));
+                mk.Prism(stoneDark, cc - Vector3.up * .2f, Vector3.up, 3.6f, .3f, 28);
+                for (var i = 0; i < palette.Length; i++)
+                {
+                    var a = Mathf.Lerp(-80f, 80f, i / (float)(palette.Length - 1)); var d = Quaternion.Euler(0, a, 0) * cd; var pp = cc + d * 2.8f;
+                    mk.Prism(stoneP, pp, Vector3.up, .2f, 1.05f, 10); mk.Prism(bronze, pp + Vector3.up * 1.05f, Vector3.up, .26f, .06f, 12); ArtistBits.PostCollider(ctx.Root, pp, 1.1f, .22f);
+                    var col = palette[i].color; var ob = pp + Vector3.up * 1.45f;
+                    mk.Blob(WorldMaterials.Glow(col, 1.1f), ob, Vector3.one * .17f, rng, 0f);
+                    var go = new GameObject("Colour: " + palette[i].name); go.transform.SetParent(people, false); go.transform.position = ob;
+                    var idx = i; var nm = palette[i].name;
+                    Interact.Toy(go, Toy.Kind.Custom, "Glow " + nm, new Vector3(.5f, .9f, .5f)).onUse = _ => { if (EverythingWorld.Player.PlayerOrb.Local != null) EverythingWorld.Player.PlayerOrb.Local.Choose(idx); PlaceTools.Say(people, ob + Vector3.up * .5f, "You glow " + nm + " now.", 2.5f); };
+                }
+                var sp = cc - cd * .6f; mk.Prism(iron, sp, Vector3.up, .05f, 2.6f, 6); ArtistBits.PostCollider(ctx.Root, sp, 2.6f, .08f);
+                mk.Box(WorldMaterials.Solid(new Color(.06f, .06f, .07f)), sp + Vector3.up * 2.45f + cd * .05f, new Vector3(2.4f, .34f, .04f), Quaternion.LookRotation(cd));
+                ArtistBits.Label(people, "CHOOSE YOUR LIGHT", sp + Vector3.up * 2.45f + cd * .08f, cd, .18f, new Color(1f, .9f, .7f), TextAnchor.MiddleCenter);
+                ArtistBits.PointLight(ctx.Root, cc + Vector3.up * 2.5f + cd * 1.5f, Warm, 7f, .8f);
+                Shot(ctx, "the colour station", cc + cd * 6.5f + Vector3.up * .95f, cc + Vector3.up * 1.2f);
+            }
             // the rocket launcher on the dais
             var rd = Quaternion.Euler(0, 180f, 0) * Vector3.forward; var rp0 = center + rd * (DaisR - 2.2f) + up * 1.5f;
             mk.Box(bronze, rp0 + up * .3f, new Vector3(1f, .6f, 1f), Quaternion.LookRotation(rd)); mk.Prism(iron, rp0 + up * .6f, (up + rd * .2f).normalized, .16f, 1.4f, 10); mk.Prism(WorldMaterials.Glow(new Color(1f, .4f, .3f), 2f), rp0 + up * .6f + (up + rd * .2f).normalized * 1.4f, (up + rd * .2f).normalized, .17f, .05f, 10); PlaceTools.BoxCol(ctx.Root, rp0 + up * .8f, new Vector3(1f, 1.6f, 1f), Quaternion.LookRotation(rd));

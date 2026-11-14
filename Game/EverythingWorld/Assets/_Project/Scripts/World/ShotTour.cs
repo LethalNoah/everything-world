@@ -160,6 +160,14 @@ namespace EverythingWorld.World
                     var standAt = Feet(talker.transform.position + face * 3.2f + Vector3.Cross(Vector3.up, face) * .8f); var look = talker.transform.position + Vector3.up * 1.9f - (standAt + Vector3.up * .7f);
                     talker.Use(null); yield return Shot("someone talking", standAt, Quaternion.LookRotation(new Vector3(look.x, 0, look.z)).eulerAngles.y, -8f, 1f);
                 }
+                // how other players will see you: an orb a few metres ahead, at eye height, beam to the ground
+                {
+                    var friend = new GameObject("Friend (photo)"); friend.SetActive(false);
+                    var fo = friend.AddComponent<EverythingWorld.Player.PlayerOrb>(); fo.isLocal = false; friend.SetActive(true); fo.Choose(7);
+                    var fpos = Feet(feetAt + Vector3.forward * 3.5f + Vector3.right * .6f); friend.transform.position = fpos; fo.Place(fpos + Vector3.up * .7f);
+                    yield return Shot("how others see you", feetAt, 0f, 2f, 1f);
+                    Destroy(friend);
+                }
                 if (shades != null) { var was = shades.On; shades.Wear(true, true); yield return Shot("with sunglasses", feetAt, 0f, 4f, 1f); shades.Wear(was, true); }
                 // in front of every artist area, looking at it
                 var kit0 = LandKit.For(isl.name);
