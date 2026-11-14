@@ -123,7 +123,7 @@ namespace EverythingWorld.World
 
         static string Code => flyHash ??= Hash(Secret());
         static string resetHash;
-        static string ResetCode => resetHash ??= Hash(Spell(3, 12, 5, 1, 14, 19, 12, 1, 20, 5));
+        static string ResetCode => resetHash ??= Hash(Spell(23, 8, 9, 20, 5, 15, 21, 20));
         static string Spell(params int[] p) { var sb = new StringBuilder(); foreach (var i in p) sb.Append((char)('A' + i - 1)); return sb.ToString(); }
         // the code, kept out of plain sight: built from its letters' positions in the alphabet
         static string Secret() { var p = new[] { 6, 18, 5, 5, 2, 9, 18, 4 }; var sb = new StringBuilder(); foreach (var i in p) sb.Append((char)('A' + i - 1)); return sb.ToString(); }
