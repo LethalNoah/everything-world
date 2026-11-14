@@ -61,6 +61,8 @@ namespace EverythingWorld.World
         public static HashSet<string> AuditOnly;
         /// True while the loading screen is up (every land being built at the start).
         public bool Loading { get; private set; }
+        /// How far the start-up building has got: lands built, lands to build, and the one being built.
+        public (int done, int total, string name) LoadProgress => (loadDone, loadTotal, loadName);
         int loadTotal, loadDone; string loadName; float loadStarted;
         EverythingWorld.Player.SimplePlayerController heldPlayer;
 
@@ -454,7 +456,7 @@ namespace EverythingWorld.World
                 DressLand(li); loadDone++;
                 if (pending.Count == 0)
                 {
-                    Loading = false; if (heldPlayer != null) heldPlayer.enabled = true;
+                    Loading = false; if (heldPlayer != null && !EverythingWorld.Player.MainMenu.Showing) heldPlayer.enabled = true;   // (the title screen lets you go itself)
                     Debug.Log($"Loading screen: built {loadTotal} lands in {Time.realtimeSinceStartup - loadStarted:0.0} s");
                 }
                 return;
@@ -494,7 +496,7 @@ namespace EverythingWorld.World
         GUIStyle loadTitle, loadText; Texture2D loadBack, loadBar, loadBarOff;
         void OnGUI()
         {
-            if (!Loading) return;
+            if (!Loading || EverythingWorld.Player.MainMenu.Showing) return;   // the title screen shows the progress itself
             if (loadBack == null)
             {
                 loadBack = new Texture2D(1, 1); loadBack.SetPixel(0, 0, new Color(.05f, .045f, .06f)); loadBack.Apply();

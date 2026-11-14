@@ -48,6 +48,7 @@ namespace EverythingWorld.Player
             if (GetComponent<Sunglasses>() == null) gameObject.AddComponent<Sunglasses>();
             if (GetComponent<MapInHand>() == null) gameObject.AddComponent<MapInHand>();
             if (GetComponent<Passport>() == null) gameObject.AddComponent<Passport>();
+            if (GetComponent<MainMenu>() == null) gameObject.AddComponent<MainMenu>();   // the title screen and pause menu
             if (GetComponent<PlayerOrb>() == null) gameObject.AddComponent<PlayerOrb>().eye = cameraPivot;   // your body: a floating orb
         }
 
@@ -69,7 +70,7 @@ namespace EverythingWorld.Player
             transform.position = feet + Vector3.up * (controller.height / 2f + .05f); controller.enabled = true;
         }
 
-        void Start() => SetCursorLocked(true);
+        void Start() { if (MainMenu.Skip) SetCursorLocked(true); }
 
         void Update()
         {
@@ -77,7 +78,7 @@ namespace EverythingWorld.Player
             var mouse = Mouse.current;
             if (keyboard == null || mouse == null) return;
 
-            if (keyboard.escapeKey.wasPressedThisFrame) SetCursorLocked(false);
+            // (Esc opens the pause menu, MainMenu, which frees the cursor)
             if (mouse.leftButton.wasPressedThisFrame) SetCursorLocked(true);
             if (keyboard.fKey.wasPressedThisFrame && !Seated) { if (FlightUnlocked || Flying) SetFlying(!Flying); else lockedNote = Time.time; }
 

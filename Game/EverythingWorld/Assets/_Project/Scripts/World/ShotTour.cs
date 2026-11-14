@@ -33,7 +33,7 @@ namespace EverythingWorld.World
                 {
                     var go = new GameObject("Shot tour");
                     DontDestroyOnLoad(go);
-                    var tour = go.AddComponent<ShotTour>(); tour.lands = args[i + 1].Split(';'); EverythingWorld.Player.Passport.NoSave = true;
+                    var tour = go.AddComponent<ShotTour>(); tour.lands = args[i + 1].Split(';'); EverythingWorld.Player.Passport.NoSave = true; EverythingWorld.Player.MainMenu.Skip = true;
                     // quick mode ("-ewQuick", and "-ewOnly a;b" to name the photos): only these lands are built, no audit, no song moments
                     for (var k = 0; k < args.Length; k++)
                     {

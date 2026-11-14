@@ -30,6 +30,8 @@ namespace EverythingWorld.World
         Texture2D bg, line;
 
         public static bool IsOpen => instance != null && instance.artist != null;
+        /// The frame a card was last closed with Esc (so the same Esc doesn't also open the pause menu).
+        public static int ClosedFrame = -1;
         /// What the open card says and where it's from (for the photo tour's check), or null while it's loading.
         public static string Showing => IsOpen && !instance.loading ? instance.body + "  [" + instance.credit + "]" : null;
 
@@ -107,7 +109,7 @@ namespace EverythingWorld.World
         {
             if (artist == null) return;
             var kb = Keyboard.current;
-            if (kb != null && kb.escapeKey.wasPressedThisFrame) Close();
+            if (kb != null && kb.escapeKey.wasPressedThisFrame) { ClosedFrame = Time.frameCount; Close(); }
             // walking away closes it
             var cam = Camera.main;
             if (cam != null && Time.time - openedTime > .5f && (cam.transform.position - openedAt).sqrMagnitude > 9f * 9f) Close();
