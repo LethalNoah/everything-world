@@ -70,7 +70,7 @@ namespace EverythingWorld.World
         {
             Vector2 near = way[0]; var bd = 170f * 170f; foreach (var (p, w) in walkPoints) { if (w >= 400) continue; var d = (p.x - way[0].x) * (p.x - way[0].x) + (p.z - way[0].y) * (p.z - way[0].y); if (d < bd) { bd = d; near = new Vector2(p.x, p.z); } }
             var full = new List<Vector2> { near }; full.AddRange(way);
-            var pts = Smooth(ctx, full, false, 2.5f); PlaceBend(ctx, pts); if (pts.Count < 2) return pts;
+            var pts = Smooth(ctx, full, false, 2.5f); PlaceBend(ctx, pts); FollowGround(ctx, pts); if (pts.Count < 2) return pts;
             Strip(mk, pts, asphalt, 4.4f, .07f);
             var line = WorldMaterials.Solid(new Color(.95f, .85f, .4f)); var up = Vector3.up;
             for (var i = 1; i < pts.Count; i += 2) { var a = pts[i - 1]; var b = pts[i]; mk.Box(line, (a + b) / 2f + up * .085f, new Vector3(.15f, .02f, Vector3.Distance(a, b) * .6f), Quaternion.LookRotation(b - a)); }

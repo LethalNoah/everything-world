@@ -111,8 +111,8 @@ namespace EverythingWorld.World
             life.fireworksAt = best + up * 40f;
             // the merch tent outside the gate
             var mt = best + gateDir * (StadiumR + 12f) + Vector3.Cross(up, gateDir) * 11f; mt = ctx.OnGround(mt.x, mt.z); var mrot = Quaternion.LookRotation(Vector3.Cross(up, gateDir));
-            foreach (var s in new[] { -1f, 1f }) foreach (var b in new[] { -1f, 1f }) { var p = mt + mrot * new Vector3(s * 3f, 0, b * 1.8f); mk.Prism(metal, p, up, .06f, 3f, 6); ArtistBits.PostCollider(ctx.Root, p, 3f, .1f); }
-            mk.Box(WorldMaterials.Solid(new Color(.1f, .1f, .14f)), mt + up * 3.05f, new Vector3(6.4f, .1f, 4f), mrot); mk.Box(dark, mt + up * .5f + mrot * Vector3.forward * 1.2f, new Vector3(6f, 1f, .8f), mrot); solid.Box(dark, mt + up * .5f + mrot * Vector3.forward * 1.2f, new Vector3(6f, 1f, .8f), mrot);
+            foreach (var s in new[] { -1f, 1f }) foreach (var b in new[] { -1f, 1f }) { var p = mt + mrot * new Vector3(s * 3f, 0, b * 1.8f); var pg = ctx.OnGround(p.x, p.z); var ph = mt.y + 3f - pg.y; mk.Prism(metal, pg - up * .2f, up, .06f, ph + .2f, 6); ArtistBits.PostCollider(ctx.Root, pg, ph, .1f); }   // each pole down to its own ground on the slope
+            mk.Box(WorldMaterials.Solid(new Color(.1f, .1f, .14f)), mt + up * 3.05f, new Vector3(6.4f, .1f, 4f), mrot); mk.Box(dark, mt + mrot * Vector3.forward * 1.2f, new Vector3(6f, 2f, .8f), mrot); solid.Box(dark, mt + mrot * Vector3.forward * 1.2f, new Vector3(6f, 2f, .8f), mrot);   // the counter reaches down into the slope
             for (var k = 0; k < 5; k++) { var p = mt + up * 2f - mrot * Vector3.forward * 1.6f + mrot * Vector3.right * ((k - 2f) * 1.2f); mk.Box(GlowM(Paint[k % 4] * 1.2f + new Color(.1f, .1f, .1f), 1f), p, new Vector3(.8f, .9f, .04f), mrot); }
             mk.Box(GlowM(Orange, 2f), mt + up * 3.4f + mrot * Vector3.forward * 2f, new Vector3(3f, .5f, .04f), mrot);
             ArtistBits.Label(ctx.Root, "MERCH", mt + up * 3.4f + mrot * Vector3.forward * 2.03f, mrot * Vector3.forward, .3f, new Color(.15f, .05f, .02f), TextAnchor.MiddleCenter);
@@ -159,9 +159,10 @@ namespace EverythingWorld.World
         {
             var up = Vector3.up; var ctx = z.ctx; var lantern = SongGlow(Reaper, new Color(.45f, .7f, 1f), 1.6f); life.reaperSingle = lantern;
             var grave = WorldMaterials.Solid(new Color(.35f, .35f, .4f));
+            // the graves stand on the grass beside the pad, not across its rim (they cut its edge path in two)
             for (var k = 0; k < 9; k++)
             {
-                var p = z.At(-10f + (k / 3) * 3.4f, 9f + (k % 3) * 2.2f); var r = Quaternion.LookRotation(z.front) * Quaternion.Euler(ctx.Range(-6f, 6f), ctx.Range(-10f, 10f), ctx.Range(-6f, 6f));
+                var p = z.At(-10f + (k / 3) * 3.4f, 14.8f + (k % 3) * 2.2f); var r = Quaternion.LookRotation(z.front) * Quaternion.Euler(ctx.Range(-6f, 6f), ctx.Range(-10f, 10f), ctx.Range(-6f, 6f));
                 z.mk.Box(grave, p + up * .55f, new Vector3(.8f, 1.1f, .2f), r); z.mk.Prism(grave, p + up * 1.1f - r * Vector3.forward * .1f, r * Vector3.forward, .4f, .2f, 10);
                 z.solid.Box(grave, p + up * .6f, new Vector3(.9f, 1.3f, .4f), r);
             }

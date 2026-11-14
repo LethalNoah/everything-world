@@ -166,6 +166,20 @@ namespace EverythingWorld.World
             && Vector2.Distance(new Vector2(x, z), new Vector2(center.x, center.z)) > 24f + pad
             && (!hasStadium || Vector2.Distance(new Vector2(x, z), stadiumC) > StadiumR + 10f + pad);
 
+        /// Long gaps between path points (left where a road bends round a band or a place) filled with points on the
+        /// ground, so the road follows the hill instead of cutting through or over it.
+        static void FollowGround(LandContext ctx, List<Vector3> pts, float step = 2.5f)
+        {
+            for (var i = 1; i < pts.Count; i++)
+            {
+                var a = pts[i - 1]; var b = pts[i]; var d = new Vector2(b.x - a.x, b.z - a.z).magnitude;
+                if (d < .4f) { pts.RemoveAt(i--); continue; }
+                if (d <= step) continue;
+                var k = Mathf.CeilToInt(d / step);
+                for (var j = 1; j < k; j++) { var q = Vector3.Lerp(a, b, j / (float)k); pts.Insert(i++, ctx.OnGround(q.x, q.z)); }
+            }
+        }
+
         void Strip(MeshKit mk, List<Vector3> pts, Material m, float w, float lift)
         {
             var n = pts.Count; var L = new Vector3[n]; var R = new Vector3[n];
