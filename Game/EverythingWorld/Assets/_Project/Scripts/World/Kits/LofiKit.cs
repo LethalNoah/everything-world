@@ -85,6 +85,8 @@ namespace EverythingWorld.World
             var avoid = new List<Vector3>(); for (var d = 0f; d <= streetL; d += 22f) avoid.Add(new Vector3(heart2.x + D2.x * d, 11f, heart2.y + D2.y * d)); avoid.Add(new Vector3(st.x, 24f, st.y));
             ArtistPlacement.Spread(data, index, 56f, heart2, 44f, 42f, avoid, keep, Land, 330f);
             Level(data, index, heart2, 20f, 38f, plazaY); Level(data, index, st, 18f, 36f, studyY);
+            // the bus bay beside the Corner (LofiTown: the night bus), level with the plaza so the bus stands on its wheels
+            Level(data, index, P2(10f, 15.5f), 7f, 16f, plazaY);
             foreach (var a in data.layout.artists)
             {
                 if (a.sceneId != isl.sceneId) continue;
