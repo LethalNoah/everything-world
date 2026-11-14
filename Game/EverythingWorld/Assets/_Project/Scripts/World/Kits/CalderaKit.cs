@@ -499,7 +499,14 @@ namespace EverythingWorld.World
                     var s = ctx.Range(1f, 2.8f); var lo = p.y;
                     for (var k = 0; k < 6; k++) { var a = k * Mathf.PI / 3f; lo = Mathf.Min(lo, ctx.Ground(px + Mathf.Cos(a) * s * .9f, pz + Mathf.Sin(a) * s * .9f)); }
                     p.y = lo; mk.Blob(ctx.Chance(.5f) ? basalt : obsidian, p + Vector3.up * s * .35f, new Vector3(s, s * .7f, s * .9f), ctx.Rng, .3f); BoxCol(ctx.Root, p + Vector3.up * s * .35f, new Vector3(s * 1.9f, s * 1.3f, s * 1.7f), Quaternion.identity); rocks++; }
-                else if (roll < .72f) { mk.Blob(ash, p - Vector3.up * .1f, new Vector3(ctx.Range(2f, 4f), ctx.Range(.25f, .5f), ctx.Range(2f, 4f)), ctx.Rng, .2f); drifts++; }
+                else if (roll < .72f)
+                {
+                    // a low drift of ash, only where the ground is gentle and seated on the lowest ground under it (on the
+                    // slopes they stood out as pale slabs hanging over the hillside, a ledge to walk off)
+                    float sx = ctx.Range(2f, 4f), sz = ctx.Range(2f, 4f), lo = p.y, hi = p.y;
+                    for (var k = 0; k < 8; k++) { var a = k * Mathf.PI / 4f; var h = ctx.Ground(px + Mathf.Cos(a) * sx, pz + Mathf.Sin(a) * sz); lo = Mathf.Min(lo, h); hi = Mathf.Max(hi, h); }
+                    if (hi - lo < .7f) { p.y = lo; mk.Blob(ash, p - Vector3.up * .08f, new Vector3(sx, ctx.Range(.15f, .28f), sz), ctx.Rng, .2f); drifts++; }
+                }
             }
             Debug.Log($"Metalcore Caldera: arena {(hasArena ? "yes" : "no")}, {volcanoes.Count} volcanoes, {spires} spires, {crystals} crystal clusters, {vents} vents, {amps} toppled amps, {pens} pens, {cracks} cracks, {rocks} rocks, {drifts} ash drifts");
         }

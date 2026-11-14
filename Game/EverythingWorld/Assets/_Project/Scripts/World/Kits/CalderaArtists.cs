@@ -113,9 +113,12 @@ namespace EverythingWorld.World
             dir = Vector3.ProjectOnPlane(dir, Vector3.up).normalized; var rot = Quaternion.LookRotation(dir); var side = Vector3.Cross(Vector3.up, dir);
             var n = Mathf.Max(1, Mathf.Min(6, z.a.songList?.Length ?? 1)); const float size = .9f; var w = n * size * 1.25f + .5f;
             var c = ground + Vector3.up * 1.7f;
-            z.mk.Box(obsidian, c - Vector3.up * .5f, new Vector3(w, size + 1.6f, .3f), rot); z.solid.Box(obsidian, c - Vector3.up * .5f, new Vector3(w, size + 1.6f, .4f), rot);
+            // the slab reaches down to the lowest ground under either end (at the edge of a clearing one end hung in the air)
+            var lo = ground.y; foreach (var e in new[] { -.5f, .5f }) { var q = ground + side * e * w; lo = Mathf.Min(lo, z.ctx.Ground(q.x, q.z)); }
+            var sh = size + 1.6f + (ground.y - lo); var sc = c - Vector3.up * (.5f + (ground.y - lo) / 2f);
+            z.mk.Box(obsidian, sc, new Vector3(w, sh, .3f), rot); z.solid.Box(obsidian, sc, new Vector3(w, sh, .4f), rot);
             foreach (var y in new[] { -1.3f, size / 2f + .32f }) z.mk.Box(lavaCyan, c + Vector3.up * y + dir * .16f, new Vector3(w, .06f, .02f), rot);
-            foreach (var s in new[] { -1f, 1f }) z.mk.Box(lavaCyan, c + side * s * (w / 2f) + dir * .16f - Vector3.up * .5f, new Vector3(.06f, size + 1.6f, .02f), rot);
+            foreach (var s in new[] { -1f, 1f }) z.mk.Box(lavaCyan, sc + side * s * (w / 2f) + dir * .16f, new Vector3(.06f, sh, .02f), rot);
             ArtistBits.CoverWall(z.pictures, z.labels, z.ctx, z.a, c + dir * .16f + Vector3.up * .08f, dir, n, size, n, true, Ink);
         }
 
@@ -331,7 +334,8 @@ namespace EverythingWorld.World
             z.mk.Box(wood, cf + up * .35f, new Vector3(.9f, .7f, 2.2f), crot); z.mk.Box(SongGlow(z, "Crawl Back", Cyan, 1.6f), cf + up * .71f, new Vector3(.7f, .02f, 2f), crot);
             z.mk.Box(wood, cf + z.front * 1f + up * .9f, new Vector3(.9f, .08f, 2.2f), crot * Quaternion.Euler(0, 0, 70f)); halos.Add(cf + up * 1f, 1.6f, Cyan, .5f); z.solid.Box(wood, cf + up * .6f, new Vector3(2f, 1.2f, 2.4f), crot);
             // Without Me: an empty swing under a crooked frame
-            var sw = z.At(3f, 9f); foreach (var s in new[] { -1f, 1f }) { z.mk.Box(dark, sw + z.side * s * 1.2f + up * 1.5f, new Vector3(.12f, 3f, .12f), rot); ArtistBits.PostCollider(z.root, sw + z.side * s * 1.2f, 3f, .1f); }
+            // each leg of the frame reaches its own ground (at the clearing's edge one leg stood a metre off the slope)
+            var sw = z.At(3f, 9f); foreach (var s in new[] { -1f, 1f }) { var lg = ctx.OnGround(sw.x + z.side.x * s * 1.2f, sw.z + z.side.z * s * 1.2f); var lh = sw.y + 3f - lg.y; z.mk.Box(dark, lg + up * (lh / 2f - .05f), new Vector3(.12f, lh + .1f, .12f), rot); ArtistBits.PostCollider(z.root, lg, lh, .1f); }
             z.mk.Box(dark, sw + up * 3f, new Vector3(2.6f, .12f, .12f), rot); foreach (var s in new[] { -.3f, .3f }) z.mk.Box(dark, sw + z.side * s + up * 2f, new Vector3(.02f, 2f, .02f), rot);
             z.mk.Box(SongGlow(z, "Without Me", Violet, 2f), sw + up * .95f, new Vector3(.7f, .06f, .3f), rot); halos.Add(sw + up * 1f, 1f, Violet, .5f);
             // Bloodlust: a patch of glowing red roses
