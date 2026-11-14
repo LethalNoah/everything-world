@@ -297,7 +297,7 @@ namespace EverythingWorld.World
                         for (var a = 0; a < 16; a++)
                         {
                             var ang = (a * 22.5f + 11f) * Mathf.Deg2Rad; var q = target + new Vector3(Mathf.Cos(ang), 0f, Mathf.Sin(ang)) * dist;
-                            var k = Cell(q.x, q.z); if (k < 0 || !mine[k] || indoors[k]) continue;
+                            var k = Cell(q.x, q.z); if (k < 0 || !mine[k] || indoors[k] || (!walk[k] && wet[k] > gnd[k] - .1f)) continue;   // not under water
                             if (pass == 0 ? !free[k] : (body[k] >= 0 || (path[k] && blocked[k]))) continue;
                             var stand = walk[k] ? surf[k] : gnd[k];
                             var eye = new Vector3(q.x, stand + 1.6f, q.z); var to = aim - eye;
