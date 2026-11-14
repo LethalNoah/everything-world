@@ -57,6 +57,71 @@ namespace EverythingWorld.Player
 
         void Awake() { Instance = this; walker = GetComponent<SimplePlayerController>(); }
 
+        /// Everyone else in the game: name, orb colour and where their eyes are (for the paper map).
+        public List<(string name, Color color, Vector3 eye)> Others()
+        {
+            var list = new List<(string, Color, Vector3)>();
+            foreach (var r in remotes.Values) if (r.go != null) list.Add((r.label.text, r.orb.Color, r.shown));
+            return list;
+        }
+
+        // ---------------------------------------------------------------- seeing each other
+        GUIStyle tagStyle; static Texture2D dot, rim;
+        /// A marker for each friend you can't plainly see (behind a wall, far off, or behind you): their colour as a
+        /// glowing dot, their name and how far away they are. Off the screen, the marker waits at the edge, on the
+        /// side they're on. Close by and in plain view it goes away (their orb and name are enough).
+        void OnGUI()
+        {
+            if (remotes.Count == 0 || MainMenu.Showing || Event.current.type != EventType.Repaint) return;
+            var cam = Camera.main; if (cam == null) return;
+            tagStyle ??= new GUIStyle(GameFonts.Box(15, TextAnchor.MiddleCenter)) { padding = new RectOffset(8, 8, 3, 3) };
+            if (dot == null) { dot = Dot(false); rim = Dot(true); }
+            var from = cam.transform.position; var keep = GUI.color;
+            foreach (var r in remotes.Values)
+            {
+                if (r.go == null) continue;
+                var p = r.shown; var to = p - from; var dist = to.magnitude;
+                var inView = Vector3.Dot(cam.transform.forward, to) > 0f;
+                var blocked = dist > .6f && Physics.Linecast(from, p - to / dist * .5f, ~0, QueryTriggerInteraction.Ignore);
+                if (inView && !blocked && dist < 25f) continue;   // plainly there
+                var sp = cam.WorldToScreenPoint(p + Vector3.up * .25f);
+                var at = new Vector2(sp.x, Screen.height - sp.y);
+                var centre = new Vector2(Screen.width / 2f, Screen.height / 2f);
+                const float edge = 46f;
+                var onScreen = sp.z > 0f && at.x > edge && at.x < Screen.width - edge && at.y > edge && at.y < Screen.height - edge;
+                if (!onScreen)
+                {
+                    // to the edge, on their side (behind you: the opposite way, so it still points the right way round)
+                    var d = at - centre; if (sp.z < 0f) d = -d; if (d.sqrMagnitude < 1f) d = Vector2.down;
+                    var sx = (Screen.width / 2f - edge) / Mathf.Max(.001f, Mathf.Abs(d.x)); var sy = (Screen.height / 2f - edge) / Mathf.Max(.001f, Mathf.Abs(d.y));
+                    at = centre + d * Mathf.Min(sx, sy);
+                }
+                var c = r.orb.Color; var size = onScreen ? 22f : 18f;
+                var box = new Rect(at.x - size / 2f, at.y - size / 2f, size, size);
+                GUI.color = new Color(c.r, c.g, c.b, .95f); GUI.DrawTexture(box, dot); GUI.color = Color.white; GUI.DrawTexture(box, rim);
+                GUI.color = Color.white;
+                var text = $"{r.label.text}  \u00b7  {(dist < 1000f ? $"{dist:0} m" : $"{dist / 1000f:0.0} km")}";
+                var tw = tagStyle.CalcSize(new GUIContent(text)).x;
+                var lx = Mathf.Clamp(at.x - tw / 2f, 6f, Screen.width - tw - 6f); var ly = at.y + size / 2f + 3f; if (ly > Screen.height - 34f) ly = at.y - size / 2f - 30f;
+                GUI.Label(new Rect(lx, ly, tw, 26f), text, tagStyle);
+            }
+            GUI.color = keep;
+        }
+
+        /// A soft round marker: ring = a thin circle (drawn white, so it shows on any colour), else a filled disc with a glow (drawn in the friend's colour).
+        static Texture2D Dot(bool ring)
+        {
+            const int n = 48; var t = new Texture2D(n, n, TextureFormat.RGBA32, false) { name = "Friend marker", filterMode = FilterMode.Bilinear };
+            for (var j = 0; j < n; j++)
+                for (var i = 0; i < n; i++)
+                {
+                    var d = new Vector2(i + .5f - n / 2f, j + .5f - n / 2f).magnitude / (n / 2f);
+                    var a = ring ? Mathf.Clamp01(1f - Mathf.Abs(d - .74f) * 12f) : Mathf.Max(Mathf.Clamp01((.62f - d) * 20f), Mathf.Clamp01(1f - d) * .35f);
+                    t.SetPixel(i, j, new Color(1f, 1f, 1f, a));
+                }
+            t.Apply(); return t;
+        }
+
         // ---------------------------------------------------------------- joining up
         async Task<bool> SignIn()
         {
@@ -241,7 +306,7 @@ namespace EverythingWorld.Player
             {
                 var go = new GameObject("Friend " + id); go.SetActive(false);
                 var orb = go.AddComponent<PlayerOrb>(); orb.isLocal = false; go.SetActive(true);
-                var label = ArtistBits.Plain(ArtistBits.Label(go.transform, "", s.eye + Vector3.up * .55f, Vector3.forward, .13f, new Color(1f, .97f, .9f), TextAnchor.LowerCenter));
+                var label = ArtistBits.Plain(ArtistBits.Label(go.transform, "", s.eye + Vector3.up * .55f, Vector3.forward, .2f, new Color(1f, .97f, .9f), TextAnchor.LowerCenter));   // big enough to read from a way off
                 label.gameObject.AddComponent<Billboard>();
                 r = new Remote { go = go, orb = orb, label = label, shown = s.eye }; remotes[id] = r;
             }

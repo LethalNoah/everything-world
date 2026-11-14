@@ -171,7 +171,11 @@ namespace EverythingWorld.Player
                     if (GUI.Button(new Rect(x - 16f, y, W - 60f, 44f), "Resume", button)) Resume(); y += 50f;
                     if (GUI.Button(new Rect(x - 16f, y, W - 60f, 44f), "Back to the Title", button)) BackToTitle(); y += 50f;
                 }
-                else if (entered) { if (GUI.Button(new Rect(x - 16f, y, W - 60f, 44f), "Resume", button)) Resume(); y += 50f; }
+                else if (entered)
+                {
+                    if (GUI.Button(new Rect(x - 16f, y, W - 60f, 44f), "Resume", button)) Resume(); y += 50f;
+                    if (GUI.Button(new Rect(x - 16f, y, W - 60f, 44f), "Unstuck", button)) { var ex = GetComponent<EverythingWorld.World.IslandExplorer>(); if (ex != null) ex.Unstick(); Resume(); } y += 50f;
+                }
                 else
                 {
                     var unlocked = Tutorial.Done;

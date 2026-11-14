@@ -138,7 +138,7 @@ namespace EverythingWorld.World
         /// Where a player can stand at (or near) a spot: on top of whatever is there (the ground, a deck, a dais, a
         /// floor up to 3 m up, never a roof), with room for their whole body. If that spot is blocked, it looks
         /// outward in rings for the nearest clear one. Returns the body's middle (the CharacterController's centre).
-        public static Vector3 StandingSpot(Vector3 p, Transform ignore = null)
+        public static Vector3 StandingSpot(Vector3 p, Transform ignore = null, bool notHere = false)
         {
             var world = IslandWorldBuilder.Instance;
             Vector3 Feet(Vector3 q)
@@ -158,7 +158,7 @@ namespace EverythingWorld.World
                 return true;
             }
             var f0 = Feet(p);
-            if (Clear(f0)) return f0 + Vector3.up * 1.2f;
+            if (!notHere && Clear(f0)) return f0 + Vector3.up * 1.2f;
             for (var r = 1.5f; r <= 24f; r += 1.5f)
                 for (var k = 0; k < 16; k++)
                 {
@@ -167,6 +167,9 @@ namespace EverythingWorld.World
                 }
             return f0 + Vector3.up * 1.2f;
         }
+
+        /// Unstuck (from the pause menu): moves you to the nearest clear spot a step or more away.
+        public void Unstick() { if (IslandWorldBuilder.Instance != null && IslandWorldBuilder.Instance.Data != null) PlaceAt(StandingSpot(transform.position, transform, notHere: true), keepHeight: true); }
 
         void PlaceAt(Vector3 p, bool keepHeight = false)
         {

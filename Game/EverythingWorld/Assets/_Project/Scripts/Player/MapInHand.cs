@@ -17,6 +17,7 @@ namespace EverythingWorld.Player
         Camera cam; Transform map, pin, ring, arrow; TextMesh where; Material ringMat;
         bool up; float t; float w, h;
         IslandWorldData data; string shownLand;
+        readonly System.Collections.Generic.List<(Transform pin, Material mat, TextMesh name)> friendPins = new System.Collections.Generic.List<(Transform, Material, TextMesh)>();
 
         /// Raises or puts away the map (instant = no animation; for the photo tour).
         public void Hold(bool raise, bool instant = false) { up = raise; if (instant) t = raise ? 1f : 0f; }
@@ -52,6 +53,32 @@ namespace EverythingWorld.Player
             ringMat.SetColor("_BaseColor", new Color(.85f, .1f, .08f, (1f - pulse) * .8f));
             var isl = data.IslandAt(p.x, p.z); var name = isl != null ? isl.name : "At sea";
             if (name != shownLand) { shownLand = name; where.text = "You are in " + name; }
+            FriendPins();
+        }
+
+        /// A round pin for each friend in the game, in their orb's colour, with their name beside it.
+        void FriendPins()
+        {
+            var others = Friends.Instance != null ? Friends.Instance.Others() : null; var n = others != null ? others.Count : 0;
+            while (friendPins.Count < n)
+            {
+                var fm = new MeshKit(); var mat = Unlit(Color.white); var steel = Unlit(new Color(.7f, .7f, .74f));
+                fm.Prism(steel, Vector3.zero, Vector3.back, .0012f, .016f, 6);
+                fm.Blob(mat, Vector3.back * .018f, Vector3.one * .0075f, new System.Random(3), 0f);
+                var t = Piece(fm, "Friend pin", map);
+                var label = ArtistBits.Label(t, "", Vector3.zero, Vector3.back, .011f, new Color(.18f, .12f, .06f), TextAnchor.MiddleLeft);
+                label.transform.localPosition = new Vector3(.01f, .008f, -.019f); label.transform.localRotation = Quaternion.identity;
+                friendPins.Add((t, mat, label));
+            }
+            var lay = data.layout;
+            for (var i = 0; i < friendPins.Count; i++)
+            {
+                var (t, mat, label) = friendPins[i]; t.gameObject.SetActive(i < n); if (i >= n) continue;
+                var (who, colour, eye) = others[i];
+                t.localPosition = new Vector3((Mathf.Clamp01(eye.x / lay.width) - .5f) * w, (Mathf.Clamp01(eye.z / lay.depth) - .5f) * h, 0f);
+                t.localRotation = Quaternion.identity;
+                mat.SetColor("_BaseColor", colour); if (label.text != who) label.text = who;
+            }
         }
 
         static Material Unlit(Color c, bool transparent = false)
