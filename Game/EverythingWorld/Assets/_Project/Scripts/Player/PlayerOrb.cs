@@ -28,6 +28,8 @@ namespace EverythingWorld.Player
 
         public static PlayerOrb Local { get; private set; }
         public Color Color { get; private set; } = new Color(.92f, .94f, 1f);
+        /// Which palette colour (shared with other players as one small number).
+        public int Index { get; private set; }
 
         Transform orb, beam, glowDisc, pattern, pattern2; Material orbMat, coreMat, beamMat, discMat, lineMat, lineMat2; Light lamp; MeshRenderer orbR, coreR; ParticleSystem wisps;
         Vector3 at; float seed;
@@ -105,16 +107,16 @@ namespace EverythingWorld.Player
 
         void OnDestroy() { if (orb != null) Destroy(orb.gameObject); if (beam != null) Destroy(beam.gameObject); if (glowDisc != null) Destroy(glowDisc.gameObject); }
 
-        static Color Load()
+        Color Load()
         {
-            var i = PlayerPrefs.GetInt("EW_OrbColour", 0);
-            return Palette[Mathf.Clamp(i, 0, Palette.Length - 1)].color;
+            Index = Mathf.Clamp(PlayerPrefs.GetInt("EW_OrbColour", 0), 0, Palette.Length - 1);
+            return Palette[Index].color;
         }
 
         /// Takes one of the palette's colours (and remembers it, for your own orb).
         public void Choose(int index)
         {
-            index = Mathf.Clamp(index, 0, Palette.Length - 1);
+            index = Mathf.Clamp(index, 0, Palette.Length - 1); Index = index;
             if (isLocal) PlayerPrefs.SetInt("EW_OrbColour", index);
             SetColor(Palette[index].color);
         }

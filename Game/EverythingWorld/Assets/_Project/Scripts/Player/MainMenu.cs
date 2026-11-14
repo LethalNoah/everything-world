@@ -19,7 +19,8 @@ namespace EverythingWorld.Player
         public static bool Showing => instance != null && instance.open;
         static MainMenu instance;
 
-        enum Page { Main, Settings }
+        enum Page { Main, Settings, Friends }
+        string codeTyped = "";
         bool open = true, entered; Page page = Page.Main; float yaw;
         SimplePlayerController walker; PlayerInteractor hands; Transform hub;
 
@@ -146,11 +147,13 @@ namespace EverythingWorld.Player
                     y += 50f;
                 }
                 GUI.Button(new Rect(x - 16f, y, W - 60f, 44f), "Tutorial   (soon)", buttonOff); y += 50f;
-                GUI.Button(new Rect(x - 16f, y, W - 60f, 44f), "Join Friends   (soon)", buttonOff); y += 50f;
+                var fr = Friends.Instance; var online = fr != null && fr.InSession;
+                if (GUI.Button(new Rect(x - 16f, y, W - 60f, 44f), online ? $"Friends   ({fr.Count} here)" : "Play with Friends", button)) page = Page.Friends; y += 50f;
                 if (GUI.Button(new Rect(x - 16f, y, W - 60f, 44f), "Settings", button)) page = Page.Settings; y += 50f;
                 if (GUI.Button(new Rect(x - 16f, y, W - 60f, 44f), "Quit", button)) Quit(); y += 50f;
             }
-            else Settings(x, y, W);
+            else if (page == Page.Settings) Settings(x, y, W);
+            else FriendsPage(x, y, W);
             // the world building, at the bottom
             if (w != null && !ready)
             {
@@ -161,6 +164,39 @@ namespace EverythingWorld.Player
                 GUI.Label(new Rect(x, by + 36f, W - 70f, 22f), $"{done} of {total} lands", small);
             }
             else if (!entered) GUI.Label(new Rect(x, Screen.height - 50f, W - 70f, 22f), "The world is ready.", small);
+        }
+
+        void FriendsPage(float x, float y, float W)
+        {
+            var fr = Friends.Instance; if (fr == null) { page = Page.Main; return; }
+            GUI.Label(new Rect(x, y, W - 70f, 30f), "PLAY WITH FRIENDS", new GUIStyle(sub) { font = GameFonts.Sign, fontSize = 22, normal = { textColor = new Color(1f, .86f, .58f) } }); y += 40f;
+            var field = new GUIStyle(GUI.skin.textField) { font = GameFonts.Speech, fontSize = 20, padding = new RectOffset(10, 10, 6, 6) };
+            GUI.Label(new Rect(x, y, W - 70f, 22f), "Your name (others see it over your light)", label); y += 26f;
+            var n = GUI.TextField(new Rect(x, y, W - 110f, 36f), PlayerPrefs.GetString("EW_PlayerName", ""), 20, field);
+            if (n != PlayerPrefs.GetString("EW_PlayerName", "")) Friends.PlayerName = n;
+            y += 50f;
+            if (fr.InSession)
+            {
+                GUI.Label(new Rect(x, y, W - 70f, 22f), fr.IsHost ? "Your game's code:" : "You're in the game:", label); y += 26f;
+                GUI.Label(new Rect(x, y, W - 70f, 50f), fr.Code ?? "", new GUIStyle(title) { fontSize = 40 }); y += 54f;
+                if (GUI.Button(new Rect(x - 16f, y, 260f, 36f), "Copy the code", new GUIStyle(button) { fontSize = 20 })) GUIUtility.systemCopyBuffer = fr.Code ?? "";
+                y += 42f;
+                GUI.Label(new Rect(x, y, W - 70f, 22f), $"{fr.Count} {(fr.Count == 1 ? "player" : "players")} here", small); y += 30f;
+                if (GUI.Button(new Rect(x - 16f, y, 260f, 36f), "Leave the game", new GUIStyle(button) { fontSize = 20 })) fr.Leave();
+                y += 44f;
+            }
+            else
+            {
+                if (GUI.Button(new Rect(x - 16f, y, W - 60f, 40f), fr.Busy ? "Please wait\u2026" : "Host a game", fr.Busy ? buttonOff : new GUIStyle(button) { fontSize = 22 }) && !fr.Busy) fr.Host();
+                y += 52f;
+                GUI.Label(new Rect(x, y, W - 70f, 22f), "Or join a friend's game with their code:", label); y += 26f;
+                codeTyped = GUI.TextField(new Rect(x, y, 170f, 36f), codeTyped, 10, field).ToUpperInvariant();
+                if (GUI.Button(new Rect(x + 186f, y - 2f, 120f, 40f), "Join", fr.Busy ? buttonOff : new GUIStyle(button) { fontSize = 22 }) && !fr.Busy) fr.Join(codeTyped);
+                y += 50f;
+            }
+            if (!string.IsNullOrEmpty(fr.Status)) { GUI.Label(new Rect(x, y, W - 70f, 60f), fr.Status, small); y += 60f; }
+            GUI.Label(new Rect(x, y, W - 70f, 40f), "Everyone hears the music where they stand, through their own Spotify.", small); y += 44f;
+            if (GUI.Button(new Rect(x - 16f, y, 200f, 40f), "Back", button)) page = Page.Main;
         }
 
         void Settings(float x, float y, float W)
