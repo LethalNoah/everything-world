@@ -21,7 +21,7 @@ namespace EverythingWorld.Player
 
         enum Page { Main, Settings, Friends }
         string codeTyped = "";
-        bool open = true, entered; Page page = Page.Main; float yaw;
+        bool open = true, entered, testRoom; Page page = Page.Main; float yaw;
         SimplePlayerController walker; PlayerInteractor hands; Transform hub;
 
         void Awake()
@@ -65,14 +65,14 @@ namespace EverythingWorld.Player
         {
             if (Skip) return;
             if (!staged && !entered) Stage();
-            if (open && !entered && walker != null)
+            if (open && !entered && !testRoom && walker != null)
             {
                 // the slow turn under the ring
                 yaw += Time.deltaTime * 2.5f; transform.rotation = Quaternion.Euler(0, yaw, 0);
                 if (walker.cameraPivot != null) walker.cameraPivot.localEulerAngles = new Vector3(-16f, 0, 0);
             }
             var kb = Keyboard.current; if (kb == null || !kb.escapeKey.wasPressedThisFrame) return;
-            if (open) { if (entered) { if (page == Page.Settings) page = Page.Main; else Resume(); } return; }
+            if (open) { if (entered || testRoom) { if (page != Page.Main) page = Page.Main; else Resume(); } return; }
             if (walker != null && !walker.enabled) return;                       // the terminal or the passport has the keys
             if (AboutCard.IsOpen || AboutCard.ClosedFrame == Time.frameCount) return;   // Esc is closing a card
             open = true; page = Page.Main; Hold(true);
@@ -90,6 +90,18 @@ namespace EverythingWorld.Player
             while (w != null && w.Loading) yield return null;
             if (MusicDirector.Instance != null) MusicDirector.Instance.Wake();   // the music starts as you step out
         }
+
+        /// Into the multiplayer test room (no world, no music).
+        void GoTestRoom()
+        {
+            testRoom = true; open = false; page = Page.Main;
+            var p = TestRoom.Enter(); var cc = GetComponent<CharacterController>(); if (cc != null) cc.enabled = false; transform.SetPositionAndRotation(p, Quaternion.identity); if (cc != null) cc.enabled = true;
+            if (walker != null && walker.cameraPivot != null) walker.cameraPivot.localEulerAngles = Vector3.zero;
+            StartCoroutine(GiveBack());
+        }
+
+        /// From the test room back to the title screen.
+        void BackToTitle() { testRoom = false; open = true; page = Page.Main; staged = false; Hold(true); }
 
         void Enter()
         {
@@ -140,7 +152,12 @@ namespace EverythingWorld.Player
             var ready = true;   // the world builds after you press Enter
             if (page == Page.Main)
             {
-                if (entered) { if (GUI.Button(new Rect(x - 16f, y, W - 60f, 44f), "Resume", button)) Resume(); y += 50f; }
+                if (testRoom)
+                {
+                    if (GUI.Button(new Rect(x - 16f, y, W - 60f, 44f), "Resume", button)) Resume(); y += 50f;
+                    if (GUI.Button(new Rect(x - 16f, y, W - 60f, 44f), "Back to the Title", button)) BackToTitle(); y += 50f;
+                }
+                else if (entered) { if (GUI.Button(new Rect(x - 16f, y, W - 60f, 44f), "Resume", button)) Resume(); y += 50f; }
                 else
                 {
                     if (GUI.Button(new Rect(x - 16f, y, W - 60f, 44f), "Enter the World", ready ? button : buttonOff) && ready) Enter();
@@ -149,6 +166,7 @@ namespace EverythingWorld.Player
                 GUI.Button(new Rect(x - 16f, y, W - 60f, 44f), "Tutorial   (soon)", buttonOff); y += 50f;
                 var fr = Friends.Instance; var online = fr != null && fr.InSession;
                 if (GUI.Button(new Rect(x - 16f, y, W - 60f, 44f), online ? $"Friends   ({fr.Count} here)" : "Play with Friends", button)) page = Page.Friends; y += 50f;
+                if (!entered && !testRoom) { if (GUI.Button(new Rect(x - 16f, y, W - 60f, 44f), "Multiplayer Test Room", button)) GoTestRoom(); y += 50f; }
                 if (GUI.Button(new Rect(x - 16f, y, W - 60f, 44f), "Settings", button)) page = Page.Settings; y += 50f;
                 if (GUI.Button(new Rect(x - 16f, y, W - 60f, 44f), "Quit", button)) Quit(); y += 50f;
             }
