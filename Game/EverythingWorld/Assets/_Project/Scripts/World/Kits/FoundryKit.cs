@@ -74,6 +74,93 @@ namespace EverythingWorld.World
                 a.r = Mathf.Max(a.r, Foot(a) + 6f);
                 Level(data, index, new Vector2(a.x, a.z), Foot(a) + 1f, Foot(a) + 9f, Mathf.Max(data.HeightAt(a.x, a.z), waterY + 2.6f));
             }
+            PlanLanes(data, isl);
+            foreach (var l in plan) SmoothLane(data, index, isl, l);
+        }
+
+        // ---------------------------------------------------------------- planning the lanes (here, so the ground under them can be smoothed)
+        class Lane { public string name; public Vector2 from; public float stop; public List<Vector2> pts = new List<Vector2>(); }
+        readonly List<Lane> plan = new List<Lane>();
+
+        /// Where a lane may not run: across another artist's plate, the furnace or the Assembly Floor.
+        bool Crosses(IslandWorldData data, IslandWorldData.Island isl, Vector2 from, IslandWorldData.Artist to)
+        {
+            var t = new Vector2(to.x, to.z); var dir = t - from; var total = dir.magnitude; if (total < 2f) return false; dir /= total;
+            var furnace = P2(streetL + 16f, 0);
+            for (var d = PathW / 2f + 1f; d < total - Foot(to) * .8f; d += 1.5f)
+            {
+                var q = from + dir * d;
+                foreach (var b in data.layout.artists) { if (b.sceneId != isl.sceneId || b == to) continue; if (Vector2.Distance(q, new Vector2(b.x, b.z)) < Foot(b) * .8f) return true; }
+                if (Vector2.Distance(q, furnace) < 7f) return true;
+                var o = q - heart2; float dd = Vector2.Dot(o, D2), ss = Vector2.Dot(o, S2); if (dd > -22f && dd < 9f && Mathf.Abs(ss) < 15f) return true;
+            }
+            return false;
+        }
+
+        /// The lanes, nearest artist first, each from the nearest walk already laid; a lane never runs across another artist's plate.
+        void PlanLanes(IslandWorldData data, IslandWorldData.Island isl)
+        {
+            plan.Clear();
+            var seeds = new List<Vector2> { heart2 };
+            for (var k = -3; k <= 3; k++) { seeds.Add(P2(9f, k * 3.6f)); seeds.Add(P2(-6f - k * 3f, 15.4f)); seeds.Add(P2(-6f - k * 3f, -15.4f)); }
+            for (var d = 9.5f; d <= streetL + 6.01f; d += 2f) seeds.Add(P2(d, -2.5f));
+            for (var k = 0; k < 6; k++) seeds.Add(P2(streetL + 7f, -6f + k * 2.4f));
+            var todo = new List<IslandWorldData.Artist>(); foreach (var a in data.layout.artists) if (a.sceneId == isl.sceneId) todo.Add(a);
+            while (todo.Count > 0)
+            {
+                IslandWorldData.Artist next = null; Vector2 join = default; var best = float.MaxValue;
+                foreach (var pass in new[] { true, false })
+                {
+                    foreach (var a in todo)
+                        foreach (var p in seeds) { var d = Vector2.Distance(p, new Vector2(a.x, a.z)) - Foot(a); if (d < best && (!pass || !Crosses(data, isl, p, a))) { best = d; next = a; join = p; } }
+                    if (next != null) break;
+                }
+                if (next == null) break;
+                todo.Remove(next);
+                var l = new Lane { name = next.name, from = join, stop = Foot(next) * .8f }; plan.Add(l);
+                var to = new Vector2(next.x, next.z); var dir = to - join; var total = dir.magnitude; if (total < 2f) continue; dir /= total; var end = total - l.stop; if (end < PathW) continue;
+                for (var d = PathW / 2f + .1f; ; d += .75f) { var dd = Mathf.Min(d, end); var q = join + dir * dd; if (data.IslandAt(q.x, q.y) != isl) break; l.pts.Add(q); if (dd >= end) break; }
+                seeds.AddRange(l.pts);
+            }
+        }
+
+        /// Smooth the ground along a lane, so it climbs a bank or a hill gently instead of running straight up it.
+        /// The plates, the Assembly Floor, the Line and the furnace keep their own levelled ground.
+        void SmoothLane(IslandWorldData data, int index, IslandWorldData.Island isl, Lane l)
+        {
+            var n = l.pts.Count; if (n < 3) return;
+            var h = new float[n]; for (var i = 0; i < n; i++) h[i] = data.HeightAt(l.pts[i].x, l.pts[i].y);
+            // ends pinned (they meet a plate, the Line or another lane), the climb in between spread out evenly over about 20 m
+            var sm = (float[])h.Clone(); var nx = new float[n];
+            for (var it = 0; it < 400; it++) { nx[0] = sm[0]; nx[n - 1] = sm[n - 1]; for (var i = 1; i < n - 1; i++) nx[i] = (sm[i - 1] + sm[i] * 2f + sm[i + 1]) / 4f; (sm, nx) = (nx, sm); }
+            float minX = float.MaxValue, maxX = float.MinValue, minZ = float.MaxValue, maxZ = float.MinValue; foreach (var p in l.pts) { minX = Mathf.Min(minX, p.x); maxX = Mathf.Max(maxX, p.x); minZ = Mathf.Min(minZ, p.y); maxZ = Mathf.Max(maxZ, p.y); }
+            const float flat = 2.6f, blend = 8f; var furnace = P2(streetL + 16f, 0);
+            for (var r = 0; r < data.Nz; r++)
+            {
+                var z = data.layout.depth - r * data.Step; if (z < minZ - blend || z > maxZ + blend) continue;
+                for (var col = 0; col < data.Nx; col++)
+                {
+                    var x = col * data.Step; if (x < minX - blend || x > maxX + blend) continue;
+                    var i = r * data.Nx + col; if (data.islandIds[i] != index) continue;
+                    var c = new Vector2(x, z);
+                    // nearest point on the lane, and the smoothed height there
+                    var bd = float.MaxValue; var target = 0f;
+                    for (var k = 0; k + 1 < n; k++)
+                    {
+                        var ab = l.pts[k + 1] - l.pts[k]; var t = Mathf.Clamp01(Vector2.Dot(c - l.pts[k], ab) / Mathf.Max(ab.sqrMagnitude, 1e-4f));
+                        var dist = Vector2.Distance(c, l.pts[k] + ab * t); if (dist < bd) { bd = dist; target = Mathf.Lerp(sm[k], sm[k + 1], t); }
+                    }
+                    if (bd >= blend) continue;
+                    var keep = false;
+                    foreach (var b in data.layout.artists) if (b.sceneId == isl.sceneId && Vector2.Distance(c, new Vector2(b.x, b.z)) < Foot(b) + 1f) { keep = true; break; }
+                    var o = c - heart2; float dd = Vector2.Dot(o, D2), ss = Vector2.Dot(o, S2);
+                    if ((dd > -24f && dd < 11f && Mathf.Abs(ss) < 18f) || (dd > 8f && dd < streetL + 22f && Mathf.Abs(ss) < 7f) || Vector2.Distance(c, furnace) < 11f) keep = true;
+                    if (keep) continue;
+                    var orig = data.heights[i]; var want = bd < flat ? target : Mathf.Lerp(target, orig, Ease(0f, 1f, (bd - flat) / (blend - flat)));
+                    if (orig > waterY + .5f) want = Mathf.Max(want, waterY + .8f);
+                    data.heights[i] = want;
+                }
+            }
         }
 
         void Level(IslandWorldData data, int index, Vector2 c, float flat, float blend, float level)
@@ -108,6 +195,7 @@ namespace EverythingWorld.World
             Assembly(ctx, mk, solid);
             TheLine(ctx, mk, solid);
             Paths(ctx, mk, solid);
+            LineBelt(ctx, mk);
             Wilds(ctx, mk, solid);
             mk.Build("The Electro Foundry", ctx.Root, false);
             solid.BuildCollider("The Electro Foundry walls", ctx.Root);
@@ -198,7 +286,7 @@ namespace EverythingWorld.World
         // ---------------------------------------------------------------- the lanes to the artists
         void Paths(LandContext ctx, MeshKit mk, MeshKit solid)
         {
-            var walk = 10; var n = 0;
+            var walk = 10; var n = 0; var lamps = new List<(Vector3 p, bool light)>();
             void Lay(Vector3 join, Vector3 to, float stopShort, string artist)
             {
                 var from = new Vector3(join.x, 0, join.z); to.y = 0;
@@ -206,32 +294,32 @@ namespace EverythingWorld.World
                 if (artist != null) facing[artist] = -dir;
                 var side = Vector3.Cross(Vector3.up, dir); var end = total - stopShort; if (end < PathW) return;
                 var pts = new List<Vector3>();
-                for (var d = PathW / 2f + .1f; ; d += 1.5f)
+                for (var d = PathW / 2f + .1f; ; d += .75f)   // in short pieces, so the lane follows the ground and nothing pokes through it
                 {
                     var dd = Mathf.Min(d, end); var q = from + dir * dd;
                     if (!ctx.IsLand(q.x, q.z, 0f)) break;
                     pts.Add(ctx.OnGround(q.x, q.z)); if (dd >= end) break;
                 }
                 if (pts.Count < 2) return;
+                var steep = 0f; for (var i = 1; i < pts.Count; i++) steep = Mathf.Max(steep, Mathf.Abs(pts[i].y - pts[i - 1].y) / Mathf.Max(.1f, Vector2.Distance(new Vector2(pts[i].x, pts[i].z), new Vector2(pts[i - 1].x, pts[i - 1].z))));
+                if (steep > .4f) Debug.Log($"The Electro Foundry: the lane to {artist} climbs {Mathf.Atan(steep) * Mathf.Rad2Deg:0} degrees at its steepest");
                 Strip(mk, pts, plate, PathW, .1f, ctx); foreach (var e in new[] { -1f, 1f }) { var ed = new List<Vector3>(); foreach (var p in pts) ed.Add(p + side * e * (PathW / 2f - .1f)); Strip(mk, ed, e > 0 ? greenM : blueM, .06f, .12f, ctx); }
                 foreach (var p in pts) Remember(p, walk);
-                for (var i = 6; i < pts.Count; i += 10, n++)
-                {
-                    var s = n % 2 == 0 ? 1f : -1f; var lp = pts[i] + side * s * (PathW / 2f + .8f);
-                    if (InFootprint(ctx, lp.x, lp.z, 1f) || InNoGrass(lp.x, lp.z, 1f)) continue;
-                    Lamp(ctx, mk, ctx.OnGround(lp.x, lp.z), n % 3 == 0);
-                }
+                for (var i = 12; i < pts.Count; i += 20, n++) { var s = n % 2 == 0 ? 1f : -1f; lamps.Add((pts[i] + side * s * (PathW / 2f + .8f), n % 3 == 0)); }
                 walk++;
             }
-            var todo = new List<IslandWorldData.Artist>(ctx.Artists);
-            while (todo.Count > 0)
+            // the lanes planned in ShapeGround (the ground under them is smoothed), nearest artist first, none across another artist's plate
+            foreach (var l in plan)
             {
-                IslandWorldData.Artist next = null; Vector3 join = default; var best = float.MaxValue;
-                foreach (var a in todo)
-                    foreach (var (p, w) in walkPoints) { var d = Vector2.Distance(new Vector2(p.x, p.z), new Vector2(a.x, a.z)) - Foot(a); if (d < best) { best = d; next = a; join = p; } }
-                if (next == null) break;
-                todo.Remove(next);
-                Lay(join, new Vector3(next.x, 0, next.z), Foot(next) * .8f, next.name);
+                IslandWorldData.Artist next = null; foreach (var a in ctx.Artists) if (a.name == l.name) next = a;
+                if (next == null) continue;
+                Lay(new Vector3(l.from.x, 0, l.from.y), new Vector3(next.x, 0, next.z), l.stop, next.name);
+            }
+            // the lamps beside the lanes, once every lane is down, so none stands on another walk
+            foreach (var (lp, light) in lamps)
+            {
+                if (InFootprint(ctx, lp.x, lp.z, 1f) || InNoGrass(lp.x, lp.z, 1f) || NearPath(lp.x, lp.z, PathW / 2f + .5f)) continue;
+                Lamp(ctx, mk, ctx.OnGround(lp.x, lp.z), light);
             }
         }
 

@@ -88,11 +88,9 @@ namespace EverythingWorld.World
         {
             var up = Vector3.up; var pts = new List<Vector3>(); for (var d = 9.5f; d <= streetL + 6.01f; d += 2f) pts.Add(G(ctx, d, -2.5f)); if (pts.Count < 2) return;
             Strip(mk, pts, plate, 3.4f, .1f, ctx); var ed = new List<Vector3>(); foreach (var p in pts) ed.Add(p - S * 1.6f); Strip(mk, ed, hazard, .2f, .12f, ctx); foreach (var p in pts) Remember(p, 1);
-            Conveyor(ctx, mk, G(ctx, 12f, 1.6f), G(ctx, streetL + 6f, 1.6f), (int)(streetL / 6f), greenM);
             // the gantry crane, travelling up and down over the Line
             var gm = new MeshKit(); foreach (var e in new[] { -5f, 5f }) { gm.Box(hazard, new Vector3(e, 4f, 0), new Vector3(.4f, 8f, .4f), Quaternion.identity); gm.Box(steelD, new Vector3(e, .3f, 0), new Vector3(.6f, .6f, 2f), Quaternion.identity); } gm.Box(hazard, new Vector3(0, 8f, 0), new Vector3(10.6f, .6f, .6f), Quaternion.identity); gm.Box(steelD, new Vector3(1.6f, 7.4f, 0), new Vector3(1f, .6f, 1f), Quaternion.identity); gm.Prism(steel, new Vector3(1.6f, 7f, 0), Vector3.down, .02f, 4f, 3); gm.Box(steel, new Vector3(1.6f, 3f, 0), new Vector3(1.2f, .3f, 1.2f), Quaternion.identity); gm.Blob(beaconM, new Vector3(-5f, 8.5f, 0), Vector3.one * .2f, new System.Random(2), 0f);
             var crane = gm.BuildSingle("Gantry crane", ctx.Root, false); life.crane = crane.transform; life.craneA = G(ctx, 16f, -.4f); life.craneB = G(ctx, streetL, -.4f); life.craneRot = Quaternion.LookRotation(D);
-            var n = 0; for (var d = 18f; d <= streetL; d += 12f, n++) Lamp(ctx, mk, G(ctx, d, -5f), n % 2 == 0);
             // the Furnace
             var fz = new PlaceFrame(G(ctx, streetL + 16f, 0), -D); mk.Box(steelD, fz.P(0, 3f, 0), new Vector3(9f, 6f, 7f), fz.r); solid.Box(steelD, fz.P(0, 3f, 0), new Vector3(9f, 6f, 7f), fz.r); mk.Box(furnaceM, fz.P(0, 2f, 3.51f), new Vector3(3.6f, 2.4f, .02f), fz.r); mk.Box(dark, fz.P(0, 3.4f, 3.52f), new Vector3(4f, .3f, .04f), fz.r); for (var k = 0; k < 4; k++) mk.Box(hazard, fz.P(-4.5f + k * 3f, 6.05f, 3.4f), new Vector3(1.4f, .1f, .3f), fz.r); mk.Prism(steelD, fz.P(2.4f, 6f, -1.4f), up, 1.2f, 14f, 12, .8f); life.smoke.Add(fz.P(2.4f, 20.2f, -1.4f)); mk.Box(steel, fz.P(0, .4f, 6f), new Vector3(5f, .8f, 1.6f), fz.r); mk.Box(furnaceM, fz.P(0, .81f, 6f), new Vector3(4.4f, .02f, 1.1f), fz.r); BoxCol(ctx.Root, fz.P(0, .4f, 6f), new Vector3(5f, .8f, 1.6f), fz.r);
             halos.Add(fz.P(0, 2f, 5f), 6f, Furnace, .35f); ArtistBits.PointLight(ctx.Root, fz.P(0, 2f, 7f), Furnace, 22f, 2.4f); life.welds.Add(fz.P(0, 1f, 6f)); for (var k = 0; k < 6; k++) Remember(fz.P(-6f + k * 2.4f, 0, 9f), 1);
@@ -101,6 +99,26 @@ namespace EverythingWorld.World
             Mark(fz.o, 6f);
             Shot(ctx, "along the line", G(ctx, 10f, -3.4f) + up * 2f, G(ctx, streetL + 16f, 0) + up * 3f);
             Shot(ctx, "the furnace", fz.P(5f, 2f, 12f), fz.P(0, 2f, 3f));
+        }
+
+        /// The Line's long conveyor and its lamps, built once the lanes are down: the belt leaves a gap wherever a lane
+        /// crosses it (each length of belt carries its own crates), and no lamp stands on a lane.
+        void LineBelt(LandContext ctx, MeshKit mk)
+        {
+            var a = Wp(12f, 1.6f); var b = Wp(streetL + 6f, 1.6f); var len = Vector3.Distance(a, b);
+            var cuts = new List<float>();
+            foreach (var (p, w) in walkPoints)
+            {
+                if (w < 10) continue;
+                var t = Vector3.Dot(p - a, D); var s = Vector3.Dot(p - a, S);
+                if (t > -2.5f && t < len + 2.5f && Mathf.Abs(s) < PathW / 2f + 1.2f) cuts.Add(t);
+            }
+            cuts.Sort();
+            var from = 0f;
+            void Piece(float t0, float t1) { if (t1 - t0 < 3f) return; Conveyor(ctx, mk, G(ctx, 12f + t0, 1.6f), G(ctx, 12f + t1, 1.6f), Mathf.Max(1, (int)((t1 - t0) / 6f)), greenM); }
+            foreach (var t in cuts) { if (t - 2.4f > from) Piece(from, Mathf.Min(t - 2.4f, len)); from = Mathf.Max(from, t + 2.4f); }
+            Piece(from, len);
+            var n = 0; for (var d = 18f; d <= streetL; d += 12f, n++) { var lp = Wp(d, -5f); if (LaneNear(lp.x, lp.z, PathW / 2f + .6f)) continue; Lamp(ctx, mk, G(ctx, d, -5f), n % 2 == 0); }
         }
     }
 
