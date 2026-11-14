@@ -239,7 +239,10 @@ namespace EverythingWorld.World
         /// Smokestacks, lone robot arms, stacks of steel girders, cable drums, oil drums, pylons of neon tubes, benches under work lamps.
         void Wilds(LandContext ctx, MeshKit mk, MeshKit solid)
         {
-            int stacks = 0, arms = 0, girders = 0, drums = 0, oil = 0, tubes = 0, benches = 0; var rng = new System.Random(2015);
+            int stacks = 0, arms = 0, girders = 0, drums = 0, oil = 0, tubes = 0, benches = 0, signs = 0, floods = 0, pipes = 0; var rng = new System.Random(2015);
+            // the night shift's neon: magenta, cyan, yellow, orange, violet, green and blue (bright and dark, blue and yellow, so they tell apart)
+            Color[] neon = { new Color(1f, .2f, .75f), new Color(.15f, 1f, 1f), new Color(1f, .9f, .15f), new Color(1f, .45f, .1f), new Color(.6f, .3f, 1f), Green, Blue };
+            var neonM = new Material[neon.Length]; for (var k = 0; k < neon.Length; k++) neonM[k] = GlowM(neon[k], 2.2f);
             const float cell = 20f;
             for (var x = ctx.MinX; x < ctx.MaxX; x += cell)
             for (var z = ctx.MinZ; z < ctx.MaxZ; z += cell)
@@ -252,10 +255,42 @@ namespace EverythingWorld.World
                 else if (roll < .34f) { for (var k = 0; k < 4 + (int)(s * 4f); k++) { var gp = p + up * (.15f + (k / 3) * .3f) + f * ((k % 3) - 1f) * .5f; mk.Box(steel, gp, new Vector3(5f, .3f, .3f), Quaternion.LookRotation(side) * Quaternion.Euler(0, 90f, 0)); } BoxCol(ctx.Root, p + up * .5f, new Vector3(5f, 1f, 1.6f), Quaternion.LookRotation(f)); Mark(p, 2.6f); girders++; }
                 else if (roll < .44f) { for (var k = 0; k < 2; k++) { var dp = p + side * (k * 1.6f - .8f); mk.Prism(Paint(new Color(.5f, .36f, .2f)), dp + up * .7f - f * .4f, f, .7f, .1f, 14); mk.Prism(Paint(new Color(.5f, .36f, .2f)), dp + up * .7f + f * .3f, f, .7f, .1f, 14); mk.Prism(k == 0 ? Paint(new Color(.1f, .3f, .1f)) : Paint(new Color(.1f, .2f, .4f)), dp + up * .7f - f * .3f, f, .5f, .6f, 14); } BoxCol(ctx.Root, p + up * .7f, new Vector3(3.2f, 1.4f, .9f), rot); drums++; }
                 else if (roll < .54f) { for (var k = 0; k < 3 + (int)(s * 4f); k++) { var op = p + new Vector3((k % 3) - 1f, 0, (k / 3) - .5f) * .7f; var col = (k + (int)(s * 5f)) % 3 == 0 ? hazard : (k % 2 == 0 ? Paint(new Color(.2f, .4f, .7f)) : Paint(new Color(.6f, .14f, .1f))); mk.Prism(col, op, up, .3f, .9f, 12); mk.Prism(steelD, op + up * .9f, up, .3f, .02f, 12); } BoxCol(ctx.Root, p + up * .45f, new Vector3(2.4f, .9f, 1.8f), rot); oil++; }
-                else if (roll < .62f) { var h = 4f + s * 3f; mk.Box(steelD, p + up * h / 2f, new Vector3(.3f, h, .3f), rot); for (var k = 0; k < 3; k++) mk.Box(k % 2 == 0 ? greenM : blueM, p + up * (1f + k * h * .28f) + side * .2f, new Vector3(.08f, h * .22f, .08f), rot); ArtistBits.PostCollider(ctx.Root, p, h, .3f); tubes++; }
+                else if (roll < .62f) { var h = 4f + s * 3f; mk.Box(steelD, p + up * h / 2f, new Vector3(.3f, h, .3f), rot); var tc = (int)(s * 97f) % neon.Length; for (var k = 0; k < 3; k++) mk.Box(k % 2 == 0 ? neonM[tc] : neonM[(tc + 3) % neon.Length], p + up * (1f + k * h * .28f) + side * .2f, new Vector3(.08f, h * .22f, .08f), rot); halos.Add(p + up * h * .5f + side * .4f, 1.2f, neon[tc], .5f); ArtistBits.PostCollider(ctx.Root, p, h, .3f); tubes++; }
                 else if (roll < .69f) { Bench(ctx.Root, mk, p, f); Lamp(ctx, mk, p - f * .8f + side * 1.6f, benches % 2 == 0); Mark(p, 2.2f); benches++; }
+                else if (roll < .79f)
+                {
+                    // a neon sign on two posts: a glowing frame and stripes, facing the nearest walk, lighting the ground
+                    var c1 = (int)(s * 7f) % neon.Length; var c2 = (c1 + 2) % neon.Length; var h = 3.4f + s * 2f; var w = 3f + s * 1.5f;
+                    foreach (var e in new[] { -1f, 1f }) { mk.Prism(steelD, p + side * e * w * .45f, up, .09f, h + 1.2f, 6); ArtistBits.PostCollider(ctx.Root, p + side * e * w * .45f, h + 1.2f, .12f); }
+                    var sc = p + up * (h + .4f); mk.Box(dark, sc, new Vector3(w, 1.6f, .2f), rot);
+                    foreach (var e in new[] { -1f, 1f }) { mk.Box(neonM[c1], sc + up * e * .72f + f * .12f, new Vector3(w - .1f, .07f, .04f), rot); mk.Box(neonM[c1], sc + side * e * (w / 2f - .05f) + f * .12f, new Vector3(.07f, 1.5f, .04f), rot); }
+                    for (var k = 0; k < 3; k++) mk.Box(neonM[k == 1 ? c2 : c1], sc + side * ((k - 1f) * w * .26f) + f * .12f + up * ((k % 2) * .2f - .1f), new Vector3(w * .18f, .12f, .04f), rot * Quaternion.Euler(0, 0, (k - 1f) * 12f));
+                    halos.Add(sc + f * .8f, 2.6f, neon[c1], .45f); if (signs % 2 == 0) ArtistBits.PointLight(ctx.Root, sc + f * 2f - up * 1.2f, neon[c1], 12f, 1.8f);
+                    Mark(p, 2.6f); signs++;
+                }
+                else if (roll < .85f && floods < 16)
+                {
+                    // a floodlight mast: a lattice tower with four coloured lamps throwing pools of light
+                    if (!Open(ctx, px, pz, 4f)) continue; var h = 9f + s * 4f;
+                    foreach (var a in new[] { 45f, 135f, 225f, 315f }) { var lp = p + Quaternion.Euler(0, a, 0) * f * .5f; mk.Prism(steelD, lp, (up - (lp - p) * .03f).normalized, .07f, h, 5); }
+                    for (var k = 1; k < 6; k++) mk.Prism(steel, p + up * (k * h / 6f), up, .55f, .06f, 4, 1f, 45f);
+                    mk.Box(steelD, p + up * h, new Vector3(2.4f, .15f, .4f), rot);
+                    for (var k = 0; k < 4; k++) { var c = neon[(k + (int)(s * 9f)) % neon.Length]; var lp = p + up * (h - .25f) + side * ((k - 1.5f) * .55f) + f * .15f; mk.Box(GlowM(c, 2.6f), lp, new Vector3(.4f, .3f, .2f), rot * Quaternion.Euler(35f, 0, 0)); halos.Add(lp + f * .3f, 1f, c, .6f); }
+                    ArtistBits.PointLight(ctx.Root, p + up * (h - 1.5f) + f * 3f, neon[(int)(s * 9f) % neon.Length], 22f, 2.2f); ArtistBits.PointLight(ctx.Root, p + up * (h - 1.5f) - f * 3f, neon[((int)(s * 9f) + 2) % neon.Length], 22f, 2.2f);
+                    ArtistBits.PostCollider(ctx.Root, p, h, .6f); Mark(p, 2.4f); floods++;
+                }
+                else if (roll < .91f)
+                {
+                    // a pipe run on trestles, wrapped in bright bands of neon
+                    var len = 8f + s * 6f; var c = (int)(s * 13f) % neon.Length;
+                    for (var k = 0; k < 3; k++) { var tp = p + side * ((k - 1f) * len * .4f); mk.Box(steelD, tp + up * .7f, new Vector3(.2f, 1.4f, .2f), rot); mk.Box(steelD, tp + up * 1.4f, new Vector3(.2f, .12f, 1.2f), rot); }
+                    foreach (var e in new[] { -.3f, .3f }) mk.Prism(steel, p + up * 1.62f + f * e - side * len / 2f, side, .2f, len, 10);
+                    for (var k = 0; k < 6; k++) foreach (var e in new[] { -.3f, .3f }) mk.Prism(neonM[(c + k) % neon.Length], p + up * 1.62f + f * e - side * (len / 2f - .8f - k * (len - 1.6f) / 5f), side, .215f, .14f, 10);
+                    halos.Add(p + up * 1.7f + f * .8f, 2f, neon[c], .35f);
+                    BoxCol(ctx.Root, p + up * 1f, new Vector3(len, 2f, 1.2f), Quaternion.LookRotation(f)); Mark(p, 2.6f); pipes++;
+                }
             }
-            Debug.Log($"The Electro Foundry: the Line {streetL:0} m, {stacks} smokestacks, {arms} robot arms, {girders} girder stacks, {drums} cable drums, {oil} oil drum groups, {tubes} neon pylons, {benches} benches");
+            Debug.Log($"The Electro Foundry: the Line {streetL:0} m, {stacks} smokestacks, {arms} robot arms, {girders} girder stacks, {drums} cable drums, {oil} oil drum groups, {tubes} neon pylons, {benches} benches, {signs} neon signs, {floods} floodlight masts, {pipes} pipe runs");
         }
 
         Vector3 NearestWalk(Vector3 p) { var best = center; var bd = float.MaxValue; foreach (var (q, _) in walkPoints) { var d = (q - p).sqrMagnitude; if (d < bd) { bd = d; best = q; } } return best; }

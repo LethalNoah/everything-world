@@ -28,10 +28,10 @@ namespace EverythingWorld.Player
             grade = profile.Add<ColorAdjustments>(true);
             // polarized: colours richer and deeper, the brightest light (glare, white skies, bloom) pulled down hardest,
             // the darks left alone; a near-neutral grey lens so colours stay true
-            grade.postExposure.Override(-.6f); grade.colorFilter.Override(new Color(.97f, .98f, 1f)); grade.contrast.Override(18f); grade.saturation.Override(32f);
+            grade.postExposure.Override(-1.05f); grade.colorFilter.Override(new Color(.97f, .98f, 1f)); grade.contrast.Override(18f); grade.saturation.Override(32f);
             smh = profile.Add<ShadowsMidtonesHighlights>(true);
-            smh.highlights.Override(new Vector4(1f, 1f, 1f, -.75f)); smh.midtones.Override(new Vector4(1f, 1f, 1f, -.12f));
-            smh.highlightsStart.Override(.35f); smh.highlightsEnd.Override(1f);
+            smh.highlights.Override(new Vector4(1f, 1f, 1f, -.9f)); smh.midtones.Override(new Vector4(1f, 1f, 1f, -.22f));
+            smh.highlightsStart.Override(.3f); smh.highlightsEnd.Override(1f);
             volume.profile = profile;
         }
 
@@ -45,7 +45,7 @@ namespace EverythingWorld.Player
             if (kb != null && kb[key].wasPressedThisFrame) { on = !on; PlayerPrefs.SetInt("EW_Sunglasses", on ? 1 : 0); }
             t = Mathf.MoveTowards(t, on ? 1f : 0f, Time.deltaTime / seconds);
             volume.weight = Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(.55f, 1f, t));
-            EverythingWorld.World.SkyDirector.BloomScale = Mathf.Lerp(1f, .35f, volume.weight);   // polarized lenses cut the glare
+            EverythingWorld.World.SkyDirector.BloomScale = Mathf.Lerp(1f, .25f, volume.weight);   // polarized lenses cut the glare
         }
 
         void LateUpdate()

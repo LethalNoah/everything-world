@@ -104,6 +104,13 @@ namespace EverythingWorld.World
             }
 
             var keyboard = Keyboard.current;
+            // H at any tower: straight back to the hub
+            if (nearTower != null && keyboard != null && keyboard.hKey.wasPressedThisFrame && nearTower.sceneId != 1000)
+                foreach (var ht in world.Towers)
+                    if (ht.GetComponent<TowerInfo>().sceneId == 1000)
+                    {
+                        PlaceAt(ht.position - Vector3.forward * 10f); snapSky = true; transform.rotation = Quaternion.Euler(0, 180, 0); break;
+                    }
             if (nearTower != null && keyboard != null)
                 for (var i = 0; i < world.Towers.Count && i < 9; i++)
                     if (keyboard[(Key)((int)Key.Digit1 + i)].wasPressedThisFrame && world.Towers[i].GetComponent<TowerInfo>() != nearTower)
@@ -143,13 +150,13 @@ namespace EverythingWorld.World
             if (nearTower == null || IslandWorldBuilder.Instance == null) return;
             style ??= GameFonts.Box(17, TextAnchor.UpperLeft);
             var towers = IslandWorldBuilder.Instance.Towers;
-            var text = $"{nearTower.towerName}: fast travel\n";
+            var text = $"{nearTower.towerName}: fast travel\n" + (nearTower.sceneId != 1000 ? "\nH  Back to the Hub" : "");
             for (var i = 0; i < towers.Count && i < 9; i++)
             {
                 var info = towers[i].GetComponent<TowerInfo>();
                 text += info == nearTower ? $"\n   (you are here) {info.towerName}" : $"\n{i + 1}  {info.towerName}  ({info.realm})";
             }
-            GUI.Box(new Rect(Screen.width - 432, 12, 420, 40 + 21 * towers.Count), text, style);
+            GUI.Box(new Rect(Screen.width - 432, 12, 420, 62 + 21 * towers.Count), text, style);
         }
     }
 }

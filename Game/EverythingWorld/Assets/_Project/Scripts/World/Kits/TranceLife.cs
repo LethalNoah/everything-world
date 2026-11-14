@@ -5,8 +5,8 @@ using UnityEngine;
 namespace EverythingWorld.World
 {
     /// The Trance Steppe at sunrise, on a 138 bpm trance clock (shared, so friends see the same thing):
-    /// - every laser on the plain sweeps up into the dawn, fanning on the build and snapping together on the drop, every
-    ///   32 beats; the giant sun swells slowly and its halo breathes; the Monolith's beam pulses; motes of light rise from
+    /// - every laser on the plain sweeps up into the dawn, drifting slowly and a little wider on the
+    ///   build (calm, not a strobe); the giant sun swells slowly and its halo breathes; the Monolith's beam pulses; motes of light rise from
     ///   the grass; hands up at the stage brings every beam together over the sun;
     /// - "Sandstorm": an orange haze, wind and blowing sand. "Children": a dreamy pastel dawn. "Sun & Moon": the light goes
     ///   gold, then cool blue, then gold. "Kernkraft 400": green flashes on every beat. "Omen In The Rain": soft rain.
@@ -88,8 +88,8 @@ namespace EverythingWorld.World
             foreach (var (tr, ph) in sweepers)
             {
                 if (tr == null) continue; var basePos = tr.position;
-                var fan = Quaternion.Euler(-60f + Mathf.Sin(now * (.4f + build * .8f) + ph) * (25f + build * 20f), ph * 57f + now * (10f + build * 30f), 0) * Vector3.forward;
-                var toSun = (target - basePos).normalized; var converge = Mathf.Max(hands, dropped ? (Mathf.Repeat(beatT, 2f) < 1f ? .8f : 0f) : 0f);
+                var fan = Quaternion.Euler(-62f + Mathf.Sin(now * (.18f + build * .12f) + ph) * (14f + build * 8f), ph * 57f + now * (3f + build * 3f), 0) * Vector3.forward;   // slow, wide, unhurried sweeps
+                var toSun = (target - basePos).normalized; var converge = hands;   // they only gather over the sun when someone puts their hands up
                 var dir = Vector3.Slerp(new Vector3(fan.x, Mathf.Abs(fan.y) + .6f, fan.z).normalized, toSun, converge);
                 tr.rotation = Quaternion.FromToRotation(Vector3.up, dir);
             }
@@ -99,8 +99,8 @@ namespace EverythingWorld.World
             foreach (var tw in twisters) if (tw != null) tw.Rotate(0, dt * (90f + sand * 360f), 0, Space.World);
             for (var i = 0; i < spinners.Count; i++) { var (tr, home) = spinners[i]; if (tr == null) continue; tr.position = home + Vector3.up * Mathf.Sin(t * .7f + i) * .2f; tr.Rotate(dt * 20f, dt * 30f, 0, Space.Self); }
 
-            if (lasers != null) lasers.SetColor("_EmissionColor", (kern > .1f && beat < .12f ? new Color(.4f, 1f, .4f) * 3f : laserBase) * (.6f + build * .6f + (dropped ? kick * .8f : 0f) + hands));
-            if (beams != null) beams.SetColor("_EmissionColor", beamBase * (.5f + build * .5f + (dropped ? kick : 0f) + hands * 1.5f));
+            if (lasers != null) lasers.SetColor("_EmissionColor", (kern > .1f && beat < .12f ? new Color(.4f, 1f, .4f) * 1.6f : laserBase) * (.45f + build * .2f + (dropped ? kick * .12f : 0f) + hands * .6f));
+            if (beams != null) beams.SetColor("_EmissionColor", beamBase * (.35f + build * .2f + (dropped ? kick * .15f : 0f) + hands * .8f));
             if (lamps != null) lamps.SetColor("_EmissionColor", lampBase * (1f + hands * .5f + children * .3f));
             if (sun != null) sun.SetColor("_EmissionColor", sunBase * (1f + Mathf.Sin(now * .1f) * .1f + hands * .5f + sunMoon * Mathf.Max(0f, Mathf.Sin(now * .3f)) * .6f));
 

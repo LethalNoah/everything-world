@@ -90,7 +90,7 @@ namespace EverythingWorld.Player
         void OnGUI()
         {
             string text = null;
-            if (seated != null) text = "E  Stand up";
+            if (seated != null) return;   // standing up with E goes without saying
             else if (held != null) text = "E  Put down   ·   Click  Throw";
             else if (looking != null) text = "E  " + looking.Prompt;
             if (text == null) return;

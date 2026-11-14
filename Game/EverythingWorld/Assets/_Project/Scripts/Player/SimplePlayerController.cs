@@ -32,6 +32,7 @@ namespace EverythingWorld.Player
         /// until the game closes.
         public static bool FlightUnlocked;
         float lockedNote = -9f;
+        float lastGrounded = -9f, jumpWanted = -9f;
 
         /// True while flying (IslandExplorer leaves you be: no wading limit, and it keeps you above the ground).
         public bool Flying { get; private set; }
@@ -102,8 +103,16 @@ namespace EverythingWorld.Player
             var speed = keyboard.leftShiftKey.isPressed ? runSpeed : walkSpeed;
             var move = (transform.right * input.x + transform.forward * input.y) * speed;
 
-            if (controller.isGrounded)
-                verticalVelocity = keyboard.spaceKey.wasPressedThisFrame ? Mathf.Sqrt(2f * jumpHeight * -gravity) : -1f;
+            // walking down a slope you leave the ground for a moment every step, so jumping is allowed for a
+            // moment after you were last on the ground, and a jump pressed just before you land still counts;
+            // on the ground you're held down firmly, so you follow the slope instead of skipping down it
+            if (controller.isGrounded) lastGrounded = Time.time;
+            if (keyboard.spaceKey.wasPressedThisFrame) jumpWanted = Time.time;
+            if (Time.time - jumpWanted < .15f && Time.time - lastGrounded < .2f && verticalVelocity <= 0f)
+            {
+                verticalVelocity = Mathf.Sqrt(2f * jumpHeight * -gravity); jumpWanted = -9f; lastGrounded = -9f;
+            }
+            else if (controller.isGrounded && verticalVelocity <= 0f) verticalVelocity = -6f;
             else
             {
                 if ((controller.collisionFlags & CollisionFlags.Above) != 0 && verticalVelocity > 0f) verticalVelocity = 0f;   // bumped your head

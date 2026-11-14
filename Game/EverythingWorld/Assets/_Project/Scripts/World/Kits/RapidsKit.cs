@@ -178,13 +178,21 @@ namespace EverythingWorld.World
             var up = Vector3.up; mk.Prism(woodD, g - up * .2f, up, .07f, 2.8f, 6); mk.Prism(lampM, g + up * 2.6f, up, .14f, .34f, 6, .8f); mk.Cone(iron, g + up * 2.94f, .2f, .16f, 6); halos.Add(g + up * 2.75f, 1.3f, Gold, .45f); ArtistBits.PostCollider(ctx.Root, g, 2.8f, .08f); if (light) ArtistBits.PointLight(ctx.Root, g + up * 2.6f, Gold, 11f, 1.3f);
         }
 
-        /// A little cascade: water spilling over three stone steps into a pool.
+        /// A rock pool: a ring of mossy boulders round a small glowing pool, a spring bubbling up in it (spray).
         void Cascade(LandContext ctx, MeshKit mk, MeshKit solid, Vector3 g, Vector3 face, float s, System.Random rng)
         {
-            var up = Vector3.up; var rot = Quaternion.LookRotation(face); var side = Vector3.Cross(up, face);
-            for (var k = 0; k < 3; k++) { var sp = g - face * (k * 1.2f * s) + up * (k * .7f * s); mk.Box(stone, sp + up * .3f * s, new Vector3(3f, .6f + k * .7f, 1.4f) * s, rot); solid.Box(stone, sp + up * .3f * s, new Vector3(3f * s, (.6f + k * .7f) * s, 1.4f * s), rot); mk.Box(waterM, sp + up * (.62f + k * .7f) * s, new Vector3(2f, .02f, 1.2f) * s, rot); mk.Box(foamM, sp + up * (.3f + k * .35f) * s + face * .71f * s, new Vector3(1.8f, (.6f + k * .7f) * s * .9f, .02f) * s, rot); }
-            mk.Prism(stoneD, g + face * 1.6f * s - up * .2f, up, 1.8f * s, .4f, 12); mk.Prism(waterM, g + face * 1.6f * s + up * .21f, up, 1.6f * s, .02f, 12); life.sprays.Add(g + face * 1.2f * s + up * .3f);
-            for (var k = 0; k < 6; k++) mk.Blob(stoneD, g + face * 1.6f * s + Quaternion.Euler(0, k * 60f, 0) * face * 1.9f * s + up * .1f, new Vector3(.5f, .3f, .4f) * s, rng, .3f);
+            var up = Vector3.up; var r = 1.3f * s; var side = Vector3.Cross(up, face);
+            mk.Prism(stoneD, g - up * .15f, up, r, .4f, 16); mk.Prism(waterM, g + up * .26f, up, r * .82f, .02f, 16); mk.Prism(foamM, g + up * .285f, up, r * .18f, .01f, 10);
+            for (var k = 0; k < 8; k++)
+            {
+                var a = k * 45f + (float)rng.NextDouble() * 20f; var d = Quaternion.Euler(0, a, 0) * face; var big = k == 0 || k == 3 ? 1.6f : 1f;
+                var bp = g + d * (r + .15f) + up * (.15f * big); var sz = new Vector3(.45f, .35f, .4f) * s * big * (.8f + (float)rng.NextDouble() * .4f);
+                mk.Blob(k % 3 == 0 ? stoneD : stone, bp, sz, rng, .3f);
+                if (k % 2 == 0) mk.Blob(leafM, bp + up * sz.y * .8f, new Vector3(sz.x * .8f, sz.y * .25f, sz.z * .8f), rng, .3f);   // moss
+                if (big > 1f) ArtistBits.PostCollider(ctx.Root, bp, sz.y * 2f, sz.x);
+            }
+            for (var k = 0; k < 5; k++) { var rp = g + Quaternion.Euler(0, 200f + k * 14f, 0) * face * (r + .5f); rp = ctx.OnGround(rp.x, rp.z); mk.Prism(Paint(new Color(.5f, .56f, .3f)), rp, (up + side * ((k % 3) - 1) * .1f).normalized, .02f, .9f + k * .12f, 3); }
+            life.sprays.Add(g + up * .3f);
         }
 
         // ---------------------------------------------------------------- the lanes to the artists
@@ -247,7 +255,7 @@ namespace EverythingWorld.World
                 else if (roll < .68f) { Bench(ctx.Root, mk, p, f); Lamp(ctx, mk, p - f * .8f + side * 1.6f, benches % 2 == 0); Mark(p, 2.2f); benches++; }
                 else if (roll < .74f) { var cols = new[] { new Color(1f, .8f, .3f), new Color(.9f, .5f, .7f), new Color(.6f, .6f, 1f), Color.white }; for (var k = 0; k < 12; k++) { var fp = p + new Vector3((float)rng.NextDouble() - .5f, 0, (float)rng.NextDouble() - .5f) * 4f; fp = ctx.OnGround(fp.x, fp.z); mk.Prism(leafM, fp, up, .015f, .4f, 3); mk.Blob(Paint(cols[k % 4]), fp + up * .42f, Vector3.one * .06f, rng, 0f); } flowers++; }
             }
-            Debug.Log($"The Liquid Rapids: the River Walk {streetL:0} m, {willows} willows, {reeds} reed beds, {cascades} little cascades, {stones} river stones, {canoes} canoes, {benches} benches, {flowers} wildflower patches");
+            Debug.Log($"The Liquid Rapids: the River Walk {streetL:0} m, {willows} willows, {reeds} reed beds, {cascades} rock pools, {stones} river stones, {canoes} canoes, {benches} benches, {flowers} wildflower patches");
         }
 
         Vector3 NearestWalk(Vector3 p) { var best = center; var bd = float.MaxValue; foreach (var (q, _) in walkPoints) { var d = (q - p).sqrMagnitude; if (d < bd) { bd = d; best = q; } } return best; }
