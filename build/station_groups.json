@@ -1,0 +1,4 @@
+{
+ "_about": "Artists whose songs share one radio station: name of the station -> the artists. Standing in any of their areas plays the station, which has all their songs. For songs from one game or film that Spotify credits to different artists. Used by islandmap.py and export_unity.py (run both after a change).",
+ "Halo Radio": ["Halo", "Martin O'Donnell"]
+}

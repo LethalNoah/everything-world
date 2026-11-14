@@ -59,7 +59,7 @@ def write_plan(scenes, realms):
     PLAN.write_text("\n".join(out), encoding="utf-8", newline="\n")
 
 
-from stations import HUB_ID, artist_station, ARTIST_MIN_SONGS
+from stations import HUB_ID, artist_station, ARTIST_MIN_SONGS, GROUPS
 
 
 def load_feel():
@@ -161,6 +161,18 @@ def main():
                        "x": 0, "y": 0, "r": 0, "energy": 0, "acousticness": 0, "valence": 0, "danceability": 0, "tempo": 0,
                        "neighbours": [], **{f: [] if f == "palette" else "" for f in BRIEF_FIELDS},
                        "mood": "Artist radio.", "tracks": ts})
+    # Shared stations: one station for several artists (station_groups.json), with all their songs.
+    for name, members in sorted(GROUPS.items()):
+        ts = sorted((t for m in members for t in by_artist.get(m, [])), key=lambda t: (t["artist"].lower(), t["name"].lower(), t["id"]))
+        if not ts:
+            continue
+        sid = artist_station(name)
+        assert sid not in ids, f"station id clash: {name} and {ids[sid]}"
+        ids[sid] = name
+        scenes.append({"id": sid, "name": name, "realm": -1, "realmName": "", "tags": [],
+                       "x": 0, "y": 0, "r": 0, "energy": 0, "acousticness": 0, "valence": 0, "danceability": 0, "tempo": 0,
+                       "neighbours": [], **{f: [] if f == "palette" else "" for f in BRIEF_FIELDS},
+                       "mood": "Shared radio.", "tracks": ts})
 
     DST.parent.mkdir(parents=True, exist_ok=True)
     DST.write_text(json.dumps({"scenes": scenes}, ensure_ascii=False, indent=1) + "\n", encoding="utf-8", newline="\n")

@@ -22,7 +22,7 @@ from scipy.sparse.csgraph import minimum_spanning_tree
 from PIL import Image
 import contourpy
 import overrides   # hand corrections in overrides.json
-from stations import artist_station, ARTIST_MIN_SONGS
+from stations import artist_station, station_for, ARTIST_MIN_SONGS
 
 sys.stdout.reconfigure(encoding='utf-8')
 Image.MAX_IMAGE_PIXELS = None
@@ -922,7 +922,7 @@ artists_u = []
 for a, p in sorted(plots.items()):
     ss = songs_by_artist[a]; gc = collections.Counter(g for s in ss for g in s['g'])
     artists_u.append(dict(name=a, sceneId=p['scene'], x=p['x'], z=p['z'], r=p['r'], songs=len(ss), tier=tier(len(ss)),
-        station=len(ss) >= ARTIST_MIN_SONGS, stationId=artist_station(a) if len(ss) >= ARTIST_MIN_SONGS else 0,
+        station=len(ss) >= ARTIST_MIN_SONGS, stationId=station_for(a, len(ss)),
         genres=', '.join(g for g, _ in gc.most_common(3)), years=years(ss),
         addedBy=' and '.join(n for n, _ in adders[a].most_common()),
         songList=[dict(title=s_['t'], cover=aid.get(s_['iid'], -1)) for s_ in sorted(ss, key=lambda s_: -s_['pop'])]))
