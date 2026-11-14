@@ -272,22 +272,30 @@ namespace EverythingWorld.World
                 else if (roll < .5f) { StairHut(ctx, mk, solid, p, rot, huts); huts++; }
                 else if (roll < .62f) { Garden(ctx, mk, p, rot, rng); gardens++; }
                 else if (roll < .67f) { if (boards < 9) { Billboard(ctx, mk, p, FaceTo(p, NearestWalk(p)), boards); boards++; } }
-                else if (roll < .69f) { if (pads < 2) { mk.Prism(concrete, p + Vector3.up * .05f, Vector3.up, 7f, .06f, 24); mk.Prism(neonM[2], p + Vector3.up * .11f, Vector3.up, 6.6f, .01f, 24); mk.Prism(concrete, p + Vector3.up * .115f, Vector3.up, 6.2f, .01f, 24); foreach (var e in new[] { -1.2f, 1.2f }) mk.Box(white, p + Vector3.up * .13f + Vector3.right * e, new Vector3(.5f, .01f, 4f)); mk.Box(white, p + Vector3.up * .13f, new Vector3(2.4f, .01f, .5f)); noGrass.Add(new Vector3(p.x, 8f, p.z)); pads++; } }
+                else if (roll < .69f) { if (pads < 2) { var (plo, phi) = Under(ctx, p, 7f); p.y = phi; if (phi - plo > .05f) mk.Prism(concrete, new Vector3(p.x, plo - .2f, p.z), Vector3.up, 7f, phi - plo + .25f, 24); mk.Prism(concrete, p + Vector3.up * .05f, Vector3.up, 7f, .06f, 24); mk.Prism(neonM[2], p + Vector3.up * .11f, Vector3.up, 6.6f, .01f, 24); mk.Prism(concrete, p + Vector3.up * .115f, Vector3.up, 6.2f, .01f, 24); foreach (var e in new[] { -1.2f, 1.2f }) mk.Box(white, p + Vector3.up * .13f + Vector3.right * e, new Vector3(.5f, .01f, 4f)); mk.Box(white, p + Vector3.up * .13f, new Vector3(2.4f, .01f, .5f)); noGrass.Add(new Vector3(p.x, 8f, p.z)); pads++; } }
             }
             Debug.Log($"The Velvet Rooftops: {tanks} water towers, {lights} skylights, {units} air-conditioner banks, {masts} masts, {huts} stair huts, {gardens} roof gardens, {boards} billboards, {pads} helipads");
+        }
+
+        /// The lowest and highest ground under a round footprint, so a roof thing can reach down to the ground on a slope.
+        static (float lo, float hi) Under(LandContext ctx, Vector3 g, float r)
+        {
+            float lo = ctx.Ground(g.x, g.z), hi = lo;
+            for (var ring = 1; ring <= 2; ring++) for (var k = 0; k < 8; k++) { var a = k * Mathf.PI / 4f; var h = ctx.Ground(g.x + Mathf.Cos(a) * r * ring / 2f, g.z + Mathf.Sin(a) * r * ring / 2f); lo = Mathf.Min(lo, h); hi = Mathf.Max(hi, h); }
+            return (lo, hi);
         }
 
         Vector3 NearestWalk(Vector3 p) { var best = center; var bd = float.MaxValue; foreach (var (q, _) in walkPoints) { var d = (q - p).sqrMagnitude; if (d < bd) { bd = d; best = q; } } return best; }
 
         void WaterTower(LandContext ctx, MeshKit mk, Vector3 g, float s, int i)
         {
-            var up = Vector3.up; foreach (var (x, zz) in new[] { (-1f, -1f), (1f, -1f), (1f, 1f), (-1f, 1f) }) { mk.Prism(steel, g + new Vector3(x * 1.1f * s, -.3f, zz * 1.1f * s), up, .07f, 3.2f * s, 4); ArtistBits.PostCollider(ctx.Root, g + new Vector3(x * 1.1f * s, 0, zz * 1.1f * s), 3f * s, .1f); }
+            var up = Vector3.up; foreach (var (x, zz) in new[] { (-1f, -1f), (1f, -1f), (1f, 1f), (-1f, 1f) }) { var lg = g + new Vector3(x * 1.1f * s, 0, zz * 1.1f * s); var gy = ctx.Ground(lg.x, lg.z); mk.Prism(steel, new Vector3(lg.x, gy - .3f, lg.z), up, .07f, g.y + 3.2f * s - gy, 4); ArtistBits.PostCollider(ctx.Root, g + new Vector3(x * 1.1f * s, 0, zz * 1.1f * s), 3f * s, .1f); }
             mk.Prism(woodM, g + up * 2.9f * s, up, 1.6f * s, 2.6f * s, 12); mk.Cone(dark, g + up * 5.5f * s, 1.8f * s, 1.1f * s, 12); for (var k = 0; k < 3; k++) mk.Prism(steel, g + up * (3.3f + k * .9f) * s, up, 1.63f * s, .07f, 12); if (i % 2 == 0) mk.Blob(beaconM, g + up * 6.7f * s, Vector3.one * .12f, new System.Random(i), 0f); noGrass.Add(new Vector3(g.x, 2.4f * s, g.z));
         }
 
         void Skylight(LandContext ctx, MeshKit mk, Vector3 g, Quaternion rot, float w)
         {
-            var up = Vector3.up; mk.Box(concrete, g + up * .2f, new Vector3(w + .3f, .4f, 1.9f), rot); mk.GableRoof(skylightM, g + up * .4f, new Vector3(1.6f, 0, w), .5f, rot * Quaternion.Euler(0, 90f, 0)); BoxCol(ctx.Root, g + up * .4f, new Vector3(w + .3f, .9f, 1.9f), rot); halos.Add(g + up * 1f, w * .5f, new Color(.7f, .85f, 1f), .22f); noGrass.Add(new Vector3(g.x, w * .7f, g.z));
+            var up = Vector3.up; var lo = Under(ctx, g, w * .55f + .2f).lo; var curb = g.y + .4f - (lo - .1f); mk.Box(concrete, new Vector3(g.x, g.y + .4f - curb / 2f, g.z), new Vector3(w + .3f, curb, 1.9f), rot); mk.GableRoof(skylightM, g + up * .4f, new Vector3(1.6f, 0, w), .5f, rot * Quaternion.Euler(0, 90f, 0)); BoxCol(ctx.Root, g + up * .4f, new Vector3(w + .3f, .9f, 1.9f), rot); halos.Add(g + up * 1f, w * .5f, new Color(.7f, .85f, 1f), .22f); noGrass.Add(new Vector3(g.x, w * .7f, g.z));
         }
 
         void Mast(LandContext ctx, MeshKit mk, Vector3 g, float h)
@@ -297,19 +305,19 @@ namespace EverythingWorld.World
 
         void StairHut(LandContext ctx, MeshKit mk, MeshKit solid, Vector3 g, Quaternion rot, int i)
         {
-            var up = Vector3.up; var f = rot * Vector3.forward; mk.Box(concrete, g + up * 1.3f, new Vector3(2.6f, 2.6f, 3.4f), rot); solid.Box(concrete, g + up * 1.3f, new Vector3(2.6f, 2.6f, 3.4f), rot); mk.Box(dark, g + up * 2.66f, new Vector3(2.9f, .14f, 3.7f), rot * Quaternion.Euler(8f, 0, 0)); mk.Box(i % 2 == 0 ? (Material)windowWarm : dark, g + up * 1.1f + f * 1.71f, new Vector3(1f, 2.1f, .04f), rot); mk.Blob(lampM, g + up * 2.4f + f * 1.8f, Vector3.one * .09f, new System.Random(i), 0f); halos.Add(g + up * 2.2f + f * 2.2f, 1.2f, Gold, .4f); noGrass.Add(new Vector3(g.x, 3f, g.z));
+            var up = Vector3.up; var f = rot * Vector3.forward; var hh = g.y + 2.6f - (Under(ctx, g, 2.2f).lo - .2f); var hc = new Vector3(g.x, g.y + 2.6f - hh / 2f, g.z); mk.Box(concrete, hc, new Vector3(2.6f, hh, 3.4f), rot); solid.Box(concrete, hc, new Vector3(2.6f, hh, 3.4f), rot); mk.Box(dark, g + up * 2.66f, new Vector3(2.9f, .14f, 3.7f), rot * Quaternion.Euler(8f, 0, 0)); mk.Box(i % 2 == 0 ? (Material)windowWarm : dark, g + up * 1.1f + f * 1.71f, new Vector3(1f, 2.1f, .04f), rot); mk.Blob(lampM, g + up * 2.4f + f * 1.8f, Vector3.one * .09f, new System.Random(i), 0f); halos.Add(g + up * 2.2f + f * 2.2f, 1.2f, Gold, .4f); noGrass.Add(new Vector3(g.x, 3f, g.z));
         }
 
         void Garden(LandContext ctx, MeshKit mk, Vector3 g, Quaternion rot, System.Random rng)
         {
-            var up = Vector3.up; mk.Box(woodM, g + up * .25f, new Vector3(3.6f, .5f, 1.6f), rot); BoxCol(ctx.Root, g + up * .25f, new Vector3(3.6f, .5f, 1.6f), rot); for (var k = 0; k < 5; k++) { var q = g + rot * new Vector3(-1.4f + k * .7f, .5f, ((float)rng.NextDouble() - .5f) * .7f); mk.Blob(leafM, q + up * .3f, new Vector3(.5f, .44f, .5f), rng, .3f); if (k % 2 == 0) mk.Blob(GlowM(Neons[rng.Next(3)], .6f), q + up * .7f, Vector3.one * .12f, rng, .2f); }
+            var up = Vector3.up; var ph = g.y + .5f - (Under(ctx, g, 2f).lo - .1f); mk.Box(woodM, new Vector3(g.x, g.y + .5f - ph / 2f, g.z), new Vector3(3.6f, ph, 1.6f), rot); BoxCol(ctx.Root, g + up * .25f, new Vector3(3.6f, .5f, 1.6f), rot); for (var k = 0; k < 5; k++) { var q = g + rot * new Vector3(-1.4f + k * .7f, .5f, ((float)rng.NextDouble() - .5f) * .7f); mk.Blob(leafM, q + up * .3f, new Vector3(.5f, .44f, .5f), rng, .3f); if (k % 2 == 0) mk.Blob(GlowM(Neons[rng.Next(3)], .6f), q + up * .7f, Vector3.one * .12f, rng, .2f); }
             if (rng.Next(3) == 0) PotPalm(ctx, mk, g + rot * new Vector3(2.4f, 0, 0), 1.2f, rng); noGrass.Add(new Vector3(g.x, 2.4f, g.z));
         }
 
         void Billboard(LandContext ctx, MeshKit mk, Vector3 g, Vector3 face, int i)
         {
             var up = Vector3.up; string[] words = { "SLOW\nDOWN", "LATE\nCHECK-OUT", "ROOM\nSERVICE", "ONE\nMORE", "STAY", "AFTER\nHOURS", "TOP\nFLOOR", "NO\nSLEEP", "OPEN\nLATE" }; var side = Vector3.Cross(up, face);
-            foreach (var e in new[] { -2f, 2f }) { mk.Prism(steel, g + side * e - up * .3f, up, .1f, 7f, 5); ArtistBits.PostCollider(ctx.Root, g + side * e, 4f, .12f); } NeonSign(rootT, mk, g + up * 5.2f, face, words[i % words.Length], .7f, i, 5.4f, 2.8f, false); noGrass.Add(new Vector3(g.x, 3f, g.z));
+            foreach (var e in new[] { -2f, 2f }) { var bp = g + side * e; var by = ctx.Ground(bp.x, bp.z); mk.Prism(steel, new Vector3(bp.x, by - .3f, bp.z), up, .1f, g.y + 6.7f - by + .3f, 5); ArtistBits.PostCollider(ctx.Root, g + side * e, 4f, .12f); } NeonSign(rootT, mk, g + up * 5.2f, face, words[i % words.Length], .7f, i, 5.4f, 2.8f, false); noGrass.Add(new Vector3(g.x, 3f, g.z));
         }
 
         /// The drowned city: towers standing out of the sea all round the island, their windows lit in bands.
