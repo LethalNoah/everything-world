@@ -296,7 +296,10 @@ namespace EverythingWorld.World
 
         void Strip(MeshKit mk, List<Vector3> pts, Material m, float w, float lift, LandContext ground = null)
         {
-            var n = pts.Count; var L = new Vector3[n]; var R = new Vector3[n];
+            // On the ground it is laid in narrow lanes across its width with every vertex on its own ground (raised only
+            // a little where the middle is higher), so on side slopes it tilts with the hill instead of burying one edge
+            // and lifting the other. Without ground (the river, the falls) it stays two edges at the points' own height.
+            var n = pts.Count; var lanes = ground != null ? Mathf.Max(1, Mathf.CeilToInt(w / 1.2f)) : 1; var V = new Vector3[n, lanes + 1];
             Vector3 Flat(Vector3 v) { v.y = 0; return v.normalized; }
             for (var i = 0; i < n; i++)
             {
@@ -304,17 +307,28 @@ namespace EverythingWorld.World
                 var b = i < n - 1 ? Flat(pts[i + 1] - pts[i]) : Flat(pts[n - 1] - pts[n - 2]);
                 var t = (a + b).normalized; var side = Vector3.Cross(Vector3.up, t);
                 var miter = 1f / Mathf.Max(.6f, Vector3.Dot(side, Vector3.Cross(Vector3.up, b)));
-                L[i] = pts[i] + Vector3.up * lift - side * (w / 2f * miter); R[i] = pts[i] + Vector3.up * lift + side * (w / 2f * miter);
+                var bump = 0f;
                 if (ground != null)
                 {
-                    float gl = ground.Ground(L[i].x, L[i].z), gr = ground.Ground(R[i].x, R[i].z), top = Mathf.Max(pts[i].y, Mathf.Max(gl, gr) - .05f);
-                    // Each edge follows its own ground (raised only a little where the middle is higher), so on a
-                    // side slope the downhill edge no longer floats out into the air.
-                    var bump = Mathf.Clamp(pts[i].y - (gl + gr) / 2f, 0f, .25f);
-                    L[i].y = gl + bump + lift; R[i].y = gr + bump + lift;
+                    var l = pts[i] - side * (w / 2f * miter); var r = pts[i] + side * (w / 2f * miter);
+                    bump = Mathf.Clamp(pts[i].y - (ground.Ground(l.x, l.z) + ground.Ground(r.x, r.z)) / 2f, 0f, .25f);
+                }
+                for (var k = 0; k <= lanes; k++)
+                {
+                    var q = pts[i] + Vector3.up * lift + side * ((k / (float)lanes - .5f) * w * miter);
+                    if (ground != null) q.y = ground.Ground(q.x, q.z) + bump + lift;
+                    V[i, k] = q;
                 }
             }
-            for (var i = 0; i + 1 < n; i++) mk.Quad(m, L[i], R[i], R[i + 1], L[i + 1], (pts[i] + pts[i + 1]) / 2f - Vector3.up);
+            for (var i = 0; i + 1 < n; i++) for (var k = 0; k < lanes; k++) mk.Quad(m, V[i, k], V[i, k + 1], V[i + 1, k + 1], V[i + 1, k], (pts[i] + pts[i + 1]) / 2f - Vector3.up);
+        }
+
+        /// The lowest ground under the given offsets from a point (for footings that reach down to it).
+        static float Lowest(LandContext ctx, Vector3 at, params Vector3[] offsets)
+        {
+            var lo = ctx.Ground(at.x, at.z);
+            foreach (var o in offsets) lo = Mathf.Min(lo, ctx.Ground(at.x + o.x, at.z + o.z));
+            return lo;
         }
 
         /// A road lamp: a creosoted wooden pole with a curved arm and a yellow lamp, the light hazy in the rain.
@@ -391,6 +405,9 @@ namespace EverythingWorld.World
             const float W = 22f, D = 14f, H = 8f, T = .4f, DoorW = 8f, DoorH = 6f;
             Vector3 P(float x, float y, float d) => c + side * x + up * y + front * d;
             mk.Box(oldPlank, P(0, .15f, 0), new Vector3(W, .3f, D), rot); solid.Box(oldPlank, P(0, .15f, 0), new Vector3(W, .3f, D), rot);
+            // a stone footing down to the lowest ground under the walls (the pool beside it is dug lower)
+            var millLow = Lowest(ctx, c, side * W / 2f + front * D / 2f, side * W / 2f - front * D / 2f, -side * W / 2f + front * D / 2f, -side * W / 2f - front * D / 2f, side * W / 2f, -side * W / 2f, front * D / 2f, -front * D / 2f);
+            if (c.y - millLow > .05f) { var fh = c.y - millLow + .3f; mk.Box(concrete, P(0, -fh / 2f + .02f, 0), new Vector3(W + .2f, fh, D + .2f), rot); solid.Box(concrete, P(0, -fh / 2f + .02f, 0), new Vector3(W + .2f, fh, D + .2f), rot); }
             // back, sides (fitted between front and back), front either side of the door, and the header
             void Wall(Vector3 at, Vector3 size) { mk.Box(plank, at, size, rot); solid.Box(plank, at, size, rot); }
             Wall(P(0, H / 2f, -D / 2f + T / 2f), new Vector3(W, H, T));
@@ -736,6 +753,7 @@ namespace EverythingWorld.World
         void LogPile(LandContext ctx, MeshKit mk, MeshKit solid, Vector3 at)
         {
             var up = Vector3.up; var d = Quaternion.Euler(0, ctx.Range(0, 180f), 0) * Vector3.forward; var sd = Vector3.Cross(up, d);
+            at.y = Lowest(ctx, at, d * 3f + sd * 1.7f, d * 3f - sd * 1.7f, -d * 3f + sd * 1.7f, -d * 3f - sd * 1.7f, d * 3f, -d * 3f);   // settled on the lowest ground under it
             for (var row = 0; row < 3; row++) for (var k = 0; k < 4 - row; k++) mk.Prism(bark, at + up * (.45f + row * .8f) + sd * ((k - (3 - row) / 2f) * .85f) - d * 3f, d, .42f, 6f, 8);
             for (var k = 0; k < 2; k++) mk.Blob(moss, at + up * 2.3f + d * (k - .5f) * 2f, new Vector3(.9f, .2f, 1f), ctx.Rng, .4f);
             BoxCol(ctx.Root, at + up * 1.25f, new Vector3(4.2f, 2.6f, 6.2f), Quaternion.LookRotation(d));
@@ -746,6 +764,7 @@ namespace EverythingWorld.World
         {
             var up = Vector3.up; var d = Quaternion.Euler(0, ctx.Range(0, 360f), 0) * Vector3.forward; var rot = Quaternion.LookRotation(d) * Quaternion.Euler(ctx.Range(-4f, 4f), 0, ctx.Range(-5f, 5f));
             Color[] paint = { new Color(.35f, .4f, .42f), new Color(.45f, .3f, .2f), new Color(.3f, .35f, .28f) };
+            var sdc = Vector3.Cross(up, d); at.y = Lowest(ctx, at, d * 2.1f + sdc * .9f, d * 2.1f - sdc * .9f, -d * 2.1f + sdc * .9f, -d * 2.1f - sdc * .9f);   // sunk to its lowest corner
             var body = WorldMaterials.Solid(paint[ctx.Rng.Next(paint.Length)], .3f);
             mk.Box(body, at + up * .55f, new Vector3(1.9f, .7f, 4.4f), rot); mk.Box(body, at + up * 1.15f - d * .3f, new Vector3(1.7f, .6f, 2.2f), rot);
             mk.Box(dark, at + up * 1.15f - d * .3f, new Vector3(1.72f, .4f, 2f), rot);
@@ -768,7 +787,11 @@ namespace EverythingWorld.World
             mk.Box(concrete, at + up * .2f + face * 1.8f - sd * 1.1f, new Vector3(1f, .4f, .8f), rot);
             mk.Box(WorldMaterials.Solid(new Color(.3f, .45f, .4f)), c + up * 1.2f + face * 1.9f, new Vector3(4f, .06f, 1.6f), rot * Quaternion.Euler(-12f, 0, 0));
             foreach (var s in new[] { -1.8f, 1.8f }) mk.Prism(metal, at + face * 2.6f + sd * s, up, .04f, 2.8f, 6);
-            foreach (var s in new[] { -2.5f, 0f, 2.5f }) mk.Box(concrete, at + up * .2f + sd * s, new Vector3(.5f, .5f, 1.8f), rot);
+            // on a slope the blocks reach down to the ground under them and a skirt closes the gap below the tin
+            var low = Lowest(ctx, at, sd * 4.6f + face * 1.3f, sd * 4.6f - face * 1.3f, -sd * 4.6f + face * 1.3f, -sd * 4.6f - face * 1.3f, sd * 2.5f, -sd * 2.5f);
+            var drop = Mathf.Max(0f, at.y - low);
+            foreach (var s in new[] { -2.5f, 0f, 2.5f }) mk.Box(concrete, at + up * (.2f - drop / 2f) + sd * s, new Vector3(.5f, .5f + drop, 1.8f), rot);
+            if (drop > .15f) { var skirt = at + up * ((.55f - drop - .1f) / 2f); var sk = new Vector3(9f, .55f + drop + .1f, 2.5f); mk.Box(rust, skirt, sk, rot); solid.Box(rust, skirt, sk, rot); }
             solid.Box(shell, c - up * .4f, new Vector3(9.8f, 3.4f, 2.8f), rot); solid.Box(shell, at + up * .2f + face * 1.8f - sd * 1.1f, new Vector3(1f, .4f, .8f), rot);
             // a lawn chair
             var ch = at + face * 3.4f + sd * 2.4f; ch.y = ctx.Ground(ch.x, ch.z); var chair = WorldMaterials.Solid(new Color(.3f, .5f, .45f));
@@ -784,9 +807,9 @@ namespace EverythingWorld.World
         void Lookout(LandContext ctx, MeshKit mk, MeshKit solid, Vector3 at)
         {
             var up = Vector3.up; const float H = 13f;
-            foreach (var a in new[] { -1f, 1f }) foreach (var b in new[] { -1f, 1f }) { var p = at + new Vector3(a * 2f, 0, b * 2f); mk.Box(oldPlank, p + up * H / 2f + new Vector3(-a * .3f, 0, -b * .3f), new Vector3(.3f, H, .3f), Quaternion.Euler(b * 2.5f, 0, -a * 2.5f)); ArtistBits.PostCollider(ctx.Root, p, H, .25f); }
+            foreach (var a in new[] { -1f, 1f }) foreach (var b in new[] { -1f, 1f }) { var p = at + new Vector3(a * 2f, 0, b * 2f); var lg = Mathf.Max(0f, at.y - ctx.Ground(p.x, p.z)) + .3f; mk.Box(oldPlank, p + up * (H - lg) / 2f + new Vector3(-a * .3f, 0, -b * .3f), new Vector3(.3f, H + lg, .3f), Quaternion.Euler(b * 2.5f, 0, -a * 2.5f)); ArtistBits.PostCollider(ctx.Root, p - up * (lg - .3f), H + lg - .3f, .25f); }
             for (var k = 1; k < 4; k++) { var y = k * H / 4f; foreach (var r in new[] { 0f, 90f }) mk.Box(oldPlank, at + up * y, new Vector3(4.2f - k * .3f, .15f, .15f), Quaternion.Euler(0, r, 0) * Quaternion.Euler(0, 0, 0)); foreach (var r in new[] { 0f, 90f }) mk.Box(oldPlank, at + up * (y - H / 8f), new Vector3(.12f, H / 3.6f, .12f), Quaternion.Euler(0, r, 45f)); }
-            var cab = at + up * (H + 1.4f); solid.Box(oldPlank, at + up * 2f, new Vector3(4.6f, 4f, 4.6f), Quaternion.identity);
+            var cab = at + up * (H + 1.4f); var lowL = Lowest(ctx, at, new Vector3(2.3f, 0, 2.3f), new Vector3(-2.3f, 0, 2.3f), new Vector3(2.3f, 0, -2.3f), new Vector3(-2.3f, 0, -2.3f)); var dl = at.y - lowL; solid.Box(oldPlank, at + up * (2f - dl / 2f), new Vector3(4.6f, 4f + dl, 4.6f), Quaternion.identity);
             mk.Box(plank, cab - up * 1.3f, new Vector3(4f, .25f, 4f), Quaternion.identity);
             mk.Box(plank, cab - up * .8f, new Vector3(3.2f, .9f, 3.2f), Quaternion.identity);
             mk.Box(GlowM(Lamp, 1.6f), cab + up * .3f, new Vector3(3.1f, 1.2f, 3.1f), Quaternion.identity);
@@ -798,6 +821,8 @@ namespace EverythingWorld.World
         void PhoneBooth(LandContext ctx, MeshKit mk, MeshKit solid, Vector3 at)
         {
             var up = Vector3.up; var face = new Vector3(center.x - at.x, 0, center.z - at.z).normalized; var rot = Quaternion.LookRotation(face);
+            var db = Mathf.Max(0f, at.y - Lowest(ctx, at, new Vector3(.6f, 0, .6f), new Vector3(-.6f, 0, .6f), new Vector3(.6f, 0, -.6f), new Vector3(-.6f, 0, -.6f)));
+            mk.Box(concrete, at + up * (.05f - db / 2f), new Vector3(1.3f, .1f + db, 1.3f), rot);   // its slab, down to the ground on a slope
             mk.Box(metal, at + up * 1.2f, new Vector3(1.1f, 2.4f, 1.1f), rot); mk.Box(GlowM(new Color(.75f, .9f, 1f), 1.4f), at + up * 1.3f + face * .56f, new Vector3(.9f, 1.8f, .02f), rot);
             mk.Box(GlowM(Lamp, 2.4f), at + up * 2.3f, new Vector3(1f, .2f, 1f), rot); halos.Add(at + up * 2.4f, 1.6f, new Color(.8f, .9f, 1f), .5f);
             solid.Box(metal, at + up * 1.2f, new Vector3(1.1f, 2.4f, 1.1f), rot);
@@ -807,9 +832,10 @@ namespace EverythingWorld.World
         {
             var up = Vector3.up; var d = Quaternion.Euler(0, ctx.Range(0, 360f), 0) * Vector3.forward; var rot = Quaternion.LookRotation(d); var sd = Vector3.Cross(up, d);
             mk.Box(oldPlank, at + up * .5f, new Vector3(1.8f, .1f, .5f), Quaternion.LookRotation(d)); mk.Box(oldPlank, at + up * .9f - d * .25f, new Vector3(1.8f, .4f, .08f), rot);
-            foreach (var s in new[] { -.8f, .8f }) mk.Box(dark, at + up * .25f + sd * s, new Vector3(.1f, .5f, .45f), rot);
+            // the legs each reach their own ground (on a slope the downhill one is longer), the lamp stands on its own ground
+            foreach (var s in new[] { -.8f, .8f }) { var lg = at + sd * s; var dl = Mathf.Max(0f, at.y - ctx.Ground(lg.x, lg.z)); mk.Box(dark, lg + up * (.25f - dl / 2f), new Vector3(.1f, .5f + dl, .45f), rot); }
             solid.Box(oldPlank, at + up * .5f, new Vector3(1.9f, 1f, .6f), rot); if (plife != null) Interact.Bench(plife.transform, at + up * .58f - sd * .5f, at + up * .58f + sd * .5f, d);
-            RoadLamp(ctx, mk, at + sd * 1.6f - d * .4f, -sd);
+            var lmp = at + sd * 1.6f - d * .4f; RoadLamp(ctx, mk, ctx.OnGround(lmp.x, lmp.z), -sd);
         }
 
         void GroundCover(LandContext ctx)

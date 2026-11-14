@@ -77,7 +77,10 @@ namespace EverythingWorld.World
             var reach = Foot(a);
             Festoon(z, reach);
             Board(z, z.At(reach * .8f, -reach * .5f - 2.5f), front);
-            ArtistBits.Plaque(z.mk, z.solid, labels, a, z.At(reach * .8f + 1.5f, reach * .5f + 2.5f), front, plank, oldPlank, Ink, 1.6f);
+            // the plaque beside the lane in, stepped back toward the clearing if another road runs past that spot
+            var pq = z.At(reach * .8f + 1.5f, reach * .5f + 2.5f);
+            for (var k = 1; k <= 4 && NearPath(pq.x, pq.z, RoadW / 2f + 1.2f); k++) pq = z.At(reach * .8f + 1.5f - k * 2f, reach * .5f + 2.5f - k * .5f);
+            ArtistBits.Plaque(z.mk, z.solid, labels, a, pq, front, plank, oldPlank, Ink, 1.6f);
             RoadLamp(ctx, z.mk, z.At(reach * .8f, reach * .5f + 5f), -z.side);
             if (z.area.glowLight == null) z.area.glowLight = ArtistBits.PointLight(root, z.c + Vector3.up * 5f + front * 5f, Lamp, HasStation(a) ? 20f : 13f, 1.3f);
             area.glowRenderers = z.glows.ToArray();
@@ -113,7 +116,8 @@ namespace EverythingWorld.World
         {
             dir = Vector3.ProjectOnPlane(dir, Vector3.up).normalized; var rot = Quaternion.LookRotation(dir); var side = Vector3.Cross(Vector3.up, dir);
             var n = Mathf.Max(1, Mathf.Min(5, z.a.songList?.Length ?? 1)); const float size = .9f; var w = n * size * 1.25f + .4f;
-            foreach (var s in new[] { -1f, 1f }) { z.mk.Prism(bark, ground + side * s * (w / 2f - .1f) - Vector3.up * .3f, Vector3.up, .13f, 3.3f, 6); ArtistBits.PostCollider(z.root, ground + side * s * (w / 2f - .1f), 2.8f, .14f); }
+            // each post reaches its own ground (on a slope the downhill one is longer)
+            foreach (var s in new[] { -1f, 1f }) { var pp = ground + side * s * (w / 2f - .1f); var dp = Mathf.Max(0f, pp.y - z.ctx.Ground(pp.x, pp.z)); z.mk.Prism(bark, pp - Vector3.up * (.3f + dp), Vector3.up, .13f, 3.3f + dp, 6); ArtistBits.PostCollider(z.root, pp - Vector3.up * dp, 2.8f + dp, .14f); }
             var c = ground + Vector3.up * 1.8f;
             z.mk.Box(oldPlank, c - Vector3.up * .1f, new Vector3(w, size + .6f, .14f), rot); z.solid.Box(oldPlank, c - Vector3.up * .1f, new Vector3(w, size + .6f, .24f), rot);
             z.mk.GableRoof(moss, c + Vector3.up * (size / 2f + .3f), new Vector3(1f, 0, w + .5f), .35f, Quaternion.LookRotation(side));
