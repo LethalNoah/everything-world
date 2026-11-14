@@ -19,7 +19,7 @@ namespace EverythingWorld.World
 
         static string flyHash;   // the flying code's hash (see Code)
 
-        readonly List<string> lines = new List<string>();
+        readonly List<string> lines = new List<string>(); bool confirmReset;
         string typing = ""; bool active; float caret; int lockedFrames;
         SimplePlayerController player; PlayerInteractor hands;
 
@@ -90,6 +90,15 @@ namespace EverythingWorld.World
         {
             var c = cmd.Trim().ToUpperInvariant();
             if (c.Length == 0) return;
+            // the reset code (not in HELP) asks first
+            if (confirmReset)
+            {
+                confirmReset = false;
+                if (c == "YES") { if (Passport.Instance != null) Passport.Instance.ResetAll(); Print("PASSPORT WIPED. EVERY PAGE IS BLANK."); Print("Go and fill it again."); }
+                else Print("CANCELLED. YOUR STAMPS ARE SAFE.");
+                return;
+            }
+            if (Hash(c) == ResetCode) { confirmReset = true; Print("THIS WILL ERASE EVERY STAMP"); Print("IN YOUR PASSPORT. TYPE YES TO"); Print("CONFIRM, ANYTHING ELSE TO CANCEL."); return; }
             if (Hash(c) == Code) { SimplePlayerController.FlightUnlocked = true; Print("ACCESS GRANTED. FLIGHT UNLOCKED."); Print("Press F to fly (until the game closes)."); return; }
             switch (c)
             {
@@ -113,6 +122,9 @@ namespace EverythingWorld.World
         }
 
         static string Code => flyHash ??= Hash(Secret());
+        static string resetHash;
+        static string ResetCode => resetHash ??= Hash(Spell(3, 12, 5, 1, 14, 19, 12, 1, 20, 5));
+        static string Spell(params int[] p) { var sb = new StringBuilder(); foreach (var i in p) sb.Append((char)('A' + i - 1)); return sb.ToString(); }
         // the code, kept out of plain sight: built from its letters' positions in the alphabet
         static string Secret() { var p = new[] { 6, 18, 5, 5, 2, 9, 18, 4 }; var sb = new StringBuilder(); foreach (var i in p) sb.Append((char)('A' + i - 1)); return sb.ToString(); }
 

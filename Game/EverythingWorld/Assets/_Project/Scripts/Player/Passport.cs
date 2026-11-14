@@ -64,6 +64,13 @@ namespace EverythingWorld.Player
             landDate[land] = System.DateTime.Now.ToString("d MMM yyyy"); Stamp("Passport stamp:  " + land);
         }
 
+        /// Wipes every stamp (the terminal's reset code). The land you're standing in is stamped again next check.
+        public void ResetAll()
+        {
+            lands.Clear(); landDate.Clear(); artists.Clear(); songs.Clear(); news.Clear(); showing = null; lastTrack = null;
+            Write();
+        }
+
         /// Called when an artist's about card is opened.
         public static void ReadArtist(string artist)
         {
