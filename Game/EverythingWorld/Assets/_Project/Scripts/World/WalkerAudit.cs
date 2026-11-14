@@ -88,7 +88,7 @@ namespace EverythingWorld.World
                     {
                         Vector3 a = tf.TransformPoint(verts[tris[t]]), b = tf.TransformPoint(verts[tris[t + 1]]), c = tf.TransformPoint(verts[tris[t + 2]]);
                         var n = Vector3.Cross(b - a, c - a); if (n.sqrMagnitude < 1e-8f) continue; n.Normalize();
-                        if (Mathf.Abs(n.y) > .9f) Flat(a, b, c, glowing);
+                        if (Mathf.Abs(n.y) > .9f) Flat(a, b, c, glowing || n.y < 0f);   // a face looking down (the bottom of a box on the ground) is never walked on
                         else Sloped(a, b, c, n, what, glowing);
                     }
                 }
