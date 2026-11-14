@@ -28,7 +28,7 @@ namespace EverythingWorld.Player
             grade = profile.Add<ColorAdjustments>(true);
             // polarized: colours richer and deeper, the brightest light (glare, white skies, bloom) pulled down hardest,
             // the darks left alone; a near-neutral grey lens so colours stay true
-            grade.postExposure.Override(-2.1f); grade.colorFilter.Override(new Color(.97f, .98f, 1f)); grade.contrast.Override(24f); grade.saturation.Override(32f);
+            grade.postExposure.Override(-1.8f); grade.colorFilter.Override(new Color(.97f, .98f, 1f)); grade.contrast.Override(24f); grade.saturation.Override(32f);
             smh = profile.Add<ShadowsMidtonesHighlights>(true);
             smh.highlights.Override(new Vector4(1f, 1f, 1f, -.9f)); smh.midtones.Override(new Vector4(1f, 1f, 1f, -.22f));
             smh.highlightsStart.Override(.3f); smh.highlightsEnd.Override(1f);
@@ -39,6 +39,8 @@ namespace EverythingWorld.Player
         }
 
         public bool On => on;
+        /// True while the glasses are (even partly) on: the sky keeps post-processing on for them.
+        public static bool Worn;
         /// Puts them on or takes them off (instant = no animation; for the photo tour). Not remembered.
         public void Wear(bool wear, bool instant = false) { on = wear; if (instant) { t = wear ? 1f : 0f; if (volume != null) volume.weight = wear ? 1f : 0f; } }
 
@@ -47,7 +49,7 @@ namespace EverythingWorld.Player
             var kb = Keyboard.current;
             if (kb != null && kb[key].wasPressedThisFrame && !EverythingWorld.World.GameKeys.Off) { on = !on; PlayerPrefs.SetInt("EW_Sunglasses", on ? 1 : 0); }
             t = Mathf.MoveTowards(t, on ? 1f : 0f, Time.deltaTime / seconds);
-            volume.weight = Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(.55f, 1f, t));
+            volume.weight = Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(.55f, 1f, t)); Worn = volume.weight > .001f;
             EverythingWorld.World.SkyDirector.BloomScale = Mathf.Lerp(1f, .12f, volume.weight);   // polarized lenses cut the glare
         }
 
@@ -65,7 +67,7 @@ namespace EverythingWorld.Player
             frame.localPosition = new Vector3(0f, (1f - e) * halfH * 2.6f, d);
             frame.localRotation = Quaternion.Euler((1f - e) * -28f, 0f, 0f);
             // the post-processing has to be on to darken the picture (the sky only switches it on for bloom)
-            if (volume.weight > .001f) { var data = cam.GetComponent<UniversalAdditionalCameraData>(); if (data != null) data.renderPostProcessing = true; }
+            if (volume.weight > .001f) cam.GetUniversalAdditionalCameraData().renderPostProcessing = true;
         }
 
         static float EaseOutBack(float x) { const float c1 = 1.4f, c3 = c1 + 1f; return 1f + c3 * Mathf.Pow(x - 1f, 3f) + c1 * Mathf.Pow(x - 1f, 2f); }

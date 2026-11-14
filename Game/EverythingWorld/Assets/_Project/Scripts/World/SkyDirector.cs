@@ -211,8 +211,9 @@ namespace EverythingWorld.World
                 bloomVolume.profile = profile;
             }
             bloomFx.intensity.Override(bloomNow * 1.4f * BloomScale);
-            var data = cam.GetComponent<UniversalAdditionalCameraData>();
-            if (data != null) data.renderPostProcessing = bloomNow > .01f;
+            // post-processing on for bloom, and while the sunglasses are on (their darkening is post-processing too:
+            // switching it off here, where a place has no bloom, was why they seemed to do nothing)
+            cam.GetUniversalAdditionalCameraData().renderPostProcessing = bloomNow > .01f || EverythingWorld.Player.Sunglasses.Worn;
         }
 
         /// A soft round dot, see-through at the edges.
