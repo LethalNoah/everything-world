@@ -33,7 +33,7 @@ namespace EverythingWorld.World
                 {
                     var go = new GameObject("Shot tour");
                     DontDestroyOnLoad(go);
-                    var tour = go.AddComponent<ShotTour>(); tour.lands = args[i + 1].Split(';');
+                    var tour = go.AddComponent<ShotTour>(); tour.lands = args[i + 1].Split(';'); EverythingWorld.Player.Passport.NoSave = true;
                     // quick mode ("-ewQuick", and "-ewOnly a;b" to name the photos): only these lands are built, no audit, no song moments
                     for (var k = 0; k < args.Length; k++)
                     {
@@ -96,6 +96,8 @@ namespace EverythingWorld.World
                     var s = AboutCard.Showing ?? "(nothing after 12 s)"; Debug.Log("About card, " + nm + ": " + (s.Length > 220 ? s.Substring(0, 220) + "..." : s));
                     AboutCard.Toggle(art, cam.transform.position);
                 }
+                var pp = player.GetComponent<EverythingWorld.Player.Passport>();
+                if (pp != null) { pp.VisitLand("The Liquid Rapids"); Debug.Log("Passport check: " + pp.Summary()); }
                 Quit(0); yield break;
             }
             if (lands.Length == 1 && lands[0] == "bridges") { yield return Bridges(data, player, pivot, cam); Quit(0); yield break; }

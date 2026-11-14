@@ -54,6 +54,7 @@ namespace EverythingWorld.World
 
         void Open(IslandWorldData.Artist a, Vector3 where)
         {
+            EverythingWorld.Player.Passport.ReadArtist(a.name);
             artist = a; openedAt = where; openedTime = Time.time; scroll = Vector2.zero; photo = null; body = null; credit = null;
             var e = EntryFor(a.name); wikiTitle = e != null && !string.IsNullOrEmpty(e.wiki) ? e.wiki : null;
             if (wikiTitle != null) { StopAllCoroutines(); StartCoroutine(FromWikipedia(a, wikiTitle, e)); }
