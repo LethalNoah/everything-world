@@ -110,6 +110,11 @@ namespace EverythingWorld.World
             if (artist == null) return;
             var kb = Keyboard.current;
             if (kb != null && kb.escapeKey.wasPressedThisFrame) { ClosedFrame = Time.frameCount; Close(); }
+            // the mouse wheel scrolls the words (the cursor is locked to the game, so the card reads the wheel itself)
+            var mouse = Mouse.current; var wheel = mouse != null ? mouse.scroll.ReadValue().y : 0f;
+            if (Mathf.Abs(wheel) > .01f) scroll.y = Mathf.Max(0f, scroll.y - Mathf.Sign(wheel) * 48f);
+            if (kb != null && kb.pageDownKey.wasPressedThisFrame) scroll.y += 200f;
+            if (kb != null && kb.pageUpKey.wasPressedThisFrame) scroll.y = Mathf.Max(0f, scroll.y - 200f);
             // walking away closes it
             var cam = Camera.main;
             if (cam != null && Time.time - openedTime > .5f && (cam.transform.position - openedAt).sqrMagnitude > 9f * 9f) Close();
@@ -157,7 +162,7 @@ namespace EverythingWorld.World
             // the name, where they are, the words
             var tx = picRect.xMax + pad; var tw = r.xMax - pad - tx;
             GUI.Label(new Rect(tx, r.y + pad - 4f, tw - 120f, 44f), artist.name, title);
-            GUI.Label(new Rect(r.xMax - pad - 120f, r.y + 14f, 120f, 20f), "E or Esc to close", close);
+            GUI.Label(new Rect(r.xMax - pad - 120f, r.y + 14f, 120f, 20f), "Wheel to scroll  \u00b7  Esc to close", close);
             var land = Land(); var genres = string.IsNullOrEmpty(artist.genres) ? "" : artist.genres;
             GUI.Label(new Rect(tx, r.y + pad + 44f, tw, 22f), (land != null ? land : "") + (land != null && genres.Length > 0 ? "  ·  " : "") + genres, sub);
             var words = loading ? "Looking them up…" : body ?? "";

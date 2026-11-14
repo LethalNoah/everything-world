@@ -155,7 +155,7 @@ namespace EverythingWorld.World
         void Print(string s)
         {
             foreach (var part in SpeechBubble.Wrap(s, 30).Split('\n')) lines.Add(part);
-            while (lines.Count > 11) lines.RemoveAt(0);
+            while (lines.Count > 8) lines.RemoveAt(0);   // (with the line you type, nine: all on the screen)
         }
 
         void Show()
