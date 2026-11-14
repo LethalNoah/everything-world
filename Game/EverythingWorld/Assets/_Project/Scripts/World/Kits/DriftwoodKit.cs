@@ -139,7 +139,7 @@ namespace EverythingWorld.World
             MakeMaterials();
             halos = new GlowHalos();
             pathCells.Clear(); facing.Clear(); noGrass.Clear(); walks.Clear(); railKind.Clear(); walkPoints.Clear();
-            center = ctx.Plaza;
+            center = ctx.Plaza; walkCtx = ctx;
             life = new GameObject("Driftwood life").AddComponent<DriftwoodLife>();
             life.transform.SetParent(ctx.Root, false);
             life.center = center;
@@ -309,6 +309,8 @@ namespace EverythingWorld.World
 
         /// One stretch of boardwalk, laid as a single seamless deck (mitred at the bends so nothing overlaps),
         /// with plank lines, edge boards, posts underneath and a collider.
+        LandContext walkCtx;
+
         void Walk(MeshKit mk, MeshKit solid, List<Vector3> pts)
         {
             const float w = WalkW, lift = WalkLift, thick = .16f;
@@ -316,6 +318,16 @@ namespace EverythingWorld.World
             var closed = (pts[0] - pts[n - 1]).sqrMagnitude < .01f;
             var L = new Vector3[n]; var R = new Vector3[n];
             Vector3 Flat(Vector3 v) { v.y = 0; return v.normalized; }
+            // the deck is level across its width, so on a side slope it rises (on taller posts) until neither edge
+            // is buried in the bank; the rails and lamps follow the raised deck
+            for (var i = 0; i < n && !closed; i++)
+            {
+                var t = i < n - 1 ? Flat(pts[i + 1] - pts[i]) : Flat(pts[i] - pts[i - 1]);
+                var side = Vector3.Cross(Vector3.up, t) * (w / 2f);
+                var high = Mathf.Max(walkCtx.Ground(pts[i].x + side.x, pts[i].z + side.z), walkCtx.Ground(pts[i].x - side.x, pts[i].z - side.z));
+                var y = high - lift + .08f;
+                if (y > pts[i].y) pts[i] = new Vector3(pts[i].x, y, pts[i].z);
+            }
             for (var i = 0; i < n; i++)
             {
                 var a = i > 0 ? Flat(pts[i] - pts[i - 1]) : closed ? Flat(pts[n - 1] - pts[n - 2]) : Flat(pts[1] - pts[0]);
@@ -347,7 +359,7 @@ namespace EverythingWorld.World
                 if (i % 2 == 0)
                     foreach (var s in new[] { L[i], R[i] })
                     {
-                        var g = pts[i].y;
+                        var g = Mathf.Min(pts[i].y, walkCtx.Ground(s.x, s.z));       // each post down to its own ground
                         mk.Box(driftDark, new Vector3(s.x, (g - .4f + s.y) / 2f, s.z), new Vector3(.16f, s.y - g + .4f, .16f), rot);
                     }
             }

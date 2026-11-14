@@ -17,7 +17,14 @@ namespace EverythingWorld.World
             if (CoastSpot(ctx, near, reach, used, 70f, out var wreckAt, out var wreckSea)) Wreck(ctx, mk, solid, wreckAt, wreckSea);
             if (CoastSpot(ctx, near, reach, used, 60f, out var whaleAt, out var whaleSea)) Whale(ctx, mk, whaleAt, whaleSea);
             for (var i = 0; i < 3; i++) if (CoastSpot(ctx, near, reach + 60f, used, 55f, out var fireAt, out var fireSea)) Bonfire(ctx, mk, solid, fireAt - fireSea * 8f, fireSea);
-            for (var i = 0; i < 10; i++) if (CoastSpot(ctx, near, reach + 140f, used, 28f, out var poolAt, out var poolSea)) TidePool(ctx, mk, poolAt, poolSea);
+            // a tide pool only where the sand is level enough for still water; on a slope it is drawn into a kit that
+            // is thrown away, so it uses the same random numbers and nothing after it moves
+            for (var i = 0; i < 10; i++)
+                if (CoastSpot(ctx, near, reach + 140f, used, 28f, out var poolAt, out var poolSea))
+                {
+                    var level = LevelFor(ctx, poolAt, 3.4f, .3f);
+                    TidePool(ctx, level ? mk : new MeshKit(), poolAt, poolSea, level);
+                }
         }
 
         /// A spot on this land within a few metres of open water, near 'near', far from the places already used.
@@ -307,7 +314,19 @@ namespace EverythingWorld.World
             life.landmarks.Add(at);
         }
 
-        void TidePool(LandContext ctx, MeshKit mk, Vector3 at, Vector3 sea)
+        /// The ground within 'radius' of 'at' stays within 'rise' of the ground at 'at'.
+        static bool LevelFor(LandContext ctx, Vector3 at, float radius, float rise)
+        {
+            for (var k = 0; k < 12; k++)
+            {
+                var a = k * Mathf.PI / 6f;
+                foreach (var f in new[] { .5f, 1f })
+                    if (Mathf.Abs(ctx.Ground(at.x + Mathf.Cos(a) * radius * f, at.z + Mathf.Sin(a) * radius * f) - at.y) > rise) return false;
+            }
+            return true;
+        }
+
+        void TidePool(LandContext ctx, MeshKit mk, Vector3 at, Vector3 sea, bool keep = true)
         {
             var r = ctx.Range(1.6f, 3f);
             mk.Prism(water, at + Vector3.up * .03f, Vector3.up, r, .03f, 16);
@@ -320,7 +339,7 @@ namespace EverythingWorld.World
             var star = WorldMaterials.Solid(new Color(.9f, .45f, .25f));
             var sp = at + new Vector3(ctx.Range(-r, r) * .5f, .05f, ctx.Range(-r, r) * .5f);
             for (var k = 0; k < 5; k++) mk.Box(star, sp + Quaternion.Euler(0, k * 72f, 0) * Vector3.forward * .12f, new Vector3(.07f, .03f, .24f), Quaternion.Euler(0, k * 72f, 0));
-            noGrass.Add(new Vector3(at.x, r + 1f, at.z));
+            if (keep) noGrass.Add(new Vector3(at.x, r + 1f, at.z));
         }
 
         /// Everything the storm washed up, thickest along the tide line: bleached logs and branches, seaweed, sea
