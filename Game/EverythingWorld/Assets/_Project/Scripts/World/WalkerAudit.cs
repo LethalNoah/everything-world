@@ -262,14 +262,15 @@ namespace EverythingWorld.World
             foreach (var start in hangCells.Keys)
             {
                 if (!hangSeen.Add(start)) continue;
-                var q = new Queue<(int, int)>(); q.Enqueue(start); var pts = 0; var sum = Vector3.zero; var maxGap = 0f; var whats = new Dictionary<int, int>();
+                var q = new Queue<(int, int)>(); q.Enqueue(start); var pts = 0; var sum = Vector3.zero; var maxGap = 0f; var minGap = float.MaxValue; var whats = new Dictionary<int, int>();
                 while (q.Count > 0)
                 {
                     var key = q.Dequeue();
-                    foreach (var (p, what, gap) in hangCells[key]) { pts++; sum += p; maxGap = Mathf.Max(maxGap, gap); whats[what] = whats.TryGetValue(what, out var w) ? w + 1 : 1; }
+                    foreach (var (p, what, gap) in hangCells[key]) { pts++; sum += p; maxGap = Mathf.Max(maxGap, gap); minGap = Mathf.Min(minGap, gap); whats[what] = whats.TryGetValue(what, out var w) ? w + 1 : 1; }
                     for (var di = -1; di <= 1; di++) for (var dj = -1; dj <= 1; dj++) { var nk = (key.Item1 + di, key.Item2 + dj); if (hangCells.ContainsKey(nk) && hangSeen.Add(nk)) q.Enqueue(nk); }
                 }
                 var length = pts * .25f;
+                if (length >= 2f && minGap > 2f) { flying += pts; continue; }   // all of it well up: a board or a tank raised on posts or legs, not a building off a slope
                 if (length >= 2f) problems.Add(new Problem { kind = "floating", what = Most(whats, names), at = sum / pts, size = length, gap = maxGap });
             }
 
@@ -350,7 +351,7 @@ namespace EverythingWorld.World
             }
             Section("blocked path", "BLOCKED PATHS (something splits a path in two)", nBlocked, p => $"{p.what}: {where(p.at)}, about {p.size:0.0} m2 of path covered");
             Section("floating", "FLOATING (a wall's bottom edge in the air with nothing under it)", nFloat, p => $"{p.what}: {where(p.at)}, {p.size:0.0} m of wall up to {p.gap:0.0} m off the ground");
-            if (flying > 0) sb.AppendLine($"    (and {flying * .25f:0} m of wall more than {HangFly:0} m up, probably meant to fly)");
+            if (flying > 0) sb.AppendLine($"    (and {flying * .25f:0} m of wall more than {HangFly:0} m up, or raised on posts or legs all along, probably meant to)");
             Section("steep or a ledge", "STEEP OR A LEDGE on a path", nSteep, p => $"{where(p.at)}: {p.what}, {p.size:0.0} m2");
             Section("on a path", "ON A PATH (a big thing standing on it you can get round)", nOn, p => $"{p.what}: {where(p.at)}, about {p.size:0.0} m2");
 
