@@ -17,7 +17,7 @@ namespace EverythingWorld.Player
         {
             ("Moonlight", new Color(.92f, .94f, 1f)), ("Gold", new Color(1f, .78f, .25f)), ("Ember", new Color(1f, .42f, .12f)), ("Rose", new Color(1f, .3f, .45f)),
             ("Magenta", new Color(.95f, .25f, .95f)), ("Violet", new Color(.55f, .35f, 1f)), ("Ocean", new Color(.2f, .45f, 1f)), ("Ice", new Color(.35f, .9f, 1f)),
-            ("Mint", new Color(.35f, 1f, .65f)), ("Lime", new Color(.7f, 1f, .2f)),
+            ("Mint", new Color(.35f, 1f, .65f)), ("Forest", new Color(.08f, .42f, .2f)), ("Lime", new Color(.7f, 1f, .2f)),
         };
 
         public bool isLocal = true;

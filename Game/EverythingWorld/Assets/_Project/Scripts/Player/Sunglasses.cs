@@ -17,7 +17,7 @@ namespace EverythingWorld.Player
         Camera cam; Transform frame; MeshRenderer frameRenderer; Material mat;
         Volume volume; ColorAdjustments grade; ShadowsMidtonesHighlights smh;
         bool on; float t;   // 0 = off (above your head), 1 = on your face
-        float builtAspect = -1f, builtFov = -1f, builtNear = -1f, halfH;
+        float builtAspect = -1f, builtFov = -1f, builtNear = -1f, dist, halfH;
 
         void Start()
         {
@@ -28,10 +28,10 @@ namespace EverythingWorld.Player
             grade = profile.Add<ColorAdjustments>(true);
             // polarized: colours richer and deeper, the brightest light (glare, white skies, bloom) pulled down hardest,
             // the darks left alone; a near-neutral grey lens so colours stay true
-            grade.postExposure.Override(-.35f); grade.colorFilter.Override(new Color(.97f, .98f, 1f)); grade.contrast.Override(18f); grade.saturation.Override(32f);
+            grade.postExposure.Override(-.6f); grade.colorFilter.Override(new Color(.97f, .98f, 1f)); grade.contrast.Override(18f); grade.saturation.Override(32f);
             smh = profile.Add<ShadowsMidtonesHighlights>(true);
-            smh.highlights.Override(new Vector4(1f, 1f, 1f, -.45f)); smh.midtones.Override(new Vector4(1f, 1f, 1f, -.05f));
-            smh.highlightsStart.Override(.45f); smh.highlightsEnd.Override(1f);
+            smh.highlights.Override(new Vector4(1f, 1f, 1f, -.75f)); smh.midtones.Override(new Vector4(1f, 1f, 1f, -.12f));
+            smh.highlightsStart.Override(.35f); smh.highlightsEnd.Override(1f);
             volume.profile = profile;
         }
 
@@ -45,7 +45,7 @@ namespace EverythingWorld.Player
             if (kb != null && kb[key].wasPressedThisFrame) { on = !on; PlayerPrefs.SetInt("EW_Sunglasses", on ? 1 : 0); }
             t = Mathf.MoveTowards(t, on ? 1f : 0f, Time.deltaTime / seconds);
             volume.weight = Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(.55f, 1f, t));
-            EverythingWorld.World.SkyDirector.BloomScale = Mathf.Lerp(1f, .55f, volume.weight);   // polarized lenses cut the glare
+            EverythingWorld.World.SkyDirector.BloomScale = Mathf.Lerp(1f, .35f, volume.weight);   // polarized lenses cut the glare
         }
 
         void LateUpdate()
@@ -58,7 +58,7 @@ namespace EverythingWorld.Player
             // putting them on: down from above your eyes, tipped forward, settling with a little bounce; taking them
             // off: straight back up
             var e = on ? EaseOutBack(t) : Mathf.SmoothStep(0f, 1f, t);
-            var d = builtNear;
+            var d = dist;
             frame.localPosition = new Vector3(0f, (1f - e) * halfH * 2.6f, d);
             frame.localRotation = Quaternion.Euler((1f - e) * -28f, 0f, 0f);
             // the post-processing has to be on to darken the picture (the sky only switches it on for bloom)
@@ -71,7 +71,7 @@ namespace EverythingWorld.Player
         void Build()
         {
             builtAspect = cam.aspect; builtFov = cam.fieldOfView; builtNear = cam.nearClipPlane;
-            var d = builtNear * 1.15f + .005f; builtNear = d;
+            var d = builtNear * 1.15f + .005f; dist = d;   // (keep builtNear as the camera's own value, or this rebuilds every frame)
             halfH = d * Mathf.Tan(builtFov * .5f * Mathf.Deg2Rad) * 1.04f; var halfW = halfH * builtAspect;
             if (frame == null)
             {

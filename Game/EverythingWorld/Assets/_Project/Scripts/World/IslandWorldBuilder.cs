@@ -469,7 +469,7 @@ namespace EverythingWorld.World
         {
             var root = new GameObject("Island names").transform;
             root.SetParent(transform, false);
-            var font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            var font = GameFonts.Sign;   // must match ArtistBits.TextMaterial (its letters come from this font)
             var textMat = ArtistBits.TextMaterial;
             foreach (var isl in Data.layout.islands)
             {

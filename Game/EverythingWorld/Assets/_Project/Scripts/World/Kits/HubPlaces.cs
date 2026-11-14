@@ -161,11 +161,12 @@ namespace EverythingWorld.World
             {
                 var isl = lands[order[j]]; var dir = new Vector3(Mathf.Cos(a[j]), 0, Mathf.Sin(a[j])); var p = center + dir * R; p.y = ctx.Ground(p.x, p.z);
                 var col = LandColor(cat, isl); var tangent = Vector3.Cross(up, dir);
-                mk.Prism(iron, p, up, .08f, 8f, 6); ArtistBits.PostCollider(ctx.Root, p, 8f, .12f);
-                mk.Blob(WorldMaterials.Glow(Warm, 2f), p + up * 8.1f, Vector3.one * .18f, ctx.Rng, 0f); halos.Add(p + up * 8.1f, .7f, Warm, .7f);
+                var ph = j % 2 == 0 ? 8.2f : 6.2f;   // alternate heights, so neighbouring flags never meet
+                mk.Prism(iron, p, up, .08f, ph, 6); ArtistBits.PostCollider(ctx.Root, p, ph, .12f);
+                mk.Blob(WorldMaterials.Glow(Warm, 2f), p + up * (ph + .1f), Vector3.one * .18f, ctx.Rng, 0f); halos.Add(p + up * (ph + .1f), .7f, Warm, .7f);
                 var cloth = new Material(WorldMaterials.Glow(col, .9f)) { name = "Flag " + isl.name };
-                var pivot = new GameObject("Flag: " + isl.name).transform; pivot.SetParent(flagsRoot, false); pivot.SetPositionAndRotation(p + up * 7.8f, Quaternion.LookRotation(j % 2 == 0 ? tangent : -tangent));
-                var fk = new MeshKit(); fk.Box(cloth, new Vector3(0, -.75f, 1.32f), new Vector3(.04f, 1.5f, 2.5f), Quaternion.identity); var fg = fk.BuildSingle("Cloth", pivot, false); fg.transform.localPosition = Vector3.zero; fg.transform.localRotation = Quaternion.identity;
+                var pivot = new GameObject("Flag: " + isl.name).transform; pivot.SetParent(flagsRoot, false); pivot.SetPositionAndRotation(p + up * (ph - .2f), Quaternion.LookRotation(tangent));   // all fly the same way round
+                var fk = new MeshKit(); fk.Box(cloth, new Vector3(0, -.7f, 1.15f), new Vector3(.04f, 1.4f, 2.2f), Quaternion.identity); var fg = fk.BuildSingle("Cloth", pivot, false); fg.transform.localPosition = Vector3.zero; fg.transform.localRotation = Quaternion.identity;
                 fg.GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
                 life.flags.Add((pivot, pivot.localRotation));
                 // the stone at its foot, facing the plaza: the land's name and how far it is
