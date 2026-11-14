@@ -259,13 +259,27 @@ namespace EverythingWorld.World
                 var t = (a + b).normalized; var side = Vector3.Cross(Vector3.up, t);
                 var miter = 1f / Mathf.Max(.6f, Vector3.Dot(side, Vector3.Cross(Vector3.up, b)));
                 L[i] = pts[i] + Vector3.up * lift - side * (w / 2f * miter); R[i] = pts[i] + Vector3.up * lift + side * (w / 2f * miter);
-                if (ground != null)
-                {
-                    float gl = ground.Ground(L[i].x, L[i].z), gr = ground.Ground(R[i].x, R[i].z), top = Mathf.Max(pts[i].y, Mathf.Max(gl, gr) - .05f);
-                    L[i].y = Mathf.Max(gl, top - .15f) + lift; R[i].y = Mathf.Max(gr, top - .15f) + lift;
-                }
             }
-            for (var i = 0; i + 1 < n; i++) mk.Quad(m, L[i], R[i], R[i + 1], L[i + 1], (pts[i] + pts[i + 1]) / 2f - Vector3.up);
+            // laid in narrow bands across too, every vertex on the ground under it, so a path across a slope tilts with
+            // the hill (it used to stay near level, its low edge standing up off the ground as a ledge)
+            var mc = ground != null ? Mathf.Max(1, Mathf.CeilToInt(w / 1f)) : 1; var V = new Vector3[n, mc + 1];
+            for (var i = 0; i < n; i++)
+                for (var j = 0; j <= mc; j++)
+                {
+                    var v = Vector3.Lerp(L[i], R[i], j / (float)mc);
+                    if (ground != null) v.y = ground.Ground(v.x, v.z) + lift;
+                    V[i, j] = v;
+                }
+            for (var i = 0; i + 1 < n; i++)
+                for (var j = 0; j < mc; j++) mk.Quad(m, V[i, j], V[i, j + 1], V[i + 1, j + 1], V[i + 1, j], (V[i, j] + V[i + 1, j + 1]) / 2f - Vector3.up);
+        }
+
+        /// The ground's tilt round a spot: the biggest height difference across a circle of radius r.
+        static float Tilt(LandContext ctx, float x, float z, float r)
+        {
+            float lo = float.MaxValue, hi = float.MinValue;
+            for (var k = 0; k < 8; k++) { var a = k * Mathf.PI / 4f; var h = ctx.Ground(x + Mathf.Cos(a) * r, z + Mathf.Sin(a) * r); lo = Mathf.Min(lo, h); hi = Mathf.Max(hi, h); }
+            return hi - lo;
         }
 
         /// A lantern on a wooden post: a little glass box with a warm light.
@@ -429,6 +443,10 @@ namespace EverythingWorld.World
             mk.Box(WorldMaterials.Solid(new Color(.15f, .13f, .12f)), front + up * 4f - sd * 1.4f, new Vector3(1.1f, 1f, .04f), rot);
             mk.Box(woodDark, front + up * 1.1f, new Vector3(1f, 2.1f, .05f), rot);
             mk.Box(wood, front + face * 1.2f + up * .1f, new Vector3(W, .2f, 2.4f), rot); solid.Box(wood, front + face * 1.2f, new Vector3(W, .4f, 2.4f), rot);
+            // the porch stands on the stone footing too, down to the lowest ground under it (it hung out over the slope
+            // toward the fall with nothing under it)
+            var plo = b.y; foreach (var (x, z) in new[] { (-1f, 0f), (1f, 0f), (-1f, 1f), (1f, 1f), (0f, 1f), (0f, .5f) }) { var q = front + sd * x * W / 2f + face * z * 2.4f; plo = Mathf.Min(plo, ctx.Ground(q.x, q.z)); }
+            if (plo < b.y - .1f) { var fc = new Vector3(b.x, (plo + b.y) / 2f - .15f, b.z) + face * (D / 2f + 1.2f); var fs = new Vector3(W + .3f, b.y - plo + .3f, 2.5f); mk.Box(stone, fc, fs, rot); solid.Box(stone, fc, fs, rot); }
             foreach (var e in new[] { -1f, 1f }) { mk.Box(woodDark, front + face * 2.3f + sd * e * (W / 2f - .2f) + up * 1.4f, new Vector3(.16f, 2.8f, .16f), rot); ArtistBits.PostCollider(ctx.Root, front + face * 2.3f + sd * e * (W / 2f - .2f), 2.6f, .12f); }
             mk.Box(woodDark, front + face * 1.3f + up * 2.9f, new Vector3(W + .2f, .15f, 2.6f), rot * Quaternion.Euler(8f, 0, 0));
             mk.Box(wood, front + face * .7f + up * .6f + sd * 1.8f, new Vector3(1.6f, .1f, .5f), rot);
@@ -462,10 +480,15 @@ namespace EverythingWorld.World
                 for (var i = 1; i < pts.Count; i++)
                 {
                     var rise = Mathf.Abs(pts[i].y - pts[i - 1].y);
-                    if (rise > .6f)   // steep: a timber tread
+                    if (rise > .6f)   // steep: a timber tread, lying on the path and tilted with it (a level box stood up out of it as a ledge on one side and sank on the other)
                     {
                         var d = pts[i] - pts[i - 1]; d.y = 0; var sdd = Vector3.Cross(Vector3.up, d.normalized);
-                        mk.Box(woodDark, (pts[i] + pts[i - 1]) / 2f + Vector3.up * .25f, new Vector3(PathW + .2f, .14f, .3f), Quaternion.LookRotation(d));
+                        var mid = (pts[i] + pts[i - 1]) / 2f; var hw = PathW / 2f;
+                        var tl = new Vector3(mid.x - sdd.x * hw, 0, mid.z - sdd.z * hw); tl.y = ctx.Ground(tl.x, tl.z);
+                        var tr = new Vector3(mid.x + sdd.x * hw, 0, mid.z + sdd.z * hw); tr.y = ctx.Ground(tr.x, tr.z);
+                        var across = tr - tl; var along = pts[i] - pts[i - 1]; var tup = Vector3.Cross(along, across).normalized; if (tup.y < 0f) tup = -tup;
+                        var tc = (tl + tr) / 2f; tc.y = Mathf.Max(tc.y, ctx.Ground(mid.x, mid.z)) + .2f;
+                        mk.Box(woodDark, tc, new Vector3(across.magnitude + .2f, .07f, .3f), Quaternion.LookRotation(Vector3.ProjectOnPlane(along, tup), tup));
                     }
                     if (i % 2 == 0) foreach (var s in new[] { -1f, 1f }) { var lp = pts[i] + side * s * (PathW / 2f + .3f); mk.Blob(WorldMaterials.Solid(LeafC[(i + (s > 0 ? 1 : 0)) % LeafC.Length]), ctx.OnGround(lp.x, lp.z) + Vector3.up * .03f, new Vector3(.4f, .04f, .35f), ctx.Rng, .4f); }
                 }
@@ -510,12 +533,14 @@ namespace EverythingWorld.World
                 {
                     if (roll < .34f) { var n = ctx.Rng.Next(1, 4); for (var k = 0; k < n; k++) { var q = ctx.OnGround(px + ctx.Range(-4f, 4f), pz + ctx.Range(-4f, 4f)); if (!NearPath(q.x, q.z, 2.5f)) AutumnTree(ctx, mk, q, ctx.Range(5f, 9f)); } trees++; }
                     else if (roll < .42f) { mk.Blob(leafPile, p, new Vector3(ctx.Range(1f, 2f), .3f, ctx.Range(1f, 2f)), ctx.Rng, .3f); leaves++; }
+                    else if (roll >= .42f && roll < .62f && Tilt(ctx, px, pz, 2.5f) > 1f) { }   // benches, chimes, sheds, string lights and bikes only on gentle ground
                     else if (roll < .47f) { Bench(ctx, mk, p, Quaternion.Euler(0, ctx.Range(0, 360f), 0) * Vector3.forward, true); benches++; }
                     else if (roll < .51f) { WindChime(ctx, mk, p); chimes++; }
                     else if (roll < .545f && sheds < 14) { Shed(ctx, mk, solid, p); sheds++; }
                     else if (roll < .6f)
                     {
                         var d = Quaternion.Euler(0, ctx.Range(0, 180f), 0) * Vector3.forward; var a = ctx.OnGround(px - d.x * 4f, pz - d.z * 4f); var b = ctx.OnGround(px + d.x * 4f, pz + d.z * 4f);
+                        if (NearPath(a.x, a.z, PathW / 2f + 1f) || NearPath(b.x, b.z, PathW / 2f + 1f)) continue;   // the posts reach 4 m out: keep both off the paths
                         foreach (var e in new[] { a, b }) { mk.Box(woodDark, e + Vector3.up * 1.6f, new Vector3(.12f, 3.2f, .12f), Quaternion.identity); ArtistBits.PostCollider(ctx.Root, e, 3f, .1f); }
                         StringLights(mk, a + Vector3.up * 3.1f, b + Vector3.up * 3.1f, .6f); strings++;
                     }
@@ -525,7 +550,7 @@ namespace EverythingWorld.World
                 {
                     if (roll < .05f) { LoneTree(ctx, mk, p); lone++; }
                     else if (roll < .09f) { StandingStone(ctx, mk, p); stones++; }
-                    else if (roll < .12f) { Bench(ctx, mk, p, -toSea, false); benches++; }
+                    else if (roll < .12f) { if (Tilt(ctx, px, pz, 2f) < .8f) { Bench(ctx, mk, p, -toSea, false); benches++; } }
                     else if (roll < .14f) { for (var k = 0; k < 4; k++) mk.Prism(WorldMaterials.Solid(new Color(.75f, .7f, .62f)), p + new Vector3(ctx.Range(-1f, 1f), .15f, ctx.Range(-1f, 1f)), Quaternion.Euler(0, ctx.Range(0, 180f), 0) * Vector3.forward, .12f, ctx.Range(1.5f, 3f), 5); }
                 }
             }
