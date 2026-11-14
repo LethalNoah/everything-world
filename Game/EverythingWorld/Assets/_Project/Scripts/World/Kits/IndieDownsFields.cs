@@ -57,6 +57,7 @@ namespace EverythingWorld.World
                 if (Mathf.Abs(d - gate) < 2.2f) continue;
                 var q = p + along * d + face * (Mathf.Sin(d * .15f) * .6f); q = ctx.OnGround(q.x, q.z);
                 var w = .9f + (float)rng.NextDouble() * .6f; var hh = .9f + (float)rng.NextDouble() * .6f;
+                if (NearPath(q.x, q.z, w + 2.6f)) continue;                                  // a gap where a path runs through the hedge
                 mk.Blob(shades[rng.Next(shades.Length)], q + up * hh * .75f, new Vector3(w, hh, w), rng, .2f);
                 solid.Blob(hedge, q + up * hh * .75f, new Vector3(w, hh, w) * 1.1f, ColRng, 0f);
                 solid.Box(hedge, q + up * hh * .8f, new Vector3(w * 1.6f, hh * 1.6f, w * 1.6f), Quaternion.LookRotation(face));
@@ -64,7 +65,7 @@ namespace EverythingWorld.World
             // the posts and the gate, swung a little open
             var hinge = ctx.OnGround((p + along * (gate - 1.8f)).x, (p + along * (gate - 1.8f)).z);
             var latch = ctx.OnGround((p + along * (gate + 1.8f)).x, (p + along * (gate + 1.8f)).z);
-            foreach (var q in new[] { hinge, latch }) { mk.Box(darkWood, q + up * .75f, new Vector3(.22f, 1.5f, .22f), Quaternion.LookRotation(face)); ArtistBits.PostCollider(ctx.Root, q, 1.5f, .18f); }
+            foreach (var q in new[] { hinge, latch }) { if (NearPath(q.x, q.z, 2.4f)) continue; mk.Box(darkWood, q + up * .75f, new Vector3(.22f, 1.5f, .22f), Quaternion.LookRotation(face)); ArtistBits.PostCollider(ctx.Root, q, 1.5f, .18f); }
             var swing = Quaternion.LookRotation(Quaternion.Euler(0, -20f, 0) * along);
             var g0 = hinge + swing * new Vector3(0, 0, 1.7f);
             for (var i = 0; i < 5; i++) mk.Box(cream, g0 + up * (.3f + i * .22f), new Vector3(.06f, .08f, 3.3f), swing);

@@ -103,8 +103,8 @@ namespace EverythingWorld.World
             HayBales(ctx, mk, solid);
             if (hasQuiet) QuietPlace(ctx, mk, solid);
             KiteSpots(ctx);
+            SongPlaces(ctx, mk, solid, pictures);   // before the fields, so field hedges keep off the song places' little paths
             Fields(ctx, mk, solid);
-            SongPlaces(ctx, mk, solid, pictures);
             mk.Build("Downs scenery", ctx.Root, false);
             soft.Build("Soft leaves", ctx.Root, false);
             solid.BuildCollider("Downs walls", ctx.Root);
@@ -309,8 +309,14 @@ namespace EverythingWorld.World
                 if (dir.sqrMagnitude < .01f) continue;
                 var side = Vector3.Cross(Vector3.up, dir.normalized) * width / 2f;
                 Vector3 E(Vector3 p, Vector3 s) { var q = p + s; q.y = Mathf.Max(ctx.Ground(q.x, q.z), ctx.Ground(p.x, p.z)) + lift; return q; }
-                Vector3 a = E(pts[i], -side), b = E(pts[i], side), c = E(pts[i + 1], side), d = E(pts[i + 1], -side);
-                mk.Quad(m, a, b, c, d, (a + c) / 2f - Vector3.up);
+                // in pieces about a metre long, so the chalk follows the ground over a ridge instead of bridging it
+                var pieces = Mathf.Max(1, Mathf.CeilToInt(dir.magnitude / 1f));
+                for (var k = 0; k < pieces; k++)
+                {
+                    Vector3 p0 = Vector3.Lerp(pts[i], pts[i + 1], (float)k / pieces), p1 = Vector3.Lerp(pts[i], pts[i + 1], (float)(k + 1) / pieces);
+                    Vector3 a = E(p0, -side), b = E(p0, side), c = E(p1, side), d = E(p1, -side);
+                    mk.Quad(m, a, b, c, d, (a + c) / 2f - Vector3.up);
+                }
             }
         }
 

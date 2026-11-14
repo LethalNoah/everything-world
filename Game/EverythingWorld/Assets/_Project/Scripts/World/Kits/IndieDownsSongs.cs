@@ -63,6 +63,7 @@ namespace EverythingWorld.World
                 var pts = new List<Vector3>(); var from = new Vector3(join.x, 0, join.z); var dir = new Vector3(c.x - join.x, 0, c.z - join.z).normalized; var len = best - stop;
                 for (var d = 1f; ; d += 1.5f) { var dd = Mathf.Min(d, len); var q = from + dir * dd; if (!ctx.IsLand(q.x, q.z, 0f)) break; pts.Add(ctx.OnGround(q.x, q.z)); if (dd >= len) break; }
                 if (pts.Count > 1) Ribbon(ctx, mk, chalk, pts, 1.6f, .05f);
+                foreach (var p in pts) { var key = (Mathf.FloorToInt(p.x / 8f), Mathf.FloorToInt(p.z / 8f)); if (!pathCells.TryGetValue(key, out var cell)) pathCells[key] = cell = new List<Vector3>(); cell.Add(p); }   // so the fields and grass keep off it
             }
             var side = Vector3.Cross(Vector3.up, face); var sp = ctx.OnGround(c.x + face.x * stop + side.x * 2.2f, c.z + face.z * stop + side.z * 2.2f); var rot = Quaternion.LookRotation(face);
             mk.Box(darkWood, sp + Vector3.up * .6f, new Vector3(.12f, 1.2f, .12f), rot); mk.Box(cream, sp + Vector3.up * 1.35f, new Vector3(2.4f, .5f, .06f), rot);
