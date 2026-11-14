@@ -33,6 +33,8 @@ namespace EverythingWorld.World
         public bool auditLands = false;
         [Tooltip("Build a land's scenery only when you come within this many metres of where you arrive in it, nearest first, one land a frame (a short pause as each one appears). 0 builds every land at the start, which takes a minute or two.")]
         public float buildDistance = 1200f;
+        [Tooltip("Build every land while a loading screen shows at the start (about half a minute to a minute), so there are no pauses later as you travel. Off: lands are built as you come within buildDistance of them.")]
+        public bool loadAllAtStart = true;
         [Tooltip("Hide grass, small props, glows and lights on built lands when they're far away (LandCuller). Turn off to compare.")]
         public bool cullByDistance = true;
 
@@ -57,6 +59,11 @@ namespace EverythingWorld.World
         public static bool BuildEverything, ForceAudit;
         /// Set by the photo tour: audit only these lands (names without "The "); null audits every land built.
         public static HashSet<string> AuditOnly;
+        /// True while the loading screen is up (every land being built at the start).
+        public bool Loading { get; private set; }
+        int loadTotal, loadDone; string loadName; float loadStarted;
+        EverythingWorld.Player.SimplePlayerController heldPlayer;
+
         /// True once every land with a kit has been built.
         public bool AllBuilt => pending.Count == 0;
         static bool Wanted(string land) => QuickLands == null || QuickLands.Contains(land.StartsWith("The ") ? land.Substring(4) : land);
@@ -420,7 +427,14 @@ namespace EverythingWorld.World
                 if (!everything && Distance(i, start) > buildDistance) continue;
                 pending.RemoveAt(k); DressLand(i); n++;
             }
-            Debug.Log($"Built {n} lands at the start in {(Time.realtimeSinceStartup - t0) * 1000:0} ms; {pending.Count} more will be built as you come near them");
+            Debug.Log($"Built {n} lands at the start in {(Time.realtimeSinceStartup - t0) * 1000:0} ms; {pending.Count} more " + (loadAllAtStart && !everything && pending.Count > 0 ? "behind the loading screen" : "will be built as you come near them"));
+            // the rest behind the loading screen, nearest first, one a frame (so the screen can show progress); you
+            // stay put until it's done
+            if (loadAllAtStart && !everything && pending.Count > 0)
+            {
+                Loading = true; loadTotal = pending.Count; loadDone = 0; loadStarted = Time.realtimeSinceStartup;
+                heldPlayer = p; if (heldPlayer != null) heldPlayer.enabled = false;
+            }
         }
 
         float Distance(int i, Vector3 at)
@@ -433,6 +447,18 @@ namespace EverythingWorld.World
         {
             if (pending.Count == 0) return;
             var at = player != null ? player.position : Camera.main != null ? Camera.main.transform.position : Vector3.zero;
+            if (Loading)
+            {
+                int near = 0; for (var k = 1; k < pending.Count; k++) if (Distance(pending[k], at) < Distance(pending[near], at)) near = k;
+                var li = pending[near]; pending.RemoveAt(near); loadName = Data.layout.islands[li].name;
+                DressLand(li); loadDone++;
+                if (pending.Count == 0)
+                {
+                    Loading = false; if (heldPlayer != null) heldPlayer.enabled = true;
+                    Debug.Log($"Loading screen: built {loadTotal} lands in {Time.realtimeSinceStartup - loadStarted:0.0} s");
+                }
+                return;
+            }
             int best = -1; var bestD = buildDistance;
             for (var k = 0; k < pending.Count; k++) { var d = Distance(pending[k], at); if (d <= bestD) { bestD = d; best = k; } }
             if (best < 0) return;
@@ -462,6 +488,29 @@ namespace EverythingWorld.World
             {
                 Debug.LogException(e); // one broken land should not stop the rest of the world
             }
+        }
+
+        // ---------- the loading screen ----------
+        GUIStyle loadTitle, loadText; Texture2D loadBack, loadBar, loadBarOff;
+        void OnGUI()
+        {
+            if (!Loading) return;
+            if (loadBack == null)
+            {
+                loadBack = new Texture2D(1, 1); loadBack.SetPixel(0, 0, new Color(.05f, .045f, .06f)); loadBack.Apply();
+                loadBar = new Texture2D(1, 1); loadBar.SetPixel(0, 0, new Color(1f, .8f, .45f)); loadBar.Apply();
+                loadBarOff = new Texture2D(1, 1); loadBarOff.SetPixel(0, 0, new Color(1f, 1f, 1f, .12f)); loadBarOff.Apply();
+                loadTitle = new GUIStyle { font = GameFonts.Sign, fontSize = 46, alignment = TextAnchor.MiddleCenter, normal = { textColor = new Color(1f, .86f, .6f) } };
+                loadText = new GUIStyle { font = GameFonts.Speech, fontSize = 18, alignment = TextAnchor.MiddleCenter, normal = { textColor = new Color(.85f, .83f, .8f) } };
+            }
+            GUI.depth = -100;
+            GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), loadBack);
+            var cy = Screen.height / 2f;
+            GUI.Label(new Rect(0, cy - 90, Screen.width, 60), "THE EVERYTHING WORLD", loadTitle);
+            GUI.Label(new Rect(0, cy - 20, Screen.width, 30), loadName != null ? $"Building {loadName}\u2026" : "Getting ready\u2026", loadText);
+            var w = Mathf.Min(520f, Screen.width - 80f); var bar = new Rect((Screen.width - w) / 2f, cy + 24, w, 8);
+            GUI.DrawTexture(bar, loadBarOff); GUI.DrawTexture(new Rect(bar.x, bar.y, bar.width * (loadTotal > 0 ? loadDone / (float)loadTotal : 0f), bar.height), loadBar);
+            GUI.Label(new Rect(0, cy + 40, Screen.width, 30), $"{loadDone} of {loadTotal} lands", loadText);
         }
 
         // ---------- island name signs ----------
