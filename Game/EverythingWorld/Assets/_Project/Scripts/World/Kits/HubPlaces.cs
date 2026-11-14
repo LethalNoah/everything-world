@@ -268,6 +268,33 @@ namespace EverythingWorld.World
             Folk(kp + kd * .9f, -kd, Resident.Pose.Work, new[] { "Can't decide? Ask the board. It always knows.", "Every land's playing something right now. Let's pick one." });
             Spot("Where next?", kp - kd * .9f + up * 1.1f, "Ask the board where to go", new Vector3(2.4f, 1.2f, 1f)).onUse = _ => PlaceTools.Say(people, kp + up * 3.4f, departures != null ? departures.Pick() : "Go anywhere!", 6f);
             Shot(ctx, "the kiosk", kp - kd * 7f + Vector3.Cross(up, kd) * 3f + up * 2f, kp + up * 1.5f);
+            // the terminal: an old computer on a desk with a green screen you can type into (HubTerminal)
+            {
+                var td = Quaternion.Euler(0, 255f, 0) * Vector3.forward; var tp = center + td * 25f; tp.y = groundY; var f = new PlaceFrame(tp, td);
+                var beige = WorldMaterials.Solid(new Color(.82f, .78f, .68f), .2f); var dkey = WorldMaterials.Solid(new Color(.3f, .29f, .27f));
+                mk.Box(iron, f.P(0, .37f, 0), new Vector3(1.7f, .06f, .85f), f.r); foreach (var e in new[] { -.78f, .78f }) foreach (var z in new[] { -.35f, .35f }) mk.Box(iron, f.P(e, .18f, z), new Vector3(.06f, .36f, .06f), f.r);
+                mk.Box(WorldMaterials.Solid(new Color(.35f, .26f, .18f)), f.P(0, .74f, 0), new Vector3(1.7f, .06f, .85f), f.r); solid.Box(iron, f.P(0, .4f, 0), new Vector3(1.7f, .8f, .85f), f.r);
+                mk.Box(iron, f.P(0, .38f, 0), new Vector3(1.6f, .7f, .8f), f.r);
+                // the monitor: a deep beige box with a bezel and a glowing green screen
+                mk.Box(beige, f.P(0, 1.2f, -.12f), new Vector3(1f, .82f, .7f), f.r); mk.Box(beige, f.P(0, .82f, -.05f), new Vector3(.5f, .1f, .4f), f.r); solid.Box(beige, f.P(0, 1.2f, -.12f), new Vector3(1f, .82f, .7f), f.r);
+                var scr = new Material(WorldMaterials.Glow(new Color(.03f, .12f, .05f), .5f)) { name = "Terminal screen" };
+                mk.Box(scr, f.P(0, 1.22f, .235f), new Vector3(.84f, .64f, .02f), f.r); mk.Box(dkey, f.P(.4f, .86f, .235f), new Vector3(.05f, .05f, .02f), f.r); mk.Blob(WorldMaterials.Glow(new Color(.3f, 1f, .4f), 2f), f.P(.33f, .86f, .25f), Vector3.one * .015f, rng, 0f);
+                // the keyboard: a beige slab with rows of dark keys
+                mk.Box(beige, f.P(0, .79f, .3f), new Vector3(.9f, .04f, .3f), f.r * Quaternion.Euler(6f, 0, 0));
+                for (var row = 0; row < 4; row++) for (var k = 0; k < 13; k++) mk.Box(dkey, f.P(-.39f + k * .065f, .815f + row * .006f, .4f - row * .06f), new Vector3(.05f, .02f, .045f), f.r * Quaternion.Euler(6f, 0, 0));
+                mk.Box(dkey, f.P(0, .81f, .44f), new Vector3(.4f, .02f, .045f), f.r);
+                // the stool, the sign and a lamp
+                var stool = f.P(0, 0, .95f); mk.Prism(iron, stool, Vector3.up, .05f, .55f, 6); mk.Prism(WorldMaterials.Solid(new Color(.5f, .12f, .1f), .3f), stool + Vector3.up * .55f, Vector3.up, .22f, .08f, 12); ArtistBits.PostCollider(ctx.Root, stool, .6f, .22f);
+                var post = f.P(-1.05f, 0, -.2f); mk.Prism(iron, post, Vector3.up, .05f, 2.4f, 6); ArtistBits.PostCollider(ctx.Root, post, 2.4f, .08f);
+                mk.Box(WorldMaterials.Solid(new Color(.06f, .06f, .07f)), post + Vector3.up * 2.25f + f.Fwd * .06f + f.Right * .45f, new Vector3(1.05f, .28f, .04f), f.r);
+                ArtistBits.Label(people, "TERMINAL", post + Vector3.up * 2.25f + f.Fwd * .09f + f.Right * .45f, f.Fwd, .17f, new Color(.4f, 1f, .5f), TextAnchor.MiddleCenter);
+                ArtistBits.PointLight(ctx.Root, f.P(0, 1.6f, .9f), new Color(.5f, 1f, .6f), 4f, .7f);
+                var tgo = new GameObject("Terminal"); tgo.transform.SetParent(people, false); tgo.transform.position = f.P(0, 1.2f, .3f);
+                var term = tgo.AddComponent<HubTerminal>(); term.glow = scr; term.glowColor = scr.GetColor("_EmissionColor");
+                term.screen = ArtistBits.Plain(ArtistBits.Label(tgo.transform, "", f.P(.39f, 1.52f, .25f), f.Fwd, .046f, new Color(.45f, 1f, .55f), TextAnchor.UpperLeft));
+                Interact.Toy(tgo, Toy.Kind.Custom, "Use the terminal", new Vector3(1.1f, 1.1f, .5f)).onUse = _ => term.Begin(Object.FindAnyObjectByType<EverythingWorld.Player.PlayerInteractor>());
+                Shot(ctx, "the terminal", f.P(.25f, .95f, 1.75f), f.P(0, 1.25f, .2f));
+            }
             // the rocket launcher on the dais
             var rd = Quaternion.Euler(0, 180f, 0) * Vector3.forward; var rp0 = center + rd * (DaisR - 2.2f) + up * 1.5f;
             mk.Box(bronze, rp0 + up * .3f, new Vector3(1f, .6f, 1f), Quaternion.LookRotation(rd)); mk.Prism(iron, rp0 + up * .6f, (up + rd * .2f).normalized, .16f, 1.4f, 10); mk.Prism(WorldMaterials.Glow(new Color(1f, .4f, .3f), 2f), rp0 + up * .6f + (up + rd * .2f).normalized * 1.4f, (up + rd * .2f).normalized, .17f, .05f, 10); PlaceTools.BoxCol(ctx.Root, rp0 + up * .8f, new Vector3(1f, 1.6f, 1f), Quaternion.LookRotation(rd));

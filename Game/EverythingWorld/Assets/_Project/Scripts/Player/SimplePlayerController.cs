@@ -28,6 +28,10 @@ namespace EverythingWorld.Player
         float verticalVelocity;
         Vector3 flyVelocity;
         GUIStyle hudStyle;
+        /// Flying is locked until someone types the code into the hub's terminal (HubTerminal); it stays unlocked
+        /// until the game closes.
+        public static bool FlightUnlocked;
+        float lockedNote = -9f;
 
         /// True while flying (IslandExplorer leaves you be: no wading limit, and it keeps you above the ground).
         public bool Flying { get; private set; }
@@ -72,7 +76,7 @@ namespace EverythingWorld.Player
 
             if (keyboard.escapeKey.wasPressedThisFrame) SetCursorLocked(false);
             if (mouse.leftButton.wasPressedThisFrame) SetCursorLocked(true);
-            if (keyboard.fKey.wasPressedThisFrame && !Seated) SetFlying(!Flying);
+            if (keyboard.fKey.wasPressedThisFrame && !Seated) { if (FlightUnlocked || Flying) SetFlying(!Flying); else lockedNote = Time.time; }
 
             if (Cursor.lockState == CursorLockMode.Locked)
             {
@@ -142,6 +146,11 @@ namespace EverythingWorld.Player
 
         void OnGUI()
         {
+            if (!Flying && Time.time - lockedNote < 2.5f)
+            {
+                hudStyle ??= EverythingWorld.World.GameFonts.Box(16, TextAnchor.MiddleCenter);
+                GUI.Box(new Rect(Screen.width / 2f - 200, 12, 400, 30), "You can't fly. Not yet, anyway.", hudStyle);
+            }
             if (!Flying) return;
             hudStyle ??= EverythingWorld.World.GameFonts.Box(16, TextAnchor.MiddleCenter);
             GUI.Box(new Rect(Screen.width / 2f - 230, 12, 460, 30), "Flying  ·  Space up, Ctrl down, Shift faster  ·  F to land", hudStyle);
