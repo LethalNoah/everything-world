@@ -115,7 +115,7 @@ namespace EverythingWorld.World
                     row.cover = CoverQuad(root, left + right * .82f - up * rowH / 2f + n * .02f, right, up, n, .4f, pic);
                     var tx = left + right * 1.4f;
                     row.name = ArtistBits.Label(root, Short(isl.name), tx - up * .1f, n, .36f, new Color(1f, .8f, .42f), TextAnchor.UpperLeft);
-                    row.song = ArtistBits.Label(root, "", tx - up * .5f, n, .27f, Ink, TextAnchor.UpperLeft);
+                    row.song = ArtistBits.Plain(ArtistBits.Label(root, "", tx - up * .5f, n, .27f, Ink, TextAnchor.UpperLeft));
                     var by = tx - up * (rowH - .14f);
                     mk.Box(track, by + right * departures.barLength / 2f - n * .005f, new Vector3(departures.barLength, .05f, .02f), rot);
                     var bar = new GameObject("Progress").transform; bar.SetParent(root, false); bar.SetPositionAndRotation(by + n * .01f, Quaternion.LookRotation(-n));

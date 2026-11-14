@@ -72,10 +72,9 @@ namespace EverythingWorld.World
         /// Words that appear over something for a few seconds (a phone answered, a cat stroked).
         public static void Say(Transform parent, Vector3 at, string text, float seconds = 5.5f)
         {
-            var w = parent.Find("Words"); TextMesh tm;
-            if (w == null) { tm = ArtistBits.Label(parent, "", at, Vector3.forward, .16f, new Color(1f, 1f, .95f), TextAnchor.LowerCenter); tm.gameObject.name = "Words"; tm.gameObject.AddComponent<Billboard>(); tm.gameObject.AddComponent<FadingWords>(); }
-            else tm = w.GetComponent<TextMesh>();
-            tm.transform.position = at; tm.text = text; tm.gameObject.SetActive(true); tm.GetComponent<FadingWords>().left = seconds;
+            var w = parent.Find("Words"); var bubble = w != null ? w.GetComponent<SpeechBubble>() : null;
+            if (bubble == null) bubble = SpeechBubble.Make(parent, "Words");
+            bubble.Show(SpeechBubble.Wrap(text, 34), at, seconds);
         }
 
         /// A box collider on its own object (for things built into a shared mesh).

@@ -16,7 +16,7 @@ namespace EverythingWorld.Music
         void OnGUI()
         {
             if (director == null) return;
-            style ??= new GUIStyle(GUI.skin.box) { fontSize = 18, alignment = TextAnchor.UpperLeft, wordWrap = true };
+            style ??= EverythingWorld.World.GameFonts.Box(17, TextAnchor.UpperLeft, true);
 
             var useSpotify = outputSwitch != null && outputSwitch.useSpotify;
             var here = director.CurrentScene;

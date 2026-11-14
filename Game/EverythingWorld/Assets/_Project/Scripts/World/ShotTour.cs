@@ -135,6 +135,15 @@ namespace EverythingWorld.World
                 // the things you carry: the paper map held up, and the sunglasses on (only with --only)
                 var hand = player != null ? player.GetComponent<EverythingWorld.Player.MapInHand>() : null; var shades = player != null ? player.GetComponent<EverythingWorld.Player.Sunglasses>() : null;
                 if (hand != null) { hand.Hold(true, true); yield return Shot("map in hand", feetAt, 0f, 14f, 1f); hand.Hold(false, true); }
+                // someone near where you arrive, saying something (the speech box)
+                Resident talker = null; var td = 60f;
+                foreach (var r in FindObjectsByType<Resident>(FindObjectsSortMode.None)) { var dd = Vector3.Distance(r.transform.position, feetAt); if (dd < td && r.lines != null && r.lines.Length > 0) { td = dd; talker = r; } }
+                if (talker != null)
+                {
+                    var face = talker.transform.forward; face.y = 0; if (face.sqrMagnitude < .01f) face = Vector3.forward; face.Normalize();
+                    var standAt = Feet(talker.transform.position + face * 3.2f + Vector3.Cross(Vector3.up, face) * .8f); var look = talker.transform.position + Vector3.up * 1.9f - (standAt + Vector3.up * .7f);
+                    talker.Use(null); yield return Shot("someone talking", standAt, Quaternion.LookRotation(new Vector3(look.x, 0, look.z)).eulerAngles.y, -8f, 1f);
+                }
                 if (shades != null) { var was = shades.On; shades.Wear(true, true); yield return Shot("with sunglasses", feetAt, 0f, 4f, 1f); shades.Wear(was, true); }
                 // in front of every artist area, looking at it
                 var kit0 = LandKit.For(isl.name);

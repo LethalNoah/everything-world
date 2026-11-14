@@ -20,7 +20,7 @@ namespace EverythingWorld.World
         public string[] lines;
         public float workRate = 1f;
 
-        TextMesh bubble; float bubbleFor, waveFor, glanceAt, glanceYaw, seed; int lineN, leg; Vector3 legBase;
+        SpeechBubble bubble; float bubbleFor, waveFor, glanceAt, glanceYaw, seed; int lineN, leg; Vector3 legBase;
         Quaternion headRest, armRRest, armLRest;
         public override string Prompt => "Say hi";
 
@@ -36,13 +36,9 @@ namespace EverythingWorld.World
         {
             waveFor = 2.5f;
             if (lines == null || lines.Length == 0) return;
-            if (bubble == null)
-            {
-                bubble = ArtistBits.Label(transform, "", transform.position + Vector3.up * 2.3f, Vector3.forward, .16f, new Color(1f, 1f, .95f), TextAnchor.LowerCenter);
-                bubble.gameObject.AddComponent<Billboard>();
-            }
-            bubble.text = Wrap(lines[lineN++ % lines.Length], 28); bubbleFor = 5f; bubble.gameObject.SetActive(true);
-            bubble.transform.position = (head != null ? head.position : transform.position + Vector3.up * 1.6f) + Vector3.up * .55f;
+            if (bubble == null) bubble = SpeechBubble.Make(transform, "Speech");
+            bubbleFor = 5f;
+            bubble.Show(Wrap(lines[lineN++ % lines.Length], 28), (head != null ? head.position : transform.position + Vector3.up * 1.6f) + Vector3.up * .4f, 5f);
         }
 
         static string Wrap(string s, int width)

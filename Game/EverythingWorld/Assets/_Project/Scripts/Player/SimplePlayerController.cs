@@ -143,7 +143,7 @@ namespace EverythingWorld.Player
         void OnGUI()
         {
             if (!Flying) return;
-            hudStyle ??= new GUIStyle(GUI.skin.box) { fontSize = 16, alignment = TextAnchor.MiddleCenter };
+            hudStyle ??= EverythingWorld.World.GameFonts.Box(16, TextAnchor.MiddleCenter);
             GUI.Box(new Rect(Screen.width / 2f - 230, 12, 460, 30), "Flying  ·  Space up, Ctrl down, Shift faster  ·  F to land", hudStyle);
         }
 

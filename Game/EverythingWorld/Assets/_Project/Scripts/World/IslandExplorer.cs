@@ -141,7 +141,7 @@ namespace EverythingWorld.World
         void OnGUI()
         {
             if (nearTower == null || IslandWorldBuilder.Instance == null) return;
-            style ??= new GUIStyle(GUI.skin.box) { fontSize = 17, alignment = TextAnchor.UpperLeft };
+            style ??= GameFonts.Box(17, TextAnchor.UpperLeft);
             var towers = IslandWorldBuilder.Instance.Towers;
             var text = $"{nearTower.towerName}: fast travel\n";
             for (var i = 0; i < towers.Count && i < 9; i++)

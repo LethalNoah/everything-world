@@ -10,7 +10,7 @@ namespace EverythingWorld.World
     {
         static Font font;
         static Material textMaterial;
-        static Font Font => font != null ? font : font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        static Font Font => font != null ? font : font = GameFonts.Sign;
 
         /// Text that hides behind walls and trees and can't be seen from behind (shader: Everything World/World Text).
         public static Material TextMaterial
@@ -25,6 +25,20 @@ namespace EverythingWorld.World
                 Font.textureRebuilt += f => { if (f == Font && textMaterial != null) textMaterial.mainTexture = f.material.mainTexture; };
                 return textMaterial;
             }
+        }
+
+        static Material speechWorld;
+        /// Switches a label to the rounded speech font (for small, long lines like song titles, which read better
+        /// in it), still hidden behind walls like other world text.
+        public static TextMesh Plain(TextMesh t)
+        {
+            if (speechWorld == null)
+            {
+                var sh = Shader.Find("Everything World/World Text"); var f = GameFonts.Speech;
+                speechWorld = sh != null ? new Material(sh) { name = "World text (speech font)", mainTexture = f.material.mainTexture } : f.material;
+                Font.textureRebuilt += x => { if (x == GameFonts.Speech && speechWorld != null) speechWorld.mainTexture = x.material.mainTexture; };
+            }
+            t.font = GameFonts.Speech; t.GetComponent<MeshRenderer>().sharedMaterial = speechWorld; return t;
         }
 
         /// Text in the world, 'height' metres tall per line, readable from the side 'facing' points to.

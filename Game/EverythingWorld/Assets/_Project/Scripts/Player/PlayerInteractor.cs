@@ -94,7 +94,7 @@ namespace EverythingWorld.Player
             else if (held != null) text = "E  Put down   ·   Click  Throw";
             else if (looking != null) text = "E  " + looking.Prompt;
             if (text == null) return;
-            style ??= new GUIStyle(GUI.skin.box) { fontSize = 18, alignment = TextAnchor.MiddleCenter };
+            style ??= GameFonts.Box(18, TextAnchor.MiddleCenter);
             // the prompt takes the colour of its cue (blue sit, yellow use, white pick up, pink talk)
             style.normal.textColor = seated != null ? InteractCues.SitColor : held != null ? InteractCues.CarryColor : Color.Lerp(InteractCues.ColorOf(looking), Color.white, .25f);
             GUI.Box(new Rect(Screen.width / 2f - 160, Screen.height / 2f + 40, 320, 32), text, style);
