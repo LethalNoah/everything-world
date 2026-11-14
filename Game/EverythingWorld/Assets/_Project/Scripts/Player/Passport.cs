@@ -8,8 +8,8 @@ using UnityEngine.InputSystem;
 namespace EverythingWorld.Player
 {
     /// The passport: press P to open it. A stamp for every land you visit (in the land's colour, with the date),
-    /// a stamp for every artist whose about card you read (E at their plaque), and a stamp for every song you hear
-    /// any of, wherever you hear it. The left page lists the lands by realm with how much of each you've
+    /// a stamp for every artist whose about card you read (E at their plaque), and a stamp for every song you listen
+    /// to for 30 seconds, wherever you hear it. The left page lists the lands by realm with how much of each you've
     /// collected; the right page shows one land: its stamp, its artists and their songs. Saved on this computer
     /// (passport.json in the game's data folder). P or Esc closes it.
     public class Passport : MonoBehaviour
@@ -28,7 +28,7 @@ namespace EverythingWorld.Player
         readonly HashSet<string> lands = new HashSet<string>(), artists = new HashSet<string>(), songs = new HashSet<string>();
         readonly Dictionary<string, string> landDate = new Dictionary<string, string>();
         List<Land> book; int totalArtists, totalSongs;
-        bool open; int selected; Vector2 leftScroll, rightScroll; float nextCheck; string lastTrack;
+        bool open; int selected; Vector2 leftScroll, rightScroll; float nextCheck, lastListen; string lastTrack; readonly Dictionary<string, float> listened = new Dictionary<string, float>();
         SimplePlayerController walker; PlayerInteractor hands;
         readonly Queue<string> news = new Queue<string>(); string showing; float showUntil;
 
@@ -37,6 +37,7 @@ namespace EverythingWorld.Player
         void Awake()
         {
             Instance = this;
+            lastListen = Time.time;
             walker = GetComponent<SimplePlayerController>(); hands = GetComponent<PlayerInteractor>();
             if (NoSave) return;
             try { if (File.Exists(SavePath)) save = JsonUtility.FromJson<Save>(File.ReadAllText(SavePath)) ?? new Save(); } catch { save = new Save(); }
@@ -67,7 +68,7 @@ namespace EverythingWorld.Player
         /// Wipes every stamp (the terminal's reset code). The land you're standing in is stamped again next check.
         public void ResetAll()
         {
-            lands.Clear(); landDate.Clear(); artists.Clear(); songs.Clear(); news.Clear(); showing = null; lastTrack = null;
+            lands.Clear(); landDate.Clear(); artists.Clear(); songs.Clear(); listened.Clear(); news.Clear(); showing = null; lastTrack = null;
             Write();
         }
 
@@ -91,7 +92,13 @@ namespace EverythingWorld.Player
                 nextCheck = Time.time + .5f;
                 if (SkyDirector.Instance != null) VisitLand(SkyDirector.Instance.CurrentLand);
                 var d = MusicDirector.Instance;
-                if (d != null && d.PlayingScene != null && d.CurrentSlot.IsValid && d.CurrentSlot.track.id != lastTrack) { lastTrack = d.CurrentSlot.track.id; HeardSong(d.CurrentSlot.track); }
+                // a song's stamp takes 30 seconds of listening to it (they add up if you come and go while it plays)
+                if (d != null && d.PlayingScene != null && d.CurrentSlot.IsValid && !songs.Contains(d.CurrentSlot.track.id))
+                {
+                    var id = d.CurrentSlot.track.id; listened.TryGetValue(id, out var sec); sec += Time.time - lastListen; listened[id] = sec;
+                    if (sec >= 30f) { listened.Remove(id); HeardSong(d.CurrentSlot.track); }
+                }
+                lastListen = Time.time;
             }
             var kb = Keyboard.current; if (kb == null) return;
             if (kb[key].wasPressedThisFrame && !Typing()) Toggle();
