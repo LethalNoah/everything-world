@@ -52,7 +52,7 @@ namespace EverythingWorld.Spotify
         }
 
 #pragma warning disable 0649 // filled in by JsonUtility
-        [Serializable] class Device { public string id; public string name; public string type; public bool is_active; public bool is_restricted; }
+        [Serializable] class Device { public string id; public string name; public string type; public bool is_active; public bool is_restricted; public int volume_percent = -1; }
         [Serializable] class DeviceList { public Device[] devices; }
         [Serializable] class Item { public string name; public string uri; public int duration_ms; }
         [Serializable] class PlayerState { public Device device; public bool is_playing; public int progress_ms; public Item item; }
@@ -87,6 +87,51 @@ namespace EverythingWorld.Spotify
         {
             var keyboard = Keyboard.current;
             if (keyboard != null && keyboard.lKey.wasPressedThisFrame) Login();
+            // - and = (or the number pad's - and +) turn Spotify down and up, ten percent a press
+            if (keyboard != null)
+            {
+                if (keyboard.minusKey.wasPressedThisFrame || keyboard.numpadMinusKey.wasPressedThisFrame) ChangeVolume(-10);
+                if (keyboard.equalsKey.wasPressedThisFrame || keyboard.numpadPlusKey.wasPressedThisFrame) ChangeVolume(10);
+            }
+            if (volumeSendAt > 0f && Time.unscaledTime >= volumeSendAt) { volumeSendAt = -1f; SendVolume(); }
+        }
+
+        // ---------------------------------------------------------------- volume
+        int volume = -1; float volumeSendAt = -1f, volumeShownUntil; string volumeNote; GUIStyle volumeStyle; bool volumeLooking;
+
+        async void ChangeVolume(int step)
+        {
+            volumeShownUntil = Time.unscaledTime + 2f;
+            if (auth == null || !auth.IsLoggedIn) { volumeNote = "Spotify isn't connected (press L to log in)"; return; }
+            if (volume < 0)
+            {
+                if (volumeLooking) return; volumeLooking = true;   // first press: find out where it is now
+                var state = await GetPlayerState(); volumeLooking = false;
+                volume = state?.device != null && state.device.volume_percent >= 0 ? state.device.volume_percent : 70;
+            }
+            volume = Mathf.Clamp(volume + step, 0, 100); volumeNote = null;
+            volumeShownUntil = Time.unscaledTime + 2f; volumeSendAt = Time.unscaledTime + .3f;   // sent once you stop pressing
+        }
+
+        async void SendVolume()
+        {
+            var url = $"{Api}/me/player/volume?volume_percent={volume}" + (deviceId != null ? $"&device_id={deviceId}" : "");
+            var (code, _, _) = await Send("PUT", url, null);
+            if (code == 403) { volumeNote = "This Spotify device doesn't allow volume control"; volumeShownUntil = Time.unscaledTime + 2.5f; }
+            else if (code == 404) { volumeNote = "Spotify isn't playing on any device yet"; volumeShownUntil = Time.unscaledTime + 2.5f; }
+        }
+
+        Texture2D barOn, barOff;
+        void OnGUI()
+        {
+            if (Time.unscaledTime > volumeShownUntil) return;
+            volumeStyle ??= EverythingWorld.World.GameFonts.Box(16, TextAnchor.MiddleLeft);
+            var r = new Rect(Screen.width / 2f - 210, Screen.height - 90, 420, 34);
+            if (volumeNote != null || volume < 0) { volumeStyle.alignment = TextAnchor.MiddleCenter; GUI.Box(r, volumeNote ?? "Spotify volume…", volumeStyle); return; }
+            volumeStyle.alignment = TextAnchor.MiddleLeft; GUI.Box(r, $"Spotify volume  {volume}%", volumeStyle);
+            if (barOn == null) { barOn = new Texture2D(1, 1); barOn.SetPixel(0, 0, new Color(1f, .82f, .45f)); barOn.Apply(); barOff = new Texture2D(1, 1); barOff.SetPixel(0, 0, new Color(1f, 1f, 1f, .18f)); barOff.Apply(); }
+            var bar = new Rect(r.x + 200, r.y + 13, 200, 8);
+            GUI.DrawTexture(bar, barOff); GUI.DrawTexture(new Rect(bar.x, bar.y, bar.width * volume / 100f, bar.height), barOn);
         }
 
         public async void Login()
