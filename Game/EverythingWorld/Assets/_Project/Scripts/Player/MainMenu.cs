@@ -50,7 +50,7 @@ namespace EverythingWorld.Player
 
         void Put(Vector3 p)
         {
-            var w = IslandWorldBuilder.Instance; p.y = Mathf.Max(w.Data.HeightAt(p.x, p.z), w.Data.layout.waterLevel) + 1.2f;
+            p = IslandExplorer.StandingSpot(p, transform);   // on top of whatever's there, never inside it
             var cc = GetComponent<CharacterController>(); if (cc != null) cc.enabled = false; transform.position = p; if (cc != null) cc.enabled = true;
         }
 

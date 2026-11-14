@@ -135,10 +135,43 @@ namespace EverythingWorld.World
             return islandSceneId;
         }
 
+        /// Where a player can stand at (or near) a spot: on top of whatever is there (the ground, a deck, a dais, a
+        /// floor up to 3 m up, never a roof), with room for their whole body. If that spot is blocked, it looks
+        /// outward in rings for the nearest clear one. Returns the body's middle (the CharacterController's centre).
+        public static Vector3 StandingSpot(Vector3 p, Transform ignore = null)
+        {
+            var world = IslandWorldBuilder.Instance;
+            Vector3 Feet(Vector3 q)
+            {
+                var ground = Mathf.Max(world.Data.HeightAt(q.x, q.z), world.Data.layout.waterLevel);
+                foreach (var h in Physics.RaycastAll(new Vector3(q.x, ground + 40f, q.z), Vector3.down, 60f, ~0, QueryTriggerInteraction.Ignore))
+                {
+                    if (ignore != null && h.collider.transform.IsChildOf(ignore)) continue;
+                    if (h.point.y > ground && h.point.y < ground + 3f && h.normal.y > .6f) ground = h.point.y;
+                }
+                return new Vector3(q.x, ground, q.z);
+            }
+            bool Clear(Vector3 feet)
+            {
+                foreach (var c in Physics.OverlapCapsule(feet + Vector3.up * .45f, feet + Vector3.up * 1.6f, .38f, ~0, QueryTriggerInteraction.Ignore))
+                    if (ignore == null || !c.transform.IsChildOf(ignore)) return false;
+                return true;
+            }
+            var f0 = Feet(p);
+            if (Clear(f0)) return f0 + Vector3.up * 1.2f;
+            for (var r = 1.5f; r <= 24f; r += 1.5f)
+                for (var k = 0; k < 16; k++)
+                {
+                    var a = k * Mathf.PI / 8f; var q = p + new Vector3(Mathf.Cos(a), 0, Mathf.Sin(a)) * r;
+                    var f = Feet(q); if (world.Data.IslandAt(q.x, q.z) != null && Clear(f)) return f + Vector3.up * 1.2f;
+                }
+            return f0 + Vector3.up * 1.2f;
+        }
+
         void PlaceAt(Vector3 p, bool keepHeight = false)
         {
             var world = IslandWorldBuilder.Instance;
-            if (!keepHeight) p.y = Mathf.Max(world.Data.HeightAt(p.x, p.z), world.Data.layout.waterLevel) + 1.2f;
+            if (!keepHeight) p = StandingSpot(p, transform);
             controller.enabled = false;  // a CharacterController ignores direct moves while enabled
             transform.position = p;
             controller.enabled = walker == null || !walker.Flying;
