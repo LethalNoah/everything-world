@@ -182,7 +182,8 @@ namespace EverythingWorld.World
 
         void Strip(MeshKit mk, List<Vector3> pts, Material m, float w, float lift, LandContext ground)
         {
-            var n = pts.Count; var L = new Vector3[n]; var Rr = new Vector3[n];
+            // laid in narrow lanes across its width, every vertex on the ground, so on side slopes it tilts with the hill
+            var n = pts.Count; var lanes = Mathf.Max(1, Mathf.CeilToInt(w / 1.5f)); var V = new Vector3[n, lanes + 1];
             Vector3 Flat(Vector3 v) { v.y = 0; return v.normalized; }
             for (var i = 0; i < n; i++)
             {
@@ -190,11 +191,17 @@ namespace EverythingWorld.World
                 var b = i < n - 1 ? Flat(pts[i + 1] - pts[i]) : Flat(pts[n - 1] - pts[n - 2]);
                 var t = (a + b).normalized; var side = Vector3.Cross(Vector3.up, t);
                 var miter = 1f / Mathf.Max(.6f, Vector3.Dot(side, Vector3.Cross(Vector3.up, b)));
-                L[i] = pts[i] - side * (w / 2f * miter); Rr[i] = pts[i] + side * (w / 2f * miter);
-                float gl = ground.Ground(L[i].x, L[i].z), gr = ground.Ground(Rr[i].x, Rr[i].z), bulge = Mathf.Clamp(pts[i].y - (gl + gr) / 2f, 0f, .3f);
-                L[i].y = gl + bulge + lift; Rr[i].y = gr + bulge + lift;
+                for (var k = 0; k <= lanes; k++) { var q = pts[i] + side * ((k / (float)lanes - .5f) * w * miter); q.y = ground.Ground(q.x, q.z) + lift; V[i, k] = q; }
             }
-            for (var i = 0; i + 1 < n; i++) mk.Quad(m, L[i], Rr[i], Rr[i + 1], L[i + 1], (pts[i] + pts[i + 1]) / 2f - Vector3.up);
+            for (var i = 0; i + 1 < n; i++) for (var k = 0; k < lanes; k++) mk.Quad(m, V[i, k], V[i, k + 1], V[i + 1, k + 1], V[i + 1, k], (V[i, k] + V[i + 1, k + 1]) / 2f - Vector3.up);
+        }
+
+        /// True when the ground within r of (x, z) rises or falls no more than 'rise'.
+        bool Gentle(LandContext ctx, float x, float z, float r, float rise)
+        {
+            float lo = ctx.Ground(x, z), hi = lo;
+            for (var k = 0; k < 8; k++) { var a = k * Mathf.PI / 4f; var h = ctx.Ground(x + Mathf.Cos(a) * r, z + Mathf.Sin(a) * r); lo = Mathf.Min(lo, h); hi = Mathf.Max(hi, h); }
+            return hi - lo <= rise;
         }
 
         /// A street lamp with a star on top.
@@ -222,7 +229,7 @@ namespace EverythingWorld.World
         void Billboard(LandContext ctx, MeshKit mk, Vector3 g, Vector3 face, int i)
         {
             var up = Vector3.up; var rot = Quaternion.LookRotation(face); var side = Vector3.Cross(up, face); string[] words = { "SING IT!", "ENCORE", "#1", "ON TOUR", "SOLD OUT", "LOUDER!", "ALL TOGETHER", "ONE MORE TIME", "STAN", "LIVE TONIGHT" };
-            foreach (var e in new[] { -2f, 2f }) { mk.Prism(white, g + side * e - up * .3f, up, .12f, 5.2f, 5); ArtistBits.PostCollider(ctx.Root, g + side * e, 5f, .14f); }
+            foreach (var e in new[] { -2f, 2f }) { var leg = g + side * e; var drop = Mathf.Max(0f, leg.y - ctx.Ground(leg.x, leg.z)); mk.Prism(white, leg - up * (.3f + drop), up, .12f, 5.2f + drop, 5); ArtistBits.PostCollider(ctx.Root, leg - up * drop, 5f + drop, .14f); }
             mk.Box(white, g + up * 6.2f, new Vector3(6.6f, 3.2f, .16f), rot); mk.Box(Paint(Candy[i % Candy.Length]), g + up * 6.2f + face * .1f, new Vector3(6.2f, 2.8f, .04f), rot); for (var k = 0; k < 8; k++) mk.Blob(bulbM[k % 3], g + up * 7.86f + side * (-3f + k * .86f) + face * .1f, Vector3.one * .1f, new System.Random(k), 0f);
             Sign(g + up * 6.2f + face * .14f, face, words[i % words.Length], .7f, Ink);
         }
@@ -311,6 +318,8 @@ namespace EverythingWorld.World
                 var p = ctx.OnGround(px, pz); var f = FaceTo(p, NearestWalk(p));
                 if (roll < .16f) { if (!Open(ctx, px, pz, 7f) || !ctx.IsLand(px, pz, 8f) || Mathf.Abs(ctx.Ground(px + 4f, pz) - ctx.Ground(px - 4f, pz)) > 2f || Mathf.Abs(ctx.Ground(px, pz + 4f) - ctx.Ground(px, pz - 4f)) > 2f) continue; House(ctx, mk, solid, new PlaceFrame(p, f), houses + 30, rng); houses++; }
                 else if (roll < .5f) { Lollipop(ctx, mk, p, .8f + s * .7f, trees, rng); trees++; }
+                else if (roll >= .68f) continue;
+                else if (!Gentle(ctx, px, pz, roll < .55f ? 3.4f : roll < .58f ? 2.4f : 1.6f, roll < .55f ? 1.6f : .6f)) continue;   // benches, fountains, carts and billboards only on gentle ground
                 else if (roll < .55f) { Billboard(ctx, mk, p, f, boards + 3); noGrass.Add(new Vector3(p.x, 3f, p.z)); boards++; }
                 else if (roll < .58f) { Fountain(ctx, mk, p, .7f); fountains++; }
                 else if (roll < .65f) { Bench(ctx.Root, mk, p, f); StarLamp(ctx, mk, p - f * 1f + Vector3.Cross(Vector3.up, f) * 1.4f, benches, benches % 2 == 0); noGrass.Add(new Vector3(p.x, 2f, p.z)); benches++; }
