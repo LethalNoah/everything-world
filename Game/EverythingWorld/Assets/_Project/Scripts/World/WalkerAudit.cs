@@ -82,19 +82,20 @@ namespace EverythingWorld.World
                     var mat = s < mats.Length ? mats[s] : null;
                     if (mat == null || mat.renderQueue >= 3000 || (mat.shader != null && mat.shader.name.Contains("Particles"))) continue;   // glass, water, glows
                     var what = Name(objName + " (" + mat.name.Replace(" (Instance)", "") + ")");
+                    var glowing = mat.IsKeywordEnabled("_EMISSION");   // lava, neon streams, glowing cracks: never a path
                     var tris = mesh.GetTriangles(s);
                     for (var t = 0; t < tris.Length; t += 3)
                     {
                         Vector3 a = tf.TransformPoint(verts[tris[t]]), b = tf.TransformPoint(verts[tris[t + 1]]), c = tf.TransformPoint(verts[tris[t + 2]]);
                         var n = Vector3.Cross(b - a, c - a); if (n.sqrMagnitude < 1e-8f) continue; n.Normalize();
-                        if (Mathf.Abs(n.y) > .9f) Flat(a, b, c);
+                        if (Mathf.Abs(n.y) > .9f) Flat(a, b, c, glowing);
                         else Sloped(a, b, c, n, what);
                     }
                 }
             }
 
             // a flat triangle: lying on the ground it is somewhere you walk; anywhere, it is something under a wall
-            void Flat(Vector3 a, Vector3 b, Vector3 c)
+            void Flat(Vector3 a, Vector3 b, Vector3 c, bool glowing)
             {
                 int i0 = Mathf.FloorToInt((Mathf.Min(a.x, Mathf.Min(b.x, c.x)) - x0) / C), i1 = Mathf.FloorToInt((Mathf.Max(a.x, Mathf.Max(b.x, c.x)) - x0) / C);
                 int j0 = Mathf.FloorToInt((Mathf.Min(a.z, Mathf.Min(b.z, c.z)) - z0) / C), j1 = Mathf.FloorToInt((Mathf.Max(a.z, Mathf.Max(b.z, c.z)) - z0) / C);
@@ -108,16 +109,16 @@ namespace EverythingWorld.World
                     var u = ((b.z - c.z) * (px - c.x) + (c.x - b.x) * (pz - c.z)) / den;
                     var v = ((c.z - a.z) * (px - c.x) + (a.x - c.x) * (pz - c.z)) / den;
                     if (u < -.001f || v < -.001f || u + v > 1.001f) continue;
-                    hit = true; Mark(i + j * nx, u * a.y + v * b.y + (1f - u - v) * c.y);
+                    hit = true; Mark(i + j * nx, u * a.y + v * b.y + (1f - u - v) * c.y, glowing);
                 }
-                if (!hit) { var m = (a + b + c) / 3f; var k = Cell(m.x, m.z); if (k >= 0) Mark(k, m.y); }   // smaller than a cell
+                if (!hit) { var m = (a + b + c) / 3f; var k = Cell(m.x, m.z); if (k >= 0) Mark(k, m.y, glowing); }   // smaller than a cell
             }
-            void Mark(int k, float y)
+            void Mark(int k, float y, bool glowing)
             {
                 var g = Mathf.Max(gnd[k], wet[k]);
                 low[k] = Mathf.Min(low[k], y - g); if (y - gnd[k] > 2.2f && y - gnd[k] < 9f) roof[k] = true;
                 var h = y - gnd[k];
-                if (h >= WalkLow && h <= WalkHigh && y > wet[k] + .05f) surf[k] = Mathf.Max(surf[k], y);
+                if (!glowing && h >= WalkLow && h <= WalkHigh && y > wet[k] + .05f) surf[k] = Mathf.Max(surf[k], y);
             }
             // anything else: body height marks the cell; the bottom edge of a tall wall is checked for hanging
             void Sloped(Vector3 a, Vector3 b, Vector3 c, Vector3 n, int what)
