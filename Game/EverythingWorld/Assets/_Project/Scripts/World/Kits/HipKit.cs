@@ -169,7 +169,8 @@ namespace EverythingWorld.World
 
         void Strip(MeshKit mk, List<Vector3> pts, Material m, float w, float lift, LandContext ground)
         {
-            var n = pts.Count; var L = new Vector3[n]; var Rr = new Vector3[n];
+            // laid in narrow lanes across its width, every vertex on the ground, so on side slopes it tilts with the hill
+            var n = pts.Count; var lanes = Mathf.Max(1, Mathf.CeilToInt(w / 1.5f)); var V = new Vector3[n, lanes + 1];
             Vector3 Flat(Vector3 v) { v.y = 0; return v.normalized; }
             for (var i = 0; i < n; i++)
             {
@@ -177,11 +178,17 @@ namespace EverythingWorld.World
                 var b = i < n - 1 ? Flat(pts[i + 1] - pts[i]) : Flat(pts[n - 1] - pts[n - 2]);
                 var t = (a + b).normalized; var side = Vector3.Cross(Vector3.up, t);
                 var miter = 1f / Mathf.Max(.6f, Vector3.Dot(side, Vector3.Cross(Vector3.up, b)));
-                L[i] = pts[i] - side * (w / 2f * miter); Rr[i] = pts[i] + side * (w / 2f * miter);
-                float gl = ground.Ground(L[i].x, L[i].z), gr = ground.Ground(Rr[i].x, Rr[i].z), bulge = Mathf.Clamp(pts[i].y - (gl + gr) / 2f, 0f, .3f);
-                L[i].y = gl + bulge + lift; Rr[i].y = gr + bulge + lift;
+                for (var k = 0; k <= lanes; k++) { var q = pts[i] + side * ((k / (float)lanes - .5f) * w * miter); q.y = ground.Ground(q.x, q.z) + lift; V[i, k] = q; }
             }
-            for (var i = 0; i + 1 < n; i++) mk.Quad(m, L[i], Rr[i], Rr[i + 1], L[i + 1], (pts[i] + pts[i + 1]) / 2f - Vector3.up);
+            for (var i = 0; i + 1 < n; i++) for (var k = 0; k < lanes; k++) mk.Quad(m, V[i, k], V[i, k + 1], V[i + 1, k + 1], V[i + 1, k], (V[i, k] + V[i + 1, k + 1]) / 2f - Vector3.up);
+        }
+
+        /// True when the ground within r of (x, z) rises or falls no more than 'rise'.
+        bool Gentle(LandContext ctx, float x, float z, float r, float rise)
+        {
+            float lo = ctx.Ground(x, z), hi = lo;
+            for (var k = 0; k < 8; k++) { var a = k * Mathf.PI / 4f; var h = ctx.Ground(x + Mathf.Cos(a) * r, z + Mathf.Sin(a) * r); lo = Mathf.Min(lo, h); hi = Mathf.Max(hi, h); }
+            return hi - lo <= rise;
         }
 
         /// A street lamp: a tall post with an arm and a warm head.
@@ -300,6 +307,7 @@ namespace EverythingWorld.World
                 float px = x + (float)rng.NextDouble() * cell, pz = z + (float)rng.NextDouble() * cell; var roll = (float)rng.NextDouble(); var s = (float)rng.NextDouble();
                 if (!Open(ctx, px, pz, 4f)) continue;
                 var p = ctx.OnGround(px, pz); var f = FaceTo(p, NearestWalk(p));
+                if ((roll >= .2f && roll < .27f || roll >= .47f && roll < .68f) && !Gentle(ctx, px, pz, roll < .27f ? 3.4f : roll < .53f ? 3f : 2.4f, roll < .27f ? 1.6f : .6f)) continue;   // billboards, cars, benches and crates only on gentle ground
                 if (roll < .2f) { if (!Open(ctx, px, pz, 8f) || !ctx.IsLand(px, pz, 9f) || Mathf.Abs(ctx.Ground(px + 5f, pz) - ctx.Ground(px - 5f, pz)) > 2.2f || Mathf.Abs(ctx.Ground(px, pz + 5f) - ctx.Ground(px, pz - 5f)) > 2.2f) continue; Block(ctx, mk, solid, new PlaceFrame(p, f), blocks + 40, rng, 8f, 7f); blocks++; }
                 else if (roll < .27f) { Billboard(ctx, mk, p, f, boards, rng); boards++; }
                 else if (roll < .47f) { StreetTree(ctx, mk, p, .9f + s * .5f, rng); trees++; }
@@ -314,7 +322,7 @@ namespace EverythingWorld.World
         void Billboard(LandContext ctx, MeshKit mk, Vector3 g, Vector3 face, int i, System.Random rng)
         {
             var up = Vector3.up; var rot = Quaternion.LookRotation(face); var side = Vector3.Cross(up, face); string[] words = { "LOUDER", "YOU MADE IT", "TURN IT UP", "WE UP", "ALL GOLD", "NO SLEEP", "BARS", "ENCORE" };
-            foreach (var e in new[] { -2f, 2f }) { mk.Prism(iron, g + side * e - up * .3f, up, .12f, 5.4f, 5); ArtistBits.PostCollider(ctx.Root, g + side * e, 5f, .14f); }
+            foreach (var e in new[] { -2f, 2f }) { var leg = g + side * e; var drop = Mathf.Max(0f, leg.y - ctx.Ground(leg.x, leg.z)); mk.Prism(iron, leg - up * (.3f + drop), up, .12f, 5.4f + drop, 5); ArtistBits.PostCollider(ctx.Root, leg - up * drop, 5f + drop, .14f); }
             mk.Box(dark, g + up * 6.4f, new Vector3(6.6f, 3.2f, .16f), rot); mk.Box(Paint(Tags[(i * 3 + 1) % Tags.Length]), g + up * 6.4f + face * .1f, new Vector3(6.2f, 2.8f, .04f), rot); mk.Box(goldM, g + up * 5.36f + face * .14f, new Vector3(6.2f, .3f, .03f), rot);
             Sign(g + up * 6.6f + face * .16f, face, words[i % words.Length], .7f, i % 2 == 0 ? Ink : Cream); mk.Box(lampM, g + up * 8.1f + face * .5f, new Vector3(5f, .08f, .14f), rot);
         }
