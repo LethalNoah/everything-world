@@ -5,7 +5,7 @@ namespace EverythingWorld.Player
 {
     /// The tutorial: a night walk along a path of lights, far from the Everything World, taught by signs only.
     /// Look, walk, jump a low wall, run, sit on a bench, pick up and throw a ball, switch on a lamp, read an
-    /// artist's plaque, the map and the passport, choose your light, then a blinding stretch of white where the
+    /// artist's plaque, the map and the passport, then a blinding stretch of white where the
     /// sunglasses earn their keep, then Esc and the towers. The path ends at a cliff. The signs say keep walking.
     /// You fall, everything goes white, and you wake at the pearly gates, where a terminal asks a riddle; the
     /// answer opens the gates, and the Everything World opens on the title screen (remembered).
@@ -91,20 +91,14 @@ namespace EverythingWorld.Player
             // walls you can't see, so the only way off is the end
             foreach (var x in new[] { -8.5f, 8.5f }) solid.Box(rock, P(x, 3f, PathEnd / 2f - 6f), new Vector3(1f, 8f, PathEnd + 4f));
             solid.Box(rock, P(0, 3f, -6f), new Vector3(18f, 8f, 1f));
-            // lanterns both sides, all the way to the edge
-            var n = 0;
-            for (var z = 2f; z <= PathEnd - 2f; z += 6f, n++)
-                foreach (var x in new[] { -3f, 3f })
-                {
-                    var g = P(x, 0, z); mk.Prism(iron, g, up, .06f, 2.4f, 6); mk.Blob(lamp, g + up * 2.5f, new Vector3(.16f, .22f, .16f), rng, 0f); ArtistBits.PostCollider(t, g, 2.4f, .1f);
-                    if ((n + (x > 0 ? 1 : 0)) % 2 == 0) ArtistBits.PointLight(t, g + up * 2.5f, warm, 13f, 2f);
-                }
-            // the signs
+            // the signs (each remembered, so no lantern is put through one)
+            var boards = new System.Collections.Generic.List<(float z, float x, float w)>();
             void Sign(float z, float x, string text)
             {
                 var g = P(x, 0, z); mk.Prism(wood, g, up, .07f, 1.7f, 6); ArtistBits.PostCollider(t, g, 1.7f, .1f);
                 var rows = text.Split('\n'); var lines = rows.Length; var h = .3f + lines * .2f; var longest = 0; foreach (var r in rows) longest = Mathf.Max(longest, r.Length);
                 var w = Mathf.Max(2.6f, longest * .088f + .5f);   // (about 9 cm a letter at this size)
+                boards.Add((z, x, w));
                 mk.Box(wood, g + up * (1.6f + h / 2f), new Vector3(w, h, .08f)); mk.Box(WorldMaterials.Solid(new Color(.86f, .8f, .68f)), g + up * (1.6f + h / 2f) - Vector3.forward * .045f, new Vector3(w - .15f, h - .12f, .02f));
                 ArtistBits.Label(t, text, g + up * (1.6f + h / 2f) - Vector3.forward * .06f, Vector3.back, .15f, new Color(.18f, .12f, .08f), TextAnchor.MiddleCenter);
                 PlaceTools.BoxCol(t, g + up * (1.6f + h / 2f), new Vector3(w, h, .25f), Quaternion.identity);   // solid, not a ghost
@@ -140,7 +134,7 @@ namespace EverythingWorld.Player
             var lg = P(2.4f, 0, 66f); mk.Prism(iron, lg, up, .08f, 2f, 6); ArtistBits.PostCollider(t, lg, 2f, .12f); Mark(lg, 1f, 2.5f);
             var lm = new MeshKit(); var glowMat = new Material(WorldMaterials.Glow(new Color(.5f, .8f, 1f), 1f)) { name = "Tutorial lamp" }; lm.Blob(glowMat, Vector3.zero, Vector3.one * .3f, rng, 0f);
             var lgo = lm.BuildSingle("Lamp", t, false); lgo.transform.position = lg + up * 2.25f;
-            var toy = Interact.Toy(lgo, Toy.Kind.Glow, "Switch on", new Vector3(.8f, .8f, .8f)); toy.glow = glowMat; toy.glowColor = new Color(.5f, .8f, 1f);
+            var toy = Interact.Toy(lgo, Toy.Kind.Glow, "Switch on", new Vector3(.8f, .8f, .8f)); toy.glow = glowMat; toy.glowColor = new Color(.5f, .8f, 1f); glowMat.SetColor("_EmissionColor", toy.glowColor * .4f);   // off to start with
             // an artist's plaque
             Sign(71f, 1.8f, "Every artist has a plaque.\nPress E at one to read about them.");
             var data = IslandWorldBuilder.Instance != null ? IslandWorldBuilder.Instance.Data : null; IslandWorldData.Artist artist = null;
@@ -149,21 +143,9 @@ namespace EverythingWorld.Player
             if (artist != null) Mark(P(-2.4f, 0, 74f), 1.3f, 2.1f);
             if (artist != null) ArtistBits.Plaque(mk, solid, labels, artist, P(-2.4f, 0, 74f), Vector3.right, wood, WorldMaterials.Solid(new Color(.9f, .86f, .78f)), new Color(.12f, .1f, .08f));
             Sign(80f, 1.8f, "M shows your map.\nJ opens your passport: a stamp for every land\nyou visit, every artist you read about,\nand every song you hear for 30 seconds.");
-            // choose your light
-            Sign(88f, -1.8f, "This light is you.\nPress E on an orb to take its colour.");
-            var pal = PlayerOrb.Palette;
-            for (var i = 0; i < pal.Length; i++)
-            {
-                var side = i % 2 == 0 ? -1f : 1f; var pp = P(side * (4.4f + (i % 3) * .1f), 0, 90f + (i / 2) * 1.5f);
-                mk.Prism(stone, pp, up, .2f, 1.05f, 10); ArtistBits.PostCollider(t, pp, 1.1f, .22f);
-                var go = new GameObject("Colour: " + pal[i].name); go.SetActive(false); go.transform.SetParent(t, false); go.transform.position = pp + up * 1.45f;
-                var show = go.AddComponent<PlayerOrb>(); show.isLocal = false; show.display = true; show.radius = .17f; go.SetActive(true); show.Choose(i); show.Place(pp + up * 1.45f);
-                var pick = new GameObject("Pick " + pal[i].name); pick.transform.SetParent(t, false); pick.transform.position = pp + up * 1.45f; var idx = i;
-                Interact.Toy(pick, Toy.Kind.Custom, "Glow " + pal[i].name, new Vector3(.5f, .9f, .5f)).onUse = _ => { if (PlayerOrb.Local != null) PlayerOrb.Local.Choose(idx); };
-            }
             // the blinding stretch
             Sign(100f, 1.8f, "Some places are very bright.\nPress G for sunglasses.\nG again takes them off.");
-            var dazzle = WorldMaterials.Glow(new Color(1f, .96f, .86f), 2.2f); var dazzleB = WorldMaterials.Glow(new Color(1f, .86f, .55f), 1.6f);
+            var dazzle = WorldMaterials.Glow(new Color(1f, .96f, .86f), 1.6f); var dazzleB = WorldMaterials.Glow(new Color(1f, .86f, .55f), 1.6f);
             mk.Box(dazzle, P(0, .03f, 121f), new Vector3(15f, .04f, 34f));
             for (var z = 105f; z <= 137f; z += 2f) mk.Box(dazzleB, P(0, .06f, z), new Vector3(15f, .02f, .25f));       // gold lines across the floor
             foreach (var x in new[] { -7f, 7f })
@@ -171,11 +153,21 @@ namespace EverythingWorld.Player
                 mk.Box(dazzle, P(x, 3f, 121f), new Vector3(.4f, 6f, 34f));
                 for (var z = 106f; z <= 136f; z += 3f) mk.Box(dazzleB, P(x * .97f, 3f, z), new Vector3(.1f, 5.6f, .4f));  // ribs along the walls
             }
-            for (var z = 106f; z <= 136f; z += 6f) { ArtistBits.PointLight(t, P(-4f, 4f, z), Color.white, 14f, 3f); ArtistBits.PointLight(t, P(4f, 4f, z + 3f), new Color(1f, .95f, .8f), 14f, 3f); }
+            for (var z = 106f; z <= 136f; z += 6f) { ArtistBits.PointLight(t, P(-4f, 4f, z), Color.white, 14f, 2f); ArtistBits.PointLight(t, P(4f, 4f, z + 3f), new Color(1f, .95f, .8f), 14f, 2f); }
             // pausing and the towers, then the end
             Sign(144f, -1.8f, "Esc pauses the game.\nIn the world, towers carry you between realms,\nand H at any tower brings you back to the Hub.");
             Sign(156f, 1.8f, "That's everything.\nKeep walking.");
             Sign(170f, -1.8f, "Don't stop.");
+            // lanterns both sides, all the way to the edge
+            var n = 0;
+            for (var z = 2f; z <= PathEnd - 2f; z += 6f, n++)
+                foreach (var x in new[] { -3f, 3f })
+                {
+                    var blocked = false; foreach (var (sz, sx, sw) in boards) if (Mathf.Abs(z - sz) < .8f && Mathf.Abs(x - sx) < sw / 2f + .4f) blocked = true;
+                    if (blocked) continue;   // a sign stands here: no lantern through it
+                    var g = P(x, 0, z); mk.Prism(iron, g, up, .06f, 2.4f, 6); mk.Blob(lamp, g + up * 2.5f, new Vector3(.16f, .22f, .16f), rng, 0f); ArtistBits.PostCollider(t, g, 2.4f, .1f);
+                    if ((n + (x > 0 ? 1 : 0)) % 2 == 0) ArtistBits.PointLight(t, g + up * 2.5f, warm, 13f, 2f);
+                }
             mk.Build("Walk", t, false); solid.BuildCollider("Walk walls", t);
             return root;
         }
