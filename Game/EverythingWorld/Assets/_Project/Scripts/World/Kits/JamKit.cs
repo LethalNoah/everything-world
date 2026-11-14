@@ -76,6 +76,50 @@ namespace EverythingWorld.World
             }
             Level(data, index, heart, 16f, 34f);
             foreach (var (at, flat, blend) in new[] { (CampAt, 28f, 42f), (SwimAt, 24f, 36f), (WheelAt, 11f, 20f), (DomeAt, 8f, 15f), (GalleryAt, 8f, 14f) }) Level(data, index, at, flat, blend);
+            // the festival roads lie level from side to side (on a hillside a road's flat strip stood half a metre
+            // proud of the ground at one edge, a ledge where the trails and spokes meet it)
+            var roads = new List<(Vector2[] way, bool closed)> { (LoopWay, true), (SouthWay, false), (NorthWay, false) };
+            foreach (var s in Spokes) { var to = LoopWay[s]; var dir = (to - heart).normalized; var sd = new Vector2(-dir.y, dir.x); roads.Add((new[] { heart + dir * 14f, Vector2.Lerp(heart, to, .5f) + sd * 12f, to }, false)); }
+            LevelAcross(data, index, roads, RoadW / 2f + .8f, RoadW / 2f + 5f);
+        }
+
+        /// Sets the ground across each road to the road's own height, blending back to the hillside beside it.
+        static void LevelAcross(IslandWorldData data, int index, List<(Vector2[] way, bool closed)> roads, float flat, float blend)
+        {
+            var line = new List<Vector3>();   // x, height, z along the roads, a point a metre
+            foreach (var (way, closed) in roads)
+            {
+                var n = way.Length; var segs = closed ? n : n - 1;
+                for (var i = 0; i < segs; i++)
+                {
+                    Vector2 p0 = way[closed ? (i - 1 + n) % n : Mathf.Max(i - 1, 0)], p1 = way[i], p2 = way[(i + 1) % n], p3 = way[closed ? (i + 2) % n : Mathf.Min(i + 2, n - 1)];
+                    var k = Mathf.Max(2, Mathf.CeilToInt(Vector2.Distance(p1, p2)));
+                    for (var j = 0; j <= k; j++)
+                    {
+                        var t = j / (float)k; var t2 = t * t; var t3 = t2 * t;
+                        var q = .5f * (2f * p1 + (-p0 + p2) * t + (2f * p0 - 5f * p1 + 4f * p2 - p3) * t2 + (-p0 + 3f * p1 - 3f * p2 + p3) * t3);
+                        line.Add(new Vector3(q.x, data.HeightAt(q.x, q.y), q.y));
+                    }
+                }
+            }
+            var best = new Dictionary<int, (float d, float h)>();
+            foreach (var p in line)
+            {
+                int c0 = Mathf.FloorToInt((p.x - blend) / data.Step), c1 = Mathf.CeilToInt((p.x + blend) / data.Step);
+                int r0 = Mathf.FloorToInt((data.layout.depth - p.z - blend) / data.Step), r1 = Mathf.CeilToInt((data.layout.depth - p.z + blend) / data.Step);
+                for (var r = Mathf.Max(0, r0); r <= r1 && r < data.Nz; r++)
+                for (var col = Mathf.Max(0, c0); col <= c1 && col < data.Nx; col++)
+                {
+                    var i = r * data.Nx + col; if (data.islandIds[i] != index) continue;
+                    float dx = col * data.Step - p.x, dz = data.layout.depth - r * data.Step - p.z, d = Mathf.Sqrt(dx * dx + dz * dz);
+                    if (d < blend && (!best.TryGetValue(i, out var b) || d < b.d)) best[i] = (d, p.y);
+                }
+            }
+            foreach (var kv in best)
+            {
+                var (d, h) = kv.Value;
+                data.heights[kv.Key] = d < flat ? h : Mathf.Lerp(h, data.heights[kv.Key], Mathf.SmoothStep(0, 1, (d - flat) / (blend - flat)));
+            }
         }
 
         static void Level(IslandWorldData data, int index, Vector2 c, float flat, float blend)
@@ -292,14 +336,35 @@ namespace EverythingWorld.World
         void Lot(LandContext ctx, MeshKit mk, MeshKit solid)
         {
             if (!FindSpot(ctx, 22f, 40f, 140f, out var c)) return;
-            var up = Vector3.up; var toHeart = new Vector3(center.x - c.x, 0, center.z - c.z).normalized; var dir = Vector3.Cross(up, toHeart); var side = toHeart;
+            var up = Vector3.up;
+            // the Lot is long (buses 28 m out each way): slide it until none of it, buses and sign included, sits on a road
+            bool Clear(Vector3 at)
+            {
+                var th = new Vector3(center.x - at.x, 0, center.z - at.z).normalized; var dr = Vector3.Cross(up, th);
+                for (var a = -29f; a <= 29f; a += 2f) for (var b = -8f; b <= 11f; b += 2f)
+                {
+                    var q = at + dr * a + th * b;
+                    if (!ctx.IsLand(q.x, q.z, 2f) || NearPath(q.x, q.z, TrailW / 2f + .5f) || InFootprint(ctx, q.x, q.z, 2f)) return false;
+                }
+                return true;
+            }
+            if (!Clear(c))
+                for (var r = 2f; r <= 40f; r += 2f)
+                {
+                    var moved = false;
+                    for (var a = 0f; a < 360f; a += 15f) { var q = c + Quaternion.Euler(0, a, 0) * Vector3.forward * r; if (Clear(q)) { c = ctx.OnGround(q.x, q.z); moved = true; break; } }
+                    if (moved) break;
+                }
+            var toHeart = new Vector3(center.x - c.x, 0, center.z - c.z).normalized; var dir = Vector3.Cross(up, toHeart); var side = toHeart;
             var rot = Quaternion.LookRotation(dir);
-            mk.Box(WorldMaterials.Solid(new Color(.28f, .27f, .3f), .3f), c + up * .03f, new Vector3(16f, .06f, 44f), rot);
+            var tarmac = WorldMaterials.Solid(new Color(.28f, .27f, .3f), .3f);   // laid on the ground in 2 m squares, so it follows the slope
+            Vector3 T(float a, float b) { var q = c + dir * a + side * b; return ctx.OnGround(q.x, q.z) + up * .04f; }
+            for (var a = -22f; a < 22f; a += 2f) for (var b = -8f; b < 8f; b += 2f) mk.Quad(tarmac, T(a, b), T(a + 2f, b), T(a + 2f, b + 2f), T(a, b + 2f), (T(a, b) + T(a + 2f, b + 2f)) / 2f - up);
             for (var k = 0; k < 7; k++) foreach (var s in new[] { -1f, 1f })
             {
                 var p = ctx.OnGround(c.x + dir.x * (k - 3f) * 5.6f + side.x * s * 5f, c.z + dir.z * (k - 3f) * 5.6f + side.z * s * 5f); var col = Dye[(k * 2 + (s > 0 ? 1 : 0)) % Dye.Length];
                 var trot = Quaternion.LookRotation(-side * s);
-                foreach (var a in new[] { -1f, 1f }) foreach (var b in new[] { -1f, 1f }) { mk.Prism(metal, p + dir * a * 1.9f + side * s * b * 1.9f, up, .04f, 2.4f, 6); ArtistBits.PostCollider(ctx.Root, p + dir * a * 1.9f + side * s * b * 1.9f, 2.4f, .06f); }
+                foreach (var a in new[] { -1f, 1f }) foreach (var b in new[] { -1f, 1f }) { var pp = p + dir * a * 1.9f + side * s * b * 1.9f; var pg = ctx.Ground(pp.x, pp.z); var ph = p.y + 2.5f - pg; pp.y = pg; mk.Prism(metal, pp - up * .2f, up, .04f, ph + .2f, 6); ArtistBits.PostCollider(ctx.Root, pp, ph, .06f); }   // each pole on its own ground, up to the canopy
                 mk.Box(WorldMaterials.Solid(col, .3f), p + up * 2.5f, new Vector3(4f, .12f, 4f), trot);
                 mk.Cone(WorldMaterials.Solid(col, .3f), p + up * 2.55f, 2.8f, .9f, 4, 45f);
                 for (var b = 0; b < 6; b++) mk.Box(WorldMaterials.Solid(Dye[(b + k) % Dye.Length], .3f), p + side * s * 2f + up * (.5f + b * .32f), new Vector3(3.6f, .32f, .03f + (b % 2) * .01f), trot);

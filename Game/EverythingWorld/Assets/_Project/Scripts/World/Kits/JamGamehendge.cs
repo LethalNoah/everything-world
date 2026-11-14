@@ -28,8 +28,8 @@ namespace EverythingWorld.World
             foreach (var s in new[] { -1f, 1f }) ArtistBits.PostCollider(ctx.Root, rh + side * s * 4f, 5f, .3f);
             life.rhombus = rhM;
             Footpath(ctx, mk, rh + toHeart * 2f);
-            var inPts = new List<Vector3>(); for (var d = -2f; d < 26f; d += 2.5f) { var q = rh - toHeart * d; inPts.Add(ctx.OnGround(q.x, q.z)); }
-            Strip(mk, inPts, dirt, TrailW * .8f, .04f); foreach (var p in inPts) Remember(p, 901);
+            var inPts = new List<Vector3>(); for (var d = -2f; d < 21f; d += 2.5f) { var q = rh - toHeart * d; inPts.Add(ctx.OnGround(q.x, q.z)); }
+            Strip(mk, inPts, dirt, TrailW * .8f, .04f); foreach (var p in inPts) Remember(p, 901);   // the trail in ends a few steps before the Book (it ran under the pedestal)
             // Icculus's mountain: a rock spire, a long ladder up it, a little hut with a lantern at the top
             var mt = c - toHeart * 12f + side * 10f; mt.y = ctx.Ground(mt.x, mt.z);
             for (var k = 0; k < 7; k++) mk.Blob(stone, mt + up * (k * 3.4f + 1.5f) + new Vector3(Mathf.Sin(k) * .8f, 0, Mathf.Cos(k * 1.3f) * .8f), new Vector3(5.5f - k * .6f, 2.4f, 5.2f - k * .55f), ctx.Rng, .25f);
@@ -206,7 +206,12 @@ namespace EverythingWorld.World
         void BigBoat(LandContext ctx, MeshKit mk, MeshKit solid, Vector3 at, Vector3 f)
         {
             var up = Vector3.up; var side = Vector3.Cross(up, f); var rot = Quaternion.LookRotation(side); var hull = WorldMaterials.Solid(new Color(.85f, .82f, .75f)); var stripe = WorldMaterials.Solid(new Color(.75f, .15f, .15f));
-            foreach (var s in new[] { -4f, 0f, 4f }) mk.Box(wood, at + side * s + up * .5f, new Vector3(2.8f, 1f, .4f), rot);
+            // the keel sits at the ground's average height under the boat (its bottom may dip into the uphill bank, as on a
+            // slipway), and each cradle reaches down to its own ground
+            var keel = 0f; var nk = 0; for (var s = -6f; s <= 6f; s += 1f) foreach (var e in new[] { -1.8f, 0f, 1.8f }) { keel += ctx.Ground(at.x + side.x * s + f.x * e, at.z + side.z * s + f.z * e); nk++; }
+            keel = keel / nk - .4f;
+            foreach (var s in new[] { -4f, 0f, 4f }) { var cg = at + side * s; var lo = Mathf.Min(ctx.Ground(cg.x - f.x * 1.4f, cg.z - f.z * 1.4f), ctx.Ground(cg.x + f.x * 1.4f, cg.z + f.z * 1.4f)) - .2f; var hi = keel + 1f; mk.Box(wood, new Vector3(cg.x, (lo + hi) / 2f, cg.z), new Vector3(2.8f, hi - lo, .4f), rot); }
+            at.y = keel;
             mk.Box(hull, at + up * 2f, new Vector3(3.6f, 2f, 12f), rot); mk.Prism(hull, at + up * 2f + side * 6f, side, 1.8f, 2.4f, 4, .1f, 45f);
             mk.Box(stripe, at + up * 2.4f, new Vector3(3.62f, .3f, 12.02f), rot);
             mk.Box(white, at + up * 3.8f - side * 1.5f, new Vector3(2.6f, 1.8f, 4f), rot);

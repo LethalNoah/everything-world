@@ -73,7 +73,7 @@ namespace EverythingWorld.World
         {
             dir = Vector3.ProjectOnPlane(dir, Vector3.up).normalized; var rot = Quaternion.LookRotation(dir); var side = Vector3.Cross(Vector3.up, dir);
             var n = Mathf.Max(1, Mathf.Min(6, z.a.songList?.Length ?? 1)); const float size = .9f; var w = n * size * 1.25f + .4f;
-            foreach (var s in new[] { -1f, 1f }) z.mk.Prism(wood, ground + side * s * (w / 2f - .1f) - dir * .05f, Vector3.up, .08f, 2.4f, 6);
+            foreach (var s in new[] { -1f, 1f }) { var pp = ground + side * s * (w / 2f - .1f) - dir * .05f; var pg = z.ctx.Ground(pp.x, pp.z); var top = ground.y + 2.4f; pp.y = Mathf.Min(pg, ground.y) - .2f; z.mk.Prism(wood, pp, Vector3.up, .08f, top - pp.y, 6); }   // each post down to its own ground
             var c = ground + Vector3.up * 1.8f;
             z.mk.Box(wood, c - Vector3.up * .1f, new Vector3(w, size + .6f, .1f), rot); z.solid.Box(wood, c - Vector3.up * .1f, new Vector3(w, size + .6f, .2f), rot);
             ArtistBits.CoverWall(z.pictures, z.labels, z.ctx, z.a, c + dir * .055f + Vector3.up * .08f, dir, n, size, n, true, Ink);
